@@ -24,30 +24,23 @@ menu:
       weight: 6
 params:
   about:
-    content: Hello, I’m a UI/UX Designer & Front End Developer from Victoria, Australia.
-      I hold a master degree of Web Design from the World University.And scrambled
-      it to make a type specimen book. It has survived not only five centuries. <br>
-      <br> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, adipisci
-      voluptatum repudiandae, natus impedit repellat aut officia illum at assumenda
-      iusto reiciendis placeat. Temporibus, vero.
+    content: We build support for scientists, researchers and public audiences to use the Atlas of Living Australia
     enable: yes
     image: images/about/about.jpg
-    title: ABOUT ME
-  author: Themefisher
+    title: ABOUT US
+  author: Science and Decision Support team
   banner:
     bgImage: images/slider.jpg
     btn: yes
-    btnText: Download More
-    btnURL: https://themefisher.com/
-    description: WITH 10 YEARS EXPERIENCE, I'VE OCCUPIED MANY ROLES INCLUDING DIGITAL
-      DESIGN DIRECTOR, WEB DESIGNER AND DEVELOPER. THIS SITE SHOWCASES SOME OF MY
-      WORK.
+    btnText: Go to ALA website
+    btnURL: https://www.ala.org.au/
+    description: ATLAS OF LIVING AUSTRALIA
     enable: yes
     flipText:
-      - title: DESIGNER
-      - title: DEVELOPER
-      - title: FATHER
-    heading: HI, MY NAME IS JONATHON & I AM A
+      - title: TRANSPARENCY
+      - title: RESEARCH SUPPORT
+      - title: DATA VISUALISATION
+    heading: THE SCIENCE AND DECISION SUPPORT TEAM
   contactFormAction: '#'
   cta:
     btnText: Contact with me
@@ -55,7 +48,7 @@ params:
     content: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis,<br>possimus
       commodi, fugiat magnam temporibus vero magni recusandae? Dolore, maxime praesentium.
     enable: yes
-    title: SO WHAT YOU THINK ?
+    title: Get in touch
   dateFormat: 6 January 2006
   description: Airspace Hugo theme
   googleAnalitycsID: Your ID
@@ -68,9 +61,9 @@ params:
       nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus.
     title: Latest Works
   socialIcon:
-    - icon: ion-social-facebook
+    - icon: ion-social-github
       url: '#'
-    - icon: ion-social-instagram
+    - icon: ion-social-twitter
       url: '#'
     - icon: ion-social-linkedin
       url: '#'
