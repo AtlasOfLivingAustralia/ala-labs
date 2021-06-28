@@ -13,7 +13,7 @@ menu:
     - name: Service
       url: service
       weight: 3
-    - name: Gallery
+    - name: Projects
       url: gallery
       weight: 4
     - name: Blog
@@ -26,11 +26,11 @@ params:
   about:
     content: We build support for scientists, researchers and public audiences to use the Atlas of Living Australia
     enable: yes
-    image: images/about/about.jpg
+    image: images/about/teamphoto.jpg
     title: ABOUT US
   author: Science and Decision Support team
   banner:
-    bgImage: images/slider.jpg
+    bgImage: images/galah_image.jfif
     btn: yes
     btnText: Go to ALA website
     btnURL: https://www.ala.org.au/
@@ -43,7 +43,7 @@ params:
     heading: THE SCIENCE AND DECISION SUPPORT TEAM
   contactFormAction: '#'
   cta:
-    btnText: Contact with me
+    btnText: Contact us
     btnURL: /contact
     content: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis,<br>possimus
       commodi, fugiat magnam temporibus vero magni recusandae? Dolore, maxime praesentium.
@@ -53,7 +53,7 @@ params:
   description: Airspace Hugo theme
   googleAnalitycsID: Your ID
   home: Home
-  logo: images/logo.png
+  logo: images/ALA_Logo_Inline_RGB_cropped.png
   portfolio:
     enable: yes
     subtitle: Aliquam lobortis. Maecenas vestibulum mollis diam. Pellentesque auctor
@@ -67,3 +67,4 @@ params:
       url: '#'
     - icon: ion-social-linkedin
       url: '#'
+  customCss: ["css/custom.css"]

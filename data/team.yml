@@ -1,38 +1,50 @@
 enable  : true
 title   : MEET THE TEAM
 members  :
-  - name  : Jonathon Andrew
-    image : images/team/team-1.jpg
-    designation : CEO, Project Manager
+  - name  : Dr. Martin Westgate
+    image : images/team/martin.jpg
+    designation : Team Manager, Science Advisor
     description : Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-    facebook    : https://www.fb.com/themefisher
     twitter     : https://www.twitter.com/themefisher
     linkedIn    : https://www.linkedin.com/themefisher
     googleplus  : https://plus.google.com/themefisher
   
-  - name  : Jesmin Martina
-    image : images/team/team-2.jpg
-    designation : CEO, Project Manager
+  - name  : Matilda Stevenson
+    image : images/team/matilda.jpg
+    designation : Software Developer, R Programmer 
     description : Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-    facebook    : https://www.fb.com/themefisher
     twitter     : https://www.twitter.com/themefisher
     linkedIn    : https://www.linkedin.com/themefisher
     googleplus  : https://plus.google.com/themefisher
   
-  - name  : Deu John
-    image : images/team/team-3.jpg
-    designation : CEO, Project Manager
+  - name  : Shawan Chowdhury
+    image : images/team/shawan.jpg
+    designation : Data Analyst
     description : Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-    facebook    : https://www.fb.com/themefisher
     twitter     : https://www.twitter.com/themefisher
     linkedIn    : https://www.linkedin.com/themefisher
     googleplus  : https://plus.google.com/themefisher
 
-  - name  : Anderson Martin
-    image : images/team/team-4.jpg
-    designation : CEO, Project Manager
+  - name  : Dr. Jenna Wraith
+    image : images/team/jenna.jpg
+    designation : Conservation Scientist
     description : Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-    facebook    : https://www.fb.com/themefisher
+    twitter     : https://www.twitter.com/themefisher
+    linkedIn    : https://www.linkedin.com/themefisher
+    googleplus  : https://plus.google.com/themefisher
+    
+  - name  : Dr. Dax Kellie
+    image : images/team/dax.jpg
+    designation : Data Analyst
+    description : Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+    twitter     : https://www.twitter.com/themefisher
+    linkedIn    : https://www.linkedin.com/themefisher
+    googleplus  : https://plus.google.com/themefisher
+    
+  - name  : Dr. Jessica Fenker
+    image : images/team/jess.jpg
+    designation : R Programmer
+    description : Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
     twitter     : https://www.twitter.com/themefisher
     linkedIn    : https://www.linkedin.com/themefisher
     googleplus  : https://plus.google.com/themefisher
