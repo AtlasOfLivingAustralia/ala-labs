@@ -1,2 +1,2 @@
 # SDS_website
-Science and Decisions Support team website
+Science and Decision Support team website
