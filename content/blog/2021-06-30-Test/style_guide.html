@@ -1,0 +1,826 @@
+---
+title: "Style Guide"
+author: "by Dax Kellie"
+date: 2021-06-04
+categories: ["R"]
+tags: ["R Markdown", "plot", "regression"]
+output:
+  blogdown::html_page:
+    toc: true
+    css: custom.css
+    highlight: tango
+editor_options: 
+  chunk_output_type: inline
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<link href="/rmarkdown-libs/font-awesome/css/all.css" rel="stylesheet" />
+<link href="/rmarkdown-libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+<link href="/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+  <link rel="stylesheet" href="custom.css" type="text/css" />
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#style-template">Style Template</a></li>
+<li><a href="#getting-started">Getting started</a>
+<ul>
+<li><a href="#use-ala-template">Use ALA Template</a></li>
+<li><a href="#add-your-information">Add your information</a></li>
+<li><a href="#knit-to-html">Knit to HTML</a></li>
+</ul></li>
+<li><a href="#push-to-github">Push to Github</a></li>
+<li><a href="#reproducible-workflows">Reproducible workflows</a>
+<ul>
+<li><a href="#safe-paths">Safe paths</a></li>
+</ul></li>
+<li><a href="#make-understandable-code">Make understandable code</a>
+<ul>
+<li><a href="#code-chunk-size">Code chunk size</a></li>
+<li><a href="#brief-summaries">Brief summaries</a></li>
+<li><a href="#style-code-using-styler">Style code using <code>styler</code></a></li>
+</ul></li>
+<li><a href="#output-style">Output style</a>
+<ul>
+<li><a href="#tables">Tables</a></li>
+<li><a href="#figures">Figures</a></li>
+<li><a href="#model-output">Model output</a></li>
+<li><a href="#code-chunk-options">Code chunk options</a>
+<ul>
+<li><a href="#example-echo-and-eval">Example: <code>echo</code> and <code>eval</code></a></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+
+<!-- Picture & Links in upper right corner -->
+<hr />
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This document details the Atlas of Living Australia style guide for creating html files from R Markdown</p>
+</div>
+<div id="style-template" class="section level1">
+<h1>Style Template</h1>
+<p>A test of a chunk</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r chunk-highlight"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># a table</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars, <span class="at">n=</span><span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+mpg
+</th>
+<th style="text-align:right;">
+cyl
+</th>
+<th style="text-align:right;">
+disp
+</th>
+<th style="text-align:right;">
+hp
+</th>
+<th style="text-align:right;">
+drat
+</th>
+<th style="text-align:right;">
+wt
+</th>
+<th style="text-align:right;">
+qsec
+</th>
+<th style="text-align:right;">
+vs
+</th>
+<th style="text-align:right;">
+am
+</th>
+<th style="text-align:right;">
+gear
+</th>
+<th style="text-align:right;">
+carb
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Mazda RX4
+</td>
+<td style="text-align:right;">
+21.0
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+160
+</td>
+<td style="text-align:right;">
+110
+</td>
+<td style="text-align:right;">
+3.90
+</td>
+<td style="text-align:right;">
+2.620
+</td>
+<td style="text-align:right;">
+16.46
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mazda RX4 Wag
+</td>
+<td style="text-align:right;">
+21.0
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+160
+</td>
+<td style="text-align:right;">
+110
+</td>
+<td style="text-align:right;">
+3.90
+</td>
+<td style="text-align:right;">
+2.875
+</td>
+<td style="text-align:right;">
+17.02
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Datsun 710
+</td>
+<td style="text-align:right;">
+22.8
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+108
+</td>
+<td style="text-align:right;">
+93
+</td>
+<td style="text-align:right;">
+3.85
+</td>
+<td style="text-align:right;">
+2.320
+</td>
+<td style="text-align:right;">
+18.61
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hornet 4 Drive
+</td>
+<td style="text-align:right;">
+21.4
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+258
+</td>
+<td style="text-align:right;">
+110
+</td>
+<td style="text-align:right;">
+3.08
+</td>
+<td style="text-align:right;">
+3.215
+</td>
+<td style="text-align:right;">
+19.44
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hornet Sportabout
+</td>
+<td style="text-align:right;">
+18.7
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+360
+</td>
+<td style="text-align:right;">
+175
+</td>
+<td style="text-align:right;">
+3.15
+</td>
+<td style="text-align:right;">
+3.440
+</td>
+<td style="text-align:right;">
+17.02
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+</div>
+<div id="getting-started" class="section level1">
+<h1>Getting started</h1>
+<div id="use-ala-template" class="section level2">
+<h2>Use ALA Template</h2>
+<p>Create a new R Markdown document by selecting <strong>File</strong> –&gt; <strong>New File</strong> –&gt; <strong>R Markdown</strong> <br></p>
+<p>In the left window menu, select <strong>New Template</strong>. Then select the ALA Template <br></p>
+</div>
+<div id="add-your-information" class="section level2">
+<h2>Add your information</h2>
+<ol style="list-style-type: decimal">
+<li><p>In the top 3 lines, add your document title, your name and the date. Leave the remainder of the .yaml options unchanged. <br></p></li>
+<li><p>Next, scroll down to the code chunk named “r upper right bio”. This code chunk adds your image and links to your personal websites<br />
+</p></li>
+</ol>
+<ul>
+<li>Save your preferred picture as “picture.jpg” in the current directory<br />
+</li>
+<li>Add the urls you wish to link to for the correct websites &amp; icons</li>
+</ul>
+<p><br></p>
+</div>
+<div id="knit-to-html" class="section level2">
+<h2>Knit to HTML</h2>
+<p>Click the <strong>Knit</strong> button in the upper menu (below file tabs, above script) to create an HTML file. A preview of your knitted HTML document can be viewed in the right pane. Code must run successfully from start to finish for a file to be Knit. <br></p>
+<p>In the R Studio viewer pane, click the “<em>Show in New Window </em>” button to view the page in your browser.</p>
+<p><br></p>
+<hr />
+</div>
+</div>
+<div id="push-to-github" class="section level1">
+<h1>Push to Github</h1>
+<p><br></p>
+<hr />
+</div>
+<div id="reproducible-workflows" class="section level1">
+<h1>Reproducible workflows</h1>
+<div id="safe-paths" class="section level2">
+<h2>Safe paths</h2>
+<p>Using <code>setwd()</code> to set a working directory can create issues for folder paths. They often are a cause of issues when making reproducible workflows. <br></p>
+<p>Instead, use the <code>here()</code> function from the <a href="https://here.r-lib.org/">here package</a> to build the path where you read and write files. <code>here()</code> automatically creates paths relative to the top level directory. <br></p>
+<p>Read a full description of how to use the <code>here()</code> function to create safe paths in <a href="https://rstats.wtf/safe-paths.html">Chapter 3 of What They Forgot to Teach You About R</a> <br></p>
+<p>For example:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r chunk-highlight"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="fu">here</span>(<span class="st">&quot;projects&quot;</span>, , <span class="st">&quot;style_guide&quot;</span>, <span class="st">&quot;data.csv&quot;</span>))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(x, y)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">here</span>(<span class="st">&quot;plots&quot;</span>, <span class="st">&quot;foofy_scatterplot.png&quot;</span>))</span></code></pre></div>
+<p>To set the project root path according to your current code file:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r chunk-highlight"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">i_am</span>(<span class="st">&quot;style_guide.rmd&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="make-understandable-code" class="section level1">
+<h1>Make understandable code</h1>
+<div id="code-chunk-size" class="section level2">
+<h2>Code chunk size</h2>
+<p>In writing, we use sentences and paragraphs of varying lengths to build a flowing, logical story or argument. In the same way, code chunks can be used to structure lines of code to build a flowing, logical analysis or plot. <br></p>
+<p>Code chunks should be brief. They should also offer notes or visual output that provides context to any transformations or outputs. Users should be able to follow each transformation that is made to your data, each output that results from a transformation, and any final output. <br></p>
+<p>There is no single correct code chunk size - you must use your best judgement. If it seems that the result of one or several lines of code is unclear a potential reader, you may need to split the code chunks to make the results easier to follow. <br></p>
+</div>
+<div id="brief-summaries" class="section level2">
+<h2>Brief summaries</h2>
+<p>For others to understand what your code does and why you made the choices you did, it is helpful to include brief summaries or your logic or what each line of your code does. It is also good to provide a brief interpretation of model output <br></p>
+</div>
+<div id="style-code-using-styler" class="section level2">
+<h2>Style code using <code>styler</code></h2>
+<p>Use the <code>styler</code> package to ensure your code is formatted correctly and/or consistently, The <code>styler</code> package formats your code according to the tidyverse style guide (or another custome style) prior to uploading a finished file document. <br></p>
+<p>See the <code>styler</code> <a href="https://github.com/r-lib/styler">github</a> and <a href="https://www.tidyverse.org/blog/2017/12/styler-1.0.0/">tidyverse</a> pages for more information <br></p>
+<p>Install the <code>styler</code> package to add style buttons to your R Markdown Addins dropdown menu. Clicking <strong>Addins</strong> -&gt; <strong>style active file</strong> will reformat the code in your active file. Clicking ** Addins** -&gt; <strong>style active section</strong> will reformat code in your current section. <br></p>
+<p>Alternatively, you <code>style_file()</code> or <code>style_text()</code> can be run in the console. <br></p>
+</div>
+</div>
+<div id="output-style" class="section level1">
+<h1>Output style</h1>
+<p>See the <a href="https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf">R Markdown cheat sheet</a> for more information on R Markdown formatting <br></p>
+<p>For tips to make your R Markdown output pretty, see <a href="https://holtzy.github.io/Pimp-my-rmd/">Pimp my RMD</a> by Yan Holtz <br></p>
+<div id="tables" class="section level2">
+<h2>Tables</h2>
+<p>Several packages can create tables with nice formatting. <br></p>
+<p>One example is <code>kableExtra</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r chunk-highlight"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(mtcars, <span class="at">n=</span><span class="dv">5</span>)) <span class="sc">%&gt;%</span> <span class="fu">kable_styling</span>()</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+mpg
+</th>
+<th style="text-align:right;">
+cyl
+</th>
+<th style="text-align:right;">
+disp
+</th>
+<th style="text-align:right;">
+hp
+</th>
+<th style="text-align:right;">
+drat
+</th>
+<th style="text-align:right;">
+wt
+</th>
+<th style="text-align:right;">
+qsec
+</th>
+<th style="text-align:right;">
+vs
+</th>
+<th style="text-align:right;">
+am
+</th>
+<th style="text-align:right;">
+gear
+</th>
+<th style="text-align:right;">
+carb
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Mazda RX4
+</td>
+<td style="text-align:right;">
+21.0
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+160
+</td>
+<td style="text-align:right;">
+110
+</td>
+<td style="text-align:right;">
+3.90
+</td>
+<td style="text-align:right;">
+2.620
+</td>
+<td style="text-align:right;">
+16.46
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mazda RX4 Wag
+</td>
+<td style="text-align:right;">
+21.0
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+160
+</td>
+<td style="text-align:right;">
+110
+</td>
+<td style="text-align:right;">
+3.90
+</td>
+<td style="text-align:right;">
+2.875
+</td>
+<td style="text-align:right;">
+17.02
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Datsun 710
+</td>
+<td style="text-align:right;">
+22.8
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+108
+</td>
+<td style="text-align:right;">
+93
+</td>
+<td style="text-align:right;">
+3.85
+</td>
+<td style="text-align:right;">
+2.320
+</td>
+<td style="text-align:right;">
+18.61
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hornet 4 Drive
+</td>
+<td style="text-align:right;">
+21.4
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+258
+</td>
+<td style="text-align:right;">
+110
+</td>
+<td style="text-align:right;">
+3.08
+</td>
+<td style="text-align:right;">
+3.215
+</td>
+<td style="text-align:right;">
+19.44
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hornet Sportabout
+</td>
+<td style="text-align:right;">
+18.7
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+360
+</td>
+<td style="text-align:right;">
+175
+</td>
+<td style="text-align:right;">
+3.15
+</td>
+<td style="text-align:right;">
+3.440
+</td>
+<td style="text-align:right;">
+17.02
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><code>kableExtra</code> is also able to be used using <code>magittr</code> or <code>base</code> piping:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r chunk-highlight"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gear) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">cyl =</span> <span class="fu">mean</span>(cyl),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">disp =</span> <span class="fu">mean</span>(disp)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+gear
+</th>
+<th style="text-align:right;">
+cyl
+</th>
+<th style="text-align:right;">
+disp
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+7.466667
+</td>
+<td style="text-align:right;">
+326.3000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4.666667
+</td>
+<td style="text-align:right;">
+123.0167
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6.000000
+</td>
+<td style="text-align:right;">
+202.4800
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r chunk-highlight"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mtcars <span class="sc">|</span><span class="er">&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(<span class="at">select =</span> <span class="fu">c</span>(<span class="st">&quot;cyl&quot;</span>, <span class="st">&quot;disp&quot;</span>, <span class="st">&quot;gear&quot;</span>)), <span class="at">n =</span> <span class="dv">5</span>) <span class="sc">|</span><span class="er">&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">|</span><span class="er">&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
+</div>
+<div id="figures" class="section level2">
+<h2>Figures</h2>
+<p>Controlling the size of figures can help when you want people to focus on trends of many plots or on details of a single plot. <br></p>
+<p>You can control how many columns your plots created in a chunk are printed into.<br />
+Add <code>out.width = c("50%", "50%"), fig.show = "hold"</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r chunk-highlight"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="st">``</span>{r out.width<span class="ot">=</span><span class="fu">c</span>(<span class="st">&#39;50%&#39;</span>, <span class="st">&#39;50%&#39;</span>), fig.show<span class="ot">=</span><span class="st">&#39;hold&#39;</span>}</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">rnorm</span>(<span class="dv">10</span>))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">`</span></span></code></pre></div>
+<p><img src="/blog/2021-06-30-Test/style_guide_files/figure-html/unnamed-chunk-8-1.png" width="50%" /><img src="/blog/2021-06-30-Test/style_guide_files/figure-html/unnamed-chunk-8-2.png" width="50%" /></p>
+<p>Control other parts of figure output in the chunk header as well. For example:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r chunk-highlight"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="st">``</span>{r, fig.align<span class="ot">=</span><span class="st">&quot;center&quot;</span>, fig.width<span class="ot">=</span><span class="dv">6</span>, fig.height<span class="ot">=</span><span class="dv">6</span>, fig.cap<span class="ot">=</span><span class="st">&quot;Figure: Here is a really important caption.&quot;</span>}</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r chunk-highlight"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>mpg <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>( <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(class, hwy), <span class="at">y=</span>hwy, <span class="at">fill=</span>class)) <span class="sc">+</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;class&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-10"></span>
+<img src="/blog/2021-06-30-Test/style_guide_files/figure-html/unnamed-chunk-10-1.png" alt="Figure: Here is a really important caption." width="576" />
+<p class="caption">
+Figure 1: Figure: Here is a really important caption.
+</p>
+</div>
+</div>
+<div id="model-output" class="section level2">
+<h2>Model output</h2>
+<p>Run a model and want to show output? Use the <code>model_parameters()</code> function from the <a href="https://easystats.github.io/parameters/">parameters package</a> to make your output clear and organised. The <code>model_parameters()</code> function can be considered as a lightweight alternative to <code>broom::tidy()</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r chunk-highlight"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parameters)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Sepal.Width <span class="sc">~</span> Petal.Length <span class="sc">*</span> Species <span class="sc">+</span> Petal.Width, <span class="at">data =</span> iris)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># regular model parameters</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(model)</span></code></pre></div>
+<pre><code>## Parameter                           | Coefficient |   SE |         95% CI | t(143) |      p
+## -------------------------------------------------------------------------------------------
+## (Intercept)                         |        2.89 | 0.36 | [ 2.18,  3.60] |   8.01 | &lt; .001
+## Petal.Length                        |        0.26 | 0.25 | [-0.22,  0.75] |   1.07 | 0.287 
+## Species [versicolor]                |       -1.66 | 0.53 | [-2.71, -0.62] |  -3.14 | 0.002 
+## Species [virginica]                 |       -1.92 | 0.59 | [-3.08, -0.76] |  -3.28 | 0.001 
+## Petal.Width                         |        0.62 | 0.14 | [ 0.34,  0.89] |   4.41 | &lt; .001
+## Petal.Length * Species [versicolor] |       -0.09 | 0.26 | [-0.61,  0.42] |  -0.36 | 0.721 
+## Petal.Length * Species [virginica]  |       -0.13 | 0.26 | [-0.64,  0.38] |  -0.50 | 0.618</code></pre>
+<p><code>model_parameters()</code> can also be used for parameter standardization:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r chunk-highlight"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># standardized parameters</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">model_parameters</span>(model, <span class="at">standardize =</span> <span class="st">&quot;refit&quot;</span>)</span></code></pre></div>
+<pre><code>## Package &#39;effectsize&#39; required to calculate standardized coefficients. Please install it.</code></pre>
+<pre><code>## Parameter                           | Coefficient |   SE |         95% CI | t(143) |      p
+## -------------------------------------------------------------------------------------------
+## (Intercept)                         |        2.89 | 0.36 | [ 2.18,  3.60] |   8.01 | &lt; .001
+## Petal.Length                        |        0.26 | 0.25 | [-0.22,  0.75] |   1.07 | 0.287 
+## Species [versicolor]                |       -1.66 | 0.53 | [-2.71, -0.62] |  -3.14 | 0.002 
+## Species [virginica]                 |       -1.92 | 0.59 | [-3.08, -0.76] |  -3.28 | 0.001 
+## Petal.Width                         |        0.62 | 0.14 | [ 0.34,  0.89] |   4.41 | &lt; .001
+## Petal.Length * Species [versicolor] |       -0.09 | 0.26 | [-0.61,  0.42] |  -0.36 | 0.721 
+## Petal.Length * Species [virginica]  |       -0.13 | 0.26 | [-0.64,  0.38] |  -0.50 | 0.618</code></pre>
+<p><br></p>
+</div>
+<div id="code-chunk-options" class="section level2">
+<h2>Code chunk options</h2>
+<p>See the <a href="https://rmarkdown.rstudio.com/lesson-3.html">R markdown documentation</a> to view chunk options. <br></p>
+<div id="example-echo-and-eval" class="section level3">
+<h3>Example: <code>echo</code> and <code>eval</code></h3>
+<p>Readers should be able to identify where every file in a workflow comes from (little is more frustrating than wondering where a required data file is located). Code used to load or extract data (from <code>galah</code>, for example) should be clearly identified. <br></p>
+<p>However, some code takes a very long time to run and you may have saved it locally or in a repository to save time and/or space. In this case, it is possible to show code without running it. <br></p>
+<p>Add <code>eval = FALSE</code> to the chunk header to display the code but prevent the chunk from running:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r chunk-highlight"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="st">``</span>{r, eval <span class="ot">=</span> <span class="cn">FALSE</span>}</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ala_counts</span>(<span class="at">group_by =</span> <span class="st">&quot;phylum&quot;</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="st">`</span></span></code></pre></div>
+<p>You can then load a local file in the background, without showing the code. <br></p>
+<p>Add <code>echo = FALSE</code> to your chunk header to run the code but prevent the chunk from displaying:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r chunk-highlight"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="st">``</span>{r, echo <span class="ot">=</span> <span class="cn">FALSE</span>}</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;local_file.rds&quot;</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="st">`</span></span></code></pre></div>
+</div>
+</div>
+</div>

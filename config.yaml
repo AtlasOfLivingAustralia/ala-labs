@@ -10,21 +10,21 @@ menu:
     - name: About
       url: about
       weight: 2
-    - name: Service
-      url: service
-      weight: 3
     - name: Projects
-      url: gallery
-      weight: 4
+      url: portfolio
+      weight: 3
     - name: Blog
       url: blog
-      weight: 5
+      weight: 4
     - name: Contact
       url: contact
-      weight: 6
+      weight: 5
+markup:
+  highlight:
+    style: tango
 params:
   about:
-    content: We build support for scientists, researchers and public audiences to use the Atlas of Living Australia
+    content: We support the Atlas of Living Australia to make our data more robust and accessible for scientists, researchers and public audiences
     enable: yes
     image: images/about/teamphoto.jpg
     title: ABOUT US
@@ -37,7 +37,7 @@ params:
     description: ATLAS OF LIVING AUSTRALIA
     enable: yes
     flipText:
-      - title: TRANSPARENCY
+      - title: SCIENTIFIC TRANSPARENCY
       - title: RESEARCH SUPPORT
       - title: DATA VISUALISATION
     heading: THE SCIENCE AND DECISION SUPPORT TEAM
@@ -56,15 +56,11 @@ params:
   logo: images/ALA_Logo_Inline_RGB_cropped.png
   portfolio:
     enable: yes
-    subtitle: Aliquam lobortis. Maecenas vestibulum mollis diam. Pellentesque auctor
-      neque nec urna. Nulla sit amet est. Aenean posuere tortor sed cursus feugiat,
-      nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus.
-    title: Latest Works
+    title: Latest Projects
   socialIcon:
     - icon: ion-social-github
-      url: '#'
+      url: 'https://github.com/AtlasOfLivingAustralia/science'
     - icon: ion-social-twitter
-      url: '#'
-    - icon: ion-social-linkedin
-      url: '#'
+      url: 'https://twitter.com/atlaslivingaust'
   customCss: ["css/custom.css"]
+
