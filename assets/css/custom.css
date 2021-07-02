@@ -1337,12 +1337,12 @@ ul.social-icons li {
 
 .img-fluid {
   max-width: auto;
-  height: auto;
+  max-height: auto;
 }
 
 .w-100 {
   width: 100%!important;
-  max-width:500px!important;
+  max-width: 500px!important;
 }
 
 code {
@@ -1372,7 +1372,7 @@ code {
 #pictureposition {
   display: block;
   vertical-align: top;
-  position:absolute; top:0; right:0; 
+  /*position:absolute; top:0; right:0; */
 }
 
 /*----------position link icons-------*/

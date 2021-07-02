@@ -37,16 +37,12 @@
       <div class="col-lg-4">
         <!-- sidebar -->
         <div class="work-single-sidebar">
-          {{ with .Params.author }}
-          <h5>Author</h5>
+          {{ with .Params.description }}
+          <h5>Description</h5>
           <h6>{{ . }}</h6>
           {{ end }}
           {{ with .Params.submitDate }}
-          <h5>date</h5>
-          <h6>{{ . }}</h6>
-          {{ end }}
-          {{ with .Params.liveLink }}
-          <h5>Links</h5>
+          <h5>Date</h5>
           <h6>{{ . }}</h6>
           {{ end }}
         </div>

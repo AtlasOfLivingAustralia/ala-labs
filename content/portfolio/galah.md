@@ -3,11 +3,12 @@ title: The galah package
 caption: Galah
 author: Dax Kellie
 date: "2021-06-30"
-description: R package to extract data from the Atlas of Living Australia
+description: R package
 image: images/portfolio/galah_logo.png
-liveLink: https://github.com/AtlasOfLivingAustralia/galah
-submitDate: June 30, 2021
+submitDate: 30 June, 2021
 type: portfolio
+markup:
+  highlight: autumn
 ---
 
 # The `galah` package

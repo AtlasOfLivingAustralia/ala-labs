@@ -1,7 +1,7 @@
 ---
 title: "Style Guide"
-author: "by Dax Kellie"
-date: 2021-06-04
+author: "Dax Kellie"
+date: "`r Sys.Date()`"
 categories: ["R"]
 tags: ["R Markdown", "plot", "regression"]
 output:
@@ -46,7 +46,6 @@ htmltools::withTags(
 
 
 
-------------------------------------------------------------------------------
 # Introduction
 This document details the Atlas of Living Australia style guide for creating html files from R Markdown
 
