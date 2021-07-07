@@ -1,3 +1,70 @@
 ---
-site: blogdown:::blogdown_site
+title: |
+  Our Team
+description: |
+output: 
+  distill::distill_article:
+    includes:
+      in_header: hero-image.html
+site: distill::distill_website
 ---
+
+```{r, include = FALSE}
+# To change the hero-image:
+
+# open theme.css
+# find the .hero-image section
+# under background-image, change the "url(images/galah_image.jfif);" to a another image url
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r, include=FALSE}
+library(htmltools)
+source("R/functions.R")
+```
+
+```{r, layout="l-screen-inset"}
+tags$div(class = "row",
+
+create_team_photo(
+  img_src = "images/teamphoto.jpg"
+),
+         
+create_team_about(
+  text = "We support the Atlas of Living Australia to make data easier to use by researchers, scientists and the general public. We value robust methods and transparent practices."
+)
+         
+)
+```
+
+
+```{r, layout="l-screen-inset"}
+# find icons at https://fontawesome.com/v5.15/icons?d=gallery&p=2
+
+tags$div(class = "row",
+         
+create_values_box1(
+  value = "\ Robust methods",
+  icon = "far fa-chart-bar",
+  text = "Yeah"
+),
+
+create_values_box2(
+  value = "\ Scientific Transparency",
+  icon = "fas fa-atom",
+  text = "Yeah"
+),
+
+create_values_box3(
+  value = "\ Openness",
+  icon = "fas fa-book-open",
+  text = "Yeah"
+)
+
+)
+```
+

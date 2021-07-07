@@ -1,0 +1,88 @@
+---
+title: "About us"
+description: |
+output: 
+  distill::distill_article:
+    css: theme.css
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r, include=FALSE}
+library(htmltools)
+source("R/functions.R")
+```
+
+# Meet the Team
+```{r}
+tags$div(class = "row", # Create a row for 3 team-member cards
+         
+create_team_card(
+  img_src = "images/martin.jpg",
+  name = "Martin Westgate",
+  text1 = "Team Leader",
+  text2 = "Cool guy",
+  url_web = "martinwestgate.com",
+  url_twitter = "none",
+  url_github = "none"
+),
+
+create_team_card(
+  img_src = "images/matilda.jpg",
+  name = "Matilda Stevenson",
+  text1 = "Software Developer",
+  text2 = "Cool woman",
+  url_web = "matildastevenson.com",
+  url_twitter = "none",
+  url_github = "none"
+),
+
+create_team_card(
+  img_src = "images/shawan.jpg",
+  name = "Shawan Chowdhury",
+  text1 = "Data Analyst",
+  text2 = "Cool guy",
+  url_web = "none",
+  url_twitter = "none",
+  url_github = "none"
+)
+
+)
+
+tags$div(class = "row", # Create a row for 3 team-member cards
+         
+create_team_card(
+  img_src = "images/jenna.jpg",
+  name = "Jenna Wraith",
+  text1 = "Conservation Scientist",
+  text2 = "Cool woman",
+  url_web = "none",
+  url_twitter = "none",
+  url_github = "none"
+),
+
+create_team_card(
+  img_src = "images/dax.jpg",
+  name = "Dax Kellie",
+  text1 = "Data Analyst",
+  text2 = "Evolutionary biologist & social psychologist. Dax values scientific transparency and tries to apply these values to the team workflow.",
+  url_web = "daxkellie.com",
+  url_twitter = "https://twitter.com/daxkellie?lang=en",
+  url_github = "none"
+),
+
+create_team_card(
+  img_src = "images/jess.jpg",
+  name = "Jessica Fenker",
+  text1 = "R Programmer",
+  text2 = "Cool woman",
+  url_web = "none",
+  url_twitter = "none",
+  url_github = "none"
+)
+
+)
+```

@@ -1,0 +1,34 @@
+{
+  "articles": [
+    {
+      "path": "about.html",
+      "title": "About us",
+      "author": [],
+      "contents": "\r\nMeet the Team\r\n\r\n\r\n\r\n\r\n\r\nMartin Westgate\r\nTeam Leader\r\nCool guy\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nMatilda Stevenson\r\nSoftware Developer\r\nCool woman\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nShawan Chowdhury\r\nData Analyst\r\nCool guy\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nJenna Wraith\r\nConservation Scientist\r\nCool woman\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nDax Kellie\r\nData Analyst\r\nEvolutionary biologist & social psychologist. Dax values scientific transparency and tries to apply these values to the team workflow.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nJessica Fenker\r\nR Programmer\r\nCool woman\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-07-07T13:15:39+10:00"
+    },
+    {
+      "path": "blog.html",
+      "title": "Blog",
+      "description": "",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-07-07T13:15:40+10:00"
+    },
+    {
+      "path": "index.html",
+      "title": "Our Team\n",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n\r\n\r\n\r\nWe support the Atlas of Living Australia to make data easier to use by researchers, scientists and the general public. We value robust methods and transparent practices.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n Robust methods\r\n\r\nYeah\r\n\r\n\r\n\r\n\r\n\r\n\r\n Scientific Transparency\r\n\r\nYeah\r\n\r\n\r\n\r\n\r\n\r\n\r\n Openness\r\n\r\nYeah\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-07-07T13:15:40+10:00"
+    },
+    {
+      "path": "projects.html",
+      "title": "Projects",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n\r\n{galah}\r\n\r\n\r\ngalah is an R interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It enables users to locate and download species occurrence records (observations, specimens, eDNA records, etc.), taxonomic information, or associated media such as images or sounds, and to restrict their queries to particular taxa or locations.\r\n\r\n\r\n\r\n\r\n\r\n\r\nAnother project\r\n\r\n\r\nLook out another cool project\r\n\r\nThis one is extra cool\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-07-07T13:15:41+10:00"
+    }
+  ],
+  "collections": ["posts/posts.json"]
+}

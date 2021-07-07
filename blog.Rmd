@@ -1,0 +1,8 @@
+---
+title: "Blog"
+description: ""
+listing:
+  posts:
+    - test
+    - style-guide
+---
