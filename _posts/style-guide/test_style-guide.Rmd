@@ -262,7 +262,7 @@ data <- readRDS(file = "local_file.rds")
 
 Does a plot require a lot of code that distracts from the plot itself? Distill has a really nice code folding feature:
 
-```{r, code_folding = TRUE, results = 'hide'}
+```{r, code_folding = TRUE, results = 'hide', eval = FALSE}
 library(galah)
 library(data.table)
 library(dtplyr) # provides data.table backend for dplyr
@@ -282,7 +282,7 @@ occurrences_Tas <- setDT(occurrences_Tas) # make data.table
 ```
 
 
-```{r, code_folding = TRUE, warning = FALSE, message = FALSE}
+```{r, code_folding = TRUE, warning = FALSE, message = FALSE, eval = FALSE}
 # date format
 occurrences_Tas$eventDate <- as_date(occurrences_Tas$eventDate)
 
