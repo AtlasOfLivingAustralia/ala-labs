@@ -77,9 +77,12 @@ d-appendix {
 /*-- Additional custom styles --*/
 /* Add any additional CSS rules below                      */
 
+/* Make Logo in navbar bigger */
 
 .distill-site-header .logo img {
-    max-height: 25px;
+    max-height: 50px;
+    width: auto;
+    margin-bottom: -15px;
 }
 
 /* -----------HERO IMAGE AT TOP OF PAGE -----------*/
@@ -108,19 +111,19 @@ d-appendix {
 
 .top-text {
   position: relative;
-  font-size: 34px;
+  font-size: 46px;
   padding-bottom: 0.5em
   text-transform: uppercase;
   text-align: center;
   display: block; /* Change to `display: none` for no top text */
-  color: #ffffff72;
+  color: #ffffff90;
 }
 
 .bottom-text {
   position: relative;
   letter-spacing: 0.065em;
   line-height: 1em;
-  font-size: 68px;
+  font-size: 57px;
   text-transform: uppercase;
   text-align: center;
   display: block; /* Change to `display: none` for no bottom text */
