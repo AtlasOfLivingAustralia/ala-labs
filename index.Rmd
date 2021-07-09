@@ -1,7 +1,8 @@
 ---
 title: |
-  Our Team
+  labs.ala.org.au
 description: |
+  This website contains demo projects, experiments, debugging data and so on from the [Atlas of Living Australia (ALA)](https://ala.org.au/). It also highlights the impact of ALA data on ecology and biodiversity research insights.
 output: 
   distill::distill_article:
     includes:
@@ -17,7 +18,6 @@ site: distill::distill_website
 # under background-image, change the "url(images/galah_image.jfif);" to a another image url
 ```
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
@@ -27,20 +27,7 @@ library(htmltools)
 source("R/functions.R")
 ```
 
-```{r, layout="l-screen-inset"}
-tags$div(class = "row",
-
-create_team_photo(
-  img_src = "images/teamphoto.jpg"
-),
-         
-create_team_about(
-  text = "We support the Atlas of Living Australia to make data easier to use by researchers, scientists and the general public. We value robust methods and transparent practices."
-)
-         
-)
-```
-
+# We Value:
 
 ```{r, layout="l-screen-inset"}
 # find icons at https://fontawesome.com/v5.15/icons?d=gallery&p=2
@@ -48,19 +35,19 @@ create_team_about(
 tags$div(class = "row",
          
 create_values_box1(
-  value = "\ Robust methods",
+  value = "\   Robust methods",
   icon = "far fa-chart-bar",
   text = "Yeah"
 ),
 
 create_values_box2(
-  value = "\ Scientific Transparency",
+  value = "\   Scientific Transparency",
   icon = "fas fa-atom",
   text = "Yeah"
 ),
 
 create_values_box3(
-  value = "\ Openness",
+  value = "\   Openness",
   icon = "fas fa-book-open",
   text = "Yeah"
 )

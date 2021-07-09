@@ -16,6 +16,22 @@ library(htmltools)
 source("R/functions.R")
 ```
 
+```{r, layout="l-screen-inset"}
+tags$div(class = "row",
+
+create_team_photo(
+  img_src = "images/teamphoto.jpg"
+),
+         
+create_team_about(
+  text = "We support the Atlas of Living Australia to make data easier to use by researchers, scientists and the general public."
+)
+         
+)
+```
+
+***
+
 # Meet the Team
 ```{r}
 tags$div(class = "row", # Create a row for 3 team-member cards
