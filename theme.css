@@ -337,6 +337,7 @@ d-appendix {
   text-align: center;
   cursor: pointer;
   width: 20%;
+  clip-path: circle();
 }
 
 .button:hover {
