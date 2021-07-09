@@ -1,22 +1,22 @@
-name: "test_distill-website"
-title: "Science and Decision Support Team"
+name: "labs.ala.org.au"
+title: "Labs"
 description: |
-  Science and Decision Support Team
+  Demo projects, experiments, debugging data and so on from the [Atlas of Living Australia (ALA)](https://ala.org.au/)
 output_dir: "_site"
 theme: theme.css
 favicon: images/favicon.ico
+collections:
+  posts:
+    categories: true
+    categories_metadata: true
+    authors_metadata: true
+   # disqus: Science-and-Decision-Support-Team
+   # share: [twitter, linkedin]
 navbar:
   logo:
     image: images/ALA_Logo_Stacked_REV.png
     href: index.html
   search: true
-  collections:
-  posts:
-    categories: true
-    categories_metadata: true
-    authors_metadata: true
-    disqus: test_distill-website
-    share: [twitter, linkedin]
   right:
     - text: "Home"
       href: index.html
@@ -24,8 +24,8 @@ navbar:
       href: about.html
     - text: "Articles"
       menu: 
-        - text: "more"
-          href: articles/more.html
+        - text: "More Content"
+          href: more.html
     - text: "Blog"
       href: blog.html
     - text: "Projects"
