@@ -3,5 +3,13 @@ title: "People"
 description: ""
 listing:
   people:
+    - Westgate_Martin
+    - Stevenson_Matilda
+    - Chowdhury_Shawan
+    - Wraith_Jenna
     - Kellie_Dax
+    - Fenker_Jess
+output: 
+  distill::distill_article:
+    css: style_people.css
 ---

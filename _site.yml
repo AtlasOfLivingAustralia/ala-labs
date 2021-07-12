@@ -6,6 +6,8 @@ output_dir: "_site"
 theme: theme.css
 favicon: images/favicon.ico
 collections:
+  people:
+    categories: true
   posts:
     categories: true
     categories_metadata: true
@@ -13,7 +15,7 @@ collections:
    # disqus: Science-and-Decision-Support-Team
    # share: [twitter, linkedin]
   projects:
-     categories: true
+    categories: true
 navbar:
   logo:
     image: images/ALA_Logo_Stacked_REV.png

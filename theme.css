@@ -60,7 +60,7 @@ d-appendix {
 /* These properties only apply to Distill sites and blogs  */
 
 .distill-site-header {
-  --title-size:       18px;
+  --title-size:       20px;
   --text-color:       white;
   --text-size:        16px;
   --hover-color:      #222322;
@@ -84,6 +84,8 @@ d-appendix {
     width: auto;
     margin-bottom: -15px;
 }
+
+
 
 /* -----------HERO IMAGE AT TOP OF PAGE -----------*/
 
@@ -314,9 +316,9 @@ d-appendix {
   line-height: 1.2;
 }
 
-.title {
+.job-title {
   color: #222322;
-  font-size: 13px!important;
+  font-size: 13px;
   margin-bottom:5px;
   line-height: 2;
 }
