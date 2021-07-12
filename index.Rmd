@@ -1,6 +1,6 @@
 ---
 title: |
-  labs.ala.org.au
+  ALA labs
 description: |
   This website contains demo projects, experiments, debugging data and so on from the [Atlas of Living Australia (ALA)](https://ala.org.au/). It also highlights the impact of ALA data on ecology and biodiversity research insights.
 output: 
@@ -54,4 +54,3 @@ create_values_box3(
 
 )
 ```
-

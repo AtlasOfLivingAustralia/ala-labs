@@ -12,6 +12,8 @@ collections:
     authors_metadata: true
    # disqus: Science-and-Decision-Support-Team
    # share: [twitter, linkedin]
+  projects:
+     categories: true
 navbar:
   logo:
     image: images/ALA_Logo_Stacked_REV.png
@@ -22,12 +24,10 @@ navbar:
       href: index.html
     - text: "About"
       href: about.html
-    - text: "Articles"
-      menu: 
-        - text: "More Content"
-          href: more.html
-    - text: "Blog"
-      href: blog.html
+    - text: "People"
+      href: people.html
+    - text: "Posts"
+      href: posts.html
     - text: "Projects"
       href: projects.html
     - icon: fab fa-github

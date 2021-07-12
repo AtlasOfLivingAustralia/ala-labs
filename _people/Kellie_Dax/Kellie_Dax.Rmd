@@ -1,0 +1,20 @@
+---
+title: "Dax Kellie"
+description: A page for dax
+preview: images/galah_logo.png
+date: "`r Sys.Date()`"
+output: 
+  distill::distill_article:
+    highlight: pygments
+    toc: true
+    toc_float: true
+    toc_depth: 3
+categories: 
+  - people
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+Dax is a human person who works at ALA.
