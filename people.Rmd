@@ -10,6 +10,5 @@ listing:
     - Kellie_Dax
     - Fenker_Jess
 output: 
-  distill::distill_article:
-    css: style_people.css
+  distill::distill_article
 ---
