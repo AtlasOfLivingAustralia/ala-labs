@@ -310,6 +310,25 @@ d-appendix {
   display: table;
 }
 
+.team-image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.team-image-text {
+  color: #E06E53;
+  font-size: 16px;
+  padding: 16px 32px;
+}
+
+.team-image:hover {
+  opacity: 0.7;
+}
+
 .name {
   color: #B8573E;
   margin-bottom: 4px;

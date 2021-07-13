@@ -37,6 +37,7 @@ create_team_about(
 tags$div(class = "row", # Create a row for 3 team-member cards
          
 create_team_card(
+  person_page = "people/Westgate_Martin/index.html",
   img_src = "images/martin.jpg",
   name = "Martin Westgate",
   text1 = "Team Leader",
@@ -47,6 +48,7 @@ create_team_card(
 ),
 
 create_team_card(
+  person_page = "people/Stevenson_Matilda/index.html",
   img_src = "images/matilda.jpg",
   name = "Matilda Stevenson",
   text1 = "Software Developer",
@@ -57,6 +59,7 @@ create_team_card(
 ),
 
 create_team_card(
+  person_page = "people/Chowdhury_Shawan/index.html",
   img_src = "images/shawan.jpg",
   name = "Shawan Chowdhury",
   text1 = "Data Analyst",
@@ -71,6 +74,7 @@ create_team_card(
 tags$div(class = "row", # Create a row for 3 team-member cards
          
 create_team_card(
+  person_page = "people/Wraith_Jenna/index.html",
   img_src = "images/jenna.jpg",
   name = "Jenna Wraith",
   text1 = "Conservation Scientist",
@@ -81,6 +85,7 @@ create_team_card(
 ),
 
 create_team_card(
+  person_page = "people/Kellie_Dax/index.html",
   img_src = "images/dax.jpg",
   name = "Dax Kellie",
   text1 = "Data Analyst",
@@ -91,6 +96,7 @@ create_team_card(
 ),
 
 create_team_card(
+  person_page = "people/Fenker_Jess/index.html",
   img_src = "images/jess.jpg",
   name = "Jessica Fenker",
   text1 = "R Programmer",

@@ -26,8 +26,6 @@ navbar:
       href: index.html
     - text: "About"
       href: about.html
-    - text: "People"
-      href: people.html
     - text: "Posts"
       href: posts.html
     - text: "Projects"
