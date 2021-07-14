@@ -33,6 +33,8 @@ create_team_about(
 ***
 
 # Meet the Team
+
+*Click on photos to view their articles and contributions*
 ```{r}
 tags$div(class = "row", # Create a row for 3 team-member cards
          

@@ -16,12 +16,5 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-```{r, echo = FALSE, preview = TRUE}
-# NOTE: THIS WON'T WORK UNTIL WE HAVE A base_url (for whatever reason)
-library(knitr)
-image_path = "images/dax.jpg"
-include_graphics(image_path)
-```
-
 
 Dax is a human person who works at ALA.
