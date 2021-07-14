@@ -2,7 +2,7 @@
 title: |
   ALA labs
 description: |
-  This website contains demo projects, experiments, debugging data and so on from the [Atlas of Living Australia (ALA)](https://ala.org.au/). It also highlights the impact of ALA data on ecology and biodiversity research insights.
+  This website contains demo projects, experiments, debugging data and so on from the [Atlas of Living Australia (ALA)](https://ala.org.au/). It also highlights the impact of ALA data on ecology and biodiversity research.
 output: 
   distill::distill_article:
     includes:
@@ -18,8 +18,22 @@ site: distill::distill_website
 # under background-image, change the "url(images/galah_image.jfif);" to a another image url
 ```
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+```{r meta-details, include=FALSE, results = 'asis'}
+# This edits meta details that display when people search for website on search engines
+library(metathis)
+
+meta() %>%
+  meta_social(
+    title = "ALA Labs",
+    description = "Demo projects, experiments and debugging data from the Atlas of Living Australia",
+    url = "https://labs.ala.org.au",
+    image = "https://labs.ala.org.au/galah_image.png",
+    image_alt = "Labs - Atlas of Living Australia",
+    og_type = "website",
+    og_author = "Atlas of Living Australia",
+    twitter_card_type = "summary",
+    twitter_creator = "@atlaslivingaust"
+  )
 ```
 
 ```{r, include=FALSE}
