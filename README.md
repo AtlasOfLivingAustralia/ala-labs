@@ -78,8 +78,40 @@ output: distill::distill_article
 ---
 ```
 
+## Webpages
 
-# Theme
+Website pages are saved in the top folder as the name of the page. For example, the content for the About page is in `about.Rmd`.
+
+Additional pages can be added by installing `distilltools` and running:
+
+```{r, eval = FALSE}
+library(distilltools)
+create_post_from_template("templates/main_page_template.Rmd")
+```
+
+Pages can also be added by creating a new R Markdown page in the main website folder with the yaml header:
+
+```{r, eval = FALSE}
+---
+title: ""
+description: |
+  
+output: 
+  distill::distill_article:
+    css: theme.css
+---
+```
+
+These pages can be added to the site navigation in the `_site.yml`
+
+
+# Editing content
+
+## Posts
+
+## People
+
+# Theme customisation
 
 Distill uses a CSS framework that can be fully customised. Theme settings are in `theme.css`.
 
@@ -135,5 +167,4 @@ font-size: 13px;
 
 Add to, edit or create new CSS properties to customise the ALA Labs theme.
 
-
-# Adding content
+`R/functions.R` contains functions to create editable html elements. Save new html elements or edit current html elements functions in `functions.R`.
