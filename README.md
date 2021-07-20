@@ -109,6 +109,37 @@ These pages can be added to the site navigation in the `_site.yml`
 
 ## Posts
 
+### Writing posts
+
+Posts are written in R markdown using a Distill article template.
+
+### Rendering posts
+
+When knitting a document, R Studio renders the file from scratch - the R environment begins as a blank slate. Some functions require settings from your R environment to run, so using **Knit** can sometimes cause issues. 
+
+One very common example occurs when using galah to download data using `ala_occurrences()` or `ala_media()`. Because you must add your email to `ala_config(email = youremail@email.com)`, when Knitting an Rmd file, this information must be included in .Rmd file. For privacy, this information isn't something you want to make findable in the final html or in the R Markdown file (which is likely to be in a github repository).
+
+Luckily, `rmarkdown::render()` preserves this information compared to using the **Knit** button in R Studio.
+
+In the console, load galah and set your email
+```{r}
+library(galah)
+ala_config(email = "youremail@email.com")
+```
+
+Then it's easiest to set your directory of your file using the [here](https://github.com/r-lib/here) package. Put folder names in `""` to your file location
+```{r}
+library(here)
+path <- here("folder", "subfolder", "subfolder", "your-file.Rmd")
+```
+
+Now use this `path` to render your R markdown file
+```{r}
+rmarkdown::render(path)
+```
+
+If the file renders successfully, the html file will be updated in your file directory. 
+
 ## People
 
 # Theme customisation
@@ -132,11 +163,11 @@ Properties such as website fonts, header and footer sections can be found in lab
 
 See the [Distill website](https://rstudio.github.io/distill/website.html) page for instructions on how to edit additional website properties.
 
-Properties on the ALA Labs website also use custom CSS. These properties are also found in `theme.css`.
+Properties on the ALA Labs website also use custom CSS, found in `theme.css`.
 
 To edit an element using custom CSS:
 
-1. Build the website or html page you wish to change
+1. Build the website or html page you wish to change and click **Open in Browser**
 
 2. Find the object, image or text you wish to change, right click on it and select **Inspect element**. A right hand pane should appear in your browser, showing the Elements and Styles panes. 
 
@@ -144,7 +175,7 @@ To edit an element using custom CSS:
 
 4. Edit the CSS style of the element(s) in `theme.css`
 
-The `class` of the html element identifies the name of the CSS style element. In this example, `class = "text-container"` identifies the CSS property style the container that text is held within on the web page, and `class = "text"` identifies the CSS property that styles the text "My Text".
+The `class` of the html element identifies the name of the CSS style element. In the following example, `class = "text-container"` identifies the name of the CSS style element of the container holding our text element, and `class = "text"` identifies the CSS style element that styles the text "My Text".
 
 ```{html, eval = FALSE}
 <div class = "text-container">
