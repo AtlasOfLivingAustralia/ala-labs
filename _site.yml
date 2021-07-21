@@ -30,6 +30,10 @@ navbar:
       href: posts.html
     - text: "Projects"
       href: projects.html
+    - text: "Resources"
+      menu:
+        - text: "Style Guide"
+          href: test_style-guide.html
     - icon: fab fa-github
       href: https://github.com/AtlasOfLivingAustralia/science
 output: distill::distill_article
