@@ -85,7 +85,14 @@ d-appendix {
     margin-bottom: -15px;
 }
 
+/*  circle image cropper                        */
+.clipped {
+    clip-path: circle();
+}
 
+d-article div.sourceCode {
+    background-color: #f7f7f7;
+}
 
 /* -----------HERO IMAGE AT TOP OF PAGE -----------*/
 
@@ -139,66 +146,6 @@ d-appendix {
 /*----------------------------------------------*/
 
 
-/*-- Main photo --*/
-/* Three columns side by side */
-.main-column {
-  float:left;
-  flex: 0 0 40%;
-  max-width: 40%;
-  width: 40%;
-  margin: 0 1.5%;
-  margin-bottom: 16px;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-
-
-/* Display the columns below each other instead of side by side on small screens */
-
-@media screen and (max-width: 952px) {
-  .main-column {
-    width: 100%;
-    display: block;
-  }
-}
-
-.team-img {
-  padding-top: 10px;
-  padding-right: 30px;
-  padding-bottom: 5px;
-  border-radius: 50px;
-}
-
-.main-about-body {
-  padding: 2px 16px;
-  padding-left: 80px;
-  padding-top: 100px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.about-title {
-  color: #222322;
-  line-height: 1;
-  font-size: 36px!important;
-}
-
-.about-text {
-  color: #222322;
-  line-height: 1;
-  font-size: 25px!important;
-  position: center;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-
 /*-- Our values --*/
 .px-0 {
     padding-left: 0!important;
@@ -245,12 +192,17 @@ d-appendix {
     display: block;
 }
 
-/*--Bio - upper right---------------------------*/
 
-/*  circle image cropper                        */
-.clipped {
-    clip-path: circle();
-}
+/*----------------------------------------------*/
+
+
+
+
+
+
+
+
+/*--Bio - upper right---------------------------*/
 
 /*-- position image --*/
 #pictureposition {
@@ -274,6 +226,71 @@ d-appendix {
 
 /* ----------- ABOUT PAGE -----------*/
 
+/*-- Main team photo --*/
+.main-column {
+  float:left;
+  flex: 0 0 40%;
+  max-width: 40%;
+  width: 40%;
+  margin: 0 1.5%;
+  margin-bottom: 16px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+
+.team-img {
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 5px;
+  border-radius: 50px;
+}
+
+/* Display the columns below each other instead of side by side on small screens */
+
+@media screen and (max-width: 952px) {
+  .main-column {
+    flex: 0 0 0;
+    max-width: 100%;
+    width: 100%;
+    display: block;
+  }
+}
+
+
+/*-- Main team about text --*/
+
+.main-about-body {
+  padding: 2px 16px;
+  padding-left: 80px;
+  padding-top: 100px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.about-title {
+  color: #222322;
+  line-height: 1;
+  font-size: 36px!important;
+}
+
+.about-text {
+  color: #222322;
+  line-height: 1;
+  font-size: 25px!important;
+  position: center;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+/*-- Team info cards --*/
 
 /* Three columns side by side */
 .column {
