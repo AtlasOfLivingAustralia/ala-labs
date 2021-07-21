@@ -43,14 +43,14 @@ source("R/functions.R")
 
 # We Value:
 
-```{r, layout="l-screen-inset"}
+```{r, layout="l-screen-inset", echo = FALSE}
 # find icons at https://fontawesome.com/v5.15/icons?d=gallery&p=2
 
 tags$div(class = "row",
          
 create_values_box1(
-  value = "\   Robust methods",
-  icon = "far fa-chart-bar",
+  value = "\   Openness",
+  icon = "fas fa-book-open",
   text = "Yeah"
 ),
 
@@ -61,8 +61,8 @@ create_values_box2(
 ),
 
 create_values_box3(
-  value = "\   Openness",
-  icon = "fas fa-book-open",
+  value = "\   Robust methods",
+  icon = "far fa-chart-bar",
   text = "Yeah"
 )
 
