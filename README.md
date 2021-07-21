@@ -80,7 +80,7 @@ output: distill::distill_article
 
 ## Webpages
 
-Website pages are saved in the top folder as the name of the page. For example, the content for the About page is in `about.Rmd`.
+Website pages are saved in the top folder using the page name (for example, the content for the About page is in `about.Rmd`).
 
 Additional pages can be added by installing `distilltools` and running:
 
@@ -102,7 +102,7 @@ output:
 ---
 ```
 
-These pages can be added to the site navigation in the `_site.yml`
+These pages can be added to the site navigation in the `_site.yml` under `navbar`
 
 
 # Editing content
@@ -111,34 +111,42 @@ These pages can be added to the site navigation in the `_site.yml`
 
 ### Writing posts
 
-Posts are written in R markdown using a Distill article template.
+Posts are written in R markdown using a Distill article template. Creating a new ALA Post using the `ALA_posts_template` will create a new page with the correct `yaml` header and sections. To create a new ALA post template, run the following in your R console:
+
+```{r, eval = FALSE}
+library(distilltools)
+create_post_from_template("templates/posts_template.Rmd")
+```
+
 
 ### Rendering posts
 
-When knitting a document, R Studio renders the file from scratch - the R environment begins as a blank slate. Some functions require settings from your R environment to run, so using **Knit** can sometimes cause issues. 
+If using R studio, you can render your Rmd file as an html to use on the website by clicking the **Knit** button.
 
-One very common example occurs when using galah to download data using `ala_occurrences()` or `ala_media()`. Because you must add your email to `ala_config(email = youremail@email.com)`, when Knitting an Rmd file, this information must be included in .Rmd file. For privacy, this information isn't something you want to make findable in the final html or in the R Markdown file (which is likely to be in a github repository).
+When knitting a document, R Studio renders the file using a blank R environment. In other words, the document is run using a blank slate and all packages and .Rdata must be loaded from within the document. This can be frustrating at times, but improves the reproducibility of your document. 
 
-Luckily, `rmarkdown::render()` preserves this information compared to using the **Knit** button in R Studio.
+However, some functions require settings from your R environment to run. In these cases, using **Knit** can cause issues. One such case occurs when using galah to download data using `ala_occurrences()` or `ala_media()`. Because you must add your email to `ala_config(email = youremail@email.com)`, Knitting an Rmd file requires that this information is included in the your code, yet we do not wish to share your email in the final html or Rmd file.
 
-In the console, load galah and set your email
+Luckily, `rmarkdown::render()` preserves this information (intentionally) compared to using the **Knit** button in R Studio.
+
+To render your .Rmd file using `rmarkdown::render()`, begin by loading galah and setting your email in the R console
 ```{r}
 library(galah)
 ala_config(email = "youremail@email.com")
 ```
 
-Then it's easiest to set your directory of your file using the [here](https://github.com/r-lib/here) package. Put folder names in `""` to your file location
+Then set your directory of your file. This is easily done using the [here](https://github.com/r-lib/here) package. Put folder names within `""` to your file location
 ```{r}
 library(here)
 path <- here("folder", "subfolder", "subfolder", "your-file.Rmd")
 ```
 
-Now use this `path` to render your R markdown file
+Now use your `path` to render your R markdown file
 ```{r}
 rmarkdown::render(path)
 ```
 
-If the file renders successfully, the html file will be updated in your file directory. 
+If the file renders successfully, the html file will be updated in your file directory. Open the new `your-file.html` in your directory to view the rendered html page. 
 
 ## People
 
