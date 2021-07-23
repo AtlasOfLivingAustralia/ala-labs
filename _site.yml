@@ -17,10 +17,10 @@ collections:
   projects:
     categories: true
 navbar:
+  search: true
   logo:
     image: images/ALA_Logo_Stacked_REV.png
     href: index.html
-  search: true
   right:
     - text: "Home"
       href: index.html
@@ -31,6 +31,7 @@ navbar:
     - text: "Projects"
       href: projects.html
     - text: "Resources"
+      href: more.html
       menu:
         - text: "Style Guide"
           href: test_style-guide.html
