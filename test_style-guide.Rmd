@@ -1,7 +1,7 @@
 ---
-title: "Style Guide"
+title: "ALA Labs Style Guide"
 description: |
-  New ALA style guide for R Markdown documents
+  Style guide for R script and R Markdown documents
 date: "`r Sys.Date()`"
 output: 
   distill::distill_article:
@@ -13,23 +13,6 @@ output:
 
 # Introduction
 This document details the Atlas of Living Australia style guide for creating html files from R Markdown
-
-# Style Template
-
-A test of a chunk
-
-```{r, warning = FALSE, message = FALSE}
-library(kableExtra)
-library(tidyverse)
-
-# a table
-head(mtcars, n=5) %>%
-  kbl() %>%
-  kable_styling()
-```
-
-
-
 
 
 # Getting started
@@ -81,8 +64,8 @@ Read a full description of how to use the `here()` function to create safe paths
 
 For example:
 
-```{r, eval = FALSE}
-library(ggplot2)
+```{r, eval = FALSE, message = FALSE, warning = FALSE}
+library(tidyverse)
 library(here)
 
 df <- read.delim(here("projects", , "style_guide", "data.csv"))
@@ -134,7 +117,8 @@ Several packages can create tables with nice formatting.
 
 One example is `kableExtra`:
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
+library(tidyverse)
 library(kableExtra)
 kable(
   head(mtcars, n=5)) %>% kable_styling()
@@ -146,7 +130,7 @@ kable(
 ```{r}
 mtcars %>% 
   group_by(gear) %>% 
-  summarise(cyl = mean(cyl),
+  dplyr::summarise(cyl = mean(cyl),
             disp = mean(disp)) %>%
   kbl() %>%
   kable_styling()
