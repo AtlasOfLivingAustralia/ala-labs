@@ -1,21 +1,27 @@
 ---
 title: "Martin Westgate"
 description: |
-preview: images/martin.jpg
 date: "`r Sys.Date()`"
 output: 
   distill::distill_article:
     highlight: pygments
-    toc: true
-    toc_float: true
-    toc_depth: 3
     self_contained: false
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+
+
+# Bio
+
+:::float-image
+
+```{r out.width='200px', out.extra='style="float:right; margin-left:15px; margin-right:15px; clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/martin.jpg")
 ```
 
+Martin is a Science Advisor and Team Leader at the Atlas of Living Australia (ALA).
+:::
 
 
+
+# Authored Articles
 
