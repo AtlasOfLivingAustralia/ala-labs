@@ -129,20 +129,13 @@ However, some functions require settings from your R environment to run. In thes
 
 Luckily, `rmarkdown::render()` preserves this information (intentionally) compared to using the **Knit** button in R Studio.
 
-To render your .Rmd file using `rmarkdown::render()`, begin by loading galah and setting your email in the R console
+A useful workflow is to creat a new R script that is not pushed to Github which sets `ala_config()` and creates the path for `rmarkdown::render()` using the `here` package 
 ```{r}
 library(galah)
 ala_config(email = "youremail@email.com")
-```
 
-Then set your directory of your file. This is easily done using the [here](https://github.com/r-lib/here) package. Put folder names within `""` to your file location
-```{r}
 library(here)
 path <- here("folder", "subfolder", "subfolder", "your-file.Rmd")
-```
-
-Now use your `path` to render your R markdown file
-```{r}
 rmarkdown::render(path)
 ```
 
