@@ -39,7 +39,33 @@ Opening the `index.html` page in the `_site` folder will open the rendered site.
 
 See the [Distill website](https://rstudio.github.io/distill/website.html) page for instructions on website structure, editing and customisation.
 
-## Site Output
+## Adding Main Web Pages
+
+Main web pages (ie. pages in the navigation bar) are saved in the top folder by their page name (for example, the content for the About page is in `about.Rmd`).
+
+Additional pages can be added by installing `distilltools` and running:
+
+```{r, eval = FALSE}
+library(distilltools)
+create_post_from_template("templates/main_page_template.Rmd")
+```
+
+Or by creating a new R Markdown page in the main website folder with the yaml header:
+
+```{r, eval = FALSE}
+---
+title: ""
+description: |
+  
+output: 
+  distill::distill_article:
+    css: theme.css
+---
+```
+
+These pages can be added to the site navigation in the `_site.yml` under `navbar`
+
+## Site Output and Navigation
 
 The `_site.yml` controls the main website information and site navigation.
 
@@ -78,46 +104,24 @@ output: distill::distill_article
 ---
 ```
 
-## Webpages
-
-Website pages are saved in the top folder using the page name (for example, the content for the About page is in `about.Rmd`).
-
-Additional pages can be added by installing `distilltools` and running:
-
-```{r, eval = FALSE}
-library(distilltools)
-create_post_from_template("templates/main_page_template.Rmd")
-```
-
-Pages can also be added by creating a new R Markdown page in the main website folder with the yaml header:
-
-```{r, eval = FALSE}
----
-title: ""
-description: |
-  
-output: 
-  distill::distill_article:
-    css: theme.css
----
-```
-
-These pages can be added to the site navigation in the `_site.yml` under `navbar`
-
 
 # Editing content
 
 ## Posts
 
-### Writing posts
+### Writing new posts
 
-Posts are written in R markdown using a Distill article template. Creating a new ALA Post using the `ALA_posts_template` will create a new page with the correct `yaml` header and sections. To create a new ALA post template, run the following in your R console:
+Posts are written in R markdown. 
+
+Or create a new ALA Post using the `ALA_posts_template` will create a new page with the correct `yaml` header and sections. To create a new ALA post template, run the following in your R console:
 
 ```{r, eval = FALSE}
 library(distilltools)
 create_post_from_template("templates/posts_template.Rmd")
 ```
+### Saving new posts
 
+New posts should be saved in a new folder within the `_posts` folder. Posts based on R script in the ALA/Science git repo should be named with the same folder name as in the Science repo
 
 ### Rendering posts
 
@@ -129,7 +133,7 @@ However, some functions require settings from your R environment to run. In thes
 
 Luckily, `rmarkdown::render()` preserves this information (intentionally) compared to using the **Knit** button in R Studio.
 
-A useful workflow is to creat a new R script that is not pushed to Github which sets `ala_config()` and creates the path for `rmarkdown::render()` using the `here` package 
+A useful workflow is to create a new temporary R script that sets `ala_config()` and creates the path for `rmarkdown::render()` using the `here` package 
 ```{r}
 library(galah)
 ala_config(email = "youremail@email.com")
@@ -141,7 +145,6 @@ rmarkdown::render(path)
 
 If the file renders successfully, the html file will be updated in your file directory. Open the new `your-file.html` in your directory to view the rendered html page. 
 
-## People
 
 # Theme customisation
 
