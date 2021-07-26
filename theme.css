@@ -161,17 +161,25 @@ d-article div.sourceCode {
     padding-right: 0!important;
 }
 
+.values-row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
 @media (min-width: 992px){
   .col-lg-4 {
     float:left;
     width: 33.333333%;
-    flex: 0 0 33.333333%;
+    flex: 1;
     max-width: 33.333333%;
     position: relative;
     width: 100%;
     min-height: 1px;
     display:flex;
-    flex-direction:column;
   }
 }
 
