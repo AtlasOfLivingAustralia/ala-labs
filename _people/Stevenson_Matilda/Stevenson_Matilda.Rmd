@@ -8,7 +8,10 @@ output:
     self_contained: false
 ---
 
-
+```{r, include=FALSE}
+library(htmltools)
+source("R/functions.R")
+```
 
 # Bio
 
@@ -24,5 +27,13 @@ Matilda is a Computer Scientist at the Atlas of Living Australia (ALA) and EcoCo
 
 
 # Authored Articles
+
+
+```{r, echo = FALSE}
+add_link_to_article(
+  title = "Magpies",
+  url = "https://r4ds.had.co.nz/tibbles.html"
+)
+```
 
 

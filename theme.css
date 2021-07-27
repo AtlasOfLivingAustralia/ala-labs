@@ -401,6 +401,30 @@ d-article div.sourceCode {
 /* ----------------------------------*/
 
 
+/* ----------- PEOPLE PAGE -----------*/
+
+.article-link:hover {
+  color: #E06E53;
+  text-decoration: none;
+  transition: background-size .4s ease;
+  border-bottom: 1px solid
+}
+
+.article-link:hover::after {
+  border-color: #E06E53;
+  right: 0;
+  border-radius: 1em;
+  border-top: .1em solid #E06E53;
+  content: "";
+  transition: right .4s cubic-bezier(0,.5,0,1),
+              border-color .4s ease-out;
+}
+
+
+
+
+/* ----------------------------------*/
+
 
 
 /* ----------- PROJECTS PAGE -----------*/
