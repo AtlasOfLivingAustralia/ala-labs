@@ -111,29 +111,35 @@ output: distill::distill_article
 
 ### Writing new posts
 
-Posts are written in R markdown. 
+Posts are written in R markdown. New posts should be created in the [AtlasofLivingAustralia/science Github repository](https://github.com/AtlasOfLivingAustralia/science). Posts must be created using the correct Post template.
 
-Or create a new ALA Post using the `ALA_posts_template` will create a new page with the correct `yaml` header and sections. To create a new ALA post template, run the following in your R console:
+To create a new post:
 
-```{r, eval = FALSE}
-library(distilltools)
-create_post_from_template("templates/posts_template.Rmd")
-```
-### Saving new posts
+1.  Create a new folder in the [comms folder within the AtlasofLivingAustralia/science Github repository](https://github.com/AtlasOfLivingAustralia/science/tree/main/comms). If your new post is based on an existing R script already saved in a comms folder, navigate to the comms folder containing your R script
 
-New posts should be saved in a new folder within the `_posts` folder. Posts based on R script in the ALA/Science git repo should be named with the same folder name as in the Science repo
+2.  Within the website repository, navigate to the `templates` folder
+
+3.  Copy the `posts_template.Rmd` file and paste it into your comms folder 
+
+4.  Rename the file to your preferred file name. If your new Post is based on an existing R script, name the file the same name as your R script
+
+5.  Fill the YAML header with correct title, description, author and categories metadata
+
+6.  Within the <aside> brackets, ensure the `image_path` is the correct image of the author
+
 
 ### Rendering posts
 
-If using R studio, you can render your Rmd file as an html to use on the website by clicking the **Knit** button.
+Post Rmd files must be **Knit** into html files to be used on the website. If using R studio, you can render your Rmd file as an html by clicking the **Knit** button.
 
-When knitting a document, R Studio renders the file using a blank R environment. In other words, the document is run using a blank slate and all packages and .Rdata must be loaded from within the document. This can be frustrating at times, but improves the reproducibility of your document. 
+When you **Knit** a document, R Studio renders the file starting with a blank slate - all packages and .Rdata must be loaded within the document, even if data or packages exist in your local environment. Rendering in this way improves the reproducibility of your document (though it can be frustrating at times). 
 
-However, some functions require settings from your R environment to run. In these cases, using **Knit** can cause issues. One such case occurs when using galah to download data using `ala_occurrences()` or `ala_media()`. Because you must add your email to `ala_config(email = youremail@email.com)`, Knitting an Rmd file requires that this information is included in the your code, yet we do not wish to share your email in the final html or Rmd file.
+Some functions, however, require input or settings that are private (like your personal email address) that you may not wish to share in your final Rmd or html. Using **Knit** will cause issues because R requires that this information is included in the document. This issue will occur frequently when using galah to download data using `ala_occurrences()` or `ala_media()` because you must add your email to `ala_config(email = youremail@email.com)`, so your email is required when you **Knit** your Rmd file.
 
 Luckily, `rmarkdown::render()` preserves this information (intentionally) compared to using the **Knit** button in R Studio.
 
-A useful workflow is to create a new temporary R script that sets `ala_config()` and creates the path for `rmarkdown::render()` using the `here` package 
+A useful workflow is to create a new temporary R script that sets `ala_config()` and creates the path for `rmarkdown::render()` using `here::here()`. Running this code will render your Rmd file with `ala_config()` settings applied:
+
 ```{r}
 library(galah)
 ala_config(email = "youremail@email.com")
@@ -143,14 +149,18 @@ path <- here("folder", "subfolder", "subfolder", "your-file.Rmd")
 rmarkdown::render(path)
 ```
 
-If the file renders successfully, the html file will be updated in your file directory. Open the new `your-file.html` in your directory to view the rendered html page. 
+If the file renders successfully, the html file will be rendered in your file directory set by `path`. Open this html file to view the rendered html page. 
+
+### Adding new posts to the website
+
+Once your post is ready to be added to the website, it's a good idea to double-check that the rendered html file of the post is the correct final version. New posts should be saved in a new folder within the `_posts` folder. Posts based on R script in the ALA/Science git repo should be named with the same folder name as in the Science repo
 
 
 # Theme customisation
 
-Distill uses a CSS framework that can be fully customised. Theme settings are in `theme.css`.
+Distill uses a CSS framework that can be fully customised. CSS theme settings are in `theme.css`. See the [Distill website](https://rstudio.github.io/distill/website.html) page for instructions on how to edit additional website properties.
 
-Properties such as website fonts, header and footer sections can be found in labeled sections. For example, settings for the appearance of the website header can be edited in the `.distill-site-header` section:
+Some properties can be found in labeled sections, like settings for website fonts, header and footer sections. For example, website header settings can be found in the `.distill-site-header` section:
 
 ```{r}
 /*-- WEBSITE HEADER + FOOTER --*/
@@ -165,28 +175,36 @@ Properties such as website fonts, header and footer sections can be found in lab
 }
 ```
 
-See the [Distill website](https://rstudio.github.io/distill/website.html) page for instructions on how to edit additional website properties.
+Other properties are edited using custom CSS.
 
-Properties on the ALA Labs website also use custom CSS, found in `theme.css`.
+
+## Editing custom CSS
+
+Custom CSS is also found in `theme.css`.
 
 To edit an element using custom CSS:
 
-1. Build the website or html page you wish to change and click **Open in Browser**
+1. **Build** the website or **Knit** the html page you wish to change and click **Open in Browser**
 
-2. Find the object, image or text you wish to change, right click on it and select **Inspect element**. A right hand pane should appear in your browser, showing the Elements and Styles panes. 
+2. Find the object, image or text you wish to change. Right click on it and select **Inspect element**. A right hand pane should appear in your browser, showing the Elements and Styles tab panes. 
 
-3. Determine which element(s) affect the appearance of an object, image or text on the website. The Elements pane displays the html of the web page, and highlights the html container of the element you selected. The Styles pane displays the CSS affecting a selected element or container, and highlights the CSS that is affecting a selected html layer.
+3. Determine which element(s) affect the appearance of an object, image or text on the website. 
+
+TO find this information first using the Elements pane. The *Elements* pane displays the html of the web page, and highlights the html container of the element you selected. Hovering over the code will also highlight elements affected by each html container. Once you identify relevant html container(s), next use the Styles pane. The *Styles* pane displays the CSS properties that are styling a selected html element or html container, and highlights the affected element. A good way to tell what a CSS property is affecting is to use the checkboxes next to each CSS property to turn style properties on and off.
 
 4. Edit the CSS style of the element(s) in `theme.css`
 
-The `class` of the html element identifies the name of the CSS style element. In the following example, `class = "text-container"` identifies the name of the CSS style element of the container holding our text element, and `class = "text"` identifies the CSS style element that styles the text "My Text".
+The `class` of an html element or html container identifies the name of the CSS properties element. 
+
+Let's look at an example. In the following html code, `class = "text-container"` identifies the name of the CSS style element that affects `<div>`, a container for our text. Alternatively, `class = "text"` identifies the CSS style element that affects `<h1>`, or "heading 1", which contains "My Text".
 
 ```{html, eval = FALSE}
 <div class = "text-container">
   <h1 class = "text">My Text</h1>
 </div>
 ```
-These classes are styled in CSS, many of which can be found in `theme.css`. For example, style properties in `theme.css` might look like:
+
+These classes are styled in CSS property of the same name, many of which can be found in `theme.css`. In our example, style properties in `theme.css` might look like:
 
 ```{css}
 .text-container {
@@ -200,6 +218,43 @@ font-size: 13px;
 }
 ```
 
-Add to, edit or create new CSS properties to customise the ALA Labs theme.
+Edit or create new CSS properties to customise the ALA Labs website theme.
 
-`R/functions.R` contains functions to create editable html elements. Save new html elements or edit current html elements functions in `functions.R`.
+## Custom html elements using R functions
+
+`R/functions.R` contains functions that create html elements within ALA Labs website.
+
+The `R/functions.R` uses the htmlTools package to write html code using R syntax. For example, the following R function and html code will both create a link of `class = "article-link"` that can be edited using CSS:
+
+```{r, eval = FALSE}
+# R function
+add_link_to_article <- function(title, url){
+  tags$a(
+    class = "article-link",
+    href = url,
+    "text"
+  )
+}
+
+add_link_to_article(text = "my text", url = "https://ala.org.au/")
+```
+
+```{html, eval = FALSE}
+<!-- html -->
+<a class = "article-link" href = "https://ala.org.au/">my text</a>
+```
+
+The benefits of writing R functions to create html elements are:
+
+1.  Rather than trying to edit html elements that the Distill package runs in the backend to build the website, adding html elements using R functions is easier and less prone to errors 
+
+2.  It is easier for people familiar in R to edit the content of existing html elements created by R functions 
+
+To use functions in the `R/functions.R` file on a website page or post, add the following code block somewhere below the YAML header
+
+```{r, eval = FALSE}
+``{r, include=FALSE}
+library(htmltools)
+source("R/functions.R")
+``
+```
