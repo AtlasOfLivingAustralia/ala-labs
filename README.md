@@ -125,7 +125,7 @@ To create a new post:
 
 5.  Fill the YAML header with correct title, description, author and categories metadata
 
-6.  Within the <aside> brackets, ensure the `image_path` is the correct image of the author
+6.  Between the `<aside>` brackets, ensure the `image_path` is the correct image of the author
 
 
 ### Rendering posts
