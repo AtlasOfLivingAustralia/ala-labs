@@ -29,7 +29,7 @@ Matilda is a Computer Scientist at the Atlas of Living Australia (ALA) and EcoCo
 # Authored Articles
 
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = FALSE}
 add_link_to_article(
   title = "Magpies",
   url = "https://r4ds.had.co.nz/tibbles.html"
