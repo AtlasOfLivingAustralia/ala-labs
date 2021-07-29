@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output: 
   distill::distill_article:
     highlight: pygments
-    self_contained: false
+    self_contained: true
 ---
 
 
@@ -18,7 +18,7 @@ output:
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/jess.jpg")
 ```
 
-Jess is a R programmer at the Atlas of Living Australia (ALA) and EcoCommons.
+Jess is an R programmer at the Atlas of Living Australia (ALA) and EcoCommons.
 :::
 
 

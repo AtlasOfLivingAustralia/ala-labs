@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output: 
   distill::distill_article:
     highlight: pygments
-    self_contained: false
+    self_contained: true
 ---
 
 ```{r, include=FALSE}
@@ -28,6 +28,7 @@ Matilda is a Computer Scientist at the Atlas of Living Australia (ALA) and EcoCo
 
 # Authored Articles
 
+* [Magpies](https://r4ds.had.co.nz/tibbles.html)
 
 ```{r, echo = FALSE, eval = FALSE}
 add_link_to_article(
