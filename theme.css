@@ -369,6 +369,10 @@ d-article div.sourceCode {
   line-height: 1.2;
 }
 
+.name:hover {
+  color: #E06E53;
+}
+
 .job-title {
   color: #222322;
   font-size: 13px;

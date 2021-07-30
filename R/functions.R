@@ -80,7 +80,8 @@ create_team_card <- function(person_page, img_src, name, alt, text1, text2, url_
       tags$img(class ="team-image", src = img_src, alt = name, style = "width:100%")),
       tags$div(
         class = "container",
-        h3(class = "name", name),
+        a(href = person_page, 
+          h3(class = "name", name)),
         p(class = "job-title", text1),
         p(class = "desc-text", text2)
       ),
