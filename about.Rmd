@@ -32,6 +32,8 @@ create_team_about(
 
 ***
 
+<div id = "team-photo-grid", style = "height:1px"></div>
+
 # Meet the Team
 
 *Click on photos to view their articles and contributions*

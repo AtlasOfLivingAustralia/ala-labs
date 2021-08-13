@@ -17,10 +17,10 @@ collections:
   projects:
     categories: true
 navbar:
-  search: true
   logo:
     image: images/ALA_Logo_Stacked_REV.png
     href: index.html
+  search: true
   right:
     - text: "Home"
       href: index.html
@@ -33,7 +33,7 @@ navbar:
     - text: "Resources"
       href: more.html
       menu:
-        - text: "Style Guide"
+        - text: "ALA Labs Style Guide"
           href: test_style-guide.html
     - icon: fab fa-github
       href: https://github.com/AtlasOfLivingAustralia/science

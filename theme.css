@@ -18,7 +18,7 @@ html {
   /*-- Main font sizes --*/
   --title-size:      55px;
   --body-size:       1.06rem;
-  --code-size:       13px;
+  --code-size:       14px;
   --aside-size:      12px;
   --fig-cap-size:    13px;
   /*-- Main font colors --*/
@@ -29,7 +29,7 @@ html {
   --fig-cap-color:   rgba(0, 0, 0, 0.6);
   /*-- Specify custom fonts ~~~ must be imported above   --*/
   --heading-font:    'Lato', sans-serif;
-  --mono-font:       'Roboto' sans-serif;
+  --mono-font:       'Roboto' monospace;
   --body-font:       'Roboto', sans-serif;
   --navbar-font:     'Lato' sans-serif;  /* websites + blogs only */
 }
@@ -216,31 +216,6 @@ d-article div.sourceCode {
 
 
 
-
-
-
-/*--Bio - upper right---------------------------*/
-
-/*-- position image --*/
-#pictureposition {
-  display: block;
-  vertical-align: top;
-  position:absolute; top:0; right:0; 
-}
-
-/*-- position link icons --*/
-#linkposition {
-  display: block;
-  vertical-align: top;
-  float: middle;
-  text-align:center;
-}
-/*--------------------------------------------*/
-
-
-
-
-
 /* ----------- ABOUT PAGE -----------*/
 
 /*-- Main team photo --*/
@@ -279,11 +254,11 @@ d-article div.sourceCode {
 /*-- Main team about text --*/
 
 .main-about-body {
-  padding: 2px 16px;
-  padding-left: 80px;
   padding-top: 100px;
-  display: inline-block;
-  vertical-align: middle;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content:center;
 }
 
 .about-title {
@@ -295,8 +270,8 @@ d-article div.sourceCode {
 .about-text {
   color: #222322;
   line-height: 1;
-  font-size: 25px!important;
-  position: center;
+  font-size: 28px!important;
+
 }
 
 /* Clear floats after the columns */
@@ -304,6 +279,47 @@ d-article div.sourceCode {
   content: "";
   display: table;
   clear: both;
+}
+
+/*-- About page arrow scroll  */
+
+html:focus-within {
+  scroll-behavior: smooth;
+  will-change: scroll-position;
+ }
+
+.arrow {
+  padding-top: 25px;
+  text-align: center;
+}
+
+.arrow-link:link {
+  color: #222322;
+  border-bottom: 0px!important;
+}
+
+.arrow-link:hover {
+  color: #E06E53;
+}
+
+.bounce {
+  -o-transform: bounce 2s infinite;
+  -ms-transform: bounce 2s infinite;
+  -moz-animation: bounce 2s infinite;
+  -webkit-animation: bounce 2s infinite;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-15px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
 }
 
 

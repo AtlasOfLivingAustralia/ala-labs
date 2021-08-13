@@ -43,14 +43,7 @@ See the [Distill website](https://rstudio.github.io/distill/website.html) page f
 
 Main web pages (ie. pages in the navigation bar) are saved in the top folder by their page name (for example, the content for the About page is in `about.Rmd`).
 
-Additional pages can be added by installing `distilltools` and running:
-
-```{r, eval = FALSE}
-library(distilltools)
-create_post_from_template("templates/main_page_template.Rmd")
-```
-
-Or by creating a new R Markdown page in the main website folder with the yaml header:
+Additional pages can be added by creating a new R Markdown page in the main website folder with the yaml header:
 
 ```{r, eval = FALSE}
 ---
@@ -63,7 +56,7 @@ output:
 ---
 ```
 
-These pages can be added to the site navigation in the `_site.yml` under `navbar`
+Add pages to the website by adding them to the site navigation in `_site.yml` under `navbar`
 
 ## Site Output and Navigation
 
@@ -224,7 +217,7 @@ Edit or create new CSS properties to customise the ALA Labs website theme.
 
 `R/functions.R` contains functions that create html elements within ALA Labs website.
 
-The `R/functions.R` uses the htmlTools package to write html code using R syntax. For example, the following R function and html code will both create a link of `class = "article-link"` that can be edited using CSS:
+The `R/functions.R` uses the [htmlTools](https://rstudio.github.io/htmltools/) package to write html code using R syntax. For example, the following R function and html code will both create a link of `class = "article-link"` that can be edited using CSS:
 
 ```{r, eval = FALSE}
 # R function
@@ -246,9 +239,9 @@ add_link_to_article(text = "my text", url = "https://ala.org.au/")
 
 The benefits of writing R functions to create html elements are:
 
-1.  Rather than trying to edit html elements that the Distill package runs in the backend to build the website, adding html elements using R functions is easier and less prone to errors 
+1.  Rather than trying to edit html elements that the Distill package runs in the back-end to build the website, adding html elements using R functions is easier and less prone to errors 
 
-2.  It is easier for people familiar in R to edit the content of existing html elements created by R functions 
+2.  It is easier for people familiar in R to reuse and edit the content of existing html elements created by R functions 
 
 To use functions in the `R/functions.R` file on a website page or post, add the following code block somewhere below the YAML header
 

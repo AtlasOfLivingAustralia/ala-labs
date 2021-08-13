@@ -13,6 +13,14 @@ create_team_about = function(text){
     tags$div(
       class = "main-about-body",
       p(class = "about-text", text)
+    ),
+    tags$div(
+      class = "arrow bounce",
+      tags$a(
+        class = "arrow-link fa fa-arrow-down fa-2x", 
+        href = "#team-photo-grid", 
+        style = "will-change:scroll-position; text-decoration:none;"
+      )
     )
   )
 }
