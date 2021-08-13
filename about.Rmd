@@ -44,8 +44,7 @@ create_team_card(
   person_page = "people/Westgate_Martin/index.html",
   img_src = "images/martin.jpg",
   name = "Martin Westgate",
-  text1 = "Team Leader",
-  text2 = "Cool guy",
+  text = "Team Leader",
   url_web = "martinwestgate.com",
   url_twitter = "none",
   url_github = "none"
@@ -55,8 +54,7 @@ create_team_card(
   person_page = "people/Stevenson_Matilda/index.html",
   img_src = "images/matilda.jpg",
   name = "Matilda Stevenson",
-  text1 = "Software Developer",
-  text2 = "Cool woman",
+  text = "Software Developer",
   url_web = "matildastevenson.com",
   url_twitter = "none",
   url_github = "none"
@@ -66,8 +64,7 @@ create_team_card(
   person_page = "people/Chowdhury_Shawan/index.html",
   img_src = "images/shawan.jpg",
   name = "Shawan Chowdhury",
-  text1 = "Data Analyst",
-  text2 = "Cool guy",
+  text = "Data Analyst",
   url_web = "none",
   url_twitter = "none",
   url_github = "none"
@@ -81,8 +78,7 @@ create_team_card(
   person_page = "people/Wraith_Jenna/index.html",
   img_src = "images/jenna.jpg",
   name = "Jenna Wraith",
-  text1 = "Conservation Scientist",
-  text2 = "Cool woman",
+  text = "Conservation Scientist",
   url_web = "none",
   url_twitter = "none",
   url_github = "none"
@@ -92,8 +88,7 @@ create_team_card(
   person_page = "people/Kellie_Dax/index.html",
   img_src = "images/dax.jpg",
   name = "Dax Kellie",
-  text1 = "Data Analyst",
-  text2 = "Evolutionary biologist & social psychologist. Dax values scientific transparency and tries to apply these values to the team workflow.",
+  text = "Data Analyst",
   url_web = "daxkellie.com",
   url_twitter = "https://twitter.com/daxkellie?lang=en",
   url_github = "none"
@@ -103,8 +98,7 @@ create_team_card(
   person_page = "people/Fenker_Jess/index.html",
   img_src = "images/jess.jpg",
   name = "Jessica Fenker",
-  text1 = "R Programmer",
-  text2 = "Cool woman",
+  text = "R Programmer",
   url_web = "none",
   url_twitter = "none",
   url_github = "none"

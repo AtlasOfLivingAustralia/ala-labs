@@ -396,11 +396,6 @@ html:focus-within {
   line-height: 2;
 }
 
-.desc-text {
-  color: #667073;
-  font-size: 12px!important;
-  line-height: 1;
-}
 
 .button {
   border: none;
