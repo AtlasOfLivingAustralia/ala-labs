@@ -8,21 +8,13 @@
 .button-footer {
   border: none;
   outline: 0;
-  display: inline-block;
   padding: 8px;
   color: #E06E53;
   background-color: #EEECEA;
-  cursor: pointer;
-  width: 30px;
-  text-align: center;
-  float: left;
   position: relative;
-  left: 45%;
-  right: 55%;
+  left: 40%;
+  right: 60%;
   vertical-align: baseline;
-  max-height:30px;
-  clip-path: circle();
-
 }
 
 .button-footer:hover {
@@ -31,32 +23,20 @@
 }
 
 .column-footer {
-    float:right;
-    width: 33.333333%;
-    max-width: 33.333333%;
-    position: relative;
-    width: 100%;
-    min-height: 1px;
-    display:flex;
-    flex-direction:column;
-    
+  float:left;
+  width: 32%;
+  max-width: 33.333333%;
+  position: relative;
+  min-height: 1px;
+  display: flex;
+  flex-direction:column;
+  display:inline-block;
+  margin:5px;
 }
 
-.column-footer-2 {
-    float:left;
-    width: 33.333333%;
-    max-width: 33.333333%;
-    position: relative;
-    width: 100%;
-    min-height: 1px;
-    display:flex;
-    flex-direction:column; 
-}
 
 .footer-logo {
-  float: left;
-  width:33.33333%;
-  display:inline-block;
+  text-align: center;
   margin:5px;
 }
 
@@ -77,18 +57,14 @@
   display: block;
 }
 
+#over button {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
 @media screen and (max-width: 952px) {
   .column-footer {
-    width: 100%;
-    display: block;
-  }
-  
-    .column-footer-2 {
-    width: 100%;
-    display: block;
-  }
-  
-    .footer-logo {
     width: 100%;
     display: block;
   }
@@ -98,31 +74,29 @@
 
 
 <!-- add icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
 
-<!-- ALA Logo -->
+<!-- Partner Logo -->
 <div class = "row">
-  <div class = "footer-logo">
-    <p>
+  <div class = "column-footer footer-logo">
     <img src = "images/NCRIS_logo.png" style = "width:auto;height:80px;margin-left:15px;margin-right:15px"></img>
     <img src = "images/CSIRO_logo.png" style = "width:auto;height:80px;margin-left:15px;margin-right:15px"></img>
-    </p>
     <p class = "footer-text">The ALA is made possible by contributions from its many partners. It receives support through the Australian Government through the National Collaborative Research Infrastructure Strategy (NCRIS) and is hosted by CSIRO.</p>
   </div>
-  <div id = "over" class = "column-footer-2">
-    <p>
-    <img src='images/ALA_Logo.png' href = "https://www.ala.org.au/" style = "max-width:auto; height:80px" ></img>
-    </p>
-<!-- ALA links -->
-    <p>
-    <button class = "button-footer"><i href="https://twitter.com/atlaslivingaust?lang=en" class="fab fa-twitter"></i>
-    </button>
-    <button class = "button-footer"><i href="https://github.com/AtlasOfLivingAustralia" class="fab fa-github"></i>
-    </button>
-    </p>
+
+<!-- ALA Logo -->
+  <div id = "over" class = "column-footer">
+    <img src='images/ALA_Logo.png' href = "https://www.ala.org.au/" style = "max-width:auto; height:80px"></img>
   </div>
-</div>
+<!-- ALA links -->
+<!--   <div class = "column-footer">
+    <button class = "button-footer clipped">
+      <i href="https://twitter.com/atlaslivingaust?lang=en" class="fab fa-twitter fa-2x"></i>
+    </button>
+    <button class = "button-footer clipped">
+      <i href="https://github.com/AtlasOfLivingAustralia" class="fab fa-github fa-2x"></i>
+    </button>
+  </div> -->
+</div> 
 
-
-<!-- ALA links     <p class = "footer-text">The ALA is made possible by contributions from its many partners. It receives support through the Australian Government through the National Collaborative Research Infrastructure Strategy (NCRIS) and is hosted by CSIRO.</p> -->
 
