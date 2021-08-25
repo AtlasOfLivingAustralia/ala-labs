@@ -61,10 +61,10 @@ create_team_card(
 ),
 
 create_team_card(
-  person_page = "people/Chowdhury_Shawan/index.html",
-  img_src = "images/shawan.jpg",
-  name = "Shawan Chowdhury",
-  text = "Data Analyst",
+  person_page = "people/Wraith_Jenna/index.html",
+  img_src = "images/jenna.jpg",
+  name = "Jenna Wraith",
+  text = "Conservation Scientist",
   url_web = "none",
   url_twitter = "none",
   url_github = "none"
@@ -74,16 +74,6 @@ create_team_card(
 
 tags$div(class = "row", # Create a row for 3 team-member cards
          
-create_team_card(
-  person_page = "people/Wraith_Jenna/index.html",
-  img_src = "images/jenna.jpg",
-  name = "Jenna Wraith",
-  text = "Conservation Scientist",
-  url_web = "none",
-  url_twitter = "none",
-  url_github = "none"
-),
-
 create_team_card(
   person_page = "people/Kellie_Dax/index.html",
   img_src = "images/dax.jpg",
