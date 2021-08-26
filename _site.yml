@@ -1,5 +1,5 @@
 name: "labs.ala.org.au"
-title: "Labs"
+title: "Labs-home"
 description: |
   Demo projects, experiments, debugging data and so on from the [Atlas of Living Australia (ALA)](https://ala.org.au/)
 output_dir: "_site"
@@ -19,11 +19,9 @@ collections:
 navbar:
   logo:
     image: images/ALA_Logo_Stacked_REV.png
-    href: index.html
+    href: https://www.ala.org.au
   search: true
   right:
-    - text: "Home"
-      href: index.html
     - text: "About"
       href: about.html
     - text: "Posts"

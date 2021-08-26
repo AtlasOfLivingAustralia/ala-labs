@@ -112,7 +112,7 @@ d-article div.sourceCode {
     margin-bottom: 2em;
     /* liner gradient tints the image darker for readability*/
     background-image: linear-gradient( rgba(0,0,0,.3), rgba(0,0,0,.3) ), url(images/galah_image.jfif); 
-    height: 300px;
+    height: 150px;
     background-size: cover;
     background-color: #141c25f2;
     background-position: 50%;
@@ -150,7 +150,31 @@ d-article div.sourceCode {
   font-weight: bold;
 }
 
+.ALA-top {
+  position: relative;
+  text-align: center;
+  font-size: 100px;
+  color: #ffffff;
+  padding-right: 120px;
+  margin-bottom: 2.5rem;
+  font-weight: bold;
+}
 
+.ALA-bottom {
+  position: relative;
+  text-align: center;
+  font-size: 100px;
+  color: #cfcfcf;
+  padding-left: 122px;
+  font-weight: bold;
+}
+
+.ALA-byline {
+  font-size: 20px;
+  text-align: center;
+  color: #ffffff;
+  padding-top: 100px; 
+}
 
 /*----------------------------------------------*/
 
