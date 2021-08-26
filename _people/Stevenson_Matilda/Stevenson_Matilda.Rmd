@@ -1,6 +1,6 @@
 ---
 title: "Matilda Stevenson"
-description: |
+description: ""
 date: "`r Sys.Date()`"
 output: 
   distill::distill_article:
