@@ -53,7 +53,7 @@ library(galah)
 (If running this code yourself, you need to first set an email associated with your data download request, substituting your email with `myemail@email.com`)
 
 ```{r, eval = FALSE}
-ala_config(email = "myemail@email.com")
+galah_config(email = "myemail@email.com")
 ```
 
 
