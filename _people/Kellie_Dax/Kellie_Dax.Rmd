@@ -15,7 +15,7 @@ output:
 :::float-image
 
 ```{r out.width='200px', out.extra='style="float:right; margin-left:15px; margin-right:15px; clip-path: circle();"', echo=FALSE}
-knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/dax.jpg")
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/dax.jpg")
 ```
 
 Dax is a data analyst at the Atlas of Living Australia (ALA). He facilitates scientific rigour and transparency in the ALA, and works to make it easier for researchers to do the same.
@@ -24,4 +24,3 @@ Dax is a data analyst at the Atlas of Living Australia (ALA). He facilitates sci
 
 
 # Authored Articles
-

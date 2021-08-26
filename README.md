@@ -75,7 +75,7 @@ collections:
     categories: true
 navbar:
   logo:
-    image: images/ALA_Logo_Stacked_REV.png
+    image: images/logos/ALA_Logo_Stacked_REV.png
     href: index.html
   search: true
   right:

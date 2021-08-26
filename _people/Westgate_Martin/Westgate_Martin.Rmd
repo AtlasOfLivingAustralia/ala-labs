@@ -15,7 +15,7 @@ output:
 :::float-image
 
 ```{r out.width='200px', out.extra='style="float:right; margin-left:15px; margin-right:15px; clip-path: circle();"', echo=FALSE}
-knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/martin.jpg")
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/martin.jpg")
 ```
 
 Martin is a Science Advisor and Team Leader at the Atlas of Living Australia (ALA).
@@ -24,4 +24,3 @@ Martin is a Science Advisor and Team Leader at the Atlas of Living Australia (AL
 
 
 # Authored Articles
-

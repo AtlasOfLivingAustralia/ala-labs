@@ -1,8 +1,6 @@
 ---
-title: |
-  ALA labs
-description: |
-  This website contains demo projects, experiments, debugging data and so on from the [Atlas of Living Australia (ALA)](https://ala.org.au/). It also highlights the impact of ALA data on ecology and biodiversity research.
+title: "Welcome to ALA Labs"
+description: "This site is a resource for coding projects that use data sourced from the ALA. We hope that users will find interesting content, whether their focus is ecological modelling, data visualisation, or simply investigating the natural world through a digital lens. Enjoy!"
 output: 
   distill::distill_article:
     includes:
@@ -24,7 +22,7 @@ library(metathis)
 
 meta() %>%
   meta_social(
-    title = "ALA Labs",
+    title = "ALA LABS",
     description = "Demo projects, experiments and debugging data from the Atlas of Living Australia",
     url = "https://labs.ala.org.au",
     image = "https://labs.ala.org.au/galah_image.png",
@@ -36,11 +34,11 @@ meta() %>%
   )
 ```
 
+
 ```{r, include=FALSE}
 library(htmltools)
 source("R/functions.R")
 ```
-
 # We Value:
 
 ```{r, layout="l-screen-inset", echo = FALSE}
@@ -51,7 +49,7 @@ tags$div(class = "values-row",
 create_values_box1(
   value = "\   Openness",
   icon = "fas fa-book-open",
-  text = "Data are most useful when they are widely available and easy to use. We try to encourage the sharing of tools that make using data from the Atlas of Living Australia easier"
+  text = "Data are most useful when they are widely available and easy to use. We try to encourage the sharing of tools that make it easier to use data from the Atlas of Living Australia"
 ),
 
 create_values_box2(

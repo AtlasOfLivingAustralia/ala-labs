@@ -1,6 +1,6 @@
 ---
 title: "About us"
-description: |
+description: "The ALA Science & Decision Support Team"
 output: 
   distill::distill_article:
     css: theme.css
@@ -16,19 +16,10 @@ library(htmltools)
 source("R/functions.R")
 ```
 
-```{r, layout="l-screen-inset"}
-tags$div(class = "row",
-
-create_team_photo(
-  img_src = "images/teamphoto.jpg"
-),
-         
-create_team_about(
-  text = "We support the Atlas of Living Australia to make data easier to use by researchers, scientists and the general public."
-)
-         
-)
-```
+We are responsible for:
+- Data analysis & reporting on key projects
+- R package development & maintenance
+- Outreach & engagement with the research community
 
 ***
 
@@ -42,7 +33,7 @@ tags$div(class = "row", # Create a row for 3 team-member cards
          
 create_team_card(
   person_page = "people/Westgate_Martin/index.html",
-  img_src = "images/martin.jpg",
+  img_src = "images/people/martin.jpg",
   name = "Martin Westgate",
   text = "Team Leader",
   url_web = "martinwestgate.com",
@@ -52,7 +43,7 @@ create_team_card(
 
 create_team_card(
   person_page = "people/Stevenson_Matilda/index.html",
-  img_src = "images/matilda.jpg",
+  img_src = "images/people/matilda.jpg",
   name = "Matilda Stevenson",
   text = "Software Developer",
   url_web = "matildastevenson.com",
@@ -62,7 +53,7 @@ create_team_card(
 
 create_team_card(
   person_page = "people/Wraith_Jenna/index.html",
-  img_src = "images/jenna.jpg",
+  img_src = "images/people/jenna.jpg",
   name = "Jenna Wraith",
   text = "Conservation Scientist",
   url_web = "none",
@@ -76,7 +67,7 @@ tags$div(class = "row", # Create a row for 3 team-member cards
          
 create_team_card(
   person_page = "people/Kellie_Dax/index.html",
-  img_src = "images/dax.jpg",
+  img_src = "images/people/dax.jpg",
   name = "Dax Kellie",
   text = "Data Analyst",
   url_web = "daxkellie.com",
@@ -86,7 +77,7 @@ create_team_card(
 
 create_team_card(
   person_page = "people/Fenker_Jess/index.html",
-  img_src = "images/jess.jpg",
+  img_src = "images/people/jess.jpg",
   name = "Jessica Fenker",
   text = "R Programmer",
   url_web = "none",

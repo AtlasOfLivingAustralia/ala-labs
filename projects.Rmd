@@ -15,14 +15,14 @@ source("R/functions.R")
 
 ```{r}
 # create_proj_card(
-#   img_src = "images/galah_logo.png",
+#   img_src = "images/hex/galah_logo.png",
 #   url = "https://atlasoflivingaustralia.github.io/galah//index.html",
 #   title = "{galah}",
 #   text = "galah is an R interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It enables users to locate and download species occurrence records (observations, specimens, eDNA records, etc.), taxonomic information, or associated media such as images or sounds, and to restrict their queries to particular taxa or locations.",
 #   text2 = NULL
 # )
 # create_proj_card(
-#   img_src = "images/ALA_Logo.png",
+#   img_src = "images/logos/ALA_Logo.png",
 #   url = "https://ala.org.au",
 #   title = "Another project",
 #   text = "Look out another cool project",

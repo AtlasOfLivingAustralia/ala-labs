@@ -16,13 +16,13 @@
 
 html {
   /*-- Main font sizes --*/
-  --title-size:      55px;
+  --title-size:      40px;
   --body-size:       1.06rem;
   --code-size:       14px;
   --aside-size:      12px;
   --fig-cap-size:    13px;
   /*-- Main font colors --*/
-  --title-color:     #000000;
+  --title-color:     rgba(0, 0, 0, 0.8);
   --header-color:    rgba(0, 0, 0, 0.8);
   --body-color:      rgba(0, 0, 0, 0.8);
   --aside-color:     rgba(0, 0, 0, 0.6);
@@ -36,7 +36,7 @@ html {
 
 /*-- ARTICLE METADATA --*/
 d-byline {
-  --heading-size:    0.6rem;
+  --heading-size:    1rem;
   --heading-color:   rgba(0, 0, 0, 0.5);
   --body-size:       0.8rem;
   --body-color:      rgba(0, 0, 0, 0.8);
@@ -54,6 +54,10 @@ d-appendix {
   --heading-color:   rgba(0, 0, 0, 0.65);
   --text-size:       0.8em;
   --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+d-title {
+  padding-top: 5rem;
 }
 
 /*-- WEBSITE HEADER + FOOTER --*/
@@ -82,7 +86,9 @@ d-appendix {
 .distill-site-header .logo img {
     max-height: 50px;
     width: auto;
-    margin-bottom: -15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: -25px;
 }
 
 /*  circle image cropper  */
@@ -125,29 +131,6 @@ d-article div.sourceCode {
     padding: 230px 0;
     color: #fff;
     box-shadow: 0 0 8px rgb(0 0 0 / 30%);
-}
-
-.top-text {
-  position: relative;
-  font-size: 46px;
-  padding-bottom: 0.5em
-  text-transform: uppercase;
-  text-align: center;
-  display: block; /* Change to `display: none` for no top text */
-  color: #ffffff90;
-}
-
-.bottom-text {
-  position: relative;
-  letter-spacing: 0.065em;
-  line-height: 1em;
-  font-size: 57px;
-  text-transform: uppercase;
-  text-align: center;
-  display: block; /* Change to `display: none` for no bottom text */
-  color: #ffffff;
-  margin-bottom: 2.5rem;
-  font-weight: bold;
 }
 
 .ALA-top {
