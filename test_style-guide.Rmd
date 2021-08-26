@@ -11,13 +11,16 @@ output:
     toc_depth: 3
 ---
 
-# Introduction
 This document details the Atlas of Living Australia style guide for creating html files from R Markdown
 
 
 # Getting started
 
-## Use ALA Template 
+## Create an independent ALA R markdown file
+
+Templates
+
+## Create a website post
 
 Create a new R Markdown document by selecting **File** --> **New File** --> **R Markdown** <br>
 
@@ -56,9 +59,9 @@ In the R Studio viewer pane, click the "*Show in New Window *" button to view th
 
 ## Safe paths
 
-Using `setwd()` to set a working directory can create issues for folder paths. They often are a cause of issues when making reproducible workflows. <br>
+Using `setwd()` to set a working directory can cause issues when setting folder paths, and can easily prevent a script or workflow from being reproducible. <br>
 
-Instead, use the `here()` function from the [here package](https://here.r-lib.org/) to build the path where you read and write files. `here()` automatically creates paths relative to the top level directory.
+One alternative [suggested by Jenny Bryan](https://github.com/jennybc/here_here) is to use `here::here()` from the [here package](https://here.r-lib.org/) to build your directory paths. `here::here()` automatically creates paths relative to the top level directory.
 
 Read a full description of how to use the `here()` function to create safe paths in [Chapter 3 of What They Forgot to Teach You About R](https://rstats.wtf/safe-paths.html)
 
@@ -73,26 +76,27 @@ p <- ggplot(df, aes(x, y)) + geom_point()
 ggsave(here("plots", "foofy_scatterplot.png"))
 ```
 
-To set the project root path according to your current code file:
+You can also use `here::i_am()` to set the project root path based on your current file location:
 
 ```{r, eval = FALSE}
 here::i_am("style_guide.rmd")
 ```
 
 
-# Make understandable code
+# Writing understandable code
 
-##  Code chunk size
+## Summarise your code
 
-In writing, we use sentences and paragraphs of varying lengths to build a flowing, logical story or argument. In the same way, code chunks can be used to structure lines of code to build a flowing, logical analysis or plot. <br>
+People who read your code should be able to understand what your code does and why you made the choices you did. It is helpful to include brief summaries of what your code is meant to do, and the logic of any decision you might make after seeing a result or output (for example, if your code used a statistical model you can include your basic interpretation and why it might lead to any subsequent code). If there is something in your code output you wish to highlight, it is best to write what you think your reader should be seeing than to expect your reader to know what they should see in your output <br>
 
-Code chunks should be brief. They should also offer notes or visual output that provides context to any transformations or outputs. Users should be able to follow each transformation that is made to your data, each output that results from a transformation, and any final output. <br>
+##  Code chunks
 
-There is no single correct code chunk size - you must use your best judgement. If it seems that the result of one or several lines of code is unclear a potential reader, you may need to split the code chunks to make the results easier to follow. <br>
+We use sentences and paragraphs when writing to build a flowing, logical story or argument. In the same way, we can use code chunks to structure our script to build a flowing, logical analysis or plot. <br>
 
+Code chunks should be brief. They should be supplemented with notes, descriptions or visual output that provides context to what a given chunk of code is meant to do. Users should be able to follow each transformation that is made to your data, each output that results from a transformation, and any final output. <br>
 
-## Brief summaries
-For others to understand what your code does and why you made the choices you did, it is helpful to include brief summaries or your logic or what each line of your code does. It is also good to provide a brief interpretation of model output <br>
+There is no single correct code chunk size; you must use your best judgement. But if it seems that the result of several lines of code is unclear, you may need to split the code chunks to make the results easier to follow. <br>
+
 
 ## Style code using `styler`
 
