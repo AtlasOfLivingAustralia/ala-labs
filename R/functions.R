@@ -124,10 +124,3 @@ create_team_card <- function(person_page, img_src, name, alt, text, url_web, url
 #| add the url_name info to the about.Rmd page for each team member
 
 
-add_link_to_article <- function(title, url){
-  tags$a(
-    class = "article-link",
-    href = url,
-    title
-  )
-}
