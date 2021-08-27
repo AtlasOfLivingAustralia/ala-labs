@@ -3,8 +3,7 @@ title: "National Eucalypt Day"
 description: |
   A plot of E. salubris for National Eucalypt Day 2021
 author:
-  - name: Martin Westgate 
-    url: "`here::here('people', 'Westgate_Martin', 'index.html')`"
+  - name: Martin Westgate
 date: "March 2021"
 categories: 
   - National Eucalypt Day
@@ -16,6 +15,18 @@ output:
     toc_float: true
     toc_depth: 3
 ---
+
+```{r, include=FALSE}
+library(htmltools)
+source("R/functions.R")
+```
+
+```{css, echo = FALSE}
+d-byline {
+    display: none;
+  }
+```
+
 
 [National Eucalypt Day](https://www.eucalyptaustralia.org.au/national-eucalypt-day/national-eucalypt-day/) aims to raise awareness about Eucalypts and celebrate their influence on the lives of Australians. In honour of National Eucalypt day, we created a network plot based on occurrences data held in the Atlas of Living Australia, themed using colours from actual Eucalypts
 
