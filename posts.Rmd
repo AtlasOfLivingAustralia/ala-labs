@@ -1,10 +1,5 @@
 ---
 title: "Posts"
-description: ""
-listing:
-  posts:
-    - 2021-05_spp_richness
-    - 2021-04_magpies
-    - 2021-03_National_Eucalypt_Day
-    - test
+site: distill::distill_website
+listing: posts
 ---

@@ -34,6 +34,23 @@ meta() %>%
   )
 ```
 
+ 
+# Data Visualisation
+
+<a href="posts.html#category:Counts">Counts</a>
+
+<a href="posts.html#category:Maps">Maps</a>
+
+<a href="posts.html#category:Trees">Trees</a>
+
+# Taxonomy
+
+<a href="posts.html#category:Plantae">Plants</a>
+
+<a href="posts.html#category:Aves">Birds</a>
+
+<a href="posts.html#category:Multispecies">Multi-species</a>
+
 
 ```{r, include=FALSE}
 library(htmltools)
