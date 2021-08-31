@@ -8,6 +8,10 @@ output:
     self_contained: true
 ---
 
+```{r, include=FALSE}
+library(htmltools)
+source("R/functions.R")
+```
 
 
 # Bio
@@ -19,8 +23,29 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 ```
 
 Dax is a data analyst at the Atlas of Living Australia (ALA). He facilitates scientific rigour and transparency in the ALA, and works to make it easier for researchers to do the same.
-:::
 
+```{r, echo = FALSE}
+tags$div(class = "row", style = "display: flex;",
+         
+create_button(
+  icon = "fab fa-github fa-2x",
+  url = "https://github.com/daxkellie"
+),
+
+create_button(
+  icon = "fas fa-globe fa-2x",
+  url = "xx"
+),
+
+create_button(
+  icon = "fab fa-twitter fa-2x",
+  url = "https://twitter.com/daxkellie"
+)
+
+)
+```
+
+:::
 
 
 # Authored Articles

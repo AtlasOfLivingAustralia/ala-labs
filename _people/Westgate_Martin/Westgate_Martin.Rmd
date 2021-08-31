@@ -8,7 +8,10 @@ output:
     self_contained: true
 ---
 
-
+```{r, include=FALSE}
+library(htmltools)
+source("R/functions.R")
+```
 
 # Bio
 
@@ -18,7 +21,29 @@ output:
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/martin.jpg")
 ```
 
-Martin is a Science Advisor and Team Leader at the Atlas of Living Australia (ALA).
+Martin leads the Science & Decision Support Team at the ALA, and is an honorary lecturer at the Fenner School of Environment & Society, ANU. His work focuses on conceptual, computational and statistical tools to better understand patterns in nature.
+
+```{r, echo = FALSE}
+tags$div(class = "row", style = "display: flex;",
+         
+create_button(
+  icon = "fab fa-github fa-2x",
+  url = "https://github.com/mjwestgate"
+),
+
+create_button(
+  icon = "fas fa-globe fa-2x",
+  url = "https://martinwestgate.com/"
+),
+
+create_button(
+  icon = "fab fa-twitter fa-2x",
+  url = "https://twitter.com/westgatecology"
+)
+
+)
+```
+
 :::
 
 

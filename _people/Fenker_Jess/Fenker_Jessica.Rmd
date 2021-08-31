@@ -8,7 +8,10 @@ output:
     self_contained: true
 ---
 
-
+```{r, include=FALSE}
+library(htmltools)
+source("R/functions.R")
+```
 
 # Bio
 
@@ -19,6 +22,28 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 ```
 
 Jess is an R programmer at the Atlas of Living Australia (ALA) and EcoCommons.
+
+```{r, echo = FALSE}
+tags$div(class = "row", style = "display: flex;",
+         
+create_button(
+  icon = "fab fa-github fa-2x",
+  url = "https://github.com/seankross/postcards"
+),
+
+create_button(
+  icon = "fas fa-globe fa-2x",
+  url = "https://jessicafenker.wordpress.com/"
+),
+
+create_button(
+  icon = "fab fa-twitter fa-2x",
+  url = "https://twitter.com/jehzim"
+)
+
+)
+```
+
 :::
 
 

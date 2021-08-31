@@ -16,7 +16,8 @@ library(htmltools)
 source("R/functions.R")
 ```
 
-We are responsible for:
+We are responsible for:  
+
 - Data analysis & reporting on key projects
 - R package development & maintenance
 - Outreach & engagement with the research community
@@ -29,36 +30,27 @@ We are responsible for:
 
 *Click on photos to view their articles and contributions*
 ```{r}
-tags$div(class = "row", # Create a row for 3 team-member cards
+tags$div(class = "row", style = "display: flex; flex-direction: row;",# Create a row for 3 team-member cards
          
 create_team_card(
   person_page = "people/Westgate_Martin/index.html",
   img_src = "images/people/martin.jpg",
   name = "Martin Westgate",
-  text = "Team Leader",
-  url_web = "martinwestgate.com",
-  url_twitter = "none",
-  url_github = "none"
+  text = "Team Leader"
 ),
 
 create_team_card(
   person_page = "people/Stevenson_Matilda/index.html",
   img_src = "images/people/matilda.jpg",
   name = "Matilda Stevenson",
-  text = "Software Developer",
-  url_web = "matildastevenson.com",
-  url_twitter = "none",
-  url_github = "none"
+  text = "Software Developer"
 ),
 
 create_team_card(
   person_page = "people/Wraith_Jenna/index.html",
   img_src = "images/people/jenna.jpg",
   name = "Jenna Wraith",
-  text = "Conservation Scientist",
-  url_web = "none",
-  url_twitter = "none",
-  url_github = "none"
+  text = "Conservation Scientist"
 )
 
 )
@@ -69,20 +61,14 @@ create_team_card(
   person_page = "people/Kellie_Dax/index.html",
   img_src = "images/people/dax.jpg",
   name = "Dax Kellie",
-  text = "Data Analyst",
-  url_web = "daxkellie.com",
-  url_twitter = "https://twitter.com/daxkellie?lang=en",
-  url_github = "none"
+  text = "Data Analyst"
 ),
 
 create_team_card(
   person_page = "people/Fenker_Jess/index.html",
   img_src = "images/people/jess.jpg",
   name = "Jessica Fenker",
-  text = "R Programmer",
-  url_web = "none",
-  url_twitter = "none",
-  url_github = "none"
+  text = "R Programmer"
 )
 
 )
