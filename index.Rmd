@@ -16,6 +16,11 @@ site: distill::distill_website
 # under background-image, change the "url(images/galah_image.jfif);" to a another image url
 ```
 
+```{r, include=FALSE}
+library(htmltools)
+source("R/functions.R")
+```
+
 ```{r meta-details, include=FALSE, results = 'asis'}
 # This edits meta details that display when people search for website on search engines
 library(metathis)
@@ -35,27 +40,105 @@ meta() %>%
 ```
 
  
+
+
 # Data Visualisation
 
-<a href="posts.html#category:Counts">Counts</a>
+*Click to see related posts on each topic*
 
-<a href="posts.html#category:Maps">Maps</a>
+```{r, echo = FALSE}
+tags$div(class = "category-row",
+         
+  tags$div( 
+    class = "category-column",
+    tags$a(href = "posts.html#category:Counts",
+      tags$img(
+        href = "posts.html#category:Counts",
+        src = "images/vectors/bilby.svg",
+        class = "category-image lavender"
+  )),
+  tags$p(
+    tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category:Counts", "Counts")))),
+  
+  tags$div( 
+    class = "category-column",
+    tags$a(href = "posts.html#category:Maps",
+      tags$img(
+        href = "posts.html#category:Maps",
+        src = "images/vectors/Australia.svg",
+        class = "category-image honey"
+  )),
+  tags$p(
+    tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category:Maps", "Maps")))),
+  
+  tags$div( 
+    class = "category-column",
+    tags$a(href = "posts.html#category:Trees",
+      tags$img(
+        href = "posts.html#category:Trees",
+        src = "images/vectors/tree.svg",
+        class = "category-image seafoam"
+  )),
+  tags$p(
+    tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category:Trees", "Trees"))))
+  
+  )
+```
 
-<a href="posts.html#category:Trees">Trees</a>
+
+
 
 # Taxonomy
 
-<a href="posts.html#category:Plantae">Plants</a>
+*Click to see related posts on each topic*
 
-<a href="posts.html#category:Aves">Birds</a>
-
-<a href="posts.html#category:Multispecies">Multi-species</a>
-
-
-```{r, include=FALSE}
-library(htmltools)
-source("R/functions.R")
+```{r, echo = FALSE}
+tags$div(class = "category-row",
+         
+  tags$div( 
+    class = "category-column",
+    tags$a(href = "posts.html#category:Plants",
+      tags$img(
+        href = "posts.html#category:Plants",
+        src = "images/vectors/eucalypt.svg",
+        class = "category-image sage"
+  )),
+  tags$p(
+    tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category:Plants", "Plants")))),
+  
+  tags$div( 
+    class = "category-column",
+    tags$a(href = "posts.html#category:Birds",
+      tags$img(
+        href = "posts.html#category:Birds",
+        src = "images/vectors/falco.svg",
+        class = "category-image ocean"
+  )),
+  tags$p(
+    tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category:Birds", "Birds")))),
+  
+  tags$div( 
+    class = "category-column",
+    tags$a(href = "posts.html#category:Multispecies",
+      tags$img(
+        href = "posts.html#category:Multispecies",
+        src = "images/vectors/platypus.svg",
+        class = "category-image plum"
+  )),
+  tags$p(
+    tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category:Multispecies", "Multispecies"))))
+  
+  )
 ```
+
+
+
 # We Value:
 
 ```{r, layout="l-screen-inset", echo = FALSE}

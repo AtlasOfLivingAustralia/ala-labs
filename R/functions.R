@@ -91,36 +91,32 @@ create_team_card <- function(person_page, img_src, name, alt, text, url_web, url
         a(href = person_page, 
           h3(class = "name", name)),
         p(class = "job-title", text)
-      ),
-      p(
-        tags$button(
-          class = "button",
-          tags$i(
-            href = url_web, # personal website
-            class = "fas fa-globe"
-          )
-        ),
-        tags$button(
-          class = "button",
-          tags$i(
-            href = url_twitter, # twitter
-            class = "fab fa-twitter"
-          )
-        ),
-        tags$button(
-          class = "button",
-          tags$i(
-            href = url_github, # github
-            class = "fab fa-github"
-          )
-        ) 
-      )
-    )
-  )
+      )))
 }
 # To add more icons/links:
 #| paste another tags$button section in the order you would like it to appear
 #| add the url_name to the function heading
 #| add the url_name info to the about.Rmd page for each team member
 
+create_button <- function(icon, url) {
+  tags$div( 
+    class = "button-column",
+    tags$button(
+      class = "button-2",
+      tags$i(
+        href = url,
+        class = icon
+    )))
+}
 
+create_category_button <- function(silhouette_image, url, color) {
+  tags$div( 
+    class = "category-column",
+    tags$button(
+      class = "category-button",
+      tags$i(
+        href = url,
+        class = icon,
+        style = paste0("color: ", color)
+      )))
+}

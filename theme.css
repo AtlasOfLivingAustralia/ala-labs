@@ -217,6 +217,92 @@ d-article div.sourceCode {
 }
 
 
+/*-- Index buttons --*/
+
+/* Three columns side by side */
+.category-column {
+  float: left;
+  width: 25%;
+  margin-bottom: 16px;
+  padding: 0 12px;
+  flex-direction: column
+}
+
+
+/* Display the columns below each other instead of side by side on small screens */
+
+@media screen and (max-width: 952px) {
+  .category-column {
+    width: 100%;
+    display: block;
+  }
+}
+
+/* Add some shadows to create a card effect */
+
+
+.category-image {
+  display: block;
+  margin: auto;
+  width: auto;
+  width:100%;
+  height: 120px;
+  text-align: center;
+  backface-visibility: hidden;
+  transform: perspective(1px) translate3d(0, 15px, 0);
+  transition: all .1ms;
+}
+
+.lavender {
+  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
+}
+
+.lavender:hover {
+  filter: invert(62%) sepia(7%) saturate(1072%) hue-rotate(227deg) brightness(96%) contrast(89%);
+}
+
+.honey {
+  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
+}
+
+.honey:hover {
+  filter: invert(95%) sepia(43%) saturate(3246%) hue-rotate(313deg) brightness(100%) contrast(102%);
+}
+
+.seafoam {
+  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
+}
+
+.seafoam:hover {
+  filter: invert(80%) sepia(17%) saturate(1005%) hue-rotate(127deg) brightness(96%) contrast(89%);
+}
+
+.sage {
+  filter: invert(74%) sepia(50%) saturate(5112%) hue-rotate(324deg) brightness(92%) contrast(91%);
+}
+
+.sage:hover {
+  filter: invert(94%) sepia(12%) saturate(881%) hue-rotate(28deg) brightness(88%) contrast(81%);
+}
+
+.ocean {
+  filter: invert(74%) sepia(50%) saturate(5112%) hue-rotate(324deg) brightness(92%) contrast(91%);
+}
+
+.ocean:hover {
+  filter: invert(17%) sepia(24%) saturate(5973%) hue-rotate(191deg) brightness(93%) contrast(104%);
+}
+
+.plum {
+  filter: invert(74%) sepia(50%) saturate(5112%) hue-rotate(324deg) brightness(92%) contrast(91%);
+}
+
+.plum:hover {
+  filter: invert(14%) sepia(32%) saturate(3882%) hue-rotate(317deg) brightness(92%) contrast(93%);
+}
+
+
+
 /*----------------------------------------------*/
 
 
@@ -335,9 +421,11 @@ html:focus-within {
 /* Three columns side by side */
 .column {
   float: left;
-  width: 26%;
+  width: 30%;
   margin-bottom: 16px;
   padding: 0 12px;
+  flex-direction: column
+  display: block;
 }
 
 
@@ -504,7 +592,7 @@ html:focus-within {
   }
 }
 
-/* ----------- PROJECTS PAGE -----------*/
+/* ----------- Posts -----------*/
 
 .author-card {
     color: black;
@@ -542,4 +630,28 @@ html:focus-within {
     display: block;
     width: 300px;
   }
+}
+
+/* button */
+.button-column {
+  float: left;
+  margin-bottom: 16px;
+  padding: 0 12px;
+}
+
+.button-2 {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 10px;
+  color: white;
+  background-color: #B8573E;
+  text-align: center;
+  cursor: pointer;
+  clip-path: circle();
+
+}
+
+.button-2:hover {
+  background-color: #E06E53;
 }
