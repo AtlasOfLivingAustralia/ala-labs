@@ -594,6 +594,10 @@ html:focus-within {
 
 /* ----------- Posts -----------*/
 
+.sidebar-iframe {
+  border: 0px;
+}
+
 .author-card {
     color: black;
     background-color: white;
