@@ -3,9 +3,3 @@ title: "Posts"
 site: distill::distill_website
 listing: posts
 ---
-
-```{r, echo=FALSE, results="hide"}
-# attempt to rebuild taxonomic navigation when site is built
-# not operational at present
-# source("./R/plotly_navigation.R")
-```

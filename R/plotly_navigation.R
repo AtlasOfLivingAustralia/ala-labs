@@ -113,5 +113,9 @@ plotly_image <- as_widget(onRender(
 "))
 
 # export html to a useable location
+dir_path <- here("SDS_website", "_site", "images", "plotly")
+if(!dir.exists(dir_path)){
+  dir.create(dir_path)
+}
 saveWidget(plotly_image, 
-  here("SDS_website", "images", "plotly", "taxonomy_navigation.html"))
+  here("SDS_website", "_site", "images", "plotly", "taxonomy_navigation.html"))
