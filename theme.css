@@ -510,10 +510,8 @@ d-article div.sourceCode {
 .author-card {
     color: black;
     background-color: white;
-    border-style: solid;
-    border-radius: 10px;
-    border-color: #B8573E;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(184, 87, 62, 0.1) 0px 0px 8px;
+    /*box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(184, 87, 62) 0px 0px 0px 1px inset;*/
     transition: 0.3s;
     text-decoration: none;
     display: block;
@@ -534,7 +532,7 @@ d-article div.sourceCode {
     background-color: white;
     border-style: solid;
     border-radius: 1px;
-    border-color: #B8573E;
+    border-color: #E06E53;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     border-radius: 10px; 
@@ -548,6 +546,7 @@ d-article div.sourceCode {
 /* button */
 .button-column {
   float: left;
+  margin-top: 16px;
   margin-bottom: 16px;
   padding: 0 12px;
 }

@@ -1,13 +1,14 @@
 ---
 title: "National Eucalypt Day"
 description: |
-  A plot of E. salubris for National Eucalypt Day 2021
+  [National Eucalypt Day](https://www.eucalyptaustralia.org.au/national-eucalypt-day/national-eucalypt-day/) aims to raise awareness about Eucalypts and celebrate their influence on the lives of Australians. In honour of National Eucalypt day, we created a network plot based on occurrences data held in the Atlas of Living Australia, themed using colours from actual Eucalypts
 author:
   - name: Martin Westgate
 date: "March 2021"
 categories: 
-  - National Eucalypt Day
-  - Data Visualisation
+  - Plantae
+  - Counts
+  - Maps
 output: 
   distill::distill_article:
     highlight: tango
@@ -16,11 +17,14 @@ output:
     toc_depth: 3
 ---
 
+<!-- Complete title, description, author and date for website metadata -->
+
 ```{r, include=FALSE}
 library(htmltools)
-source("R/functions.R")
+date.func <- format(Sys.time(), '%d %B, %Y')
 ```
 
+<!-- remove distill metadata section -->
 ```{css, echo = FALSE}
 d-byline {
     display: none;
@@ -28,25 +32,26 @@ d-byline {
 ```
 
 
-[National Eucalypt Day](https://www.eucalyptaustralia.org.au/national-eucalypt-day/national-eucalypt-day/) aims to raise awareness about Eucalypts and celebrate their influence on the lives of Australians. In honour of National Eucalypt day, we created a network plot based on occurrences data held in the Atlas of Living Australia, themed using colours from actual Eucalypts
+<!-- Author card -->
 
-<aside>
-```{r author image, echo = FALSE}
-library(here)
-image_path <- here("images", "martin.jpg")
-htmltools::withTags(
-# Save your own picture as "picture.jpg" to local directory
-      img(src = knitr::image_uri(image_path),
-          style = 'height:120px;clip-path: circle();'))
+:::author-card
+:::float-image
+
+```{r out.width='120px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/martin.jpg")
 ```
-</aside>
 
+:::author-card-text
+<h4 style = "margin-bottom:5px">Author:</h4>
+[Martin Westgate](people/Westgate_Martin/index.html)
 
-See the the [original R script](https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2021-03_National_Eucalypt_Day/E_salubris_network_diagram_code.R) for this plot
+<h4 style = "margin-bottom:5px">Date:</h4>
+March 2021
+:::
 
+:::
+:::
 
-
-------------------------------------------------------------------------------
 
 # Creating a network plot
 
@@ -188,3 +193,4 @@ ggsave("plot_image.pdf", p)
 ```
 
 
+See the the [original R script](https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2021-03_National_Eucalypt_Day/E_salubris_network_diagram_code.R)

@@ -1,7 +1,7 @@
 ---
 title: "Test"
 description: |
-  Test article
+  A little brief summary
 author:
   - name: Dax Kellie
 date: "March 2021"
@@ -35,25 +35,22 @@ d-byline {
 :::author-card
 :::float-image
 
-```{r out.width='110px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
+```{r out.width='120px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/dax.jpg")
 ```
 
 :::author-card-text
-**Author:** [Dax Kellie](people/Kellie_Dax/index.html)
+<h4 style = "margin-bottom:5px">Author:</h4>
+[Dax Kellie](people/Kellie_Dax/index.html)
 
-**Date:** `r date.func`
+<h4 style = "margin-bottom:5px">Date:</h4>
+`r date.func`
 :::
 
 :::
 :::
 
 
-#### Summary
-
-A little brief summary. Link to original R script in science repo
-
-----------------------------------------------------------------------------
 
 # Code
 
