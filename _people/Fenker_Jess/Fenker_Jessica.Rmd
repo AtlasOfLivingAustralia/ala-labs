@@ -10,7 +10,8 @@ output:
 
 ```{r, include=FALSE}
 library(htmltools)
-source("R/functions.R")
+library(here)
+source(here("R", "functions.R"))
 ```
 
 # Bio
@@ -45,7 +46,3 @@ create_button(
 ```
 
 :::
-
-
-
-# Authored Articles

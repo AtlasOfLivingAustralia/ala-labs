@@ -8,6 +8,11 @@ output:
     self_contained: true
 ---
 
+```{r, include=FALSE}
+library(htmltools)
+library(here)
+source(here("R", "functions.R"))
+```
 
 
 # Bio
@@ -21,6 +26,3 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 Jenna is a Conservation Scientist at the Atlas of Living Australia (ALA) and EcoCommons.
 :::
 
-
-
-# Authored Articles

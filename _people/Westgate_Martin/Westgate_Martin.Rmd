@@ -7,22 +7,17 @@ output:
     highlight: pygments
     self_contained: true
 ---
-
 ```{r, include=FALSE}
 library(htmltools)
-source("R/functions.R")
+library(here)
+source(here("R", "functions.R"))
 ```
-
 # Bio
-
 :::float-image
-
 ```{r out.width='200px', out.extra='style="float:right; margin-left:15px; margin-right:15px; clip-path: circle();"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/martin.jpg")
 ```
-
 Martin leads the Science & Decision Support Team at the ALA, and is an honorary lecturer at the Fenner School of Environment & Society, ANU. His work focuses on conceptual, computational and statistical tools to better understand patterns in nature.
-
 ```{r, echo = FALSE}
 tags$div(class = "row", style = "display: flex;",
          
@@ -30,22 +25,19 @@ create_button(
   icon = "fab fa-github fa-2x",
   url = "https://github.com/mjwestgate"
 ),
-
 create_button(
   icon = "fas fa-globe fa-2x",
   url = "https://martinwestgate.com/"
 ),
-
 create_button(
   icon = "fab fa-twitter fa-2x",
   url = "https://twitter.com/westgatecology"
 )
-
 )
 ```
-
 :::
+<h2>Posts</h2>
 
-
-
-# Authored Articles
+<a href='/Users/wes186/Documents/Work/Development/AtlasOfLivingAustralia/website_SDS/SDS_website/_site/posts/2021-08_taxonomic_trees/index.html'>Plotting taxonomic trees</a><br><em>As of version 1.3.1 of `galah`, it is now possible to download taxonomic data  using a 'tree' format from the `data.tree` package. Here I'll demonstrate some ideas for plotting these trees using circular diagrams.</em><br><br>
+<a href='/Users/wes186/Documents/Work/Development/AtlasOfLivingAustralia/website_SDS/SDS_website/_site/posts/2021-05_spp_richness/index.html'>Map of estimated species richness across Australia</a><br><em>NA</em><br><br>
+<a href='/Users/wes186/Documents/Work/Development/AtlasOfLivingAustralia/website_SDS/SDS_website/_site/posts/2021-03_National_Eucalypt_Day/index.html'>National Eucalypt Day</a><br><em>A plot of E. salubris for National Eucalypt Day 2021</em><br><br>

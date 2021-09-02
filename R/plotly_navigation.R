@@ -53,7 +53,7 @@ point_data <- merge(
   by.x = "label",
   by.y = "name")
 point_data$link <- paste0(
-  here("SDS_website", "_site", "posts.html#category:"), # this will need work later
+  here("_site", "posts.html#category:"), # this will need work later
   point_data$label)
 
 # edges
@@ -113,9 +113,9 @@ plotly_image <- as_widget(onRender(
 "))
 
 # export html to a useable location
-dir_path <- here("SDS_website", "_site", "images", "plotly")
+dir_path <- here("_site", "images", "plotly")
 if(!dir.exists(dir_path)){
   dir.create(dir_path)
 }
 saveWidget(plotly_image, 
-  here("SDS_website", "_site", "images", "plotly", "taxonomy_navigation.html"))
+  here("_site", "images", "plotly", "taxonomy_navigation.html"))
