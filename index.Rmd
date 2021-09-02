@@ -54,8 +54,8 @@ tags$div(class = "category-row",
     tags$a(href = "posts.html#category:Counts",
       tags$img(
         href = "posts.html#category:Counts",
-        src = "images/vectors/bilby.svg",
-        class = "category-image lavender"
+        src = "images/vectors/barplot.svg",
+        class = "category-image plum"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
@@ -67,7 +67,7 @@ tags$div(class = "category-row",
       tags$img(
         href = "posts.html#category:Maps",
         src = "images/vectors/Australia.svg",
-        class = "category-image honey"
+        class = "category-image plum"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
@@ -79,7 +79,7 @@ tags$div(class = "category-row",
       tags$img(
         href = "posts.html#category:Trees",
         src = "images/vectors/tree.svg",
-        class = "category-image seafoam"
+        class = "category-image plum"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
@@ -116,7 +116,8 @@ tags$div(class = "category-row",
       tags$img(
         href = "posts.html#category:Birds",
         src = "images/vectors/falco.svg",
-        class = "category-image ocean"
+        class = "category-image sage",
+        style = "height: 120px; width: auto;"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
@@ -128,7 +129,7 @@ tags$div(class = "category-row",
       tags$img(
         href = "posts.html#category:Multispecies",
         src = "images/vectors/platypus.svg",
-        class = "category-image plum"
+        class = "category-image sage"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
@@ -149,13 +150,13 @@ tags$div(class = "values-row",
 create_values_box1(
   value = "\   Openness",
   icon = "fas fa-book-open",
-  text = "Data are most useful when they are widely available and easy to use. We try to encourage the sharing of tools that make it easier to use data from the Atlas of Living Australia"
+  text = "Data are most useful when they are widely available and easy to use. We try to encourage the sharing of tools that make data from the Atlas of Living Australia more open and useful for everyone"
 ),
 
 create_values_box2(
   value = "\   Scientific Transparency",
   icon = "fas fa-atom",
-  text = "Transparency is necessary to reproducible science. We encourage that decisions, methods and deviations in our workflow are clear and transparent from the planning phase, to the retrieval and analysis of data, to the final scientific article"
+  text = "Transparency is necessary for reproducible science. We encourage that decisions, methods and deviations in our workflow are clear and transparent from the planning phase, to the retrieval and analysis of data, to the final output"
 ),
 
 create_values_box3(

@@ -23,6 +23,23 @@ source(here("R", "functions.R"))
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/jenna.jpg")
 ```
 
-Jenna is a Conservation Scientist at the Atlas of Living Australia (ALA) and EcoCommons.
+Jenna is a conservation scientist with a PhD in Plant Ecology. She is currently the business and scientific analyst for EcoCommons Australia. Her role is to bring cutting-edge and best practice science and data to the EcoCommons platform. Jenna is a strong advocate for diversity and inclusion in STEMM fields.
+
+```{r, echo = FALSE}
+tags$div(class = "row", style = "display: flex;",
+
+create_button(
+  icon = "fas fa-globe fa-2x",
+  url = "https://www.researchgate.net/profile/Jenna-Wraith-2"
+),
+
+create_button(
+  icon = "fab fa-twitter fa-2x",
+  url = "https://twitter.com/jennalee_wraith"
+)
+
+)
+```
+
 :::
 

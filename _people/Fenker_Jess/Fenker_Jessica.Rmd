@@ -22,19 +22,19 @@ source(here("R", "functions.R"))
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/jess.jpg")
 ```
 
-Jess is an R programmer at the Atlas of Living Australia (ALA) and EcoCommons.
+Jess is an evolutionary scientist based at Atlas of Living Australia, with a postdoc on species delimitation methods and PhD on diversification at micro/macro scales. She is also affiliated with the Division of Ecology and Evolution, ANU. Jess brings her experience in R to improve the readability, data standardisation and performance of EcoCommons’ platform ecological modelling algorithms. Jess is a strong advocate for diversity in STEMM.
 
 ```{r, echo = FALSE}
 tags$div(class = "row", style = "display: flex;",
          
 create_button(
   icon = "fab fa-github fa-2x",
-  url = "https://github.com/seankross/postcards"
+  url = "https://github.com/jehfenker"
 ),
 
 create_button(
   icon = "fas fa-globe fa-2x",
-  url = "https://jessicafenker.wordpress.com/"
+  url = "https://jessicafenker.com/"
 ),
 
 create_button(

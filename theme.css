@@ -217,7 +217,7 @@ d-article div.sourceCode {
 }
 
 
-/*-- Index buttons --*/
+/*-- Index categories buttons --*/
 
 /* Three columns side by side */
 .category-column {
@@ -245,8 +245,8 @@ d-article div.sourceCode {
   display: block;
   margin: auto;
   width: auto;
-  width:100%;
   height: 120px;
+  width:100%;
   text-align: center;
   backface-visibility: hidden;
   transform: perspective(1px) translate3d(0, 15px, 0);
@@ -278,7 +278,7 @@ d-article div.sourceCode {
 }
 
 .sage {
-  filter: invert(74%) sepia(50%) saturate(5112%) hue-rotate(324deg) brightness(92%) contrast(91%);
+  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
 }
 
 .sage:hover {
@@ -286,7 +286,7 @@ d-article div.sourceCode {
 }
 
 .ocean {
-  filter: invert(74%) sepia(50%) saturate(5112%) hue-rotate(324deg) brightness(92%) contrast(91%);
+  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
 }
 
 .ocean:hover {
@@ -294,7 +294,7 @@ d-article div.sourceCode {
 }
 
 .plum {
-  filter: invert(74%) sepia(50%) saturate(5112%) hue-rotate(324deg) brightness(92%) contrast(91%);
+  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
 }
 
 .plum:hover {
@@ -323,97 +323,6 @@ d-article div.sourceCode {
   padding-left: 15px;
 }
 
-
-.team-img {
-  padding-top: 10px;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-bottom: 5px;
-  border-radius: 50px;
-}
-
-/* Display the columns below each other instead of side by side on small screens */
-
-@media screen and (max-width: 952px) {
-  .main-column {
-    flex: 0 0 0;
-    max-width: 100%;
-    width: 100%;
-    display: block;
-  }
-}
-
-
-/*-- Main team about text --*/
-
-.main-about-body {
-  padding-top: 100px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content:center;
-}
-
-.about-title {
-  color: #222322;
-  line-height: 1;
-  font-size: 36px!important;
-}
-
-.about-text {
-  color: #222322;
-  line-height: 1;
-  font-size: 28px!important;
-
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/*-- About page arrow scroll  */
-
-html:focus-within {
-  scroll-behavior: smooth;
-  will-change: scroll-position;
- }
-
-.arrow {
-  padding-top: 25px;
-  text-align: center;
-}
-
-.arrow-link:link {
-  color: #222322;
-  border-bottom: 0px!important;
-}
-
-.arrow-link:hover {
-  color: #E06E53;
-}
-
-.bounce {
-  -o-transform: bounce 2s infinite;
-  -ms-transform: bounce 2s infinite;
-  -moz-animation: bounce 2s infinite;
-  -webkit-animation: bounce 2s infinite;
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-15px);
-  }
-  60% {
-    transform: translateY(-10px);
-  }
-}
 
 
 /*-- Team info cards --*/

@@ -22,7 +22,6 @@ We are responsible for:
 - R package development & maintenance
 - Outreach & engagement with the research community
 
-***
 
 <div id = "team-photo-grid", style = "height:1px"></div>
 
