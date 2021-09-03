@@ -100,28 +100,28 @@ tags$div(class = "category-row",
          
   tags$div( 
     class = "category-column",
-    tags$a(href = "posts.html#category:Plants",
+    tags$a(href = "posts.html#category:Plantae",
       tags$img(
-        href = "posts.html#category:Plants",
+        href = "posts.html#category:Plantae",
         src = "images/vectors/eucalypt.svg",
         class = "category-image sage"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
-      tags$a(href = "posts.html#category:Plants", "Plants")))),
+      tags$a(href = "posts.html#category:Plantae", "Plants")))),
   
   tags$div( 
     class = "category-column",
-    tags$a(href = "posts.html#category:Birds",
+    tags$a(href = "posts.html#category:Aves",
       tags$img(
-        href = "posts.html#category:Birds",
+        href = "posts.html#category:Aves",
         src = "images/vectors/falco.svg",
         class = "category-image sage",
         style = "height: 120px; width: auto;"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
-      tags$a(href = "posts.html#category:Birds", "Birds")))),
+      tags$a(href = "posts.html#category:Aves", "Birds")))),
   
   tags$div( 
     class = "category-column",
