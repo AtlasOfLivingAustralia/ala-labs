@@ -42,9 +42,11 @@ meta() %>%
  
 
 
-# Data Visualisation
+<center> <h1>Data Visualisation</h1> </center>
 
-*Click to see related posts on each topic*
+<center> <span style = "font-style: italic">Click to see related posts on each topic</span> </center>
+
+:::l-page
 
 ```{r, echo = FALSE}
 tags$div(class = "category-row",
@@ -89,11 +91,13 @@ tags$div(class = "category-row",
 ```
 
 
+:::
 
+<center> <h1>Taxonomy</h1> </center>
 
-# Taxonomy
+<center> <span style = "font-style: italic">Click to see related posts on each topic</span> </center>
 
-*Click to see related posts on each topic*
+:::l-page
 
 ```{r, echo = FALSE}
 tags$div(class = "category-row",
@@ -129,7 +133,8 @@ tags$div(class = "category-row",
       tags$img(
         href = "posts.html#category:Multispecies",
         src = "images/vectors/platypus.svg",
-        class = "category-image sage"
+        class = "category-image sage",
+        style = "width: 80%;"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
@@ -138,9 +143,9 @@ tags$div(class = "category-row",
   )
 ```
 
+:::
 
-
-# We Value:
+<center> <h1>We Value</h1> </center>
 
 ```{r, layout="l-screen-inset", echo = FALSE}
 # find icons at https://fontawesome.com/v5.15/icons?d=gallery&p=2

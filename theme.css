@@ -147,7 +147,7 @@ d-article div.sourceCode {
   position: relative;
   text-align: center;
   font-size: 100px;
-  color: #cfcfcf;
+  color: #E06E53;
   padding-left: 122px;
   font-weight: bold;
 }
@@ -222,7 +222,7 @@ d-article div.sourceCode {
 /* Three columns side by side */
 .category-column {
   float: left;
-  width: 25%;
+  width: 30%;
   margin-bottom: 16px;
   padding: 0 12px;
   flex-direction: column
@@ -328,12 +328,12 @@ d-article div.sourceCode {
 /*-- Team info cards --*/
 
 /* Three columns side by side */
-.column {
+.card-column {
   float: left;
-  width: 30%;
+  width: 28.8%;
   margin-bottom: 16px;
   padding: 0 12px;
-  flex-direction: column
+  flex-direction: row;
   display: block;
 }
 
@@ -341,7 +341,7 @@ d-article div.sourceCode {
 /* Display the columns below each other instead of side by side on small screens */
 
 @media screen and (max-width: 952px) {
-  .column {
+  .card-column {
     width: 100%;
     display: block;
   }
@@ -375,8 +375,8 @@ d-article div.sourceCode {
 
 .team-image-text {
   color: #E06E53;
-  font-size: 16px;
-  padding: 16px 32px;
+  font-size: 14px;
+  padding: 16px 28px;
 }
 
 .team-image:hover {

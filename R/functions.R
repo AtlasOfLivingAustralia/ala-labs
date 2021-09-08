@@ -81,7 +81,7 @@ create_proj_card = function(img_src, url, title, text, text2){
 
 create_team_card <- function(person_page, img_src, name, alt, text, url_web, url_twitter, url_github) {
   tags$div(
-    class = "column",
+    class = "card-column",
     tags$div(
       class = "team-card",
       a(href = person_page,

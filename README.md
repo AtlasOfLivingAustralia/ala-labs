@@ -62,38 +62,26 @@ Add pages to the website by adding them to the site navigation in `_site.yml` un
 
 The `_site.yml` controls the main website information and site navigation.
 
-Elements can be edited to alter navigation paths. For example:
+Elements can be edited to alter navigation paths. For example, the `navbar` for the ALA Labs website is:
 ```{r, eval = FALSE}
 ---
-name: "labs.ala.org.au"
-title: "Labs"
-output_dir: "_site"
-theme: theme.css
-favicon: images/favicon.ico
-collections:
-  posts:
-    categories: true
 navbar:
   logo:
     image: images/logos/ALA_Logo_Stacked_REV.png
-    href: index.html
-  search: true
+    href: https://www.ala.org.au
   right:
-    - text: "Home"
-      href: index.html
     - text: "About"
       href: about.html
-    - text: "Articles"
-      menu: 
-        - text: "More Content"
-          href: more.html
-    - text: "Blog"
-      href: blog.html
-    - text: "Projects"
-      href: projects.html
+    - text: "Posts"
+      href: posts.html
+    - text: "Resources"
+      menu:
+        - text: "galah"
+          href: galah.html
+        - text: "ALA Labs Style Guide"
+          href: test_style-guide.html
     - icon: fab fa-github
       href: https://github.com/AtlasOfLivingAustralia/science
-output: distill::distill_article
 ---
 ```
 
@@ -110,15 +98,10 @@ To create a new post:
 
 1.  Create a new folder in the [comms folder within the AtlasofLivingAustralia/science Github repository](https://github.com/AtlasOfLivingAustralia/science/tree/main/comms). If your new post is based on an existing R script already saved in a comms folder, navigate to the comms folder containing your R script
 
-2.  Within the website repository, navigate to the `templates` folder
+2.  Install the [alatheme](https://github.com/AtlasOfLivingAustralia/alatheme) package
 
-3.  Copy the `posts_template.Rmd` file and paste it into your comms folder 
+3.  Follow the instructions on [alatheme](https://github.com/AtlasOfLivingAustralia/alatheme) to create a new ALA Website Post template in your working directory. Name your file the same name as your R script if your new Post is based on an existing R script
 
-4.  Rename the file to your preferred file name. If your new Post is based on an existing R script, name the file the same name as your R script
-
-5.  Fill the YAML header with correct title, description, author and categories metadata
-
-6.  Between the `<aside>` brackets, ensure the `image_path` is the correct image of the author
 
 
 ### Rendering posts
@@ -131,14 +114,14 @@ Some functions, however, require input or settings that are private (like your p
 
 Luckily, `rmarkdown::render()` preserves this information (intentionally) compared to using the **Knit** button in R Studio.
 
-A useful workflow is to create a new temporary R script that sets `ala_config()` and creates the path for `rmarkdown::render()` using `here::here()`. Running this code will render your Rmd file with `ala_config()` settings applied:
+A useful workflow is to create a new temporary R script that sets `galah_config()` and creates the path for `rmarkdown::render()` using `here::here()`. Running this code will render your Rmd file with `galah_config()` settings applied:
 
 ```{r}
 library(galah)
-ala_config(email = "youremail@email.com")
+galah_config(email = "youremail@email.com")
 
 library(here)
-path <- here("folder", "subfolder", "subfolder", "your-file.Rmd")
+path <- here("folder", "subfolder", your-file.Rmd") # path to your file
 rmarkdown::render(path)
 ```
 
@@ -173,51 +156,20 @@ Other properties are edited using custom CSS.
 
 ## Editing custom CSS
 
-Custom CSS is also found in `theme.css`.
+Additional custom CSS is found in `theme.css`. Edit or create new CSS properties for html elements to customise the ALA Labs website theme.
 
-To edit an element using custom CSS:
 
-1. **Build** the website or **Knit** the html page you wish to change and click **Open in Browser**
-
-2. Find the object, image or text you wish to change. Right click on it and select **Inspect element**. A right hand pane should appear in your browser, showing the Elements and Styles tab panes. 
-
-3. Determine which element(s) affect the appearance of an object, image or text on the website. 
-
-TO find this information first using the Elements pane. The *Elements* pane displays the html of the web page, and highlights the html container of the element you selected. Hovering over the code will also highlight elements affected by each html container. Once you identify relevant html container(s), next use the Styles pane. The *Styles* pane displays the CSS properties that are styling a selected html element or html container, and highlights the affected element. A good way to tell what a CSS property is affecting is to use the checkboxes next to each CSS property to turn style properties on and off.
-
-4. Edit the CSS style of the element(s) in `theme.css`
-
-The `class` of an html element or html container identifies the name of the CSS properties element. 
-
-Let's look at an example. In the following html code, `class = "text-container"` identifies the name of the CSS style element that affects `<div>`, a container for our text. Alternatively, `class = "text"` identifies the CSS style element that affects `<h1>`, or "heading 1", which contains "My Text".
-
-```{html, eval = FALSE}
-<div class = "text-container">
-  <h1 class = "text">My Text</h1>
-</div>
-```
-
-These classes are styled in CSS property of the same name, many of which can be found in `theme.css`. In our example, style properties in `theme.css` might look like:
-
-```{css}
-.text-container {
-display: block;
-margin-left: 40%;
-margin-right:60%;
-}
-
-.text {
-font-size: 13px;
-}
-```
-
-Edit or create new CSS properties to customise the ALA Labs website theme.
 
 ## Custom html elements using R functions
 
-`R/functions.R` contains functions that create html elements within ALA Labs website.
+`R/functions.R` contains functions that create html elements within the ALA Labs website. `R/functions.R` uses the [htmlTools](https://rstudio.github.io/htmltools/) package to write html code using R syntax. 
 
-The `R/functions.R` uses the [htmlTools](https://rstudio.github.io/htmltools/) package to write html code using R syntax. For example, the following R function and html code will both create a link of `class = "article-link"` that can be edited using CSS:
+For example, the following R function and html code will both create a link of `class = "article-link"` which can be edited using CSS:
+
+```{html, eval = FALSE}
+<!-- html -->
+<a class = "article-link" href = "https://ala.org.au/">my text</a>
+```
 
 ```{r, eval = FALSE}
 # R function
@@ -232,10 +184,6 @@ add_link_to_article <- function(title, url){
 add_link_to_article(text = "my text", url = "https://ala.org.au/")
 ```
 
-```{html, eval = FALSE}
-<!-- html -->
-<a class = "article-link" href = "https://ala.org.au/">my text</a>
-```
 
 The benefits of writing R functions to create html elements are:
 
@@ -243,7 +191,7 @@ The benefits of writing R functions to create html elements are:
 
 2.  It is easier for people familiar in R to reuse and edit the content of existing html elements created by R functions 
 
-To use functions in the `R/functions.R` file on a website page or post, add the following code block somewhere below the YAML header
+To use functions in the `R/functions.R` file on a website page or post, add the following code block below the YAML header
 
 ```{r, eval = FALSE}
 ``{r, include=FALSE}

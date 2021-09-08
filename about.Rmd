@@ -16,20 +16,20 @@ library(htmltools)
 source("R/functions.R")
 ```
 
-We are responsible for:  
+
+### We are responsible for:  
 
 - Data analysis & reporting on key projects
 - R package development & maintenance
 - Outreach & engagement with the research community
 
 
-<div id = "team-photo-grid", style = "height:1px"></div>
 
 # Meet the Team
 
 *Click on photos to view their articles and contributions*
 ```{r}
-tags$div(class = "row", style = "display: flex; flex-direction: row;",# Create a row for 3 team-member cards
+tags$div(class = "row",# Create a row for 3 team-member cards
          
 create_team_card(
   person_page = "people/Westgate_Martin/index.html",
