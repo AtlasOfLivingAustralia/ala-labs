@@ -16,34 +16,38 @@ This document details the Atlas of Living Australia style guide for creating htm
 
 # Getting started
 
-## Create an independent ALA R markdown file
+## Create an ALA R Markdown file
 
-Templates
+To create new R Markdown file that follows the ALA style guide, install the [alatheme](https://github.com/AtlasOfLivingAustralia/alatheme) package. 
 
-## Create a website post
+```{r, eval = FALSE}
+devtools::install_github("AtlasOfLivingAustralia/alatheme")
+```
 
-Create a new R Markdown document by selecting **File** --> **New File** --> **R Markdown** <br>
+The {alatheme} package contains ALA templates for R Markdown files. After installing, create a new template R markdown file by selecting **File** --> **New File** --> **New R Markdown** which opens the "New R Markdown" pane
 
-In the left window menu, select **New Template**. Then select the ALA Template <br>
+In the "New R Markdown" pane, select **From Template** and choose from the list of {alatheme} templates.
 
-
-## Add your information
-
-1. In the top 3 lines, add your document title, your name and the date. Leave the remainder of the .yaml options unchanged. <br>
-
-2. Next, scroll down to the code chunk named "r upper right bio". This code chunk adds your image and links to your personal websites  
-    * Save your preferred picture as "picture.jpg" in the current directory  
-    * Add the urls you wish to link to for the correct websites & icons  
-
-<br> 
+Fill in your information where necessary in the `yaml` header and in the required code and text chunks.
 
 
-## Knit to HTML
+## Kniting to HTML safely
 
-Click the **Knit** button in the upper menu (below file tabs, above script) to create an HTML file. A preview of your knitted HTML document can be viewed in the right pane. Code must run successfully from start to finish for a file to be Knit. <br>
+In R Studio, clicking the **Knit** button in the left upper menu above your script renders your R Markdown file into an HTML file.
 
+However, if your code requires a `config` setting with personal or sensitive information, . However, packages like `galah` require users to enter an email address prior to downloading data using `galah_config(email = "your-email@email.com")`. Knitting without this information in the document will cause an error.
 
-In the R Studio viewer pane, click the "*Show in New Window *" button to view the page in your browser.
+A better workflow for rendering R Markdown files is by using a separate script combined with the `here` package. Running the following script outside of your R Markdown file will render your R Markdown file in the file's directory:
+
+```{r, eval = FALSE}
+library(galah)
+galah_config(email = "your-email@email.com")
+
+library(here)
+path <- here("folder", "subfolder", "subfolder", "your-code.Rmd")
+rmarkdown::render(path)
+```
+
 
 <br>
 
@@ -76,24 +80,18 @@ p <- ggplot(df, aes(x, y)) + geom_point()
 ggsave(here("plots", "foofy_scatterplot.png"))
 ```
 
-You can also use `here::i_am()` to set the project root path based on your current file location:
-
-```{r, eval = FALSE}
-here::i_am("style_guide.rmd")
-```
-
 
 # Writing understandable code
 
 ## Summarise your code
 
-People who read your code should be able to understand what your code does and why you made the choices you did. It is helpful to include brief summaries of what your code is meant to do, and the logic of any decision you might make after seeing a result or output (for example, if your code used a statistical model you can include your basic interpretation and why it might lead to any subsequent code). If there is something in your code output you wish to highlight, it is best to write what you think your reader should be seeing than to expect your reader to know what they should see in your output <br>
+People who read your code should be able to understand what it does and why you made the choices you did. It is helpful to include brief summaries of what your code is meant to do, and the logic of any decision you might make after seeing a result or output. For example, if your code used a statistical model, include your basic interpretation and subsequent decision process after seeing the results. <br>
 
-##  Code chunks
-
-We use sentences and paragraphs when writing to build a flowing, logical story or argument. In the same way, we can use code chunks to structure our script to build a flowing, logical analysis or plot. <br>
+Use sentences, paragraphs and code chunks to add structure to your script. Try to create a flowing, logical story of how to run an analysis or make a data visualisation. <br>
 
 Code chunks should be brief. They should be supplemented with notes, descriptions or visual output that provides context to what a given chunk of code is meant to do. Users should be able to follow each transformation that is made to your data, each output that results from a transformation, and any final output. <br>
+
+Do not expect your reader to know what they should see in your output. If there is something in your code output that you wish to highlight, it is best to tell your reader what they should see in your output and how you have interpreted it. 
 
 There is no single correct code chunk size; you must use your best judgement. But if it seems that the result of several lines of code is unclear, you may need to split the code chunks to make the results easier to follow. <br>
 
@@ -108,7 +106,8 @@ Install the `styler` package to add style buttons to your R Markdown Addins drop
 
 Alternatively, you `style_file()` or `style_text()` can be run in the console. <br>
 
-# Output style
+
+# Styling your document
 
 See the [R Markdown cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) for more information on R Markdown formatting <br>
 
@@ -140,7 +139,7 @@ mtcars %>%
   kable_styling()
 ```
 
-```{r, eval = FALSE}
+```{r}
 head(mtcars |>
   subset(select = c("cyl", "disp", "gear")), n = 5) |>
   kbl() |>
@@ -185,7 +184,7 @@ mpg %>%
 
 ## Model output
 
-Run a model and want to show output? Use the `model_parameters()` function from the [parameters package](https://easystats.github.io/parameters/) to make your output clear and organised. The `model_parameters()` function can be considered as a lightweight alternative to `broom::tidy()`: 
+Want to show more readable model output? Use the `model_parameters()` function from the [parameters package](https://easystats.github.io/parameters/) to make your output clear and organised. The `model_parameters()` function can be considered as a lightweight alternative to `broom::tidy()`: 
 
 ```{r}
 library(parameters)

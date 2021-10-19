@@ -57,7 +57,7 @@ tags$div(class = "category-row",
       tags$img(
         href = "posts.html#category:Counts",
         src = "images/vectors/barplot.svg",
-        class = "category-image plum"
+        class = "category-image honey"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
@@ -69,7 +69,7 @@ tags$div(class = "category-row",
       tags$img(
         href = "posts.html#category:Maps",
         src = "images/vectors/Australia.svg",
-        class = "category-image plum"
+        class = "category-image honey"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
@@ -81,7 +81,7 @@ tags$div(class = "category-row",
       tags$img(
         href = "posts.html#category:Trees",
         src = "images/vectors/tree.svg",
-        class = "category-image plum"
+        class = "category-image honey"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
