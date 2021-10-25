@@ -39,10 +39,10 @@ create_team_card(
 ),
 
 create_team_card(
-  person_page = "people/Stevenson_Matilda/index.html",
-  img_src = "images/people/matilda.jpg",
-  name = "Matilda Stevenson",
-  text = "Software Developer"
+  person_page = "people/Fenker_Jess/index.html",
+  img_src = "images/people/jess.jpg",
+  name = "Jessica Fenker",
+  text = "R Programmer"
 ),
 
 create_team_card(
@@ -61,14 +61,8 @@ create_team_card(
   img_src = "images/people/dax.jpg",
   name = "Dax Kellie",
   text = "Data Analyst"
-),
-
-create_team_card(
-  person_page = "people/Fenker_Jess/index.html",
-  img_src = "images/people/jess.jpg",
-  name = "Jessica Fenker",
-  text = "R Programmer"
 )
 
 )
 ```
+

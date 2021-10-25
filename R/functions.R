@@ -25,6 +25,8 @@ create_team_about = function(text){
   )
 }
 
+# Index page: Our Values boxes
+
 create_values_box1 = function(value, icon, text){
   tags$div(
     class = "col-lg-4 px-0",
@@ -61,6 +63,8 @@ create_values_box3 = function(value, icon, text){
   )
 }
 
+# Project cards - note: these are not in use
+
 create_proj_card = function(img_src, url, title, text, text2){
   tags$div(
     class = "card",
@@ -79,6 +83,8 @@ create_proj_card = function(img_src, url, title, text, text2){
   
 }
 
+# About: Team member card
+
 create_team_card <- function(person_page, img_src, name, alt, text, url_web, url_twitter, url_github) {
   tags$div(
     class = "card-column",
@@ -93,10 +99,9 @@ create_team_card <- function(person_page, img_src, name, alt, text, url_web, url
         p(class = "job-title", text)
       )))
 }
-# To add more icons/links:
-#| paste another tags$button section in the order you would like it to appear
-#| add the url_name to the function heading
-#| add the url_name info to the about.Rmd page for each team member
+
+
+# About: Personal link buttons
 
 create_button <- function(icon, url) {
   tags$div( 
@@ -119,4 +124,57 @@ create_category_button <- function(silhouette_image, url, color) {
         class = icon,
         style = paste0("color: ", color)
       )))
+}
+
+
+# Footer logos and acknowledgement of traditional land owners
+
+add_footer = function(){
+  tags$div(class = "footer-row",
+  tags$div(
+    class = "column-footer footer-logo",
+    tags$p(
+      class = "footer-text",
+      "The ALA is made possible by contributions from its partners, is supported 
+      by ", 
+      tags$a(href = "https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris", 
+             class = "footer-link",
+             "NCRIS"), 
+      ", is hosted by ",
+      tags$a(href = "https://csiro.au/",
+             class = "footer-link",
+             "CSIRO"), 
+      ", and is the Australian node of",
+      tags$a(href = "https://www.gbif.org/en/", 
+             id = "d-article",
+             class = "footer-link",
+             "GBIF"), 
+      "."),
+    tags$img(
+      src = "images/logos/NCRIS_logo.png",
+      style = "width:auto;height:90px;margin-left:0px;margin-right:2px"),
+    tags$img(
+      src = "images/logos/CSIRO_logo.png",
+      style = "width:auto;height:90px;margin-left:2px;margin-right:0px"),
+    tags$img(
+      src = "images/logos/GBIF-2015.png",
+      style = "width: auto;height:90px;margin-left:-10px;margin-right:0px"
+    )
+  ),
+  tags$div(
+    class = "column-footer footer-logo",
+    tags$p(
+      class = "footer-text",
+      tags$strong("Acknowledgement of Traditional Owners and Country")
+    ),
+    tags$p(
+      class = "footer-text-small",
+      "The Atlas of Living Australia acknowledges Australia's Traditional Owners 
+      and pays respect to the past and present Elders of the nation's Aboriginal 
+      and Torres Strait Islander communities. We honour and celebrate the 
+      spiritual, cultural and customary connections of Traditional Owners to 
+      country and the biodiversity that forms part of that country."
+    )
+  )
+  )
 }

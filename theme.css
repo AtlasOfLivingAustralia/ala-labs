@@ -64,18 +64,18 @@ d-title {
 /* These properties only apply to Distill sites and blogs  */
 
 .distill-site-header {
-  --title-size:       20px;
+  --title-size:       19px;
   --text-color:       white;
-  --text-size:        16px;
-  --hover-color:      #222322;
-  --bkgd-color:       #E06E53;
+  --text-size:        19px;
+  --hover-color:      #E06E53;
+  --bkgd-color:       rgba(34, 35, 34)
 }
 
 .distill-site-footer {
   --text-color:       black;
   --text-size:        15px;
-  --hover-color:      #222322;
-  --bkgd-color:       #EEECEA;
+  --hover-color:      #E06E53;
+  --bkgd-color:       white;
 }
 
 /*-- Additional custom styles --*/
@@ -84,11 +84,15 @@ d-title {
 /* Make Logo in navbar bigger */
 
 .distill-site-header .logo img {
-    max-height: 50px;
+    max-height: 52px;
     width: auto;
     padding-top: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 15px;
     margin-bottom: -25px;
+}
+
+.distill-site-header a, .distill-site-header .title {
+    padding: 25px 10px 10px 10px;
 }
 
 /*  circle image cropper  */
@@ -543,7 +547,7 @@ d-article div.sourceCode {
   }
 }
 
-/* button */
+/* People page buttons */
 .button-column {
   float: left;
   margin-top: 16px;
@@ -566,4 +570,99 @@ d-article div.sourceCode {
 
 .button-2:hover {
   background-color: #E06E53;
+}
+
+/*-- Footer --*/
+.clipped {
+    clip-path: circle();
+}
+
+.footer-row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.button-footer {
+  border: none;
+  outline: 0;
+  padding: 8px;
+  color: #E06E53;
+  background-color: #EEECEA;
+  position: relative;
+  left: 40%;
+  right: 60%;
+  vertical-align: baseline;
+}
+
+.button-footer:hover {
+  background-color: #E06E53;
+  color: white;
+}
+
+.column-footer {
+  float:left;
+  width: 48%;
+  max-width: 50%;
+  position: relative;
+  min-height: 1px;
+  display: flex;
+  flex-direction:column;
+  display:inline-block;
+  margin:5px;
+}
+
+
+.footer-logo {
+  text-align: center;
+  margin:5px;
+}
+
+.footer-text {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  color: #565656;
+  text-align: left;
+}
+
+.footer-text-small {
+  font-family: Roboto,sans-serif;
+  font-size: .82rem;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  color: #565656;
+  text-align: left;
+  margin-top: 10px;
+}
+
+d-article a:hover {
+  color: #E06E53;
+}
+
+#over img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+#over button {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+@media screen and (max-width: 952px) {
+  .column-footer {
+    float:left;
+    width: 100%;
+    max-width: 100%;
+    display: block;
+  }
 }

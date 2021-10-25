@@ -14,8 +14,9 @@ collections:
     categories: true
 navbar:
   logo:
-    image: images/logos/ALA_Logo_Stacked_REV.png
+    image: images/logos/ALA_Logo_Stacked_REV-RGB.png
     href: https://www.ala.org.au
+  search: true
   right:
     - text: "About"
       href: about.html

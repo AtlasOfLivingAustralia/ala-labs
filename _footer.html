@@ -1,31 +1,71 @@
 <!-- ALA Template Footer -->
 
 <style>
-.clipped {
-    clip-path: circle();
+
+/*-- Copyright --*/
+
+.copyright-container {
+  width: 50%; 
+  margin-bottom: 30px; 
+  margin-top: 30px;
+  max-width: 704px;
 }
 
-.button-footer {
-  border: none;
-  outline: 0;
-  padding: 8px;
-  color: #E06E53;
-  background-color: #EEECEA;
-  position: relative;
-  left: 40%;
-  right: 60%;
-  vertical-align: baseline;
+.copyright-row {
+ width: 100vw;
+ position: relative;
+ margin-left: -50vw;
+ height: 50px;
+ margin-bottom: -1.75vw;
+ left: 50%;
+ background-color: #B8573E;
+ background-position: bottom;
+ background-size: cover;
+ display: flex;
+
 }
 
-.button-footer:hover {
-  background-color: #E06E53;
+.copyright-column-left {
+  float: left;
+  display: inline-block;
+  padding-left: 30px;
+}
+
+.copyright-text {
   color: white;
+  font-size: 12px;
+  padding-top: 10px}
+
+.copyright-text a:hover {
+  color: #222322;
 }
 
-.column-footer {
-  float:left;
-  width: 32%;
-  max-width: 33.333333%;
+
+/*-- Logos and acknowledgement --*/
+
+.footer-container { 
+  display: flex;
+  width: 50%; 
+  margin-bottom: 30px; 
+  margin: auto;
+  max-width: 704px;
+}
+
+.distill-site-footer {
+  padding-top: 0px;
+  padding-bottom: 10px;
+
+.row-footer { /* Do not change the name of this column - it causes issues */
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.column-footer { /* Do not change the name of this column - it causes issues */
+  float: left;
+  width: 24%;
+  max-width: 25%;
   position: relative;
   min-height: 1px;
   display: flex;
@@ -41,60 +81,80 @@
 }
 
 .footer-text {
-  font-family: "Roboto", sans-serif;
-  font-size: 10px;
-  color: black;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  color: #565656;
   text-align: left;
-  margin-top: 5px;
-  margin-right: 20px;
-  margin-left: 20px;
-  line-height: 1.1;
 }
 
-#over img {
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
+.footer-text-small {
+  font-family: Roboto,sans-serif;
+  font-size: .82rem;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  color: #565656;
+  text-align: left;
+  margin-top: 10px;
 }
 
-#over button {
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
+d-article a:hover {
+  color: #E06E53;
 }
+
 
 @media screen and (max-width: 952px) {
   .column-footer {
+    float:left;
     width: 100%;
+    max-width: 100%;
     display: block;
   }
 }
 
 </style>
 
+<div class = "container">
+  <hr style = "opacity: 0.5; margin-bottom: 50px" />
+</div>
 
-<!-- add icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
 
-<!-- Partner Logo -->
-<div class = "row">
-  <div class = "column-footer footer-logo">
-    <img src = "images/logos/NCRIS_logo.png" style = "width:auto;height:80px;margin-left:15px;margin-right:15px"></img>
-    <img src = "images/logos/CSIRO_logo.png" style = "width:auto;height:80px;margin-left:15px;margin-right:15px"></img>
-    <p class = "footer-text">The ALA is made possible by contributions from its many partners. It receives support through the Australian Government through the National Collaborative Research Infrastructure Strategy (NCRIS) and is hosted by CSIRO.</p>
+<div class = "footer-container">
+  
+  <div class = "row-footer">
+    <div class = "column-footer">
+      <p class = "footer-text">The ALA is made possible by contributions from its partners, is supported 
+      by 
+      <a href = "https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris" class = "footer-link">NCRIS</a>, is hosted by 
+             <a href = "https://csiro.au/" class = "footer-link">CSIRO</a>, and is the Australian node of
+             <a href = "https://www.gbif.org/en/" id = "d-article" class = "footer-link">GBIF</a>.
+      </p>
+      <img src = "images/logos/NCRIS_logo.png" style = "width:auto;height:85px;margin-left:0px;margin-right:2px"></img>
+      <img src = "images/logos/CSIRO_logo.png" style = "width:auto;height:85px;margin-left:0px;margin-right:0px"></img>
+      <img src = "images/logos/GBIF-2015.png" style = "width:auto;height:85px;margin-left:-10px;margin-right:2px"></img>
+    </div>
+    <div class = "column-footer" id = "footer-logo">
+      <p class = "footer-text"><strong>Acknowledgement of Traditional Owners and Country</strong></p>
+      <p class = "footer-text-small">The Atlas of Living Australia acknowledges Australia's Traditional Owners 
+      and pays respect to the past and present Elders of the nation's Aboriginal 
+      and Torres Strait Islander communities. We honour and celebrate the 
+      spiritual, cultural and customary connections of Traditional Owners to 
+      country and the biodiversity that forms part of that country.<br></br></p>
+    </div>
   </div>
-
-<!-- ALA Logo -->
-  <div id = "over" class = "column-footer">
-    <img src='images/logos/ALA_Logo.png' href = "https://www.ala.org.au/" style = "max-width:auto; height:80px"></img>
-  </div>
-<!-- ALA links -->
-<!--   <div class = "column-footer">
-    <button class = "button-footer clipped">
-      <i href="https://twitter.com/atlaslivingaust?lang=en" class="fab fa-twitter fa-2x"></i>
-    </button>
-    <button class = "button-footer clipped">
-      <i href="https://github.com/AtlasOfLivingAustralia" class="fab fa-github fa-2x"></i>
-    </button>
-  </div> -->
 </div> 
+
+
+  <div class="copyright-row">
+			<div class="copyright-column-left">
+					<p class="copyright-text">
+						This work is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/au/">Creative Commons Attribution 3.0 Australia License</a>
+						<a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/"><img alt="Creative Commons License" style="border-width:0" src="images/logos/cc-by.png"></img></a>
+					</p>
+				</div><!--col end -->
+			</div><!-- row end -->
+
+
