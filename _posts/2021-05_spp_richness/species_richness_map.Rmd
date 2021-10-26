@@ -1,0 +1,305 @@
+---
+title: "(Poorly) estimating species richness from Atlas of Living Australia data"
+description: |
+
+author:
+  - name: Martin Westgate
+date: "2021-05-20"
+categories: 
+  - Maps
+  - Multispecies
+output: 
+  distill::distill_article:
+    highlight: tango
+    toc: true
+    toc_float: true
+    toc_depth: 2
+---
+
+<!-- Complete title, description, author and date for website metadata -->
+
+```{r, include=FALSE}
+library(htmltools)
+date.func <- format(Sys.time(), '%d %B, %Y')
+```
+
+<!-- remove distill metadata section -->
+```{css, echo = FALSE}
+d-byline {
+    display: none;
+  }
+```
+
+
+<!-- Author card -->
+
+:::author-card
+:::float-image
+
+<!-- Author image -->
+```{r out.width='120px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/martin.jpg")
+```
+
+:::author-card-text
+<!-- Author name -->
+<h4 style = "margin-bottom:5px">Author:</h4>
+[Martin Westgate](people/Westgate_Martin/index.html)
+
+<!-- Date -->
+<h4 style = "margin-bottom:5px">Date:</h4>
+20 May, 2021
+:::
+
+:::
+:::
+
+
+
+# Get map data
+
+First load the required packages
+
+```{r}
+# libraries
+library(raster)
+library(terra)
+# library(rasterVis)
+library(pbapply)
+
+library(ggplot2)
+library(viridis)
+library(ggtext)
+```
+
+Get WorldClim maps, which include environmental predictors we will use later in our model
+
+```{r}
+worldclim <- rast(
+  getData("worldclim", var = "bio", res = 10, path = "data"))
+```
+
+Subset to Australia
+
+```{r}
+bbox <- ext(c(110, 155, -45, -10))
+aus <- crop(worldclim, bbox)
+```
+
+
+```{r}
+plot(aus)
+```
+
+***
+
+# Download ALA data
+
+Next we'll do something a little creative - we will create a grid of points that make up the map of Australia. We will then use these points to extract data from the Atlas of Living Australia.
+
+First we create a grid to lookup ALA records
+
+```{r}
+grid <- expand.grid(
+  xmin = c(100:154),
+  ymin = c(-45:-9))
+grid$xmax <- grid$xmin + 1
+grid$ymax <- grid$ymin + 1
+```
+
+Subset to those over the australian land mass
+
+```{r}
+point_values <- extract(aus, grid[, c("xmin", "ymin")] + 0.5)
+keep_rows <-
+  !apply(point_values[, -1], 1, function(a){all(is.na(a))}) &
+  !(grid$ymin >= -11 & grid$xmin != 142) & # excludes offshore stuff
+  !(grid$ymin == -12 & grid$xmin > 150)
+grid <- grid[keep_rows, ]
+point_values <- point_values[keep_rows, ]
+```
+
+We can check that it works by plotting the points
+
+```{r}
+ggplot(grid, aes(x = xmin, y = ymin)) + geom_point() # works
+```
+
+Now we build a function to paste values we are about to extract in a usable mapping format
+
+```{r}
+wkt_list <- lapply(
+  split(grid, seq_len(nrow(grid))),
+  function(a){
+    wkt <- paste0("POLYGON((",
+      paste(
+        paste(
+          c(a$xmin, a$xmax, a$xmax, a$xmin, a$xmin),
+          c(a$ymin, a$ymin, a$ymax, a$ymax, a$ymin),
+          sep = " "),
+        collapse = ","),
+    "))")
+  })
+```
+
+We will use the [galah](https://atlasoflivingaustralia.github.io/galah/index.html) package to download counts of records across Australia.
+
+(If running this code yourself, you also need to set an email associated with your data download request, substituting your email with `myemail@email.com`)
+
+```{r, eval = FALSE}
+library(galah)
+ala_config(email = "myemail@email.com")
+```
+
+We can now use `pblapply()` to feed our grid points into `ala_counts()` and extract counts data for each of our grid points
+(warning: These functions download A LOT of data, so be prepared for long wait times)
+
+```{r, eval = FALSE}
+point_values$richness <- unlist(pblapply(wkt_list,
+  function(a){
+    ala_counts(location = select_locations(a), type = "species")
+  }))
+
+point_values$records <- unlist(pblapply(wkt_list,
+  function(a){
+    ala_counts(location = select_locations(a), type = "record")
+  }))
+
+# save data
+point_values <- cbind(point_values, grid)
+```
+
+
+```{r, echo = FALSE}
+# saveRDS(point_values, "./data/point_values.rds")
+point_values <- readRDS("./data/point_values.rds")
+```
+
+```{r, echo = FALSE, eval = FALSE}
+# point_values <- point_values[
+#   !(point_values$ymin >= -11 & point_values$xmin != 142) & # excludes offshore stuff
+#   !(point_values$ymin == -12 & point_values$xmin > 150), ]
+# ggplot(point_values, aes(x = xmin, y = ymin)) + geom_point() # works
+
+# now we can build a model that includes covariates,
+# but also accounts for effort
+# ggplot(point_values, aes(x = log(records), y = log(richness))) +
+#   geom_point() +
+#   geom_smooth(method = "lm", color = "red") +
+#   geom_smooth(method = "gam", color = "blue")
+```
+
+***
+
+# Build a model of species richness
+
+Now we can create a linear model to predict values based on the data we have in our grid and some WorldClim environmental predictors.
+
+First we can write the formula
+
+```{r}
+# try an actual model using lm
+initial_formula <- formula(paste0(
+  "richness ~ scale(log(records)) + ",
+  paste(paste0("bio", seq_len(19)), collapse = " + ")
+))
+
+initial_formula
+```
+
+We use this formula in our general linear model
+
+```{r}
+model <- step(glm(initial_formula,
+  family = poisson(link = "log"),
+  data = point_values))
+```
+
+We then add the coefficients to a list so that we can add the model information to our grid points
+
+```{r}
+# summary(model)
+model_coefs <- as.list(coef(model))
+# point_values$predicted <- predict(model)
+
+# multiply out
+model_list <- rast(lapply(
+  names(model_coefs)[-c(1, 2)], function(a){
+    aus[[a]] * model_coefs[[a]]
+  }))
+
+
+aus_surface <- sum(model_list) + model_coefs[[1]]
+```
+
+We can use a base R plot to see how our new grid surface looks
+
+```{r}
+plot(aus_surface)
+```
+
+***
+
+# Make a map
+
+To create a nicer plot, we can calculate the coordinates for our aus surface and use `ggplot()`
+
+```{r, eval = FALSE}
+# try to plot natively with ggplot2
+raster_df <- as.data.frame(coords(aus_surface))
+raster_df$prediction <- as.data.frame(aus_surface)$sum
+raster_df$prediction_exp <- exp(raster_df$prediction)
+# saveRDS(raster_df, "./data/raster_df.rds")
+```
+
+
+```{r, echo = FALSE}
+raster_df <- readRDS("./data/raster_df.rds")
+```
+
+
+```{r, message = FALSE, layout = "l-page", preview = TRUE}
+p <- ggplot(raster_df, aes(x = x, y = y, fill = prediction_exp)) +
+  geom_tile() +
+  coord_equal() +
+  scale_fill_viridis(
+    trans = "log",
+    breaks = seq_len(4) * 1000,
+    labels = paste0(seq_len(4), "k"),
+    option = "magma") +
+  geom_text(
+    x = 113, y = -43,
+    label = "Data sources: Worldclim (worldclim.org) &\nAtlas of Living Australia (ala.org.au)",
+    size = 2,
+    color = "#919191",
+    hjust = 0
+  ) +
+  labs(
+    x = "Longitude",
+    y = "Latitude",
+    fill = "Number of\nSpecies",
+    title = "Biodiversity in Australia<br>
+      <span style='font-size:8pt;'>Estimated number of species, controlling for differences in survey effort</span>"
+  ) +
+  theme_bw() +
+  theme(
+    panel.background = element_rect(fill = "grey90", color = NA),
+    plot.title =  element_textbox_simple(
+      size = 14, lineheight = 1, padding = margin(0, 0, 5, 0)),
+    axis.title = element_blank(), # element_text(size = 10),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    legend.title = element_text(size = 8)# , color = "#919191")
+  )
+
+p
+```
+
+
+```{r, eval = FALSE, echo = FALSE}
+ggsave("./plots/species_richness_plot_final.png", p,
+  width = 14, height = 11, units = "cm")
+```
+
+
+See the the [original R script](https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2021-05_spp_richness/species_richness_map.R)

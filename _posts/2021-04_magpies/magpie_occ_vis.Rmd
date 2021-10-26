@@ -1,0 +1,191 @@
+---
+title: Magpies in the ALA
+description: |
+  Magpies are the single most recorded species in the ALA, with over 1.4 million
+  records available. Here we use this iconic species to demonstrate how to do
+  hex mapping in R using our new R package, 'galah'.
+author:
+  - name: Matilda Stevenson
+date: '2021-04-14'
+categories: 
+  - Maps
+  - Animalia
+  - Chordata
+  - Aves
+output: 
+  distill::distill_article:
+    highlight: tango
+    toc: true
+    toc_float: true
+    toc_depth: 3
+---
+
+<!-- Complete title, description, author and date for website metadata -->
+
+```{r, include=FALSE}
+library(htmltools)
+date.func <- format(Sys.time(), '%d %B, %Y')
+```
+
+<!-- remove distill metadata section -->
+```{css, echo = FALSE}
+d-byline {
+    display: none;
+  }
+```
+
+
+<!-- Author card -->
+
+:::author-card
+:::float-image
+
+<!-- Author image -->
+```{r out.width='120px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/matilda.jpg")
+```
+
+:::author-card-text
+<!-- Author name -->
+<h4 style = "margin-bottom:5px">Author:</h4>
+[Matilda Stevenson](people/Stevenson_Matilda/index.html)
+
+<!-- Date -->
+<h4 style = "margin-bottom:5px">Date:</h4>
+14 April, 2021
+:::
+
+:::
+:::
+
+<br>
+
+The Atlas of Living Australia (ALA) holds records of magpie sightings from a number data providers like iNaturalist, eBird and BirdLife Australia. We wanted to make a visualisation of [Australian Bird of the Year 2018 winner](https://www.abc.net.au/news/2017-12-11/bird-of-the-year-magpie-defeats-teambinchicken/9245242), Magpies, using records held in the ALA.
+
+
+# Download records
+
+First we load the required packages
+
+```{r, message = FALSE, warning = FALSE}
+# packages
+library(ggplot2)
+library(tidyr)
+library(ozmaps)
+library(sf)
+# library(hexbin) # You should be prompted to download when creating map
+```
+
+We will use the [galah](https://atlasoflivingaustralia.github.io/galah/index.html) package to download records.
+(If running this code yourself, you also need to set an email associated with your data download request, substituting your email with `myemail@email.com`)
+
+```{r, eval = FALSE}
+library(galah)
+galah_config(email = "myemail@email.com")
+```
+
+Now we can download magpie occurrence records by using `ala_occurrences()`. Note that we also set our data 'profile' to 'ALA'; this means we only download records that meet some basic data quality standards enfored by the atlas. This is optional, but tends to improve the quality of the data returned.
+
+```{r, results = 'hide'}
+# Download magpie occurrence records using `galah`
+magpie_occ <- ala_occurrences(
+  taxa = select_taxa("Cracticus tibicen"),
+  filters = select_filters(profile = "ALA")
+)
+```
+
+For the purpose of this exercise, we're going to filter records not on the mainland or Tasmania.
+
+```{r}
+filtered_occ <- magpie_occ %>% dplyr::filter(decimalLongitude < 155,
+                                      decimalLongitude > 110,
+                                      decimalLatitude > -45,
+                                      decimalLatitude < -10)
+```
+
+# Create map
+
+```{r}
+# Hexagon map using geom_hex
+ggplot(filtered_occ) +
+  geom_hex(mapping = aes(x = decimalLongitude, y = decimalLatitude), bins = 55) +
+  ylim(-45, -10) +
+  xlim(110, 155) +
+  scale_fill_gradientn(colours = c("#EEECEA", "#E06E53")) +
+  theme_bw() +
+  theme(
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+    legend.position = "none")
+```
+
+While automated methods exist (e.g. `hexbin`), we can build a hexagon map by manually creating hexagons, linking them to a grid of Australia and adding our data of magpie counts to set the `fill` color of those hexagons. To achieve this, we first convert the map of Australia provided by `ozmaps` to the same coordinate system as ALA data
+
+```{r}
+# Convert map of aus to same coordinate system as ALA points
+aus <- st_transform(ozmaps::ozmap_country, 4326)
+```
+
+We then transform points from our data frame of magpie occurrences to the correct coordinates
+
+```{r}
+# transform points
+points <- lapply(1:nrow(filtered_occ), function(x) {
+  st_point(c(filtered_occ[x,'decimalLongitude'],
+             filtered_occ[x,'decimalLatitude']))
+})
+```
+
+Now build the hexagonal grid
+
+```{r}
+# Build hexagonal grid
+grid_all <- st_make_grid(aus, cellsize = 1, what = "polygons", square = FALSE)[aus]
+gridSF <- st_as_sf(grid_all)
+
+# Find which polygon each point is in
+intersect <- st_intersects(st_as_sfc(points) %>% st_set_crs(4326), gridSF)
+
+# count the number of points in each hexagon
+freqs <- as.data.frame(table(unlist(intersect)), stringsAsFactors = FALSE)
+
+names(freqs) <- c("hex_id", "count")
+```
+
+Add our magpie counts data to the hexagons and fill hexagons without data
+
+```{r}
+# Add counts to hexagons
+freqs$hex_id <- as.integer(freqs$hex_id)
+
+# fill in the values for hexagons with no records
+filled_freqs <- freqs %>%
+  complete(hex_id = full_seq(c(1,925), 1), fill = list(count = 0))
+gridSF$n <- filled_freqs$count
+```
+
+Finally, build the plot
+
+```{r, message = FALSE, layout = "l-page",preview = TRUE}
+# Plot the hexagons in ALA colours, with log-transformed counts
+ggplot() +
+  geom_sf(data = gridSF, aes(fill = n), size = .01) +
+  scale_fill_gradientn(colours = c("#EEECEA", "#E06E53"), na.value = "white", trans = "log2") +
+  ylim(-45, -10) +
+  xlim(110, 155) +
+  theme_bw() +
+  theme(
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title = element_blank(),
+    legend.position = "none") 
+```
+
+See the [original R script](https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2021-04_magpies/magpie_occ_vis.R)

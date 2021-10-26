@@ -1,0 +1,197 @@
+---
+title: "National Eucalypt Day"
+description: |
+  [National Eucalypt Day](https://www.eucalyptaustralia.org.au/national-eucalypt-day/national-eucalypt-day/) aims to raise awareness about Eucalypts and celebrate their influence on the lives of Australians. In honour of National Eucalypt day, we created a network plot based on occurrences data held in the Atlas of Living Australia, themed using colours from actual Eucalypts
+author:
+  - name: Martin Westgate
+date: "March 2021"
+categories: 
+  - Plantae
+  - Counts
+  - Maps
+output: 
+  distill::distill_article:
+    highlight: tango
+    toc: true
+    toc_float: true
+    toc_depth: 3
+---
+
+<!-- Complete title, description, author and date for website metadata -->
+
+```{r, include=FALSE}
+library(htmltools)
+date.func <- format(Sys.time(), '%d %B, %Y')
+```
+
+<!-- remove distill metadata section -->
+```{css, echo = FALSE}
+d-byline {
+    display: none;
+  }
+```
+
+
+<!-- Author card -->
+
+:::author-card
+:::float-image
+
+```{r out.width='120px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/martin.jpg")
+```
+
+:::author-card-text
+<h4 style = "margin-bottom:5px">Author:</h4>
+[Martin Westgate](people/Westgate_Martin/index.html)
+
+<h4 style = "margin-bottom:5px">Date:</h4>
+March 2021
+:::
+
+:::
+:::
+
+
+# Creating a network plot
+
+## Get ALA observations
+
+First, get observations of the Eucalypt of the Year 2021 from ALA using the [galah](https://atlasoflivingaustralia.github.io/galah/index.html) package.
+
+```{r}
+# remotes::install_github("AtlasOfLivingAustralia/galah")
+library(galah)
+# Note: config required at this point using format: ala_config(email = "myemail@email.com")
+```
+
+
+(If running this code yourself, you need to first set an email associated with your data download request, substituting your email with `myemail@email.com`)
+
+```{r, eval = FALSE}
+galah_config(email = "myemail@email.com")
+```
+
+
+We then use `select_taxa()` to download counts of *Eucalyptus salubris*
+
+```{r, message = FALSE, warning = FALSE, results = 'hide'}
+counts <- select_taxa("Eucalyptus salubris", counts = TRUE)
+occurrences <- ala_occurrences(counts)
+```
+
+
+And use the [lubridate](https://lubridate.tidyverse.org/) package to make dates easier to use and extract year from `eventDate`
+
+```{r, message = FALSE, warning = FALSE}
+library(lubridate)
+occurrences$date <- lubridate::ymd(occurrences$eventDate) # change date format
+occurrences$year <- lubridate::year(occurrences$date)     # extract year
+```
+
+So the data frame looks like:
+
+```{r, warning = FALSE, message = FALSE, layout = "l-page"}
+library(tidyverse)
+library(kableExtra)
+
+occurrences %>% 
+  as_tibble() %>% 
+  slice(1:5) %>% 
+  kbl() %>% kable_styling(full_width = FALSE)
+```
+
+
+## Create Eucalypt colour scheme
+
+Then get a color scheme from images of the species in question using the [paletter](https://github.com/AndreaCirilloAC/paletter) package (which needs to be installed from github) <br>
+
+<div class = "blue" style = "background-color:#B7CD96; border-radius: 5px; padding: 10px;">
+
+Note: This script requires an image to build the colour palette from. I used a downscaled version of the image at [this link](https://twitter.com/DeanNicolle1/status/1374112431782301698)
+
+</div>
+
+```{r}
+# remotes::install_github("AndreaCirilloAC/paletter")
+library(paletter)
+
+# get a colour palette
+image_pal <- create_palette(
+  image_path = "./data/Dean_Nicolle_Esalubris_image_small.jpeg",
+  type_of_variable = "categorical",
+  number_of_colors = 15)
+image_pal <- image_pal[image_pal != "#527FB9"] # remove blue from the palette
+```
+
+
+Using this colour palette, create an index of colours and link them to the downloaded occurrences data
+
+```{r}
+# create a vector to index colours
+colour_index <- rep(seq_along(image_pal),
+  each = floor(nrow(occurrences) / length(image_pal)))
+# correct rounding errors
+colour_index <- c(colour_index,
+  rep(length(image_pal), nrow(occurrences) - length(colour_index)))
+# add an index of colours to occurrences
+occurrences$colour_index <- as.factor(colour_index)
+```
+
+Our data frame now looks like this
+
+```{r, layout = "l-page"}
+occurrences %>% 
+  as_tibble() %>% 
+  slice(1:5) %>% 
+  kbl() %>% kable_styling(full_width = FALSE)
+```
+
+------------------------------------------------------------------------------
+
+# Create plot
+
+To build the plot, we first make an interesting layout by interpreting colours as a network using the [igraph](https://igraph.org/r/) package
+
+```{r}
+library(igraph)
+
+graph_list <- lapply(c(1:15), function(a){
+  lookup <- which(colour_index == a)
+  return(data.frame(
+    from = lookup[c(1:(length(lookup)-1))],
+    to = lookup[c(2:length(lookup))]))
+  })
+graph_df <- as.matrix(do.call(rbind, graph_list))         # build matrix
+colour_graph <- graph_from_edgelist(graph_df)             # create network graph
+
+# convert to a set of point locations
+test_layout <- as.data.frame(layout_nicely(colour_graph)) # convert to df
+colnames(test_layout) <- c("x", "y")                      # change colnames
+test_layout$colour_index <- factor(colour_index)          # add colour_index col
+```
+
+
+Then we draw the plot with [ggplot2](https://ggplot2.tidyverse.org/)
+
+```{r, layout = "l-body-outset", preview = TRUE}
+# draw with ggplot
+library(ggplot2)
+
+ggplot(test_layout, aes(x = x, y = y, colour = colour_index)) +
+  geom_point(size = 3.5, alpha = 1) +
+  scale_color_manual(values = image_pal) +
+  coord_fixed() +
+  lims(x = c(-20, 37), y = c(-20, 37)) + # these are fairly arbitrary
+  theme_void() +
+  theme(legend.position = "none")
+```
+
+```{r, eval = FALSE, echo = FALSE}
+
+# save
+ggsave("plot_image.pdf", p)
+```
+
+
+See the the [original R script](https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2021-03_National_Eucalypt_Day/E_salubris_network_diagram_code.R)
