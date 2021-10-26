@@ -38,4 +38,3 @@ create_button(
 :::
 <h2>Posts</h2>
 
-<a href='/Users/wes186/Documents/Work/Development/AtlasOfLivingAustralia/website_SDS/SDS_website/_site/posts/test/index.html'>Test</a><br><em>Test article</em><br><br>
