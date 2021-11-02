@@ -25,7 +25,7 @@ d-title {
 
 :::float-image
 
-```{r out.width='400px', out.extra='style="float:left; margin-left:15px; margin-right:60px;"', echo=FALSE}
+```{r out.width='300px', out.extra='style="float:left; margin-left:15px; margin-right:60px;"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/hex/galah_logo.png")
 ```
 

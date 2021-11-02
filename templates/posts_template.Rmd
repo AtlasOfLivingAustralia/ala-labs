@@ -31,10 +31,6 @@ htmltools::withTags(
 </aside>
 
 
-See the the [original R script](url-of-R-script-in-Science-github-repo) for this plot
-
-
-
 ------------------------------------------------------------------------------
 
 # Title 

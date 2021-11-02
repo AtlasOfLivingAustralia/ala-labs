@@ -53,15 +53,15 @@ tags$div(class = "category-row",
          
   tags$div( 
     class = "category-column",
-    tags$a(href = "posts.html#category:Counts",
+    tags$a(href = "posts.html#category:Summaries",
       tags$img(
-        href = "posts.html#category:Counts",
+        href = "posts.html#category:Summaries",
         src = "images/vectors/barplot.svg",
         class = "category-image honey"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
-      tags$a(href = "posts.html#category:Counts", "Counts")))),
+      tags$a(href = "posts.html#category:Summaries", "Summaries")))),
   
   tags$div( 
     class = "category-column",
@@ -129,16 +129,16 @@ tags$div(class = "category-row",
   
   tags$div( 
     class = "category-column",
-    tags$a(href = "posts.html#category:Multispecies",
+    tags$a(href = "posts.html#category:Mammalia",
       tags$img(
-        href = "posts.html#category:Multispecies",
+        href = "posts.html#category:Mammalia",
         src = "images/vectors/platypus.svg",
         class = "category-image sage",
         style = "width: 80%;"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
-      tags$a(href = "posts.html#category:Multispecies", "Multispecies"))))
+      tags$a(href = "posts.html#category:Mammals", "Mammals"))))
   
   )
 ```
