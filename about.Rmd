@@ -42,14 +42,14 @@ create_team_card(
   person_page = "people/Fenker_Jess/index.html",
   img_src = "images/people/jess.jpg",
   name = "Jessica Fenker",
-  text = "R Programmer"
+  text = "Data Analyst"
 ),
 
 create_team_card(
   person_page = "people/Wraith_Jenna/index.html",
   img_src = "images/people/jenna.jpg",
   name = "Jenna Wraith",
-  text = "Conservation Scientist"
+  text = "Outreach & Support Officer"
 )
 
 )
@@ -61,6 +61,13 @@ create_team_card(
   img_src = "images/people/dax.jpg",
   name = "Dax Kellie",
   text = "Data Analyst"
+),
+
+create_team_card(
+  person_page = "people/Torresan_Olivia/index.html",
+  img_src = "images/logos/ALA_Logo_Mark-only.png",
+  name = "Olivia Torresan",
+  text = "Support Officer"
 )
 
 )
