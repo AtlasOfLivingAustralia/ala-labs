@@ -106,6 +106,44 @@ d-article a:hover {
   color: #E06E53;
 }
 
+/*-- Back to ALA button --*/
+
+.link-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: block;
+  width: 30em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.link-button {
+  border: none;
+  color: #E06E53;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin: 4px 2px;
+  transition-duration: 0.3s;
+  cursor: pointer;
+  background-color: white; 
+  border: 2px solid #E06E53;
+  border-radius: 10px;
+}
+
+.link-button:hover {
+  background-color: #222322;
+  border: 2px solid #222322;
+  color: #E06E53;
+}
+
+.ala-icon {
+    height: 20px;
+    width: auto;
+    /* Other styles here */
+}
 
 @media screen and (max-width: 952px) {
   .column-footer {
@@ -114,12 +152,23 @@ d-article a:hover {
     max-width: 100%;
     display: block;
   }
+  .link-container {
+    display: block;
+    width: 20em;
+    margin: auto;
+  }
 }
 
 </style>
 
 <div class = "container">
-  <hr style = "opacity: 0.5; margin-bottom: 50px" />
+  <hr style = "opacity: 0.4; margin-top: 10px; margin-bottom:10px" />
+
+<div class = "link-container">
+    <a href = url style = "border-bottom: none">
+      <button class = "link-button" href = "https://ala.org.au/"><strong>To the Atlas of Living Australia</strong>
+        <img src = "images/logos/ALA_Logo_Mark-only.png" class = "ala-icon"></img></button>
+    </a>
 </div>
 
 
@@ -133,9 +182,15 @@ d-article a:hover {
              <a href = "https://csiro.au/" class = "footer-link">CSIRO</a>, and is the Australian node of
              <a href = "https://www.gbif.org/en/" id = "d-article" class = "footer-link">GBIF</a>.
       </p>
-      <img src = "images/logos/NCRIS_logo.png" style = "width:auto;height:85px;margin-left:0px;margin-right:2px"></img>
-      <img src = "images/logos/CSIRO_logo.png" style = "width:auto;height:85px;margin-left:0px;margin-right:0px"></img>
-      <img src = "images/logos/GBIF-2015.png" style = "width:auto;height:85px;margin-left:-10px;margin-right:2px"></img>
+      <a href = "https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris">
+        <img src = "images/logos/NCRIS_logo.png" style = "width:auto;height:85px;margin-left:0px;margin-right:2px"></img>
+        </a>
+      <a href = "https://csiro.au/">
+        <img src = "images/logos/CSIRO_logo.png" style = "width:auto;height:85px;margin-left:0px;margin-right:0px"></img>
+        </a>
+      <a href = "https://www.gbif.org/en/">
+        <img src = "images/logos/GBIF-2015.png" style = "width:auto;height:85px;margin-left:-10px;margin-right:2px"></img>
+        </a>
     </div>
     <div class = "column-footer" id = "footer-logo">
       <p class = "footer-text"><strong>Acknowledgement of Traditional Owners and Country</strong></p>
