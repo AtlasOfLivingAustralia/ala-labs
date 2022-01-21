@@ -1,5 +1,5 @@
-name: "ALA labs"
-title: "Home"
+name: "ALA Labs"
+title: "ALA Labs"
 description: |
   Demo projects, experiments, debugging data and so on from the [Atlas of Living Australia (ALA)](https://ala.org.au/)
 output_dir: "_site"
@@ -18,6 +18,8 @@ navbar:
     href: https://www.ala.org.au
   search: true
   right:
+    - icon: fas fa-home
+      href: index.html
     - text: "About"
       href: about.html
     - text: "Posts"
@@ -28,6 +30,8 @@ navbar:
           href: galah.html
         - text: "ALA Labs Style Guide"
           href: test_style-guide.html
+    - icon: images/favicon.ico
+      href: https://www.ala.org.au
     - icon: fab fa-github
       href: https://github.com/AtlasOfLivingAustralia/science
 output: distill::distill_article

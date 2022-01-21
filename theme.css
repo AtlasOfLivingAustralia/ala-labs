@@ -12,13 +12,13 @@
 /* This must remain at the top of this file.                 */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
 
 html {
   /*-- Main font sizes --*/
   --title-size:      40px;
   --body-size:       1.06rem;
-  --code-size:       14px;
+  --code-size:       16px;
   --aside-size:      12px;
   --fig-cap-size:    13px;
   /*-- Main font colors --*/
@@ -29,7 +29,7 @@ html {
   --fig-cap-color:   rgba(0, 0, 0, 0.6);
   /*-- Specify custom fonts ~~~ must be imported above   --*/
   --heading-font:    'Lato', sans-serif;
-  --mono-font:       'Roboto' monospace;
+  --mono-font:       'Fira Code' monospace;
   --body-font:       'Roboto', sans-serif;
   --navbar-font:     'Lato' sans-serif;  /* websites + blogs only */
 }
@@ -101,7 +101,7 @@ d-title {
     clip-path: circle();
 }
 
-/*  circle image cropper  */
+/*  code in-text background color */
 
 d-article div.sourceCode {
     background-color: #f7f7f7;
@@ -161,6 +161,32 @@ d-article div.sourceCode {
   text-align: center;
   color: #ffffff;
   padding-top: 100px; 
+}
+
+.credit-text {
+  position: absolute;
+  text-align: left;
+  left: 2%;
+  bottom: 5%;
+}
+
+.ALA-species-credit {
+  font-size: 11px;
+  font-style: italic;
+  color: white;
+}
+
+.ALA-image-credit {
+  text-align: left;
+  font-size: 14px;
+  color: white;
+}
+
+@media (min-width: 992px){
+.credit-text {
+  position: absolute;
+  bottom: 3%;
+}
 }
 
 /*----------------------------------------------*/
