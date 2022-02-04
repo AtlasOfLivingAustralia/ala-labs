@@ -1,0 +1,9 @@
+create_article          Create a new article
+create_post             Create a new blog post
+create_theme            Create a Distill theme CSS file
+create_website          Create a Distill website
+distill_article         R Markdown format for Distill articles
+distill_website         R Markdown site generator for Distill websites
+import_post             Import a post into a blog
+publish_website         Publish a Distill Website
+rename_post_dir         Rename a blog post directory

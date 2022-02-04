@@ -1,0 +1,11 @@
+create_article	create_article
+create_blog	create_website
+create_post	create_post
+create_theme	create_theme
+create_website	create_website
+distill_article	distill_article
+distill_website	distill_website
+import_post	import_post
+publish_website	publish_website
+rename_post_dir	rename_post_dir
+update_post	import_post

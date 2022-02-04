@@ -1,0 +1,14 @@
+article_named           Locate articles matching a pattern
+insert_appendix         Inserts the default refinery appendix
+insert_lockfile         Inserts a link to the lock file
+insert_netlify_redirect
+                        Setup redirections for netlify deployment
+insert_source           Inserts a link to the source code
+insert_timestamp        Records a time stamp to the R markdown output
+renv_delete             Delete the renv set up associated with a post
+renv_load               Load the renv library
+renv_new                Create a minimal R environment for a post
+renv_restore            Restore the renv project
+renv_snapshot           Create a snapshot of the R environment for the
+                        post
+use_article_template    Create new article from existing template

@@ -1,0 +1,37 @@
+Package: refinery
+Title: Reproducibility Tools For Distill Sites
+Version: 0.0.0.9057
+Authors@R: person(given = "Danielle",
+           family = "Navarro",
+           role = c("aut", "cre"),
+           email = "d.navarro@unsw.edu.au",
+           comment = c(ORCID = "0000-0001-7648-6578"))
+Description: The goal of the refinery package is to provide tools that make it
+    easier to blog reproducibly using distill. The central idea is to associate
+    every post with a unique R environment, using the renv package to ensure 
+    that each post is rendered using its associated environment.
+License: MIT + file LICENSE
+Suggests: distill, testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: rprojroot, renv, fs, lubridate, htmltools, rstudioapi, knitr, cli,
+    brio, stringr
+URL: https://github.com/djnavarro/refinery
+BugReports: https://github.com/djnavarro/refinery/issues
+Author: Danielle Navarro [aut, cre] (<https://orcid.org/0000-0001-7648-6578>)
+Maintainer: Danielle Navarro <d.navarro@unsw.edu.au>
+Built: R 4.1.2; ; 2022-01-18 01:21:02 UTC; windows
+RemoteType: github
+RemoteHost: api.github.com
+RemoteUsername: djnavarro
+RemoteRepo: refinery
+RemoteRef: master
+RemoteSha: 09c1bdb8f39159c7fb21fdd7551eba949ccc66ad
+GithubHost: api.github.com
+GithubRepo: refinery
+GithubUsername: djnavarro
+GithubRef: master
+GithubSHA1: 09c1bdb8f39159c7fb21fdd7551eba949ccc66ad
