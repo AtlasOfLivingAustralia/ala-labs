@@ -68,6 +68,24 @@ create_team_card(
   img_src = "images/logos/ALA_Logo_Mark-only.png",
   name = "Olivia Torresan",
   text = "Support Officer"
+),
+
+create_team_card(
+  person_page = "people/Buyan_Amanda/index.html",
+  img_src = "images/people/amanda.jpg",
+  name = "Amanda Buyan",
+  text = "Data Analyst"
+)
+
+)
+
+tags$div(class = "row", # Create a row for 3 team-member cards
+         
+create_team_card(
+  person_page = "people/Balasubramanium_Shandiya/index.html",
+  img_src = "images/people/shandiya.jpg",
+  name = "Shandiya Balasubramanium",
+  text = "Data Analyst"
 )
 
 )
