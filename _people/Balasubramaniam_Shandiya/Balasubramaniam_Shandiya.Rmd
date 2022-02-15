@@ -1,5 +1,5 @@
 ---
-title: "Olivia Torresan"
+title: "Shandiya Balasubramaniam"
 description: |
 date: "`r Sys.Date()`"
 output: 
@@ -15,23 +15,23 @@ source(here("R", "functions.R"))
 # Bio
 :::float-image
 ```{r out.width='200px', out.extra='style="float:right; margin-left:15px; margin-right:15px; clip-path: circle();"', echo=FALSE}
-knitr::include_graphics("https://github.com/AtlasOfLivingAustralia/SDS_website/blob/main/images/people/olivia.jpg")
+knitr::include_graphics("https://github.com/AtlasOfLivingAustralia/SDS_website/blob/main/images/people/shandiya.png")
 ```
-Olivia is a graduate from the Australian National University (ANU), acquiring an interdisciplinary double degree in philosophy and natural resource management. At the ALA, she works as a support officer with a primary focus on monitoring the research impact of the Atlas. She is passionate about accessibility, environmental justice and diversity in STEMM.
+Shandiya is an evolutionary ecologist with interests in conservation genetics and wildlife disease. Her work as a data analyst at the ALA focuses on streamlining reproducible pathways for researchers to access and analyse open data. 
 ```{r, echo = FALSE}
 tags$div(class = "row", style = "display: flex;",
          
 create_button(
   icon = "fab fa-github fa-2x",
-  url = ""
+  url = "http://github.com/shandiya"
 ),
 create_button(
   icon = "fas fa-globe fa-2x",
-  url = ""
+  url = "shandiya.netlify.app"
 ),
 create_button(
   icon = "fab fa-twitter fa-2x",
-  url = ""
+  url = "http://twitter.com/ShandiyaB"
 )
 )
 ```
