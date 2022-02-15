@@ -1,5 +1,5 @@
 # script to build the website
-# note that working directory should be the site directory (`SDS_website`)
+# note that working directory should be the site directory (`ala-labs`)
 
 library(rmarkdown)
 library(here)
