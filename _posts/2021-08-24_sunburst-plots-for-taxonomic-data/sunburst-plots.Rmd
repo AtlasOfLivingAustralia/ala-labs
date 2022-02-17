@@ -1,12 +1,12 @@
 ---
 title: Sunburst plots for taxonomic data
 description: |
-  As of version 1.3.1 of `galah`, it became possible to download taxonomic data 
-  using a 'tree' format from the `data.tree` package. Here I'll demonstrate
+  Since version 1.3.1 of `galah`, it has been possible to download taxonomic
+  data using a 'tree' format from the `data.tree` package. Here I'll demonstrate
   some ideas for plotting these trees using circular diagrams.
 author:
   - name: Martin Westgate
-date: '2021-08-24'
+date: '2022-02-17'
 categories: 
   - Trees
   - Eukaryota
@@ -53,7 +53,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 <!-- Date -->
 <h4 style = "margin-bottom:5px">Date:</h4>
-21 August, 2021
+17 February, 2022
 :::
 
 :::
@@ -64,165 +64,230 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 <!------ Post content starts here ------>
 
-Taxonomy is pretty important at the ALA. Every occurrence record in the atlas is 
-linked to a unique taxonomic identifier. These identifiers are themselves drawn 
-from expertly curated taxonomic datasets. This system of classification is so 
-important to our system that we have a special name for it; the 'taxonomic backbone'.
-But what does it look like?
+Taxonomy is pretty important at the ALA. Every occurrence record in the atlas 
+is linked to a unique taxonomic identifier. These identifiers are themselves
+drawn from expertly curated taxonomic datasets. This system of classification 
+is so important to our infrastructure that we have a special name for it; the 
+'taxonomic backbone'. But what does it _look_ like?
 
 Visualising trees is not particularly easy for me; I didn't train in it, and the
-data structures involved are a bit complex. More importantly, until recently it was 
-difficult to download detailed taxonomic information from the ALA. With the release
-of version 1.3.1 - and the wonderful new function `ala_taxonomy` - I decided it 
-was time to give it a go. This is just a quick test, however, so I won't guarantee 
-this is the best approach in the world. What do we need to do?
+data structures involved can be a bit complex. More importantly, until recently 
+it was difficult to download detailed taxonomic information from the ALA. Since 
+version 1.3.1 of `galah`, however, it has been possible to download taxonomic
+trees using the `ala_taxonomy()` function. Let's have a go at visualising these
+trees now. 
 
-# Download and prune a tree
-
-First we load the required packages, as well as some bespoke functions written
-for this post.
-
-```{r, message = FALSE, warning = FALSE}
-library(galah)
-library(data.tree)
-library(dplyr)
-library(stringr)
-library(ggplot2)
-library(viridisLite)
-source("functions.R")
-```
-
-Then we can choose a taxonomic group to represent in tree form. I've chosen the
-chordates because they aren't too large a group and the names are fairly well-known.
-Note that we also have to choose how far 'down' the tree to travel. I've chosen 
-the Order level here; bear in mind that trying to traverse too many levels (i.e.
-choosing "genus" or "species" here) would take a _very_ long time.
+# Downloading taxonomic trees
+The first step is to choose a taxonomic group to represent in tree form. I've 
+chosen the chordates (Phylum Chordata) because they aren't too large a group 
+and the names are fairly well-known. We can specify this within `galah` using
+the function `galah_identify`. The second piece of information we need to 
+supply is how far 'down' the tree to travel. I've chosen the Order level here
+using `galah_down_to(order)`; while we could have gone to the Family or even
+Genus, trying to traverse too many levels (i.e. to Genus or Species) would take 
+a _very_ long time. A full list of accepted ranks can be found by calling
+`show_all_ranks()`.
 
 ```{r}
-chordata <- search_taxa("chordata")
-
-chordate_orders <- galah_call() %>%
-  galah_identify(chordata) %>%
-  galah_down_to(order) %>%
+library(galah)
+chordate_orders <- galah_call() |>
+  galah_identify("chordata") |>
+  galah_down_to(order) |>
   atlas_taxonomy()
 ```
 
-For the purpose of this exercise, I'm going to restrict the plot to data from 
-the [Australian Faunal Directory](https://biodiversity.org.au/afd/home)
+The object returned by `atlas_taxonomy` is slightly unusual; it uses the 
+`data.tree` package, meaning that the dataset is literally structured like a 
+tree. This is notably different from other representations of networks, such
+as you might find in `igraph`, for example. To get an idea of what the data 
+look like, we can use the inbuilt `print` method for this data type:
 
 ```{r}
-Prune(chordate_orders, pruneFun = function(a){a$authority == "AFD"})
+library(data.tree)
+print(chordate_orders, pruneMethod = "dist", limit = 10)
 ```
 
-Next there are a few steps that are needed. First, subsetting to AFD taxonomy 
-could have left us branches with no 'leaves' (orders), so we need to remove these 
-where they occur. Second, if we are going to plot these nodes as segments of a 
-circle, we'll need to know where each segment should start and finish. We can 
-do this by assigning each leaf to an integer, then calculating the minimum and 
-maximum values of leaves within each parent node. These tasks are a bit 
-convoluted, so I've written some functions that do these things for us:
+This shows there are three nodes directly beneath Chordata in the taxonomic 
+hierarchy, of which the largest (by number of sub-nodes) is the vertebrates
+(Vertebrata). There is a lot we could do with this tree; each node
+contains a unique taxonomic identifer, for example, meaning that we could use
+individual nodes to make new queries using `galah`. However, for now a useful 
+task is simply to visualise the structure of the whole tree.
+
+# Getting plot-ready data
+Taxonomic trees are complex. While all species have a Kingdom, Phylum, Order,
+Class and Family, there are many intermediate categories that are 'optional'. 
+In practice, this means that when we convert to a `data.frame` for 
+plotting, there are a lot of missing values; nodes that apply to some rows but
+not others.
 
 ```{r}
-tree <- prep_tree(prune_leafless_branches(chordate_orders))
+df_rank <- ToDataFrameTypeCol(chordate_orders, type = "rank")
+df_rank[10:20,]
 ```
-No we're ready to calculate a few `data.frame`s that we'll use to do the actual
-plotting.
 
-# Building data.frames
-
-Our next step is to extract a `data.frame` with 1 row per node (i.e. not just 
-leaves) and containing all the node-level data that we'll need late. Critically, 
-this should include `leaf_min` and `leaf_max` (calculated above using 
-`prep_tree()`). Fortunately, this is fairly straightforward using `data.tree`;
-we just tell the `ToDataFrameTree` function what columns (i.e. node attributes)
-we want to extract:
+These missing values will show up as empty sections in the resulting diagram,
+which isn't ideal. Instead, we can build this `data.frame` so as to place
+all nodes in order by row, with empty 'levels' being placed at the end. This 
+also avoids the problem where 'unnamed' ranks are grouped in the same column.
+To achieve this, we simply choose a different node attribute (`level` in this 
+case) to supply to the `type` argument.
 
 ```{r}
-tree_df <- ToDataFrameTree(tree,
-   "name", "rank", "level", "is_leaf", "leaf_min", "leaf_max")
+df_level <- ToDataFrameTypeCol(chordate_orders, type = "level")
+df_level[10:20, ]
 ```
-
-To plot this as a circle, we need to convert our `leaf_min` and `leaf_max` to
-locations around a circle (in degrees).
+ 
+Another problem in this dataset is the existence of duplicated taxonomic
+names. This happens because different authorities place the same taxon in
+different parts of the tree, and while the ALA tries to clean up these issues,
+some disagreements remain. The code below assumes that each name is only
+present once, so we have to remove duplicates to proceed. Fortunately there is 
+a function in package `base` that flags duplcated values as `TRUE` and unique 
+values as `FALSE`. We can use this function to identify rows where `order` is
+not unique.
 
 ```{r}
-max_value <- max(tree_df$leaf_max)
-tree_df$segment_start <- ((tree_df$leaf_min - 1) * 360) / max_value
-tree_df$segment_end <- ((tree_df$leaf_max) * 360) / max_value
+library(dplyr)
+keep_rows <- !duplicated(df_rank$rank_order)
+df_rank <- filter(df_rank, keep_rows)
+df_level <- filter(df_level, keep_rows)
 ```
 
-Now we can create all the `data.frame`s we need. Specifically, we need three 
-`data.frame`s that contain information on:
-
-* the coordinates of each segment, to pass to `geom_polygon`
-* rotated text to fill each segment, to plot with `geom_text`
-* more rotated text to display leave names (Orders), again with `geom_text`
-
-Again, I've created functions that do the heavy lifting here.
+The next step is to determine how to represent this structure in a plot. At the
+moment we can't do this, because the data are in 'wide' format. Instead, we need
+to reorder our data so that each node/taxon is represented once, and other
+plotting aesthetics can be added as additional columns. To achieve this, we 
+first convert to 'long' format, preserving information like what row and column
+each taxonomic label was recorded in.
 
 ```{r}
-# subset to only 'higher' nodes for drawing segments
-df_higher <- tree_df[!tree_df$is_leaf, ]
-df_higher <- df_higher[-1, ] # remove root
-segment_df <- get_segments(df_higher)
-segment_df$rank_factor <- factorize_ranks(segment_df) # optional
-
-# calculate rotated text for segments
-segment_text_df <- get_segment_text(df_higher)
-
-# calculate rotated text for leaves
-leaf_text_df <- get_leaf_text(tree_df)
+df_long <- tibble(
+  row = rep(seq_len(nrow(df_level)), ncol(df_level)),
+  level = rep(seq_len(ncol(df_level)), each = nrow(df_level)),
+  taxon = do.call(c, df_level)) |> 
+  filter(!is.na(taxon)) # remove missing values
 ```
 
-# Plot
+Then, we can summarize this plot so that each row is a single taxon, recording
+some metadata about rows and columns from the original dataset
 
-Finally, we can draw our plot. I've chosen to use the `viridis` colour palette,
-and to color segments by rank.
+```{r} 
+df_plot <- df_long |>
+  group_by(taxon) |>
+  summarize(
+    xmin = min(row) - 1, 
+    xmax = max(row), 
+    ymin = level[1] - 1,
+    ymax = level[1])
+     
+df_plot
+```
 
-```{r, message = FALSE, layout = "l-page",preview = TRUE}
-ggplot() +
-  geom_polygon(
-    data = segment_df,
-    mapping = aes(x = x, y = y, group = group, fill = rank_factor),
-    color = "white"
-  ) +
-  # label the root node in the centre of the plot
+# Drawing
+Our dataset now contains all the information we need to plot the structure of 
+our taxonomic tree. As usual, we're going to plot this with `ggplot2`.
+
+```{r}
+library(ggplot2)
+ggplot(df_plot) +
+  geom_rect(
+    mapping = aes(
+      xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, 
+      group = taxon,
+      fill = ymax),
+    color = "white")
+```
+
+While this is (probably) accurate, it's not very informative. The most obvious
+missing element is labels; to add these, we'll need to determine which nodes 
+are 'leaves', and which are 'branches'. We'll also want to restrict labelling 
+to larger branches, to avoid the text looking crowded. Finally, there is no 
+need to label leaves with both a rectangle and text; so we'll remove the leaf
+rectangles from the plot.
+
+```{r}
+df_plot <- df_plot |> mutate(
+  x_dist = xmax - xmin,
+  is_leaf = taxon %in% df_rank$rank_order)
+
+p <- ggplot() +
+  geom_rect(
+    data = filter(df_plot, !is_leaf),
+    mapping = aes(
+      xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, 
+      group = taxon,
+      fill = ymax),
+    color = "white")
+
+p +
+  # branch labels
   geom_text(
-    data = tree_df[1, ], 
-    mapping = aes(label = name),
-    x = 0,
-    y = 0,
-    hjust = 0.5,
-    size = 1.5,
-    color = "grey30",
-    family = "mono") +
-  # segment text
+    data = filter(df_plot, x_dist > 5),
+    mapping = aes(
+      x = xmin + (x_dist * 0.5), 
+      y = ymin + 0.5,
+      label = taxon),
+    color  = "white",
+    size = 3) +
+  # leaf labels
   geom_text(
-    data = segment_text_df,
-    mapping = aes(x = x, y = y, label = label, angle = rotation),
-    size = 1.5,
-    color = "white",
-    family = "mono") +
-  # leaf text
-  geom_text(
-    data = leaf_text_df,
-    mapping = aes(x = x, y = y, label = label, angle = rotation, hjust = hjust),
-    size = 1.5,
-    color = "grey50",
-    family = "mono") +
-  lims(x = c(-10, 8), y = c(-10, 8))+
-  labs(fill = "Rank") +
-  scale_fill_manual(values = c(viridis(5, begin = 0, end = 0.9), "grey40")) +
-  coord_fixed() +
-  theme_void() +
+    data = filter(df_plot, is_leaf),
+    aes(x = xmin + 0.5, y = ymin, label = taxon),
+    angle = 90,
+    hjust = 0,
+    size = 2.5,
+    color = "grey20") 
+```
+
+This is better, but not ideal. A much more pleasing look is to use 
+`coord_polar()` to generate a circular plot; but this leads to linear text on a 
+circular plot, which looks messy. Fortunately, the new package `geomtextpath` 
+solves this problem. All we have to do is replace `geom_text` with 
+`geom_textpath`, leaving all other code the same, and add `coord_polar()` at 
+the end.
+
+```{r}
+library(geomtextpath)
+
+p <- p + 
+  geom_textpath(
+    data = filter(df_plot, x_dist > 5),
+    mapping = aes(
+      x = xmin + (x_dist * 0.5), 
+      y = ymin + 0.5,
+      label = taxon),
+    color  = "white",
+    size = 3) +
+  geom_textpath(
+    data = filter(df_plot, is_leaf),
+    aes(x = xmin + 0.5, y = ymin, label = taxon),
+    angle = 90,
+    hjust = 0,
+    size = 2.5,
+    color = "grey20") +
+  coord_polar()
+p
+    
+```
+
+Finally, we can add some finishing touches by changing the color scheme, 
+hiding the background colors and legend, and resizing the y axis so all the 
+labels are visible.
+
+```{r}
+library(viridis)
+
+p +
+  scale_fill_viridis(begin = 0, end = 0.9, direction = -1) +
+  lims(y = c(0, 8)) +
+  theme_void() + 
   theme(legend.position = "none")
+p
 ```
 
-In future, there are several things you could do to improve this kind of plot:
-
-* show level in the taxonomic hierarchy by radius of each segment, rather than colour
-* support variable letter spacing for segment text, reducing dependence on monospaced fonts
-* potentially add marginal barplots or similar, e.g. to show number of records or species in each terminal node
-* package this up so it's easier to reproduce
-
-While those are great ideas, that's all for now - I hope you found this helpful!
+Done! This is a fun plot, but there are ways it could be expanded or improved,
+the most obvious of which is to find ways to add supplementary information. Wouldn't it be great, for example, to add leaf-level record counts as
+marginal barplots? Or scale the size of segments to the number of records, 
+rather than the number of clades? While none of these are impossible, I'm
+going to leave this here for now. I hope you like the result!
