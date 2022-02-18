@@ -29,7 +29,7 @@ html {
   --fig-cap-color:   rgba(0, 0, 0, 0.6);
   /*-- Specify custom fonts ~~~ must be imported above   --*/
   --heading-font:    'Lato', sans-serif;
-  --mono-font:       'Fira Code' monospace;
+  --mono-font:       'Fira Code', monospace;
   --body-font:       'Roboto', sans-serif;
   --navbar-font:     'Lato' sans-serif;  /* websites + blogs only */
 }
@@ -109,7 +109,7 @@ d-article div.sourceCode {
 
 .code {
   background-color: #f7f7f7;
-  font-size: 1.04rem;
+  font-size: 1.02rem;
   all: revert;
 }
 
