@@ -40,7 +40,7 @@ d-byline {
 :::author-card
 :::float-image
 
-```{r out.width='120px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
+```{r, out.width='120px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/martin.jpg")
 ```
 
@@ -67,12 +67,22 @@ a big fan of 'magma', which has a black-purple-orange-yellow scheme
 
 ```{r}
 library(galah)
+library(dplyr)
 library(ggplot2)
 library(viridis)
 
-records <- ala_counts(group_by = "cl22")
+# Get field code for states/territories
+search_fields("australian states") # cl22
+
+# Download record counts by state/territory
+records <- galah_call() %>%
+  galah_group_by(cl22) %>%
+  atlas_counts()
+
+# Add state information back to data frame
 records$State <- factor(seq_len(nrow(records)), labels = records$cl22) 
 
+# Plot
 ggplot(records, aes(x = State, y = log10(count), fill = count)) + 
   geom_bar(stat = "identity") +
   coord_flip() +
@@ -90,9 +100,11 @@ Australian bird plumage
 # remotes::install_github(repo = "shandiya/feathers")
 library(feathers)
 
-rcfd <- ala_counts(
-  taxa = select_taxa("Rose-crowned Fruit-Dove"),
-  group_by = "cl22")
+rcfd <- galah_call() %>%
+  galah_identify("Rose-crowned Fruit-Dove") %>%
+  galah_group_by(cl22) %>%
+  atlas_counts()
+  
 rcfd$State <- factor(seq_len(nrow(rcfd)), labels = rcfd$cl22) 
 
 ggplot(rcfd, aes(x = State, y = log10(count), fill = State)) + 
@@ -123,11 +135,20 @@ tweetrmd::tweet_embed("https://mobile.twitter.com/DeanNicolle1/status/1374112431
 
 ![Image of Eucalyptus salubris by Dean Nicolle](./data/Dean_Nicolle_Esalubris_image_small.jpeg)
 
-First, get observations of the Eucalypt of the Year 2021 from ALA using the [galah](https://atlasoflivingaustralia.github.io/galah/index.html) package. Specifically, we use `ala_counts()` to determine how many records of *Eucalyptus salubris* are held by the ALA:
+First, get observations of the Eucalypt of the Year 2021 from ALA using the [galah](https://atlasoflivingaustralia.github.io/galah/index.html) package. Specifically, we use `atlas_counts()` to determine how many records of *Eucalyptus salubris* are held by the ALA:
 
 ```{r, message = FALSE, warning = FALSE, results = 'hide'}
-n_records <- ala_counts(taxa = select_taxa("Eucalyptus salubris"))
+n_records <- galah_call() %>%
+  galah_identify("Eucalyptus salubris") %>%
+  atlas_counts()
 ```
+
+Here is what the data look like:
+
+```{r}
+n_records %>% head()
+```
+
 
 Then get a color scheme from images of the species in question using the [paletter](https://github.com/AndreaCirilloAC/paletter) package (which needs to be installed from GitHub) <br>
 
