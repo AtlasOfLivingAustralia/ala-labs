@@ -42,7 +42,7 @@ d-byline {
 :::float-image
 
 <!-- Author image -->
-```{r out.width='120px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
+```{r, out.width='120px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/martin.jpg")
 ```
 
@@ -188,7 +188,7 @@ df_plot
 Our dataset now contains all the information we need to plot the structure of 
 our taxonomic tree. As usual, we're going to plot this with `ggplot2`.
 
-```{r}
+```{r, layout = "l-body-outset"}
 library(ggplot2)
 ggplot(df_plot) +
   geom_rect(
@@ -247,7 +247,7 @@ solves this problem. All we have to do is replace `geom_text` with
 `geom_textpath`, leaving all other code the same, and add `coord_polar()` at 
 the end.
 
-```{r}
+```{r, layout = "l-body-outset"}
 library(geomtextpath)
 
 p <- p + 
@@ -258,13 +258,13 @@ p <- p +
       y = ymin + 0.5,
       label = taxon),
     color  = "white",
-    size = 3) +
+    size = 2.7) +
   geom_textpath(
     data = filter(df_plot, is_leaf),
     aes(x = xmin + 0.5, y = ymin, label = taxon),
     angle = 90,
     hjust = 0,
-    size = 2.5,
+    size = 2.3,
     color = "grey20") +
   coord_polar()
 p
@@ -274,15 +274,14 @@ Finally, we can add some finishing touches by changing the color scheme,
 hiding the background colors and legend, and resizing the y axis so all the 
 labels are visible.
 
-```{r}
+```{r, layout = "l-body-outset", preview = TRUE}
 library(viridis)
 
 p +
   scale_fill_viridis(begin = 0, end = 0.9, direction = -1) +
-  lims(y = c(0, 8)) +
+  lims(y = c(0, 9)) +
   theme_void() + 
   theme(legend.position = "none")
-p
 ```
 
 Done! This is a fun plot, but there are ways it could be expanded or improved,
