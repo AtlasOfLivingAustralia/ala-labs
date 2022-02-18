@@ -5,7 +5,7 @@
 library(data.table)
 library(rmarkdown)
 library(here)
-source("R/parse_functions.R")
+source(here("R", "parse_functions.R"))
 
 # locate author files that end in .html in _posts
 # Q: group this path search and extraction to a function?
