@@ -43,15 +43,15 @@ d-byline {
 :::float-image
 
 <!-- Author image -->
-```{r out.width='120px', out.extra='style="float:right; margin-left:5px; margin-right:5px; clip-path: circle();"', echo=FALSE}
+```{r, out.width='120px', out.extra='style="float:right; margin-left:5px; margin-right:5px; clip-path: circle();"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/dax.jpg")
 ```
 
-```{r out.width='120px', out.extra='style="float:right; margin-left:5px; margin-right:5px; clip-path: circle();"', echo=FALSE}
+```{r, out.width='120px', out.extra='style="float:right; margin-left:5px; margin-right:5px; clip-path: circle();"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/martin.jpg")
 ```
 
-```{r out.width='120px', out.extra='style="float:right; margin-left:5px; margin-right:5px; clip-path: circle();"', echo=FALSE}
+```{r, out.width='120px', out.extra='style="float:right; margin-left:5px; margin-right:5px; clip-path: circle();"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/matilda.jpg")
 ```
 
@@ -92,8 +92,9 @@ library(sf)
 library(hexbin)
 ```
 
-We will use the [galah](https://atlasoflivingaustralia.github.io/galah/index.html) package to download records.
-(If running this code yourself, you also need to set an email associated with your data download request, substituting your email with `myemail@email.com`. This email should be registered with the ALA, which you can do [here](https://auth.ala.org.au/userdetails/registration/createAccount))
+We will use the [{galah}](https://atlasoflivingaustralia.github.io/galah/index.html) package to download records.
+
+To download species occurrence records, the {galah} package requires you to add an email registered with the ALA to `galah_config()`. If running this code yourself, you will need to add an email using the code below, substituting your email with `myemail@email.com`. This email address should be registered with the ALA, which you can do [here](https://auth.ala.org.au/userdetails/registration/createAccount)
 
 ```{r, eval = FALSE}
 library(galah)
