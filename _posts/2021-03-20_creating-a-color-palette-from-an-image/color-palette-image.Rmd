@@ -72,7 +72,7 @@ library(ggplot2)
 library(viridis)
 
 # Get field code for states/territories
-search_fields("australian states") # cl22
+search_fields("state") # layer: cl22 OR stateProvince
 
 # Download record counts by state/territory
 records <- galah_call() %>%
@@ -93,8 +93,8 @@ ggplot(records, aes(x = State, y = log10(count), fill = count)) +
 
 My default for categorical color schemes is the 'dark2' palette from `RColorBrewer`;
 but given the subject matter of our work, it's worth mentioning the wonderful 
-`feather` package by Shandiya Balasubramaniam, which gives colors based on 
-Australian bird plumage
+`feather` package by [Shandiya Balasubramaniam](people/Balasubramaniam_Shandiya/index.html), 
+which gives colors based on Australian bird plumage.
 
 ```{r}
 # remotes::install_github(repo = "shandiya/feathers")
