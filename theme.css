@@ -338,22 +338,7 @@ d-article div.sourceCode {
 
 
 
-
 /* ----------- ABOUT PAGE -----------*/
-
-/*-- Main team photo --*/
-.main-column {
-  float:left;
-  flex: 0 0 40%;
-  max-width: 40%;
-  width: 40%;
-  margin: 0 1.5%;
-  margin-bottom: 16px;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-
 
 /*-- Team info cards --*/
 
@@ -427,7 +412,7 @@ d-article div.sourceCode {
   color: #222322;
   font-size: 13px;
   margin-bottom:5px;
-  line-height: 2;
+  line-height: 1;
 }
 
 
