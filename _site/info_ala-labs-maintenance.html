@@ -1,0 +1,2136 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Dax" />
+
+
+<title>Managing the ALA Labs Website</title>
+
+<!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content=""/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+<!--radix_placeholder_site_in_header-->
+<script type="text/javascript" cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=UA-4355440-1"></script>
+<script type="text/javascript" cookie-consent="tracking">
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-4355440-1');
+</script>
+<!--/radix_placeholder_site_in_header-->
+
+<style type="text/css">
+body {
+  padding-top: 60px;
+}
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      40px;
+  --body-size:       1.06rem;
+  --code-size:       16px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     rgba(0, 0, 0, 0.8);
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    'Lato', sans-serif;
+  --mono-font:       'Fira Code', monospace;
+  --body-font:       'Roboto', sans-serif;
+  --navbar-font:     'Lato' sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    1rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+d-title {
+  padding-top: 5rem;
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       19px;
+  --text-color:       white;
+  --text-size:        19px;
+  --hover-color:      #E06E53;
+  --bkgd-color:       rgba(34, 35, 34)
+}
+
+.distill-site-footer {
+  --text-color:       black;
+  --text-size:        15px;
+  --hover-color:      #E06E53;
+  --bkgd-color:       white;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+
+/* Make Logo in navbar bigger */
+
+.distill-site-header .logo img {
+    max-height: 52px;
+    width: auto;
+    padding-top: 5px;
+    padding-bottom: 15px;
+    margin-bottom: -25px;
+}
+
+.distill-site-header a, .distill-site-header .title {
+    padding: 25px 10px 10px 10px;
+}
+
+/*  A circle image cropper  */
+
+.clipped {
+    clip-path: circle();
+}
+
+/*  Change code in-text background color */
+
+d-article div.sourceCode {
+    background-color: #f7f7f7;
+}
+
+.code {
+  background-color: #f7f7f7;
+  font-size: 1.02rem;
+  all: revert;
+}
+
+/* ----------- INDEX PAGE -----------*/
+
+/* LARGE HERO IMAGE AT TOP OF PAGE*/
+
+.hero-image {
+    position: relative;
+    margin-bottom: 2em;
+    /* liner gradient tints the image darker for readability*/
+    background-image: linear-gradient( rgba(0,0,0,.3), rgba(0,0,0,.3) ), url(images/galah_image.jfif); 
+    height: 150px;
+    background-size: cover;
+    background-color: #141c25f2;
+    background-position: 50%;
+    display: flex; /* Change to `display: none` for no hero image */
+    justify-content: center;
+    align-items: center;
+    
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding: 230px 0;
+    color: #fff;
+    box-shadow: 0 0 8px rgb(0 0 0 / 30%);
+}
+
+.ALA-top {
+  position: relative;
+  text-align: center;
+  font-size: 100px;
+  color: #ffffff;
+  padding-right: 120px;
+  margin-bottom: 2.5rem;
+  font-weight: bold;
+}
+
+.ALA-bottom {
+  position: relative;
+  text-align: center;
+  font-size: 100px;
+  color: #EEECEA;
+  padding-left: 122px;
+  font-weight: bold;
+}
+
+.ALA-byline {
+  font-size: 20px;
+  text-align: center;
+  color: #ffffff;
+  padding-top: 100px; 
+}
+
+.credit-text {
+  position: absolute;
+  text-align: left;
+  left: 2%;
+  bottom: 5%;
+}
+
+.ALA-species-credit {
+  font-size: 11px;
+  font-style: italic;
+  color: white;
+}
+
+.ALA-image-credit {
+  text-align: left;
+  font-size: 14px;
+  color: white;
+}
+
+@media (min-width: 992px){
+.credit-text {
+  position: absolute;
+  bottom: 3%;
+}
+}
+
+/*----------------------------------------------*/
+
+/*-- Our values --*/
+
+.px-0 {
+    padding-left: 0!important;
+    padding-right: 0!important;
+}
+
+.values-row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+@media (min-width: 992px){
+  .col-lg-4 {
+    float:left;
+    width: 33.333333%;
+    flex: 1;
+    max-width: 33.333333%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    display:flex;
+  }
+}
+
+.value-feature-1 {
+    background: #B8573E;
+    color: white;
+}
+
+.value-feature-2 {
+    background: #E06E53;
+    color: white;
+}
+
+.value-feature-3 {
+    background: #B8573E;
+    color: white;
+}
+
+.value-text {
+  color: white;
+}
+
+.value-block {
+    color: #fff;
+    padding: 85px 65px;
+    float: left;
+    display: block;
+}
+
+
+/*----------------------------------------------*/
+
+/*-- Categories of posts buttons --*/
+
+/* Three columns side by side */
+.category-column {
+  float: left;
+  width: 30%;
+  margin-bottom: 16px;
+  padding: 0 12px;
+  flex-direction: column
+}
+
+
+/* Display the columns below each other instead of side by side on small screens */
+
+@media screen and (max-width: 952px) {
+  .category-column {
+    width: 100%;
+    display: block;
+  }
+}
+
+/* Add some shadows to create a card effect */
+
+
+.category-image {
+  display: block;
+  margin: auto;
+  width: auto;
+  height: 120px;
+  width:100%;
+  text-align: center;
+  backface-visibility: hidden;
+  transform: perspective(1px) translate3d(0, 15px, 0);
+  transition: all .1ms;
+}
+
+
+.honey {
+  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
+}
+
+.honey:hover {
+  filter: invert(95%) sepia(43%) saturate(3246%) hue-rotate(313deg) brightness(100%) contrast(102%);
+}
+
+.sage {
+  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
+}
+
+.sage:hover {
+  filter: invert(94%) sepia(12%) saturate(881%) hue-rotate(28deg) brightness(88%) contrast(81%);
+}
+
+.ocean {
+  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
+}
+
+.ocean:hover {
+  filter: invert(17%) sepia(24%) saturate(5973%) hue-rotate(191deg) brightness(93%) contrast(104%);
+}
+
+
+
+/*----------------------------------------------*/
+
+
+
+
+/* ----------- ABOUT PAGE -----------*/
+
+/*-- Team info cards --*/
+
+/* Three columns side by side */
+.card-column {
+  float: left;
+  width: 28.8%;
+  margin-bottom: 16px;
+  padding: 0 12px;
+  flex-direction: row;
+  display: block;
+}
+
+
+/* Display the columns below each other instead of side by side on small screens */
+
+@media screen and (max-width: 952px) {
+  .card-column {
+    width: 100%;
+    display: block;
+  }
+}
+
+/* Add some shadows to create a card effect */
+.team-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Some left and right padding inside the container */
+.container {
+  padding: 0 16px;
+}
+
+/* Clear floats */
+.container::after, .row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.team-image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.team-image-text {
+  color: #E06E53;
+  font-size: 14px;
+  padding: 16px 28px;
+}
+
+.team-image:hover {
+  opacity: 0.7;
+}
+
+.name {
+  color: #B8573E;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.name:hover {
+  color: #E06E53;
+}
+
+.job-title {
+  color: #222322;
+  font-size: 13px;
+  margin-bottom:5px;
+  line-height: 1;
+}
+
+
+.button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #B8573E;
+  text-align: center;
+  cursor: pointer;
+  width: 20%;
+  clip-path: circle();
+}
+
+.button:hover {
+  background-color: #E06E53;
+}
+/* ----------------------------------*/
+
+
+/* ----------- PEOPLE PAGES -----------*/
+
+.article-link:hover {
+  color: #E06E53;
+  text-decoration: none;
+  transition: background-size .4s ease;
+  border-bottom: 1px solid
+}
+
+.article-link:hover::after {
+  border-color: #E06E53;
+  right: 0;
+  border-radius: 1em;
+  border-top: .1em solid #E06E53;
+  content: "";
+  transition: right .4s cubic-bezier(0,.5,0,1),
+              border-color .4s ease-out;
+}
+
+/* People page buttons */
+.button-column {
+  float: left;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding: 0 12px;
+}
+
+.button-2 {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 10px;
+  color: white;
+  background-color: #B8573E;
+  text-align: center;
+  cursor: pointer;
+  clip-path: circle();
+  text-decoration: none;
+
+}
+
+.button-2:hover {
+  background-color: #E06E53;
+}
+
+
+/* ----------------------------------*
+
+
+/* ----------- POSTS -----------*/
+
+/* Author card at the top of each post  */
+
+.sidebar-iframe {
+  border: 0px;
+}
+
+.author-card {
+    color: black;
+    background-color: white;
+    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(184, 87, 62, 0.1) 0px 0px 8px;
+    /*box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(184, 87, 62) 0px 0px 0px 1px inset;*/
+    transition: 0.3s;
+    text-decoration: none;
+    display: block;
+    margin-top: -20px;
+    padding-left: 15px;
+    padding-top: 2px;
+    padding-bottom:8px;
+}
+
+.author-card-text {
+  font-size: 0.9rem;
+}
+
+
+@media screen and (max-width: 952px) {
+  .author-card {
+    color: black;
+    background-color: white;
+    border-style: solid;
+    border-radius: 1px;
+    border-color: #E06E53;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 10px; 
+    margin: 16px 16px;
+    text-decoration: none;
+    display: block;
+    width: 300px;
+  }
+}
+
+
+</style>
+<style type="text/css">
+/* base style */
+
+/* FONT FAMILIES */
+
+:root {
+  --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-family: var(--body-font), var(--body-default);
+}
+
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
+  font-family: var(--heading-font), var(--heading-default);
+}
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: var(--mono-font), var(--mono-default);
+}
+
+
+/*-- TITLE --*/
+d-title h1,
+.posts-list > h1 {
+  color: var(--title-color, black);
+}
+
+d-title h1 {
+  font-size: var(--title-size, 50px);
+}
+
+/*-- HEADERS --*/
+d-article h1,
+d-article h2,
+d-article h3,
+d-article h4,
+d-article h5,
+d-article h6 {
+  color: var(--header-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- BODY --*/
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 1.06rem);
+}
+
+
+/*-- CODE --*/
+d-article div.sourceCode code,
+d-article pre code {
+  font-size: var(--code-size, 14px);
+}
+
+/*-- ASIDE --*/
+d-article aside {
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- FIGURE CAPTIONS --*/
+figure .caption,
+figure figcaption,
+.figure .caption {
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- METADATA --*/
+d-byline h3 {
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
+}
+
+d-byline {
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+d-byline a,
+d-article d-byline a {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- TABLE OF CONTENTS --*/
+.d-contents nav h3 {
+  font-size: var(--heading-size, 18px);
+}
+
+.d-contents nav a {
+  font-size: var(--contents-size, 13px);
+}
+
+/*-- APPENDIX --*/
+d-appendix h3 {
+  font-size: var(--heading-size, 15px);
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
+}
+
+d-appendix {
+  font-size: var(--text-size, 0.8em);
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+d-appendix d-footnote-list a.footnote-backlink {
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+.distill-site-header .title {
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a,
+.nav-dropdown .nav-dropbtn {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
+}
+
+.distill-site-header {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer a:hover {
+  color: var(--hover-color, white);
+}</style>
+<script src="C:\Users\KEL329\R-packages\rmarkdown\rmd\h\pandoc\header-attrs.js"></script>
+<script src="C:\Users\KEL329\R-packages\jquerylib\lib\3.6.0\jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="C:\Users\KEL329\R-packages\rmarkdown\rmd\h\bootstrap\css\bootstrap.min.css" rel="stylesheet" />
+<script src="C:\Users\KEL329\R-packages\rmarkdown\rmd\h\bootstrap\js\bootstrap.min.js"></script>
+<script src="C:\Users\KEL329\R-packages\rmarkdown\rmd\h\bootstrap\shim\html5shiv.min.js"></script>
+<script src="C:\Users\KEL329\R-packages\rmarkdown\rmd\h\bootstrap\shim\respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="C:\Users\KEL329\R-packages\rmarkdown\rmd\h\navigation-1.1\tabsets.js"></script>
+<link href="C:\Users\KEL329\R-packages\rmarkdown\rmd\h\highlightjs\default.css" rel="stylesheet" />
+<script src="C:\Users\KEL329\R-packages\rmarkdown\rmd\h\highlightjs\highlight.js"></script>
+<link href="C:\Users\KEL329\R-packages\rmarkdown\rmd\h\fontawesome\css\all.css" rel="stylesheet" />
+<link href="C:\Users\KEL329\R-packages\rmarkdown\rmd\h\fontawesome\css\v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a class="logo" href="https://www.ala.org.au">
+<img src="images/logos/ALA_Logo_Stacked_REV-RGB.png" alt="Logo"/>
+</a>
+<a href="index.html" class="title">ALA Labs</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="index.html">
+<i class="fas fa-home" aria-hidden="true"></i>
+</a>
+<a href="about.html">About</a>
+<a href="posts.html">Posts</a>
+<div class="nav-dropdown">
+<button class="nav-dropbtn">
+Resources
+ 
+<span class="down-arrow">&#x25BE;</span>
+</button>
+<div class="nav-dropdown-content">
+<a href="galah.html">galah</a>
+<a href="https://ala.org.au/contact-us/">Contact Us</a>
+</div>
+</div>
+<a href="https://www.ala.org.au">
+<i class="fa images/favicon.ico" aria-hidden="true"></i>
+</a>
+<a href="https://github.com/AtlasOfLivingAustralia/science">
+<i class="fab fa-github" aria-hidden="true"></i>
+</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">
+    <span class="fas fa-home"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="posts.html">Posts</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="galah.html">galah</a>
+    </li>
+    <li>
+      <a href="https://ala.org.au/contact-us/">Contact Us</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="https://www.ala.org.au">
+    <span class=" images/favicon.ico"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/AtlasOfLivingAustralia/science">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Managing the ALA Labs Website</h1>
+<h4 class="author">Dax</h4>
+<h4 class="date">18/01/2022</h4>
+
+</div>
+
+
+<div id="installation" class="section level1">
+<h1>Installation</h1>
+<p>Install the <code>distill</code> package from CRAN:</p>
+<pre class="r"><code>install.packages(&quot;distill&quot;)</code></pre>
+<p>Clone the ala-labs repository to a local directory.</p>
+<hr />
+</div>
+<div id="build-website" class="section level1">
+<h1>Build website</h1>
+<p>To build the website, run the code in <code>R/ignition_sequence.R</code>. After the code successfully runs, see the website by going to your local file explorer and opening <code>_site/index.html</code>.</p>
+<p>We use a custom file to build the website because we have added several new features to the standard distill website format (like updating lists in <code>_people</code> pages and a custom search tool in the Posts toolbar). Therefore, using the recommendation from the <a href="https://rstudio.github.io/distill/website.html">Distill for R Markdown</a> website to use the <strong>Build Website</strong> tab in the Build pane in R Studio no longer works.</p>
+<p>When you build a website, the following things occur:</p>
+<ol style="list-style-type: decimal">
+<li><p>All of the Rmd and md files in the root website directory will be rendered into HTML. Note however that markdown files beginning with “_” are not rendered (this is a convention to designate files that are included by top level documents).</p></li>
+<li><p>Posts will be copied into the <code>posts</code> sub-directory of the output directory and post listing pages will be re-generated.</p></li>
+<li><p>The generated HTML files and any supporting files (e.g. CSS and JavaScript) are copied into an output directory (<code>_site</code> by default).</p></li>
+<li><p>The top 3 most recently written Posts will be added to the author’s <code>_people</code> page.</p></li>
+</ol>
+<p>The HTML files within the _site directory are now ready to deploy as a standalone static website.</p>
+<hr />
+<div id="website-workflow" class="section level2">
+<h2>Website workflow</h2>
+<p>Updates to the website should be added to the <code>dev</code> branch of the GitHub repo. In the <code>dev</code> branch, any changes made will not be published to the existing website. This means the <code>dev</code> branch effectively works as a test site prior to deployment.</p>
+</div>
+<div id="publishing-the-website" class="section level2">
+<h2>Publishing the website</h2>
+<p>The <code>_site</code> folder has all of the information to build the website. This folder is linked to the url domain, and this is what is published to labs.ala.org.au.</p>
+<p>When you are happy with changes or updates to the website, make sure that you push changes to the master branch of the rendered <code>_site</code> folder (after running <code>R/ignition_sequence.R</code>). - in the dev branch, this won’t be updated - make sure you don’t overwrite the .gitignore file in the master and in the dev branch because they differ</p>
+</div>
+</div>
+<div id="site-customisation" class="section level1">
+<h1>Site customisation</h1>
+<p>See the <a href="https://rstudio.github.io/distill/website.html">Distill website</a> page for instructions on website structure, editing and customisation.</p>
+<div id="adding-main-web-pages" class="section level2">
+<h2>Adding Main Web Pages</h2>
+<p>Main web pages (ie. pages in the navigation bar) are saved in the top folder by their page name (for example, the content for the About page is in <code>about.Rmd</code>).</p>
+<p>Additional pages can be added by creating a new R Markdown page in the main website folder with the yaml header:</p>
+<pre class="r"><code>---
+title: &quot;&quot;
+description: |
+  
+output: 
+  distill::distill_article:
+    css: theme.css
+---</code></pre>
+<p>Add pages to the website by adding them to the site navigation in <code>_site.yml</code> under <code>navbar</code></p>
+</div>
+<div id="site-output-and-navigation" class="section level2">
+<h2>Site Output and Navigation</h2>
+<p>The <code>_site.yml</code> controls the main website information and site navigation.</p>
+<p>Elements can be edited to alter navigation paths. For example, the <code>navbar</code> for the ALA Labs website is:</p>
+<pre class="r"><code>---
+navbar:
+  logo:
+    image: images/logos/ALA_Logo_Stacked_REV.png
+    href: https://www.ala.org.au
+  right:
+    - text: &quot;About&quot;
+      href: about.html
+    - text: &quot;Posts&quot;
+      href: posts.html
+    - text: &quot;Resources&quot;
+      menu:
+        - text: &quot;galah&quot;
+          href: galah.html
+        - text: &quot;ALA Labs Style Guide&quot;
+          href: test_style-guide.html
+    - icon: fab fa-github
+      href: https://github.com/AtlasOfLivingAustralia/science
+---</code></pre>
+<hr />
+</div>
+</div>
+<div id="editing-content" class="section level1">
+<h1>Editing content</h1>
+<div id="posts" class="section level2">
+<h2>Posts</h2>
+<div id="writing-new-posts" class="section level3">
+<h3>Writing new posts</h3>
+<p>Posts are written in R markdown. New posts should be created in the <a href="https://github.com/AtlasOfLivingAustralia/science">AtlasofLivingAustralia/science Github repository</a>. Posts must be created using the correct Post template.</p>
+<p>To create a new post:</p>
+<ol style="list-style-type: decimal">
+<li><p>Create a new folder in the <a href="https://github.com/AtlasOfLivingAustralia/science/tree/main/comms">comms folder within the AtlasofLivingAustralia/science Github repository</a>. If your new post is based on an existing R script already saved in a comms folder, navigate to the comms folder containing your R script</p></li>
+<li><p>Install the <a href="https://github.com/AtlasOfLivingAustralia/alatheme">alatheme</a> package</p></li>
+<li><p>Follow the instructions on <a href="https://github.com/AtlasOfLivingAustralia/alatheme">alatheme</a> to create a new ALA Website Post template in your working directory. Name your file the same name as your R script if your new Post is based on an existing R script</p></li>
+</ol>
+</div>
+<div id="managing-reproducibility-with-renv" class="section level3">
+<h3>Managing reproducibility with <code>renv</code></h3>
+<p>The packages you use to make a post will inevitably change. At some point these changes will “break” your code and cause your post to stop knitting. When this happens, posts will become obsolete and impossible to update without updating/bug fixing the whole document. To stop this from happening, one can use the <code>renv</code> package to document and load the R environment + packages that were used to create a post on the date the post was finished. The ability to record a post’s R environment makes it possible to reproduce R Markdown documents into the future.</p>
+<p>Using <code>distill</code> and <code>renv</code> together can cause problems. Luckily, Danielle Navarro has created an (in progress) R package called <code>refinery</code> and a <a href="https://blog.djnavarro.net/posts/2021-09-30_on-blogging-reproducibly/">blogpost on how she uses it with her own blog</a>. Also see the <code>refinery</code> <a href="https://github.com/djnavarro/refinery">GitHub repo</a> for more info.</p>
+<p>Install the <code>refinery</code> package:</p>
+<pre class="r"><code>devtools::install_github(&quot;djnavarro/refinery&quot;)</code></pre>
+<p>Here’s a brief summary of the function used to manage posts:</p>
+<ul>
+<li><p>When creating a new post, run <code>refinery::renv_new("folder-name-in-_posts-folder"</code> to make a “lock-file” for the blog in the _renv folder. This file documents the R environment of your post.</p></li>
+<li><p>Add <code>refinery::renv_load("2021-04-14_hex-maps-for-species-occurrence-data")</code> at the top of the post to use the <code>renv</code> lock-file.</p></li>
+<li><p>Manage the post’s <code>renv</code> lock-file. Update the lock-file to what is saved in your local environment with <code>refinery::renv_snapshot()</code>. Update your local environment to what is saved in the lock-file with <code>refinery::renv_restore()</code>. Delete all <code>renv</code> infrastructure associated with a particular post (i.e., rage quit) with <code>refinery::delete</code>.</p></li>
+</ul>
+<p>Read <a href="https://blog.djnavarro.net/posts/2021-09-30_on-blogging-reproducibly/#step-4-updating-the-r-environment">section 4 of Dani’s blogpost</a> to get an idea of how process works in more detail.</p>
+</div>
+<div id="rendering-posts" class="section level3">
+<h3>Rendering posts</h3>
+<div id="writing-your-posts" class="section level4">
+<h4>Writing your posts</h4>
+<p>Post Rmd files must be <strong>Knit</strong> into html files to be used on the website. When you <strong>Knit</strong> a document, R Studio renders the file starting with a blank slate - all packages and .Rdata must be loaded within the document, even if data or packages exist in your local environment. Rendering in this way improves the reproducibility of your document (though it can be frustrating at times).</p>
+<p>While writing your posts, you can render posts locally. If using R studio, you can render your Rmd file as an html by clicking the <strong>Knit</strong> button.</p>
+</div>
+<div id="prepaing-your-final-post" class="section level4">
+<h4>Prepaing your final post</h4>
+<p>When you are ready to publish your article, you should remove all personal information from your article and render your post using the code in <code>R/render_post.R</code>.</p>
+<p>Functions like <code>galah::galah_config()</code> + <code>atlas_occurrences()</code> require input or settings that are private (like your personal email address) that you shouldn’t share in your final Rmd or html document. Using <strong>Knit</strong> will cause issues because R requires that this information is included in the document to render your R Markdown file.</p>
+<p><code>R/render_post.R</code> instead uses <code>rmarkdown::render()</code>, which preserves this information compared to using the <strong>Knit</strong> button in R Studio, and should render your R Markdown file correctly.</p>
+<p>If your R Markdown renders successfully, the new html file will be saved in the file directory you set in <code>path</code>. Open this html file to view the rendered html page.</p>
+</div>
+</div>
+<div id="adding-new-posts-to-the-website" class="section level3">
+<h3>Adding new posts to the website</h3>
+<p>Once your post is ready to be added to the website, it’s a good idea to double-check that the rendered html file of the post is the correct final version. New posts should be saved in a new folder within the <code>_posts</code> folder. Posts based on R script in the ALA/Science git repo should be named with the same folder name as in the Science repo</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="theme-customisation" class="section level1">
+<h1>Theme customisation</h1>
+<p>Distill uses a CSS framework that can be fully customised. CSS theme settings are in <code>theme.css</code>. See the <a href="https://rstudio.github.io/distill/website.html">Distill website</a> page for instructions on how to edit additional website properties.</p>
+<p>Some properties can be found in labeled sections, like settings for website fonts, header and footer sections. For example, website header settings can be found in the <code>.distill-site-header</code> section:</p>
+<pre class="css"><code>/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;    
+  --text-color:       #ff414b; /* edited */
+  --text-size:        15px;
+  --hover-color:      #dd424c; /* edited */
+  --bkgd-color:       #ffd8db; /* edited */
+}</code></pre>
+<p>Other properties are edited using custom CSS.</p>
+<div id="editing-custom-css" class="section level2">
+<h2>Editing custom CSS</h2>
+<p>Additional custom CSS is found in <code>theme.css</code>. Edit or create new CSS properties for html elements to customise the ALA Labs website theme.</p>
+</div>
+<div id="custom-html-elements-using-r-functions" class="section level2">
+<h2>Custom html elements using R functions</h2>
+<p><code>R/functions.R</code> contains functions that create html elements within the ALA Labs website. <code>R/functions.R</code> uses the <a href="https://rstudio.github.io/htmltools/">htmlTools</a> package to write html code using R syntax.</p>
+<p>For example, the following R function and html code will both create a link of <code>class = "article-link"</code> which can be edited using CSS:</p>
+<pre class="html"><code>&lt;!-- html --&gt;
+&lt;a class = &quot;article-link&quot; href = &quot;https://ala.org.au/&quot;&gt;my text&lt;/a&gt;</code></pre>
+<pre class="r"><code># R function
+add_link_to_article &lt;- function(title, url){
+  tags$a(
+    class = &quot;article-link&quot;,
+    href = url,
+    &quot;text&quot;
+  )
+}
+
+add_link_to_article(text = &quot;my text&quot;, url = &quot;https://ala.org.au/&quot;)</code></pre>
+<p>The benefits of writing R functions to create html elements are:</p>
+<ol style="list-style-type: decimal">
+<li><p>Rather than trying to edit html elements that the Distill package runs in the back-end to build the website, adding html elements using R functions is easier and less prone to errors</p></li>
+<li><p>It is easier for people familiar in R to reuse and edit the content of existing html elements created by R functions</p></li>
+</ol>
+<p>To use functions in the <code>R/functions.R</code> file on a website page or post, add the following code block below the YAML header</p>
+<pre class="r"><code>``{r, include=FALSE}
+library(htmltools)
+source(&quot;R/functions.R&quot;)
+``</code></pre>
+</div>
+</div>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_navigation_after_body-->
+<div class="distill-site-nav distill-site-footer">
+<!-- ALA Template Footer -->
+<style>
+
+/*-- Copyright --*/
+
+.copyright-container {
+  width: 50%; 
+  margin-bottom: 30px; 
+  margin-top: 30px;
+  max-width: 704px;
+}
+
+.copyright-row {
+ width: 100vw;
+ position: relative;
+ margin-left: -50vw;
+ height: 50px;
+ margin-bottom: -1.75vw;
+ left: 50%;
+ background-color: #B8573E;
+ background-position: bottom;
+ background-size: cover;
+ display: flex;
+
+}
+
+.copyright-column-left {
+  float: left;
+  display: inline-block;
+  padding-left: 30px;
+}
+
+.copyright-text {
+  color: white;
+  font-size: 12px;
+  padding-top: 10px}
+
+.copyright-text a:hover {
+  color: #222322;
+}
+
+
+/*-- Logos and acknowledgement --*/
+
+.footer-container { 
+  display: flex;
+  width: 50%; 
+  margin-bottom: 30px; 
+  margin: auto;
+  max-width: 704px;
+}
+
+.distill-site-footer {
+  padding-top: 0px;
+  padding-bottom: 10px;
+}
+
+.row-footer { /* Do not change the name of this column - it causes issues */
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.column-footer { /* Do not change the name of this column - it causes issues */
+  float: left;
+  width: 49%;
+  max-width: 50%;
+  position: relative;
+  min-height: 1px;
+  display: flex;
+  flex-direction:column;
+  display:inline-block;
+  margin:5px;
+}
+
+
+.footer-logo {
+  text-align: center;
+  margin:5px;
+}
+
+.footer-text {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  color: #565656;
+  text-align: left;
+}
+
+.footer-text-small {
+  font-family: Roboto,sans-serif;
+  font-size: .82rem;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  color: #565656;
+  text-align: left;
+  margin-top: 10px;
+}
+
+d-article a:hover {
+  color: #E06E53;
+}
+
+/*-- Back to ALA button --*/
+
+.link-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: block;
+  width: 30em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.link-button {
+  border: none;
+  color: #E06E53;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin: 4px 2px;
+  transition-duration: 0.3s;
+  cursor: pointer;
+  background-color: white; 
+  border: 2px solid #E06E53;
+  border-radius: 10px;
+}
+
+.link-button:hover {
+  background-color: #222322;
+  border: 2px solid #222322;
+  color: #E06E53;
+}
+
+.ala-icon {
+    height: 20px;
+    width: auto;
+    /* Other styles here */
+}
+
+@media screen and (max-width: 952px) {
+  .column-footer {
+    float:left;
+    width: 100%;
+    max-width: 100%;
+    display: block;
+  }
+  .link-container {
+    display: block;
+    width: 20em;
+    margin: auto;
+  }
+}
+
+</style>
+<div class = "container">
+  <hr style = "opacity: 0.4; margin-top: 10px; margin-bottom:10px" />
+</div>
+<div class = "link-container">
+    <a href = url style = "border-bottom: none">
+      <button class = "link-button" href = "https://ala.org.au/"><strong>To the Atlas of Living Australia</strong>
+        <img src = "images/logos/ALA_Logo_Mark-only.png" class = "ala-icon"></img></button>
+    </a>
+</div>
+<div class = "footer-container">
+  
+  <!--<div class = "row-footer">-->
+    <div class = "column-footer">
+      <p class = "footer-text">The ALA is made possible by contributions from its partners, is supported 
+      by 
+      <a href = "https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris" class = "footer-link">NCRIS</a>, is hosted by 
+             <a href = "https://csiro.au/" class = "footer-link">CSIRO</a>, and is the Australian node of
+             <a href = "https://www.gbif.org/en/" id = "d-article" class = "footer-link">GBIF</a>.
+      </p>
+      <a href = "https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris">
+        <img src = "images/logos/NCRIS_logo.png" style = "width:auto;height:85px;margin-left:0px;margin-right:2px"></img>
+        </a>
+      <a href = "https://csiro.au/">
+        <img src = "images/logos/CSIRO_logo.png" style = "width:auto;height:85px;margin-left:0px;margin-right:0px"></img>
+        </a>
+      <a href = "https://www.gbif.org/en/">
+        <img src = "images/logos/GBIF-2015.png" style = "width:auto;height:85px;margin-left:-10px;margin-right:2px"></img>
+        </a>
+    </div>
+    <div class = "column-footer" id = "footer-logo">
+      <p class = "footer-text"><strong>Acknowledgement of Traditional Owners and Country</strong></p>
+      <p class = "footer-text-small">The Atlas of Living Australia acknowledges Australia's Traditional Owners 
+      and pays respect to the past and present Elders of the nation's Aboriginal 
+      and Torres Strait Islander communities. We honour and celebrate the 
+      spiritual, cultural and customary connections of Traditional Owners to 
+      country and the biodiversity that forms part of that country.<br></br></p>
+    </div>
+<!--  </div>-->
+</div>
+<p><div class="copyright-row"> <div class="copyright-column-left"> <p class="copyright-text"> This work is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/au/">Creative Commons Attribution 3.0 Australia License</a> <a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/"><img alt="Creative Commons License" style="border-width:0" src="images/logos/cc-by.png"></img></a> </p> </div><!--col end --> </div><!-- row end --></p>
+</div>
+<!--/radix_placeholder_navigation_after_body-->
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

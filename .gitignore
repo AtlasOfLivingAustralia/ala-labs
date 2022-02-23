@@ -1,8 +1,5 @@
 .DS_Store
 
-# Built site
-_site/ 
-
 # History files
 .Rhistory
 .Rapp.history

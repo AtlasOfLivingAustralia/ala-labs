@@ -27,7 +27,7 @@ library(metathis)
 
 meta() %>%
   meta_social(
-    title = "ALA LABS",
+    title = "ALA Labs",
     description = "Demo projects, experiments and debugging data from the Atlas of Living Australia",
     url = "https://labs.ala.org.au",
     image = "https://labs.ala.org.au/galah_image.png",

@@ -29,8 +29,8 @@ navbar:
       menu:
         - text: "galah"
           href: galah.html
-        - text: "ALA Labs Style Guide"
-          href: test_style-guide.html
+        - text: "Contact Us"
+          href: https://ala.org.au/contact-us/
     - icon: images/favicon.ico
       href: https://www.ala.org.au
     - icon: fab fa-github

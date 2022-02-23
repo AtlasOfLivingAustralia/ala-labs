@@ -1,0 +1,40 @@
+---
+title: "title"
+description: |
+  short description
+author:
+  - name: author-name 
+    url: people-url-page
+date: "`r Sys.Date()`"
+categories: 
+  - category 1
+  - category 2
+output: 
+  distill::distill_article:
+    theme: theme.css
+    highlight: tango
+    toc: true
+    toc_float: true
+    toc_depth: 3
+---
+
+Short description or background. Provide links when possible
+
+<aside>
+```{r author image, echo = FALSE}
+library(here)
+image_path <- here("images", "author-image.jpg") # choose image
+htmltools::withTags(
+      img(src = knitr::image_uri(image_path),
+          style = 'height:120px;clip-path: circle();'))
+```
+</aside>
+
+
+------------------------------------------------------------------------------
+
+# Title 
+
+
+
+

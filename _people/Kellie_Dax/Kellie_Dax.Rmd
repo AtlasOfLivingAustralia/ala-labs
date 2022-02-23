@@ -17,7 +17,7 @@ source(here("R", "functions.R"))
 ```{r out.width='200px', out.extra='style="float:right; margin-left:15px; margin-right:15px; clip-path: circle();"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg")
 ```
-Dax is an evolutionary biologist, with a PhD in biological sciences and social psychology. As a data analyst at the ALA, he facilitates scientific rigour and transparency and works to make it easier for researchers to do the same. Dax is an advocate for diversity in STEMM.
+Dax is an evolutionary biologist, with a PhD in biological sciences and social psychology. As a data analyst at the ALA, he makes visualisations of what data are held in the ALA and tries to make these data accessible for scientists and citizen scientists to use. He also facilitates scientific rigour and transparency in the ALA's workflow, and works to make it easier for researchers to do the same.
 ```{r, echo = FALSE}
 tags$div(class = "row", style = "display: flex;",
          
