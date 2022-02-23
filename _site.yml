@@ -3,6 +3,7 @@ title: "ALA Labs"
 description: |
   Demo projects, experiments, debugging data and so on from the [Atlas of Living Australia (ALA)](https://ala.org.au/)
 output_dir: "_site"
+google_analytics: "UA-4355440-1"
 theme: theme.css
 favicon: images/favicon.ico
 collections:
