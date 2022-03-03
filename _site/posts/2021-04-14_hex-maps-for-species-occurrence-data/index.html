@@ -2208,15 +2208,21 @@ d-title {
 /* Make Logo in navbar bigger */
 
 .distill-site-header .logo img {
-    max-height: 52px;
+    max-height: 48px;
     width: auto;
-    padding-top: 5px;
+    padding-left: 9px;
+    padding-top: 13px;
     padding-bottom: 15px;
-    margin-bottom: -25px;
+    margin-bottom: -22px;
 }
 
 .distill-site-header a, .distill-site-header .title {
-    padding: 25px 10px 10px 10px;
+    padding: 35px 12px 10px 10px;
+}
+
+.distill-site-header {
+  padding-top: 15px;
+  padding-bottom: 10px;
 }
 
 /*  A circle image cropper  */
@@ -2825,7 +2831,7 @@ gtag('config', 'UA-4355440-1');
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
 <a class="logo" href="https://www.ala.org.au">
-<img src="../../images/logos/ALA_Logo_Stacked_REV-RGB.png" alt="Logo"/>
+<img src="../../images/logos/ALA_Logo_Inline_REV-RGB.png" alt="Logo"/>
 </a>
 <a href="../../index.html" class="title">ALA Labs</a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
@@ -3117,10 +3123,10 @@ Date:
  width: 100vw;
  position: relative;
  margin-left: -50vw;
- height: 50px;
+ height: 60px;
  margin-bottom: -1.75vw;
  left: 50%;
- background-color: #B8573E;
+ background-color: #c44d34;
  background-position: bottom;
  background-size: cover;
  display: flex;
@@ -3131,6 +3137,8 @@ Date:
   float: left;
   display: inline-block;
   padding-left: 30px;
+  margin: auto;
+  width: 50%;
 }
 
 .copyright-text {
@@ -3174,7 +3182,7 @@ Date:
   display: flex;
   flex-direction:column;
   display:inline-block;
-  margin:5px;
+  margin:6px;
 }
 
 
@@ -3211,8 +3219,8 @@ d-article a:hover {
 /*-- Back to ALA button --*/
 
 .link-container {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   display: block;
   width: 30em;
   margin-left: auto;
@@ -3248,6 +3256,9 @@ d-article a:hover {
 }
 
 @media screen and (max-width: 952px) {
+  .footer-container {
+    width: 100%;
+  }
   .column-footer {
     float:left;
     width: 100%;
@@ -3266,8 +3277,8 @@ d-article a:hover {
   <hr style="opacity: 0.4; margin-top: 10px; margin-bottom:10px">
 </div>
 <div class="link-container">
-    <a href="url" style="border-bottom: none">
-      <button class="link-button" href="https://ala.org.au/"><strong>To the Atlas of Living Australia</strong>
+    <a href="https://ala.org.au/" style="border-bottom: none">
+      <button class="link-button"><strong>To the Atlas of Living Australia</strong>
         <img src="../../images/logos/ALA_Logo_Mark-only.png" class="ala-icon"></button>
     </a>
 </div>

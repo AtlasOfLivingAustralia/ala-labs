@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Dax" />
+<meta name="author" content="Dax Kellie" />
 
 
 <title>Managing the ALA Labs Website</title>
@@ -801,15 +801,21 @@ d-title {
 /* Make Logo in navbar bigger */
 
 .distill-site-header .logo img {
-    max-height: 52px;
+    max-height: 48px;
     width: auto;
-    padding-top: 5px;
+    padding-left: 9px;
+    padding-top: 13px;
     padding-bottom: 15px;
-    margin-bottom: -25px;
+    margin-bottom: -22px;
 }
 
 .distill-site-header a, .distill-site-header .title {
-    padding: 25px 10px 10px 10px;
+    padding: 35px 12px 10px 10px;
+}
+
+.distill-site-header {
+  padding-top: 15px;
+  padding-bottom: 10px;
 }
 
 /*  A circle image cropper  */
@@ -1602,7 +1608,7 @@ $(document).ready(function () {
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
 <a class="logo" href="https://www.ala.org.au">
-<img src="images/logos/ALA_Logo_Stacked_REV-RGB.png" alt="Logo"/>
+<img src="images/logos/ALA_Logo_Inline_REV-RGB.png" alt="Logo"/>
 </a>
 <a href="index.html" class="title">ALA Labs</a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
@@ -1702,63 +1708,54 @@ Resources
 
 
 <h1 class="title toc-ignore">Managing the ALA Labs Website</h1>
-<h4 class="author">Dax</h4>
-<h4 class="date">18/01/2022</h4>
+<h4 class="author">Dax Kellie</h4>
+<h4 class="date">27/02/2022</h4>
 
 </div>
 
 
 <div id="installation" class="section level1">
 <h1>Installation</h1>
-<p>Install the <code>distill</code> package from CRAN:</p>
+<p>Install the {<code>distill</code>} package from CRAN:</p>
 <pre class="r"><code>install.packages(&quot;distill&quot;)</code></pre>
 <p>Clone the ala-labs repository to a local directory.</p>
 <hr />
 </div>
-<div id="build-website" class="section level1">
-<h1>Build website</h1>
-<p>To build the website, run the code in <code>R/ignition_sequence.R</code>. After the code successfully runs, see the website by going to your local file explorer and opening <code>_site/index.html</code>.</p>
-<p>We use a custom file to build the website because we have added several new features to the standard distill website format (like updating lists in <code>_people</code> pages and a custom search tool in the Posts toolbar). Therefore, using the recommendation from the <a href="https://rstudio.github.io/distill/website.html">Distill for R Markdown</a> website to use the <strong>Build Website</strong> tab in the Build pane in R Studio no longer works.</p>
-<p>When you build a website, the following things occur:</p>
+<div id="build-the-website" class="section level1">
+<h1>Build the website</h1>
+<p>We use a custom file to build the website. To build the website, run the code in <code>R/ignition_sequence.R</code>.</p>
+<p>If successful, to see the built website navigate to your local file explorer and opening <code>_site/index.html</code>.</p>
+<p>We use a custom file to build the website because we have added several bespoke features to the standard distill website format (like auto-updating lists in <code>_people</code> pages and a custom search toolbar). Adding these features means that using the recommended method by <a href="https://rstudio.github.io/distill/website.html">{distill}</a> to use the <strong>Build Website</strong> tab in the Build pane no longer works. Only using <code>rmarkdown::build_site()</code> will also not work correctly.</p>
+<p><br></p>
+<p>When you build the website, the following things occur:</p>
 <ol style="list-style-type: decimal">
-<li><p>All of the Rmd and md files in the root website directory will be rendered into HTML. Note however that markdown files beginning with “_” are not rendered (this is a convention to designate files that are included by top level documents).</p></li>
-<li><p>Posts will be copied into the <code>posts</code> sub-directory of the output directory and post listing pages will be re-generated.</p></li>
-<li><p>The generated HTML files and any supporting files (e.g. CSS and JavaScript) are copied into an output directory (<code>_site</code> by default).</p></li>
-<li><p>The top 3 most recently written Posts will be added to the author’s <code>_people</code> page.</p></li>
+<li><p>All of the <code>Rmd</code> and <code>md</code> files in the root website directory will be rendered into HTML. Note, however, that markdown files beginning with “_” are not rendered (this is a convention to designate files that are included by top level documents, or in other words, distill knows not to overwrite these folders because they are important).</p></li>
+<li><p>Posts will be copied into the <code>_site/posts</code> sub-directory. Pages with post listings will be re-generated.</p></li>
+<li><p>The generated HTML files and any supporting files (e.g. CSS and JavaScript) are copied into the <code>_site</code> directory.</p></li>
+<li><p>The top 3 most recently written Posts will be added to the author’s <code>_people</code> page. (<em>Note: For the website to build, ensure that all people who have authored a post have their own People page, even if this page is not accessible to the public</em>)</p></li>
 </ol>
-<p>The HTML files within the _site directory are now ready to deploy as a standalone static website.</p>
+<p>The HTML files within the <code>_site</code> directory are built and ready to deploy as a standalone static website.</p>
 <hr />
-<div id="website-workflow" class="section level2">
-<h2>Website workflow</h2>
-<p>Updates to the website should be added to the <code>dev</code> branch of the GitHub repo. In the <code>dev</code> branch, any changes made will not be published to the existing website. This means the <code>dev</code> branch effectively works as a test site prior to deployment.</p>
-</div>
 <div id="publishing-the-website" class="section level2">
 <h2>Publishing the website</h2>
-<p>The <code>_site</code> folder has all of the information to build the website. This folder is linked to the url domain, and this is what is published to labs.ala.org.au.</p>
-<p>When you are happy with changes or updates to the website, make sure that you push changes to the master branch of the rendered <code>_site</code> folder (after running <code>R/ignition_sequence.R</code>). - in the dev branch, this won’t be updated - make sure you don’t overwrite the .gitignore file in the master and in the dev branch because they differ</p>
+<p>The <code>_site</code> folder has all of the information needed for the static website. The ALA web hosting service has been told to publish what is in the <code>_site</code> folder on the master branch to <a href="labs.ala.org.au"></a>.</p>
+<p>When you are happy with changes or updates to the website, make sure your changes to the <code>_site</code> folder are pushed to the master branch.</p>
+<hr />
 </div>
 </div>
-<div id="site-customisation" class="section level1">
-<h1>Site customisation</h1>
-<p>See the <a href="https://rstudio.github.io/distill/website.html">Distill website</a> page for instructions on website structure, editing and customisation.</p>
-<div id="adding-main-web-pages" class="section level2">
-<h2>Adding Main Web Pages</h2>
-<p>Main web pages (ie. pages in the navigation bar) are saved in the top folder by their page name (for example, the content for the About page is in <code>about.Rmd</code>).</p>
-<p>Additional pages can be added by creating a new R Markdown page in the main website folder with the yaml header:</p>
-<pre class="r"><code>---
-title: &quot;&quot;
-description: |
-  
-output: 
-  distill::distill_article:
-    css: theme.css
----</code></pre>
-<p>Add pages to the website by adding them to the site navigation in <code>_site.yml</code> under <code>navbar</code></p>
+<div id="update-the-website" class="section level1">
+<h1>Update the website</h1>
+<div id="website-workflow" class="section level2">
+<h2>Website workflow</h2>
+<p>Updates to the website should be added to the <code>dev</code> branch of the GitHub repo. In the <code>dev</code> branch, any changes made will not be published to the existing website. The <code>dev</code> branch effectively works as a test site prior to deployment.</p>
 </div>
+</div>
+<div id="add-or-edit-content" class="section level1">
+<h1>Add or edit content</h1>
 <div id="site-output-and-navigation" class="section level2">
 <h2>Site Output and Navigation</h2>
 <p>The <code>_site.yml</code> controls the main website information and site navigation.</p>
-<p>Elements can be edited to alter navigation paths. For example, the <code>navbar</code> for the ALA Labs website is:</p>
+<p>Elements can be edited to alter navigation paths. Here is one example of the <code>navbar</code> for the ALA Labs website:</p>
 <pre class="r"><code>---
 navbar:
   logo:
@@ -1778,55 +1775,39 @@ navbar:
     - icon: fab fa-github
       href: https://github.com/AtlasOfLivingAustralia/science
 ---</code></pre>
+</div>
+<div id="web-pages" class="section level2">
+<h2>Web Pages</h2>
+<div id="add-top-level-pages" class="section level3">
+<h3>Add top-level pages</h3>
+<p>Top-level web pages (the ones people see in the top navigation bar) are saved in the top-level folder by their page name (for example, the content for the About page is in <code>about.Rmd</code>).</p>
+<p>Additional pages can be added by creating a new R Markdown page in the main website folder with the yaml header:</p>
+<pre class="r"><code>---
+title: &quot;&quot;
+description: |
+  description-goes-here
+output: 
+  distill::distill_article:
+    css: theme.css
+---</code></pre>
+<p>Pages can then be added to the website by their <code>text</code> and <code>href</code> to the site navigation in <code>_site.yml</code> under <code>navbar</code> (see <a href="#site-output-and-navigation">Site Output and Navigation</a>)</p>
 <hr />
 </div>
 </div>
-<div id="editing-content" class="section level1">
-<h1>Editing content</h1>
 <div id="posts" class="section level2">
 <h2>Posts</h2>
 <div id="writing-new-posts" class="section level3">
 <h3>Writing new posts</h3>
-<p>Posts are written in R markdown. New posts should be created in the <a href="https://github.com/AtlasOfLivingAustralia/science">AtlasofLivingAustralia/science Github repository</a>. Posts must be created using the correct Post template.</p>
+<p>Posts are written in R markdown files. Post templates can be found in the <code>templates</code> folder.</p>
 <p>To create a new post:</p>
 <ol style="list-style-type: decimal">
-<li><p>Create a new folder in the <a href="https://github.com/AtlasOfLivingAustralia/science/tree/main/comms">comms folder within the AtlasofLivingAustralia/science Github repository</a>. If your new post is based on an existing R script already saved in a comms folder, navigate to the comms folder containing your R script</p></li>
-<li><p>Install the <a href="https://github.com/AtlasOfLivingAustralia/alatheme">alatheme</a> package</p></li>
-<li><p>Follow the instructions on <a href="https://github.com/AtlasOfLivingAustralia/alatheme">alatheme</a> to create a new ALA Website Post template in your working directory. Name your file the same name as your R script if your new Post is based on an existing R script</p></li>
+<li><p>Create a new folder in the <code>_posts</code> folder. The folder name should be the date and title of your article (for example, <code>2022-02-17_sunburst-plots-for-taxonomic-data</code></p></li>
+<li><p>In your new post folder, save your Post file. You are welcome to use a simple name for your Rmd file (for example, <code>sunburst-plots.Rmd</code>)</p></li>
+<li><p>Be sure that you have filled in all the necessary information about your post in the yaml header and in the author card section</p></li>
+<li><p>Write your post</p></li>
+<li><p><strong>Render/Knit your document using the <code>R/render_post.R</code> document.</strong> Using the code in <code>R/render_post.R</code> allows you to avoid adding personal information to your Post (like your personal email in <code>galah_config()</code>). The most recently knitted version of your file is what will appear on the website</p></li>
+<li><p>When you are happy with your post, build the website. After the website it built, your rendered post should appear in the Posts listing page</p></li>
 </ol>
-</div>
-<div id="managing-reproducibility-with-renv" class="section level3">
-<h3>Managing reproducibility with <code>renv</code></h3>
-<p>The packages you use to make a post will inevitably change. At some point these changes will “break” your code and cause your post to stop knitting. When this happens, posts will become obsolete and impossible to update without updating/bug fixing the whole document. To stop this from happening, one can use the <code>renv</code> package to document and load the R environment + packages that were used to create a post on the date the post was finished. The ability to record a post’s R environment makes it possible to reproduce R Markdown documents into the future.</p>
-<p>Using <code>distill</code> and <code>renv</code> together can cause problems. Luckily, Danielle Navarro has created an (in progress) R package called <code>refinery</code> and a <a href="https://blog.djnavarro.net/posts/2021-09-30_on-blogging-reproducibly/">blogpost on how she uses it with her own blog</a>. Also see the <code>refinery</code> <a href="https://github.com/djnavarro/refinery">GitHub repo</a> for more info.</p>
-<p>Install the <code>refinery</code> package:</p>
-<pre class="r"><code>devtools::install_github(&quot;djnavarro/refinery&quot;)</code></pre>
-<p>Here’s a brief summary of the function used to manage posts:</p>
-<ul>
-<li><p>When creating a new post, run <code>refinery::renv_new("folder-name-in-_posts-folder"</code> to make a “lock-file” for the blog in the _renv folder. This file documents the R environment of your post.</p></li>
-<li><p>Add <code>refinery::renv_load("2021-04-14_hex-maps-for-species-occurrence-data")</code> at the top of the post to use the <code>renv</code> lock-file.</p></li>
-<li><p>Manage the post’s <code>renv</code> lock-file. Update the lock-file to what is saved in your local environment with <code>refinery::renv_snapshot()</code>. Update your local environment to what is saved in the lock-file with <code>refinery::renv_restore()</code>. Delete all <code>renv</code> infrastructure associated with a particular post (i.e., rage quit) with <code>refinery::delete</code>.</p></li>
-</ul>
-<p>Read <a href="https://blog.djnavarro.net/posts/2021-09-30_on-blogging-reproducibly/#step-4-updating-the-r-environment">section 4 of Dani’s blogpost</a> to get an idea of how process works in more detail.</p>
-</div>
-<div id="rendering-posts" class="section level3">
-<h3>Rendering posts</h3>
-<div id="writing-your-posts" class="section level4">
-<h4>Writing your posts</h4>
-<p>Post Rmd files must be <strong>Knit</strong> into html files to be used on the website. When you <strong>Knit</strong> a document, R Studio renders the file starting with a blank slate - all packages and .Rdata must be loaded within the document, even if data or packages exist in your local environment. Rendering in this way improves the reproducibility of your document (though it can be frustrating at times).</p>
-<p>While writing your posts, you can render posts locally. If using R studio, you can render your Rmd file as an html by clicking the <strong>Knit</strong> button.</p>
-</div>
-<div id="prepaing-your-final-post" class="section level4">
-<h4>Prepaing your final post</h4>
-<p>When you are ready to publish your article, you should remove all personal information from your article and render your post using the code in <code>R/render_post.R</code>.</p>
-<p>Functions like <code>galah::galah_config()</code> + <code>atlas_occurrences()</code> require input or settings that are private (like your personal email address) that you shouldn’t share in your final Rmd or html document. Using <strong>Knit</strong> will cause issues because R requires that this information is included in the document to render your R Markdown file.</p>
-<p><code>R/render_post.R</code> instead uses <code>rmarkdown::render()</code>, which preserves this information compared to using the <strong>Knit</strong> button in R Studio, and should render your R Markdown file correctly.</p>
-<p>If your R Markdown renders successfully, the new html file will be saved in the file directory you set in <code>path</code>. Open this html file to view the rendered html page.</p>
-</div>
-</div>
-<div id="adding-new-posts-to-the-website" class="section level3">
-<h3>Adding new posts to the website</h3>
-<p>Once your post is ready to be added to the website, it’s a good idea to double-check that the rendered html file of the post is the correct final version. New posts should be saved in a new folder within the <code>_posts</code> folder. Posts based on R script in the ALA/Science git repo should be named with the same folder name as in the Science repo</p>
 <hr />
 </div>
 </div>
@@ -1845,15 +1826,11 @@ navbar:
   --hover-color:      #dd424c; /* edited */
   --bkgd-color:       #ffd8db; /* edited */
 }</code></pre>
-<p>Other properties are edited using custom CSS.</p>
-<div id="editing-custom-css" class="section level2">
-<h2>Editing custom CSS</h2>
-<p>Additional custom CSS is found in <code>theme.css</code>. Edit or create new CSS properties for html elements to customise the ALA Labs website theme.</p>
-</div>
+<p>Other properties are edited using custom CSS. These are (mostly) labelled and relate either to built-in distill html elements or html elements built in <code>R/function.R</code>.</p>
 <div id="custom-html-elements-using-r-functions" class="section level2">
 <h2>Custom html elements using R functions</h2>
-<p><code>R/functions.R</code> contains functions that create html elements within the ALA Labs website. <code>R/functions.R</code> uses the <a href="https://rstudio.github.io/htmltools/">htmlTools</a> package to write html code using R syntax.</p>
-<p>For example, the following R function and html code will both create a link of <code>class = "article-link"</code> which can be edited using CSS:</p>
+<p><code>R/functions.R</code> contains functions that create html elements within the ALA Labs website. <code>R/functions.R</code> uses the <a href="https://rstudio.github.io/htmltools/">{htmlTools}</a> package to write html code using R syntax.</p>
+<p>For example, the following R function and html code are equivalent. They both will create a link of <code>class = "article-link"</code>. This class name can be used with CSS in <code>theme.css</code> to edit the element style.</p>
 <pre class="html"><code>&lt;!-- html --&gt;
 &lt;a class = &quot;article-link&quot; href = &quot;https://ala.org.au/&quot;&gt;my text&lt;/a&gt;</code></pre>
 <pre class="r"><code># R function
@@ -1871,11 +1848,11 @@ add_link_to_article(text = &quot;my text&quot;, url = &quot;https://ala.org.au/&
 <li><p>Rather than trying to edit html elements that the Distill package runs in the back-end to build the website, adding html elements using R functions is easier and less prone to errors</p></li>
 <li><p>It is easier for people familiar in R to reuse and edit the content of existing html elements created by R functions</p></li>
 </ol>
-<p>To use functions in the <code>R/functions.R</code> file on a website page or post, add the following code block below the YAML header</p>
-<pre class="r"><code>``{r, include=FALSE}
-library(htmltools)
-source(&quot;R/functions.R&quot;)
-``</code></pre>
+<p>To use functions in the <code>R/functions.R</code> file on a specific website page or post, the following code block must be added below the YAML header</p>
+<pre class="r"><code>  ```{r, include=FALSE}
+  library(htmltools)
+  source(&quot;R/functions.R&quot;)</code></pre>
+<p>```</p>
 </div>
 </div>
 
@@ -1899,10 +1876,10 @@ source(&quot;R/functions.R&quot;)
  width: 100vw;
  position: relative;
  margin-left: -50vw;
- height: 50px;
+ height: 60px;
  margin-bottom: -1.75vw;
  left: 50%;
- background-color: #B8573E;
+ background-color: #c44d34;
  background-position: bottom;
  background-size: cover;
  display: flex;
@@ -1913,6 +1890,8 @@ source(&quot;R/functions.R&quot;)
   float: left;
   display: inline-block;
   padding-left: 30px;
+  margin: auto;
+  width: 50%;
 }
 
 .copyright-text {
@@ -1956,7 +1935,7 @@ source(&quot;R/functions.R&quot;)
   display: flex;
   flex-direction:column;
   display:inline-block;
-  margin:5px;
+  margin:6px;
 }
 
 
@@ -1993,8 +1972,8 @@ d-article a:hover {
 /*-- Back to ALA button --*/
 
 .link-container {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   display: block;
   width: 30em;
   margin-left: auto;
@@ -2030,6 +2009,9 @@ d-article a:hover {
 }
 
 @media screen and (max-width: 952px) {
+  .footer-container {
+    width: 100%;
+  }
   .column-footer {
     float:left;
     width: 100%;
@@ -2045,11 +2027,11 @@ d-article a:hover {
 
 </style>
 <div class = "container">
-  <hr style = "opacity: 0.4; margin-top: 10px; margin-bottom:10px" />
+  <hr style = "opacity: 0.4; margin-top: 10px; margin-bottom:10px"></hr>
 </div>
 <div class = "link-container">
-    <a href = url style = "border-bottom: none">
-      <button class = "link-button" href = "https://ala.org.au/"><strong>To the Atlas of Living Australia</strong>
+    <a href = "https://ala.org.au/" style = "border-bottom: none">
+      <button class = "link-button"><strong>To the Atlas of Living Australia</strong>
         <img src = "images/logos/ALA_Logo_Mark-only.png" class = "ala-icon"></img></button>
     </a>
 </div>

@@ -15,10 +15,10 @@
  width: 100vw;
  position: relative;
  margin-left: -50vw;
- height: 50px;
+ height: 60px;
  margin-bottom: -1.75vw;
  left: 50%;
- background-color: #B8573E;
+ background-color: #c44d34;
  background-position: bottom;
  background-size: cover;
  display: flex;
@@ -29,6 +29,8 @@
   float: left;
   display: inline-block;
   padding-left: 30px;
+  margin: auto;
+  width: 50%;
 }
 
 .copyright-text {
@@ -72,7 +74,7 @@
   display: flex;
   flex-direction:column;
   display:inline-block;
-  margin:5px;
+  margin:6px;
 }
 
 
@@ -109,8 +111,8 @@ d-article a:hover {
 /*-- Back to ALA button --*/
 
 .link-container {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   display: block;
   width: 30em;
   margin-left: auto;
@@ -146,11 +148,25 @@ d-article a:hover {
 }
 
 @media screen and (max-width: 952px) {
+  .link-container {
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .footer-container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
   .column-footer {
     float:left;
     width: 100%;
     max-width: 100%;
     display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
   .link-container {
     display: block;
@@ -162,11 +178,11 @@ d-article a:hover {
 </style>
 
 <div class = "container">
-  <hr style = "opacity: 0.4; margin-top: 10px; margin-bottom:10px" />
+  <hr style = "opacity: 0.4; margin-top: 10px; margin-bottom:10px"></hr>
 </div>
 <div class = "link-container">
-    <a href = url style = "border-bottom: none">
-      <button class = "link-button" href = "https://ala.org.au/"><strong>To the Atlas of Living Australia</strong>
+    <a href = "https://ala.org.au/" style = "border-bottom: none">
+      <button class = "link-button"><strong>To the Atlas of Living Australia</strong>
         <img src = "images/logos/ALA_Logo_Mark-only.png" class = "ala-icon"></img></button>
     </a>
 </div>

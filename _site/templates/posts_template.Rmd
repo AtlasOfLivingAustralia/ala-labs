@@ -1,40 +1,70 @@
 ---
-title: "title"
+title: your-title
 description: |
-  short description
+  short description of what the post will describe or teach the reader
 author:
-  - name: author-name 
-    url: people-url-page
-date: "`r Sys.Date()`"
+  - name: author-name
+date: '2022-02-17'
 categories: 
-  - category 1
-  - category 2
+  - add one category per line
+  - add one (or more) data/dataviz types (Summary, Maps, Trees)
+  - add taxonomic categories (eg. Chordata, Animalia, Eukaryota)
 output: 
   distill::distill_article:
-    theme: theme.css
     highlight: tango
     toc: true
     toc_float: true
     toc_depth: 3
 ---
 
-Short description or background. Provide links when possible
+<!------ Complete title, description, author and date for website metadata ------>
 
-<aside>
-```{r author image, echo = FALSE}
-library(here)
-image_path <- here("images", "author-image.jpg") # choose image
-htmltools::withTags(
-      img(src = knitr::image_uri(image_path),
-          style = 'height:120px;clip-path: circle();'))
+<!-- load html package & get date -->
+```{r, include=FALSE}
+library(htmltools)
+date.func <- format(Sys.time(), '%d %B, %Y')
 ```
-</aside>
+
+<!-- remove distill metadata section -->
+```{css, echo = FALSE}
+d-byline {
+    display: none;
+  }
+```
 
 
-------------------------------------------------------------------------------
+<!-- Author card -->
 
-# Title 
+:::author-card
+:::float-image
+
+<!-- Author image -->
+```{r, out.width='120px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
+# add author first name at the end of this url (e.g., ".../people/martin.jpg")
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/first-name.jpg")
+```
+
+:::author-card-text
+<!-- Author name -->
+<h4 style = "margin-bottom:5px">Author:</h4>
+[FirstName LastName](people/Lastname_Firstname/index.html)
+
+<!-- Date -->
+<h4 style = "margin-bottom:5px">Date:</h4>
+17 February, 2022
+:::
+
+:::
+:::
+
+<br>
 
 
+<!------ Post content starts here ------>
 
+Short introduction
+
+# Section 1
+
+# Section 2
 

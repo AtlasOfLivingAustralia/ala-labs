@@ -93,8 +93,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico"/>
 
   <!--  https://schema.org/Article -->
-  <meta property="article:published" itemprop="datePublished" content="2022-02-23"/>
-  <meta property="article:created" itemprop="dateCreated" content="2022-02-23"/>
+  <meta property="article:published" itemprop="datePublished" content="2022-03-03"/>
+  <meta property="article:created" itemprop="dateCreated" content="2022-03-03"/>
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
   <meta property="og:title" content="ALA Labs: galah"/>
@@ -110,7 +110,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","date","output"]}},"value":[{"type":"character","attributes":{},"value":["galah"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["2022-02-23"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["highlight","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["pygments"]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","date","output"]}},"value":[{"type":"character","attributes":{},"value":["galah"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["2022-03-03"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["highlight","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["pygments"]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2201,15 +2201,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   /* Make Logo in navbar bigger */
 
   .distill-site-header .logo img {
-      max-height: 52px;
+      max-height: 48px;
       width: auto;
-      padding-top: 5px;
+      padding-left: 9px;
+      padding-top: 13px;
       padding-bottom: 15px;
-      margin-bottom: -25px;
+      margin-bottom: -22px;
   }
 
   .distill-site-header a, .distill-site-header .title {
-      padding: 25px 10px 10px 10px;
+      padding: 35px 12px 10px 10px;
+  }
+
+  .distill-site-header {
+    padding-top: 15px;
+    padding-bottom: 10px;
   }
 
   /*  A circle image cropper  */
@@ -2808,7 +2814,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"galah","authors":[],"publishedDate":"2022-02-23T00:00:00.000+11:00"}
+{"title":"galah","authors":[],"publishedDate":"2022-03-03T00:00:00.000+11:00"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2817,7 +2823,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
 <a class="logo" href="https://www.ala.org.au">
-<img src="images/logos/ALA_Logo_Stacked_REV-RGB.png" alt="Logo"/>
+<img src="images/logos/ALA_Logo_Inline_REV-RGB.png" alt="Logo"/>
 </a>
 <a href="index.html" class="title">ALA Labs</a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
@@ -2921,10 +2927,10 @@ d-title {
  width: 100vw;
  position: relative;
  margin-left: -50vw;
- height: 50px;
+ height: 60px;
  margin-bottom: -1.75vw;
  left: 50%;
- background-color: #B8573E;
+ background-color: #c44d34;
  background-position: bottom;
  background-size: cover;
  display: flex;
@@ -2935,6 +2941,8 @@ d-title {
   float: left;
   display: inline-block;
   padding-left: 30px;
+  margin: auto;
+  width: 50%;
 }
 
 .copyright-text {
@@ -2978,7 +2986,7 @@ d-title {
   display: flex;
   flex-direction:column;
   display:inline-block;
-  margin:5px;
+  margin:6px;
 }
 
 
@@ -3015,8 +3023,8 @@ d-article a:hover {
 /*-- Back to ALA button --*/
 
 .link-container {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   display: block;
   width: 30em;
   margin-left: auto;
@@ -3052,6 +3060,9 @@ d-article a:hover {
 }
 
 @media screen and (max-width: 952px) {
+  .footer-container {
+    width: 100%;
+  }
   .column-footer {
     float:left;
     width: 100%;
@@ -3067,11 +3078,11 @@ d-article a:hover {
 
 </style>
 <div class = "container">
-  <hr style = "opacity: 0.4; margin-top: 10px; margin-bottom:10px" />
+  <hr style = "opacity: 0.4; margin-top: 10px; margin-bottom:10px"></hr>
 </div>
 <div class = "link-container">
-    <a href = url style = "border-bottom: none">
-      <button class = "link-button" href = "https://ala.org.au/"><strong>To the Atlas of Living Australia</strong>
+    <a href = "https://ala.org.au/" style = "border-bottom: none">
+      <button class = "link-button"><strong>To the Atlas of Living Australia</strong>
         <img src = "images/logos/ALA_Logo_Mark-only.png" class = "ala-icon"></img></button>
     </a>
 </div>

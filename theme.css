@@ -84,15 +84,21 @@ d-title {
 /* Make Logo in navbar bigger */
 
 .distill-site-header .logo img {
-    max-height: 52px;
+    max-height: 48px;
     width: auto;
-    padding-top: 5px;
+    padding-left: 9px;
+    padding-top: 13px;
     padding-bottom: 15px;
-    margin-bottom: -25px;
+    margin-bottom: -22px;
 }
 
 .distill-site-header a, .distill-site-header .title {
-    padding: 25px 10px 10px 10px;
+    padding: 35px 12px 10px 10px;
+}
+
+.distill-site-header {
+  padding-top: 15px;
+  padding-bottom: 10px;
 }
 
 /*  A circle image cropper  */
