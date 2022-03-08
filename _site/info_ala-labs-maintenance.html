@@ -798,7 +798,7 @@ d-title {
 /*-- Additional custom styles --*/
 /* Add any additional CSS rules below                      */
 
-/* Make Logo in navbar bigger */
+/* Make ALA Logo in navbar bigger */
 
 .distill-site-header .logo img {
     max-height: 48px;
@@ -814,8 +814,29 @@ d-title {
 }
 
 .distill-site-header {
-  padding-top: 15px;
-  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+/* Add Labs Logo in navbar */
+
+.distill-site-header .title:before {
+  display: inline-block;
+  padding: 0;
+  content: url("./images/logos/labs-logo_transparent.png");
+  padding-left: 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin: auto;
+}
+
+.distill-site-header .nav-right { /* Adjust right navbar location */
+    margin-top: 10px;
+  }
+
+
+d-title { /* Adjust titles on other pages to accommodate for bigger navbar */
+    padding-top: 8rem;
 }
 
 /*  A circle image cropper  */
@@ -906,10 +927,16 @@ d-article div.sourceCode {
 }
 
 @media (min-width: 992px){
-.credit-text {
-  position: absolute;
-  bottom: 3%;
-}
+  .hero-image {
+    position: relative;
+    width: 100%;
+    display: flex;
+  }
+  
+  .credit-text {
+    position: absolute;
+    bottom: 3%;
+  }
 }
 
 /*----------------------------------------------*/
@@ -1610,7 +1637,7 @@ $(document).ready(function () {
 <a class="logo" href="https://www.ala.org.au">
 <img src="images/logos/ALA_Logo_Inline_REV-RGB.png" alt="Logo"/>
 </a>
-<a href="index.html" class="title">ALA Labs</a>
+<a href="index.html" class="title"></a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
@@ -1630,8 +1657,8 @@ Resources
 <a href="https://ala.org.au/contact-us/">Contact Us</a>
 </div>
 </div>
-<a href="https://www.ala.org.au">
-<i class="fa images/favicon.ico" aria-hidden="true"></i>
+<a href="https://www.ala.org.au" class="nav-image">
+<img src="images/favicon.ico"/>
 </a>
 <a href="https://github.com/AtlasOfLivingAustralia/science">
 <i class="fab fa-github" aria-hidden="true"></i>
@@ -1687,10 +1714,7 @@ Resources
   </ul>
 </li>
 <li>
-  <a href="https://www.ala.org.au">
-    <span class=" images/favicon.ico"></span>
-     
-  </a>
+  <a href="https://www.ala.org.au"></a>
 </li>
 <li>
   <a href="https://github.com/AtlasOfLivingAustralia/science">
@@ -2033,6 +2057,15 @@ d-article a:hover {
     display: block;
     width: 20em;
     margin: auto;
+  }
+  
+  .copyright-column-left {
+    width: 50%;
+  }
+  
+  .copyright-row {
+    height: 100px;
+    margin-bottom: -3.75vw;
   }
 }
 

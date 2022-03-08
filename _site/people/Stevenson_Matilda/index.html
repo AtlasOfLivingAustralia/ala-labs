@@ -93,8 +93,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="icon" type="image/vnd.microsoft.icon" href="../../images/favicon.ico"/>
 
 <!--  https://schema.org/Article -->
-<meta property="article:published" itemprop="datePublished" content="2022-03-03"/>
-<meta property="article:created" itemprop="dateCreated" content="2022-03-03"/>
+<meta property="article:published" itemprop="datePublished" content="2022-03-08"/>
+<meta property="article:created" itemprop="dateCreated" content="2022-03-08"/>
 
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
 <meta property="og:title" content="ALA Labs: Matilda Stevenson"/>
@@ -110,7 +110,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Matilda Stevenson"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["2022-03-03"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["highlight","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["pygments"]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Matilda Stevenson"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["2022-03-08"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["highlight","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["pygments"]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2202,7 +2202,7 @@ d-title {
 /*-- Additional custom styles --*/
 /* Add any additional CSS rules below                      */
 
-/* Make Logo in navbar bigger */
+/* Make ALA Logo in navbar bigger */
 
 .distill-site-header .logo img {
     max-height: 48px;
@@ -2218,8 +2218,29 @@ d-title {
 }
 
 .distill-site-header {
-  padding-top: 15px;
-  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+/* Add Labs Logo in navbar */
+
+.distill-site-header .title:before {
+  display: inline-block;
+  padding: 0;
+  content: url("./images/logos/labs-logo_transparent.png");
+  padding-left: 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin: auto;
+}
+
+.distill-site-header .nav-right { /* Adjust right navbar location */
+    margin-top: 10px;
+  }
+
+
+d-title { /* Adjust titles on other pages to accommodate for bigger navbar */
+    padding-top: 8rem;
 }
 
 /*  A circle image cropper  */
@@ -2310,10 +2331,16 @@ d-article div.sourceCode {
 }
 
 @media (min-width: 992px){
-.credit-text {
-  position: absolute;
-  bottom: 3%;
-}
+  .hero-image {
+    position: relative;
+    width: 100%;
+    display: flex;
+  }
+  
+  .credit-text {
+    position: absolute;
+    bottom: 3%;
+  }
 }
 
 /*----------------------------------------------*/
@@ -2819,7 +2846,7 @@ gtag('config', 'UA-4355440-1');
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Matilda Stevenson","authors":[],"publishedDate":"2022-03-03T00:00:00.000+11:00"}
+{"title":"Matilda Stevenson","authors":[],"publishedDate":"2022-03-08T00:00:00.000+11:00"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2830,7 +2857,7 @@ gtag('config', 'UA-4355440-1');
 <a class="logo" href="https://www.ala.org.au">
 <img src="../../images/logos/ALA_Logo_Inline_REV-RGB.png" alt="Logo"/>
 </a>
-<a href="../../index.html" class="title">ALA Labs</a>
+<a href="../../index.html" class="title"></a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
@@ -2850,8 +2877,8 @@ Resources
 <a href="https://ala.org.au/contact-us/">Contact Us</a>
 </div>
 </div>
-<a href="https://www.ala.org.au">
-<i class="fa images/favicon.ico" aria-hidden="true"></i>
+<a href="https://www.ala.org.au" class="nav-image">
+<img src="../../images/favicon.ico"/>
 </a>
 <a href="https://github.com/AtlasOfLivingAustralia/science">
 <i class="fab fa-github" aria-hidden="true"></i>
@@ -3067,6 +3094,15 @@ d-article a:hover {
     display: block;
     width: 20em;
     margin: auto;
+  }
+  
+  .copyright-column-left {
+    width: 50%;
+  }
+  
+  .copyright-row {
+    height: 100px;
+    margin-bottom: -3.75vw;
   }
 }
 

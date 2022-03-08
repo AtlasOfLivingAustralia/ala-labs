@@ -17,6 +17,8 @@ navbar:
   logo:
     image: images/logos/ALA_Logo_Inline_REV-RGB.png
     href: https://www.ala.org.au
+  title: 
+    text: ""
   search: true
   right:
     - icon: fas fa-home
@@ -31,7 +33,7 @@ navbar:
           href: galah.html
         - text: "Contact Us"
           href: https://ala.org.au/contact-us/
-    - icon: images/favicon.ico
+    - image: images/favicon.ico
       href: https://www.ala.org.au
     - icon: fab fa-github
       href: https://github.com/AtlasOfLivingAustralia/science
