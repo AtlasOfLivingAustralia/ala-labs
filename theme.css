@@ -214,9 +214,7 @@ d-article div.sourceCode {
     position: absolute;
     bottom: 3%;
   }
-}
- 
-@media (max-width: @iphone-screen) {
+  
   .hero-image {
   background-attachment: scroll;
   } 
