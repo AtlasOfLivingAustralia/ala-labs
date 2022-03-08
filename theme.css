@@ -210,16 +210,16 @@ d-article div.sourceCode {
 }
 
 @media (min-width: 992px){
-  .hero-image {
-    position: relative;
-    width: 100%;
-    display: flex;
-  }
-  
   .credit-text {
     position: absolute;
     bottom: 3%;
   }
+}
+ 
+@media (max-width: @iphone-screen) {
+  .hero-image {
+  background-attachment: scroll;
+  } 
 }
 
 /*----------------------------------------------*/
