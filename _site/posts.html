@@ -2324,16 +2324,18 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   }
 
   @media (min-width: 992px){
-    .hero-image {
-      position: relative;
-      width: 100%;
-      display: flex;
-    }
-    
     .credit-text {
       position: absolute;
       bottom: 3%;
     }
+  }
+
+  @media screen and (max-width: 952px){
+    /*--    --*/
+    .hero-image {
+      background-attachment: scroll;
+    } 
+
   }
 
   /*----------------------------------------------*/

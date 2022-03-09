@@ -132,9 +132,9 @@ tags$div(class = "category-row",
     tags$a(href = "posts.html#category:Mammalia",
       tags$img(
         href = "posts.html#category:Mammalia",
-        src = "images/vectors/platypus.svg",
+        src = "images/vectors/bettong.png",
         class = "category-image sage",
-        style = "width: 80%;"
+        style = "height: 120px; width: auto;"
   )),
   tags$p(
     tags$h3(style = "text-align:center",

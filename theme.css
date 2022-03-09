@@ -214,10 +214,14 @@ d-article div.sourceCode {
     position: absolute;
     bottom: 3%;
   }
-  
+}
+
+@media screen and (max-width: 952px){
+  /*--    --*/
   .hero-image {
-  background-attachment: scroll;
+    background-attachment: scroll;
   } 
+
 }
 
 /*----------------------------------------------*/
