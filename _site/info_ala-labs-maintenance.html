@@ -734,8 +734,8 @@ d-appendix {
 html {
   /*-- Main font sizes --*/
   --title-size:      40px;
-  --body-size:       1.06rem;
-  --code-size:       16px;
+  --body-size:       1.08rem;
+  --code-size:       1.06rem;
   --aside-size:      12px;
   --fig-cap-size:    13px;
   /*-- Main font colors --*/
@@ -1749,23 +1749,49 @@ Resources
 </div>
 <div id="build-the-website" class="section level1">
 <h1>Build the website</h1>
-<p>We use a custom file to build the website. To build the website, run the code in <code>R/ignition_sequence.R</code>.</p>
-<p>If successful, to see the built website navigate to your local file explorer and opening <code>_site/index.html</code>.</p>
-<p>We use a custom file to build the website because we have added several bespoke features to the standard distill website format (like auto-updating lists in <code>_people</code> pages and a custom search toolbar). Adding these features means that using the recommended method by <a href="https://rstudio.github.io/distill/website.html">{distill}</a> to use the <strong>Build Website</strong> tab in the Build pane no longer works. Only using <code>rmarkdown::build_site()</code> will also not work correctly.</p>
+<p>We use a custom file to build the website. To build the website, run
+the code in <code>R/ignition_sequence.R</code>.</p>
+<p>If successful, to see the built website navigate to your local file
+explorer and opening <code>_site/index.html</code>.</p>
+<p>We use a custom file to build the website because we have added
+several bespoke features to the standard distill website format (like
+auto-updating lists in <code>_people</code> pages and a custom search
+toolbar). Adding these features means that using the recommended method
+by <a
+href="https://rstudio.github.io/distill/website.html">{distill}</a> to
+use the <strong>Build Website</strong> tab in the Build pane no longer
+works. Only using <code>rmarkdown::build_site()</code> will also not
+work correctly.</p>
 <p><br></p>
 <p>When you build the website, the following things occur:</p>
 <ol style="list-style-type: decimal">
-<li><p>All of the <code>Rmd</code> and <code>md</code> files in the root website directory will be rendered into HTML. Note, however, that markdown files beginning with “_” are not rendered (this is a convention to designate files that are included by top level documents, or in other words, distill knows not to overwrite these folders because they are important).</p></li>
-<li><p>Posts will be copied into the <code>_site/posts</code> sub-directory. Pages with post listings will be re-generated.</p></li>
-<li><p>The generated HTML files and any supporting files (e.g. CSS and JavaScript) are copied into the <code>_site</code> directory.</p></li>
-<li><p>The top 3 most recently written Posts will be added to the author’s <code>_people</code> page. (<em>Note: For the website to build, ensure that all people who have authored a post have their own People page, even if this page is not accessible to the public</em>)</p></li>
+<li><p>All of the <code>Rmd</code> and <code>md</code> files in the root
+website directory will be rendered into HTML. Note, however, that
+markdown files beginning with “_” are not rendered (this is a convention
+to designate files that are included by top level documents, or in other
+words, distill knows not to overwrite these folders because they are
+important).</p></li>
+<li><p>Posts will be copied into the <code>_site/posts</code>
+sub-directory. Pages with post listings will be re-generated.</p></li>
+<li><p>The generated HTML files and any supporting files (e.g. CSS and
+JavaScript) are copied into the <code>_site</code> directory.</p></li>
+<li><p>The top 3 most recently written Posts will be added to the
+author’s <code>_people</code> page. (<em>Note: For the website to build,
+ensure that all people who have authored a post have their own People
+page, even if this page is not accessible to the public</em>)</p></li>
 </ol>
-<p>The HTML files within the <code>_site</code> directory are built and ready to deploy as a standalone static website.</p>
+<p>The HTML files within the <code>_site</code> directory are built and
+ready to deploy as a standalone static website.</p>
 <hr />
 <div id="publishing-the-website" class="section level2">
 <h2>Publishing the website</h2>
-<p>The <code>_site</code> folder has all of the information needed for the static website. The ALA web hosting service has been told to publish what is in the <code>_site</code> folder on the master branch to <a href="labs.ala.org.au"></a>.</p>
-<p>When you are happy with changes or updates to the website, make sure your changes to the <code>_site</code> folder are pushed to the master branch.</p>
+<p>The <code>_site</code> folder has all of the information needed for
+the static website. The ALA web hosting service has been told to publish
+what is in the <code>_site</code> folder on the master branch to <a
+href="labs.ala.org.au"></a>.</p>
+<p>When you are happy with changes or updates to the website, make sure
+your changes to the <code>_site</code> folder are pushed to the master
+branch.</p>
 <hr />
 </div>
 </div>
@@ -1773,15 +1799,20 @@ Resources
 <h1>Update the website</h1>
 <div id="website-workflow" class="section level2">
 <h2>Website workflow</h2>
-<p>Updates to the website should be added to the <code>dev</code> branch of the GitHub repo. In the <code>dev</code> branch, any changes made will not be published to the existing website. The <code>dev</code> branch effectively works as a test site prior to deployment.</p>
+<p>Updates to the website should be added to the <code>dev</code> branch
+of the GitHub repo. In the <code>dev</code> branch, any changes made
+will not be published to the existing website. The <code>dev</code>
+branch effectively works as a test site prior to deployment.</p>
 </div>
 </div>
 <div id="add-or-edit-content" class="section level1">
 <h1>Add or edit content</h1>
 <div id="site-output-and-navigation" class="section level2">
 <h2>Site Output and Navigation</h2>
-<p>The <code>_site.yml</code> controls the main website information and site navigation.</p>
-<p>Elements can be edited to alter navigation paths. Here is one example of the <code>navbar</code> for the ALA Labs website:</p>
+<p>The <code>_site.yml</code> controls the main website information and
+site navigation.</p>
+<p>Elements can be edited to alter navigation paths. Here is one example
+of the <code>navbar</code> for the ALA Labs website:</p>
 <pre class="r"><code>---
 navbar:
   logo:
@@ -1806,8 +1837,11 @@ navbar:
 <h2>Web Pages</h2>
 <div id="add-top-level-pages" class="section level3">
 <h3>Add top-level pages</h3>
-<p>Top-level web pages (the ones people see in the top navigation bar) are saved in the top-level folder by their page name (for example, the content for the About page is in <code>about.Rmd</code>).</p>
-<p>Additional pages can be added by creating a new R Markdown page in the main website folder with the yaml header:</p>
+<p>Top-level web pages (the ones people see in the top navigation bar)
+are saved in the top-level folder by their page name (for example, the
+content for the About page is in <code>about.Rmd</code>).</p>
+<p>Additional pages can be added by creating a new R Markdown page in
+the main website folder with the yaml header:</p>
 <pre class="r"><code>---
 title: &quot;&quot;
 description: |
@@ -1816,7 +1850,10 @@ output:
   distill::distill_article:
     css: theme.css
 ---</code></pre>
-<p>Pages can then be added to the website by their <code>text</code> and <code>href</code> to the site navigation in <code>_site.yml</code> under <code>navbar</code> (see <a href="#site-output-and-navigation">Site Output and Navigation</a>)</p>
+<p>Pages can then be added to the website by their <code>text</code> and
+<code>href</code> to the site navigation in <code>_site.yml</code> under
+<code>navbar</code> (see <a href="#site-output-and-navigation">Site
+Output and Navigation</a>)</p>
 <hr />
 </div>
 </div>
@@ -1824,15 +1861,29 @@ output:
 <h2>Posts</h2>
 <div id="writing-new-posts" class="section level3">
 <h3>Writing new posts</h3>
-<p>Posts are written in R markdown files. Post templates can be found in the <code>templates</code> folder.</p>
+<p>Posts are written in R markdown files. Post templates can be found in
+the <code>templates</code> folder.</p>
 <p>To create a new post:</p>
 <ol style="list-style-type: decimal">
-<li><p>Create a new folder in the <code>_posts</code> folder. The folder name should be the date and title of your article (for example, <code>2022-02-17_sunburst-plots-for-taxonomic-data</code></p></li>
-<li><p>In your new post folder, save your Post file. You are welcome to use a simple name for your Rmd file (for example, <code>sunburst-plots.Rmd</code>)</p></li>
-<li><p>Be sure that you have filled in all the necessary information about your post in the yaml header and in the author card section</p></li>
+<li><p>Create a new folder in the <code>_posts</code> folder. The folder
+name should be the date and title of your article (for example,
+<code>2022-02-17_sunburst-plots-for-taxonomic-data</code></p></li>
+<li><p>In your new post folder, save your Post file. You are welcome to
+use a simple name for your Rmd file (for example,
+<code>sunburst-plots.Rmd</code>)</p></li>
+<li><p>Be sure that you have filled in all the necessary information
+about your post in the yaml header and in the author card
+section</p></li>
 <li><p>Write your post</p></li>
-<li><p><strong>Render/Knit your document using the <code>R/render_post.R</code> document.</strong> Using the code in <code>R/render_post.R</code> allows you to avoid adding personal information to your Post (like your personal email in <code>galah_config()</code>). The most recently knitted version of your file is what will appear on the website</p></li>
-<li><p>When you are happy with your post, build the website. After the website it built, your rendered post should appear in the Posts listing page</p></li>
+<li><p><strong>Render/Knit your document using the
+<code>R/render_post.R</code> document.</strong> Using the code in
+<code>R/render_post.R</code> allows you to avoid adding personal
+information to your Post (like your personal email in
+<code>galah_config()</code>). The most recently knitted version of your
+file is what will appear on the website</p></li>
+<li><p>When you are happy with your post, build the website. After the
+website it built, your rendered post should appear in the Posts listing
+page</p></li>
 </ol>
 <hr />
 </div>
@@ -1840,8 +1891,15 @@ output:
 </div>
 <div id="theme-customisation" class="section level1">
 <h1>Theme customisation</h1>
-<p>Distill uses a CSS framework that can be fully customised. CSS theme settings are in <code>theme.css</code>. See the <a href="https://rstudio.github.io/distill/website.html">Distill website</a> page for instructions on how to edit additional website properties.</p>
-<p>Some properties can be found in labeled sections, like settings for website fonts, header and footer sections. For example, website header settings can be found in the <code>.distill-site-header</code> section:</p>
+<p>Distill uses a CSS framework that can be fully customised. CSS theme
+settings are in <code>theme.css</code>. See the <a
+href="https://rstudio.github.io/distill/website.html">Distill
+website</a> page for instructions on how to edit additional website
+properties.</p>
+<p>Some properties can be found in labeled sections, like settings for
+website fonts, header and footer sections. For example, website header
+settings can be found in the <code>.distill-site-header</code>
+section:</p>
 <pre class="css"><code>/*-- WEBSITE HEADER + FOOTER --*/
 /* These properties only apply to Distill sites and blogs  */
 
@@ -1852,11 +1910,19 @@ output:
   --hover-color:      #dd424c; /* edited */
   --bkgd-color:       #ffd8db; /* edited */
 }</code></pre>
-<p>Other properties are edited using custom CSS. These are (mostly) labelled and relate either to built-in distill html elements or html elements built in <code>R/function.R</code>.</p>
+<p>Other properties are edited using custom CSS. These are (mostly)
+labelled and relate either to built-in distill html elements or html
+elements built in <code>R/function.R</code>.</p>
 <div id="custom-html-elements-using-r-functions" class="section level2">
 <h2>Custom html elements using R functions</h2>
-<p><code>R/functions.R</code> contains functions that create html elements within the ALA Labs website. <code>R/functions.R</code> uses the <a href="https://rstudio.github.io/htmltools/">{htmlTools}</a> package to write html code using R syntax.</p>
-<p>For example, the following R function and html code are equivalent. They both will create a link of <code>class = "article-link"</code>. This class name can be used with CSS in <code>theme.css</code> to edit the element style.</p>
+<p><code>R/functions.R</code> contains functions that create html
+elements within the ALA Labs website. <code>R/functions.R</code> uses
+the <a href="https://rstudio.github.io/htmltools/">{htmlTools}</a>
+package to write html code using R syntax.</p>
+<p>For example, the following R function and html code are equivalent.
+They both will create a link of <code>class = "article-link"</code>.
+This class name can be used with CSS in <code>theme.css</code> to edit
+the element style.</p>
 <pre class="html"><code>&lt;!-- html --&gt;
 &lt;a class = &quot;article-link&quot; href = &quot;https://ala.org.au/&quot;&gt;my text&lt;/a&gt;</code></pre>
 <pre class="r"><code># R function
@@ -1871,10 +1937,15 @@ add_link_to_article &lt;- function(title, url){
 add_link_to_article(text = &quot;my text&quot;, url = &quot;https://ala.org.au/&quot;)</code></pre>
 <p>The benefits of writing R functions to create html elements are:</p>
 <ol style="list-style-type: decimal">
-<li><p>Rather than trying to edit html elements that the Distill package runs in the back-end to build the website, adding html elements using R functions is easier and less prone to errors</p></li>
-<li><p>It is easier for people familiar in R to reuse and edit the content of existing html elements created by R functions</p></li>
+<li><p>Rather than trying to edit html elements that the Distill package
+runs in the back-end to build the website, adding html elements using R
+functions is easier and less prone to errors</p></li>
+<li><p>It is easier for people familiar in R to reuse and edit the
+content of existing html elements created by R functions</p></li>
 </ol>
-<p>To use functions in the <code>R/functions.R</code> file on a specific website page or post, the following code block must be added below the YAML header</p>
+<p>To use functions in the <code>R/functions.R</code> file on a specific
+website page or post, the following code block must be added below the
+YAML header</p>
 <pre class="r"><code>  ```{r, include=FALSE}
   library(htmltools)
   source(&quot;R/functions.R&quot;)</code></pre>
@@ -2111,7 +2182,12 @@ d-article a:hover {
     </div>
 <!--  </div>-->
 </div>
-<p><div class="copyright-row"> <div class="copyright-column-left"> <p class="copyright-text"> This work is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/au/">Creative Commons Attribution 3.0 Australia License</a> <a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/"><img alt="Creative Commons License" style="border-width:0" src="images/logos/cc-by.png"></img></a> </p> </div><!--col end --> </div><!-- row end --></p>
+<p><div class="copyright-row"> <div class="copyright-column-left">
+<p class="copyright-text"> This work is licensed under a
+<a href="https://creativecommons.org/licenses/by/3.0/au/">Creative
+Commons Attribution 3.0 Australia License</a>
+<a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/"><img alt="Creative Commons License" style="border-width:0" src="images/logos/cc-by.png"></img></a>
+</p> </div><!--col end --> </div><!-- row end --></p>
 </div>
 <!--/radix_placeholder_navigation_after_body-->
 

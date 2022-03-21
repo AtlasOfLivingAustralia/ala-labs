@@ -94,8 +94,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico"/>
 
   <!--  https://schema.org/Article -->
-  <meta property="article:published" itemprop="datePublished" content="2022-03-09"/>
-  <meta property="article:created" itemprop="dateCreated" content="2022-03-09"/>
+  <meta property="article:published" itemprop="datePublished" content="2022-03-21"/>
+  <meta property="article:created" itemprop="dateCreated" content="2022-03-21"/>
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
   <meta property="og:title" content="ALA Labs: ALA Labs Style Guide"/>
@@ -113,7 +113,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","date","output"]}},"value":[{"type":"character","attributes":{},"value":["ALA Labs Style Guide"]},{"type":"character","attributes":{},"value":["Style guide for R script and R Markdown documents\n"]},{"type":"character","attributes":{},"value":["2022-03-09"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["highlight","toc","toc_float","toc_depth"]}},"value":[{"type":"character","attributes":{},"value":["pygments"]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","date","output"]}},"value":[{"type":"character","attributes":{},"value":["ALA Labs Style Guide"]},{"type":"character","attributes":{},"value":["Style guide for R script and R Markdown documents\n"]},{"type":"character","attributes":{},"value":["2022-03-21"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["highlight","toc","toc_float","toc_depth"]}},"value":[{"type":"character","attributes":{},"value":["pygments"]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2137,8 +2137,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   html {
     /*-- Main font sizes --*/
     --title-size:      40px;
-    --body-size:       1.06rem;
-    --code-size:       16px;
+    --body-size:       1.08rem;
+    --code-size:       1.06rem;
     --aside-size:      12px;
     --fig-cap-size:    13px;
     /*-- Main font colors --*/
@@ -2848,7 +2848,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"ALA Labs Style Guide","description":"Style guide for R script and R Markdown documents","authors":[],"publishedDate":"2022-03-09T00:00:00.000+11:00"}
+{"title":"ALA Labs Style Guide","description":"Style guide for R script and R Markdown documents","authors":[],"publishedDate":"2022-03-21T00:00:00.000+11:00"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2908,7 +2908,8 @@ Resources
 <ul>
 <li><a href="#getting-started">Getting started</a>
 <ul>
-<li><a href="#create-an-ala-r-markdown-file">Create an ALA R Markdown file</a></li>
+<li><a href="#create-an-ala-r-markdown-file">Create an ALA R Markdown
+file</a></li>
 <li><a href="#kniting-to-html-safely">Kniting to HTML safely</a></li>
 </ul></li>
 <li><a href="#push-to-github">Push to Github</a></li>
@@ -2916,10 +2917,12 @@ Resources
 <ul>
 <li><a href="#safe-paths">Safe paths</a></li>
 </ul></li>
-<li><a href="#writing-understandable-code">Writing understandable code</a>
+<li><a href="#writing-understandable-code">Writing understandable
+code</a>
 <ul>
 <li><a href="#summarise-your-code">Summarise your code</a></li>
-<li><a href="#style-code-using-styler">Style code using <code>styler</code></a></li>
+<li><a href="#style-code-using-styler">Style code using
+<code>styler</code></a></li>
 </ul></li>
 <li><a href="#styling-your-document">Styling your document</a>
 <ul>
@@ -2928,7 +2931,8 @@ Resources
 <li><a href="#model-output">Model output</a></li>
 <li><a href="#code-chunk-options">Code chunk options</a>
 <ul>
-<li><a href="#example-echo-and-eval">Example: <code>echo</code> and <code>eval</code></a></li>
+<li><a href="#example-echo-and-eval">Example: <code>echo</code> and
+<code>eval</code></a></li>
 </ul></li>
 </ul></li>
 <li><a href="#cool-distill-things">Cool Distill Things</a>
@@ -2938,23 +2942,43 @@ Resources
 </ul>
 </nav>
 </div>
-<p>This document details the Atlas of Living Australia style guide for creating html files from R Markdown</p>
+<p>This document details the Atlas of Living Australia style guide for
+creating html files from R Markdown</p>
 <h1 id="getting-started">Getting started</h1>
-<h2 id="create-an-ala-r-markdown-file">Create an ALA R Markdown file</h2>
-<p>To create new R Markdown file that follows the ALA style guide, install the <a href="https://github.com/AtlasOfLivingAustralia/alatheme">alatheme</a> package.</p>
+<h2 id="create-an-ala-r-markdown-file">Create an ALA R Markdown
+file</h2>
+<p>To create new R Markdown file that follows the ALA style guide,
+install the <a
+href="https://github.com/AtlasOfLivingAustralia/alatheme">alatheme</a>
+package.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>devtools</span><span class='fu'>::</span><span class='fu'><a href='https://devtools.r-lib.org/reference/remote-reexports.html'>install_github</a></span><span class='op'>(</span><span class='st'>"AtlasOfLivingAustralia/alatheme"</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
-<p>The {alatheme} package contains ALA templates for R Markdown files. After installing, create a new template R markdown file by selecting <strong>File</strong> –&gt; <strong>New File</strong> –&gt; <strong>New R Markdown</strong> which opens the “New R Markdown” pane</p>
-<p>In the “New R Markdown” pane, select <strong>From Template</strong> and choose from the list of {alatheme} templates.</p>
-<p>Fill in your information where necessary in the <code>yaml</code> header and in the required code and text chunks.</p>
+<p>The {alatheme} package contains ALA templates for R Markdown files.
+After installing, create a new template R markdown file by selecting
+<strong>File</strong> –&gt; <strong>New File</strong> –&gt; <strong>New
+R Markdown</strong> which opens the “New R Markdown” pane</p>
+<p>In the “New R Markdown” pane, select <strong>From Template</strong>
+and choose from the list of {alatheme} templates.</p>
+<p>Fill in your information where necessary in the <code>yaml</code>
+header and in the required code and text chunks.</p>
 <h2 id="kniting-to-html-safely">Kniting to HTML safely</h2>
-<p>In R Studio, clicking the <strong>Knit</strong> button in the left upper menu above your script renders your R Markdown file into an HTML file.</p>
-<p>However, if your code requires a <code>config</code> setting with personal or sensitive information, . However, packages like <code>galah</code> require users to enter an email address prior to downloading data using <code>galah_config(email = "your-email@email.com")</code>. Knitting without this information in the document will cause an error.</p>
-<p>A better workflow for rendering R Markdown files is by using a separate script combined with the <code>here</code> package. Running the following script outside of your R Markdown file will render your R Markdown file in the file’s directory:</p>
+<p>In R Studio, clicking the <strong>Knit</strong> button in the left
+upper menu above your script renders your R Markdown file into an HTML
+file.</p>
+<p>However, if your code requires a <code>config</code> setting with
+personal or sensitive information, . However, packages like
+<code>galah</code> require users to enter an email address prior to
+downloading data using
+<code>galah_config(email = "your-email@email.com")</code>. Knitting
+without this information in the document will cause an error.</p>
+<p>A better workflow for rendering R Markdown files is by using a
+separate script combined with the <code>here</code> package. Running the
+following script outside of your R Markdown file will render your R
+Markdown file in the file’s directory:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/AtlasOfLivingAustralia/galah'>galah</a></span><span class='op'>)</span>
@@ -2973,9 +2997,19 @@ Resources
 <hr />
 <h1 id="reproducible-workflows">Reproducible workflows</h1>
 <h2 id="safe-paths">Safe paths</h2>
-<p>Using <code>setwd()</code> to set a working directory can cause issues when setting folder paths, and can easily prevent a script or workflow from being reproducible. <br></p>
-<p>One alternative <a href="https://github.com/jennybc/here_here">suggested by Jenny Bryan</a> is to use <code>here::here()</code> from the <a href="https://here.r-lib.org/">here package</a> to build your directory paths. <code>here::here()</code> automatically creates paths relative to the top level directory.</p>
-<p>Read a full description of how to use the <code>here()</code> function to create safe paths in <a href="https://rstats.wtf/safe-paths.html">Chapter 3 of What They Forgot to Teach You About R</a></p>
+<p>Using <code>setwd()</code> to set a working directory can cause
+issues when setting folder paths, and can easily prevent a script or
+workflow from being reproducible. <br></p>
+<p>One alternative <a
+href="https://github.com/jennybc/here_here">suggested by Jenny Bryan</a>
+is to use <code>here::here()</code> from the <a
+href="https://here.r-lib.org/">here package</a> to build your directory
+paths. <code>here::here()</code> automatically creates paths relative to
+the top level directory.</p>
+<p>Read a full description of how to use the <code>here()</code>
+function to create safe paths in <a
+href="https://rstats.wtf/safe-paths.html">Chapter 3 of What They Forgot
+to Teach You About R</a></p>
 <p>For example:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2990,19 +3024,53 @@ Resources
 </div>
 <h1 id="writing-understandable-code">Writing understandable code</h1>
 <h2 id="summarise-your-code">Summarise your code</h2>
-<p>People who read your code should be able to understand what it does and why you made the choices you did. It is helpful to include brief summaries of what your code is meant to do, and the logic of any decision you might make after seeing a result or output. For example, if your code used a statistical model, include your basic interpretation and subsequent decision process after seeing the results. <br></p>
-<p>Use sentences, paragraphs and code chunks to add structure to your script. Try to create a flowing, logical story of how to run an analysis or make a data visualisation. <br></p>
-<p>Code chunks should be brief. They should be supplemented with notes, descriptions or visual output that provides context to what a given chunk of code is meant to do. Users should be able to follow each transformation that is made to your data, each output that results from a transformation, and any final output. <br></p>
-<p>Do not expect your reader to know what they should see in your output. If there is something in your code output that you wish to highlight, it is best to tell your reader what they should see in your output and how you have interpreted it.</p>
-<p>There is no single correct code chunk size; you must use your best judgement. But if it seems that the result of several lines of code is unclear, you may need to split the code chunks to make the results easier to follow. <br></p>
-<h2 id="style-code-using-styler">Style code using <code>styler</code></h2>
-<p>Use the <code>styler</code> package to ensure your code is formatted correctly and/or consistently, The <code>styler</code> package formats your code according to the tidyverse style guide (or another custome style) prior to uploading a finished file document. <br></p>
-<p>See the <code>styler</code> <a href="https://github.com/r-lib/styler">github</a> and <a href="https://www.tidyverse.org/blog/2017/12/styler-1.0.0/">tidyverse</a> pages for more information <br></p>
-<p>Install the <code>styler</code> package to add style buttons to your R Markdown Addins dropdown menu. Clicking <strong>Addins</strong> -&gt; <strong>style active file</strong> will reformat the code in your active file. Clicking ** Addins** -&gt; <strong>style active section</strong> will reformat code in your current section. <br></p>
-<p>Alternatively, you <code>style_file()</code> or <code>style_text()</code> can be run in the console. <br></p>
+<p>People who read your code should be able to understand what it does
+and why you made the choices you did. It is helpful to include brief
+summaries of what your code is meant to do, and the logic of any
+decision you might make after seeing a result or output. For example, if
+your code used a statistical model, include your basic interpretation
+and subsequent decision process after seeing the results. <br></p>
+<p>Use sentences, paragraphs and code chunks to add structure to your
+script. Try to create a flowing, logical story of how to run an analysis
+or make a data visualisation. <br></p>
+<p>Code chunks should be brief. They should be supplemented with notes,
+descriptions or visual output that provides context to what a given
+chunk of code is meant to do. Users should be able to follow each
+transformation that is made to your data, each output that results from
+a transformation, and any final output. <br></p>
+<p>Do not expect your reader to know what they should see in your
+output. If there is something in your code output that you wish to
+highlight, it is best to tell your reader what they should see in your
+output and how you have interpreted it.</p>
+<p>There is no single correct code chunk size; you must use your best
+judgement. But if it seems that the result of several lines of code is
+unclear, you may need to split the code chunks to make the results
+easier to follow. <br></p>
+<h2 id="style-code-using-styler">Style code using
+<code>styler</code></h2>
+<p>Use the <code>styler</code> package to ensure your code is formatted
+correctly and/or consistently, The <code>styler</code> package formats
+your code according to the tidyverse style guide (or another custome
+style) prior to uploading a finished file document. <br></p>
+<p>See the <code>styler</code> <a
+href="https://github.com/r-lib/styler">github</a> and <a
+href="https://www.tidyverse.org/blog/2017/12/styler-1.0.0/">tidyverse</a>
+pages for more information <br></p>
+<p>Install the <code>styler</code> package to add style buttons to your
+R Markdown Addins dropdown menu. Clicking <strong>Addins</strong> -&gt;
+<strong>style active file</strong> will reformat the code in your active
+file. Clicking ** Addins** -&gt; <strong>style active section</strong>
+will reformat code in your current section. <br></p>
+<p>Alternatively, you <code>style_file()</code> or
+<code>style_text()</code> can be run in the console. <br></p>
 <h1 id="styling-your-document">Styling your document</h1>
-<p>See the <a href="https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf">R Markdown cheat sheet</a> for more information on R Markdown formatting <br></p>
-<p>For tips to make your R Markdown output pretty, see <a href="https://holtzy.github.io/Pimp-my-rmd/">Pimp my RMD</a> by Yan Holtz <br></p>
+<p>See the <a
+href="https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf">R
+Markdown cheat sheet</a> for more information on R Markdown formatting
+<br></p>
+<p>For tips to make your R Markdown output pretty, see <a
+href="https://holtzy.github.io/Pimp-my-rmd/">Pimp my RMD</a> by Yan
+Holtz <br></p>
 <h2 id="tables">Tables</h2>
 <p>Several packages can create tables with nice formatting.</p>
 <p>One example is <code>kableExtra</code>:</p>
@@ -3248,7 +3316,8 @@ Hornet Sportabout
 </tbody>
 </table>
 </div>
-<p><code>kableExtra</code> is also able to be used using <code>magittr</code> or <code>base</code> piping:</p>
+<p><code>kableExtra</code> is also able to be used using
+<code>magittr</code> or <code>base</code> piping:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>mtcars</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
@@ -3409,8 +3478,10 @@ Hornet Sportabout
 </table>
 </div>
 <h2 id="figures">Figures</h2>
-<p>Controlling the size of figures can help when you want people to focus on trends of many plots or on details of a single plot. <br></p>
-<p>You can control how many columns your plots created in a chunk are printed into.<br />
+<p>Controlling the size of figures can help when you want people to
+focus on trends of many plots or on details of a single plot. <br></p>
+<p>You can control how many columns your plots created in a chunk are
+printed into.<br />
 Add <code>out.width = c("50%", "50%"), fig.show = "hold"</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="st">``</span>{r out.width<span class="ot">=</span><span class="fu">c</span>(<span class="st">&#39;50%&#39;</span>, <span class="st">&#39;50%&#39;</span>), fig.show<span class="ot">=</span><span class="st">&#39;hold&#39;</span>}</span>
@@ -3421,7 +3492,8 @@ Add <code>out.width = c("50%", "50%"), fig.show = "hold"</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="test_style-guide_files/figure-html5/unnamed-chunk-8-1.png" width="50%" /><img src="test_style-guide_files/figure-html5/unnamed-chunk-8-2.png" width="50%" /></p>
 </div>
-<p>Control other parts of figure output in the chunk header as well. For example:</p>
+<p>Control other parts of figure output in the chunk header as well. For
+example:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="st">``</span>{r, fig.align<span class="ot">=</span><span class="st">&quot;center&quot;</span>, fig.width<span class="ot">=</span><span class="dv">6</span>, fig.height<span class="ot">=</span><span class="dv">6</span>, fig.cap<span class="ot">=</span><span class="st">&quot;Figure: Here is a really important caption.&quot;</span>}</span></code></pre></div>
 </div>
@@ -3443,7 +3515,12 @@ Figure 1: Figure: Here is a really important caption.
 </div>
 </div>
 <h2 id="model-output">Model output</h2>
-<p>Want to show more readable model output? Use the <code>model_parameters()</code> function from the <a href="https://easystats.github.io/parameters/">parameters package</a> to make your output clear and organised. The <code>model_parameters()</code> function can be considered as a lightweight alternative to <code>broom::tidy()</code>:</p>
+<p>Want to show more readable model output? Use the
+<code>model_parameters()</code> function from the <a
+href="https://easystats.github.io/parameters/">parameters package</a> to
+make your output clear and organised. The
+<code>model_parameters()</code> function can be considered as a
+lightweight alternative to <code>broom::tidy()</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://easystats.github.io/parameters/'>parameters</a></span><span class='op'>)</span>
@@ -3463,7 +3540,8 @@ Petal Width                         |        0.62 | 0.14 | [ 0.34,  0.89] |   4.
 Petal Length * Species [versicolor] |       -0.09 | 0.26 | [-0.61,  0.42] |  -0.36 | 0.721 
 Petal Length * Species [virginica]  |       -0.13 | 0.26 | [-0.64,  0.38] |  -0.50 | 0.618 </code></pre>
 </div>
-<p><code>model_parameters()</code> can also be used for parameter standardization:</p>
+<p><code>model_parameters()</code> can also be used for parameter
+standardization:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># standardized parameters</span>
@@ -3482,18 +3560,28 @@ Petal Length * Species [virginica]  |       -0.13 | 0.26 | [-0.64,  0.38] |  -0.
 </div>
 <p><br></p>
 <h2 id="code-chunk-options">Code chunk options</h2>
-<p>See the <a href="https://rmarkdown.rstudio.com/lesson-3.html">R markdown documentation</a> to view chunk options. <br></p>
-<h3 id="example-echo-and-eval">Example: <code>echo</code> and <code>eval</code></h3>
-<p>Readers should be able to identify where every file in a workflow comes from (little is more frustrating than wondering where a required data file is located). Code used to load or extract data (from <code>galah</code>, for example) should be clearly identified. <br></p>
-<p>However, some code takes a very long time to run and you may have saved it locally or in a repository to save time and/or space. In this case, it is possible to show code without running it. <br></p>
-<p>Add <code>eval = FALSE</code> to the chunk header to display the code but prevent the chunk from running:</p>
+<p>See the <a href="https://rmarkdown.rstudio.com/lesson-3.html">R
+markdown documentation</a> to view chunk options. <br></p>
+<h3 id="example-echo-and-eval">Example: <code>echo</code> and
+<code>eval</code></h3>
+<p>Readers should be able to identify where every file in a workflow
+comes from (little is more frustrating than wondering where a required
+data file is located). Code used to load or extract data (from
+<code>galah</code>, for example) should be clearly identified. <br></p>
+<p>However, some code takes a very long time to run and you may have
+saved it locally or in a repository to save time and/or space. In this
+case, it is possible to show code without running it. <br></p>
+<p>Add <code>eval = FALSE</code> to the chunk header to display the code
+but prevent the chunk from running:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="st">``</span>{r, eval <span class="ot">=</span> <span class="cn">FALSE</span>}</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ala_counts</span>(<span class="at">group_by =</span> <span class="st">&quot;phylum&quot;</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">`</span></span></code></pre></div>
 </div>
-<p>You can then load a local file in the background, without showing the code. <br></p>
-<p>Add <code>echo = FALSE</code> to your chunk header to run the code but prevent the chunk from displaying:</p>
+<p>You can then load a local file in the background, without showing the
+code. <br></p>
+<p>Add <code>echo = FALSE</code> to your chunk header to run the code
+but prevent the chunk from displaying:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="st">``</span>{r, echo <span class="ot">=</span> <span class="cn">FALSE</span>}</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;local_file.rds&quot;</span>)</span>
@@ -3501,7 +3589,8 @@ Petal Length * Species [virginica]  |       -0.13 | 0.26 | [-0.64,  0.38] |  -0.
 </div>
 <h1 id="cool-distill-things">Cool Distill Things</h1>
 <h2 id="code-folding">Code folding</h2>
-<p>Does a plot require a lot of code that distracts from the plot itself? Distill has a really nice code folding feature:</p>
+<p>Does a plot require a lot of code that distracts from the plot
+itself? Distill has a really nice code folding feature:</p>
 <div class="layout-chunk" data-layout="l-body">
 <details>
 <summary>
@@ -3575,7 +3664,8 @@ Show code
 </div>
 </details>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -3816,7 +3906,12 @@ d-article a:hover {
     </div>
 <!--  </div>-->
 </div>
-<p><div class="copyright-row"> <div class="copyright-column-left"> <p class="copyright-text"> This work is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/au/">Creative Commons Attribution 3.0 Australia License</a> <a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/"><img alt="Creative Commons License" style="border-width:0" src="images/logos/cc-by.png"></img></a> </p> </div><!--col end --> </div><!-- row end --></p>
+<p><div class="copyright-row"> <div class="copyright-column-left">
+<p class="copyright-text"> This work is licensed under a
+<a href="https://creativecommons.org/licenses/by/3.0/au/">Creative
+Commons Attribution 3.0 Australia License</a>
+<a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/"><img alt="Creative Commons License" style="border-width:0" src="images/logos/cc-by.png"></img></a>
+</p> </div><!--col end --> </div><!-- row end --></p>
 </div>
 <!--/radix_placeholder_navigation_after_body-->
 

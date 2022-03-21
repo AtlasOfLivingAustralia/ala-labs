@@ -27,7 +27,7 @@ create_button(
 ),
 create_button(
   icon = "fas fa-globe fa-2x",
-  url = "shandiya.netlify.app"
+  url = "https://shandiya.netlify.app/"
 ),
 create_button(
   icon = "fab fa-twitter fa-2x",

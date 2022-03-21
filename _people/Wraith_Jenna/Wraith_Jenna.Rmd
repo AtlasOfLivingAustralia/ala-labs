@@ -23,7 +23,7 @@ source(here("R", "functions.R"))
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/jenna.jpg")
 ```
 
-Jenna is a conservation scientist with a PhD in Plant Ecology. She is currently the Training and Outreach Coordinator at the ALA. Her role is to make biodiversity data in the ALA by providing workshops, articles and training resources. Jenna is a strong advocate for diversity and inclusion in STEMM fields.
+Jenna is a conservation scientist with a PhD in Plant Ecology. She is currently the Training and Outreach Coordinator for the ALA and uses her skills in science communication to develop and deliver exciting training materials and workshops. Jenna is a strong advocate for diversity and inclusion in STEMM fields.
 
 ```{r, echo = FALSE}
 tags$div(class = "row", style = "display: flex;",
