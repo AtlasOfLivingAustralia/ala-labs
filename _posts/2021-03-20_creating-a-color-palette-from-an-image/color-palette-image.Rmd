@@ -6,7 +6,7 @@ description: |
   use the `paletter` package to create a color palette for the 2020 Eucalypt of 
   the Year: the Western Australian Gimlet.
 author:
-  - name: Martin Westgate
+  - name: "Martin Westgate"
 date: "March 2021"
 categories:
   - Summaries 

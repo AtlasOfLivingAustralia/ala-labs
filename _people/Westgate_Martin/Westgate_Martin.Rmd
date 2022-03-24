@@ -17,7 +17,7 @@ source(here("R", "functions.R"))
 ```{r out.width='200px', out.extra='style="float:right; margin-left:15px; margin-right:15px; clip-path: circle();"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/martin.jpg")
 ```
-Martin leads the Science & Decision Support Team at the ALA, and is an honorary lecturer at the Fenner School of Environment & Society, ANU. His work focuses on conceptual, computational and statistical tools to better understand patterns in nature.
+Martin leads the Science & Decision Support Team. He holds a doctorate in landscape ecology and conservation biology from the Australian National University. His work focuses on conceptual, computational and statistical tools to better understand patterns in nature.
 ```{r, echo = FALSE}
 tags$div(class = "row", style = "display: flex;",
          
@@ -38,5 +38,5 @@ create_button(
 :::
 <h2>Posts</h2>
 
-<a href='C:/Users/KEL329/OneDrive - CSIRO/Documents/ALA/Github/ala-labs/_site/posts/2022-02-17_sunburst-plots-for-taxonomic-data/index.html'>Sunburst plots for taxonomic data</a><br><em>Since version 1.3.1 of `galah`, it has been possible to download taxonomic data using a 'tree' format from the `data.tree` package. Here I'll demonstrate some ideas for plotting these trees using circular diagrams.</em><br><br>
-<a href='C:/Users/KEL329/OneDrive - CSIRO/Documents/ALA/Github/ala-labs/_site/posts/2021-03-20_creating-a-color-palette-from-an-image/index.html'>Creating a color palette from an image</a><br><em>There are hundreds of color palettes in the R ecosystem, but sometimes we might want to use colors from a specific image. Here I show how to  use the `paletter` package to create a color palette for the 2020 Eucalypt of  the Year</em><br><br>
+<a href='https://labs.ala.org.au/posts/2022-02-17_sunburst-plots-for-taxonomic-data/'>Sunburst plots for taxonomic data</a><br><em>Since version 1.3.1 of `galah`, it has been possible to download taxonomic data using a 'tree' format from the `data.tree` package. Here I'll demonstrate some ideas for plotting these trees using circular diagrams.</em><br><br>
+<a href='https://labs.ala.org.au/posts/2021-03-20_creating-a-color-palette-from-an-image/'>Creating a color palette from an image</a><br><em>There are hundreds of color palettes in the R ecosystem, but sometimes we might want to use colors from a specific image. Here I show how to use the `paletter` package to create a color palette for the 2020 Eucalypt of the Year</em><br><br>

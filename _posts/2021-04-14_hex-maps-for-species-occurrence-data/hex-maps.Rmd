@@ -5,7 +5,7 @@ description: |
   show how to draw one using the most common species in the ALA database: 
   the iconic Australian Magpie.
 author:
-  - name: Matilda Stevenson
+  - name: "Matilda Stevenson"
 date: '2022-02-25'
 categories: 
   - Maps

@@ -5,7 +5,7 @@ description: |
   data using a 'tree' format from the `data.tree` package. Here I'll demonstrate
   some ideas for plotting these trees using circular diagrams.
 author:
-  - name: Martin Westgate
+  - name: "Martin Westgate"
 date: '2022-02-17'
 categories: 
   - Trees

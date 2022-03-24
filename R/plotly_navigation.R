@@ -8,6 +8,7 @@ library(data.tree)
 library(tidygraph)
 library(ggraph)
 library(dplyr)
+base_url <- "https://labs.ala.org.au/"
 
 # build a data.tree with requisite nodes
 Eukaryota <- Node$new("Eukaryota")
@@ -53,7 +54,8 @@ point_data <- merge(
   by.x = "label",
   by.y = "name")
 point_data$link <- paste0(
-  here("_site", "posts.html#category:"), # this will need work later
+  base_url,
+  "posts.html#category:",
   point_data$label)
 
 # edges
@@ -118,4 +120,4 @@ if(!dir.exists(dir_path)){
   dir.create(dir_path)
 }
 saveWidget(plotly_image, 
-  here("_site", "images", "plotly", "taxonomy_navigation.html"))
+  here("images", "plotly", "taxonomy_navigation.html"))

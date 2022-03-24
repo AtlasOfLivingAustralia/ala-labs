@@ -10,7 +10,7 @@ get_nested_files <- function(path, suffix){
     return(relevant_files)}))
   result <- data.frame(
     relative_path = paste0("/", dirs_relative, "/", files),
-    absolute_path = paste0(dirs_absolute, "/", files)
+    local_path = paste0(dirs_absolute, "/", files)
   )
   return(result)
 }
@@ -41,15 +41,15 @@ parse_blog_html <- function(a){
     function(a){a[1]}))
   # text_df <- as.data.frame(text_list)
   # colnames(text_df) <- c("tag", "content")
-  text_df$blog_absolute_path <- a
+  text_df$blog_local_path <- a
   return(text_df)
 }
 
 add_author_posts <- function(a){
   # import rmd
-  rmd_text <- scan(a$author_absolute_path[1], what = "character", sep = "\n")
+  rmd_text <- scan(a$author_local_path[1], what = "character", sep = "\n")
   
-  # If there are already posts, replace them
+  # If there are already posts, remove them
   post_lookup <- rmd_text == "<h2>Posts</h2>"
   if(any(post_lookup)){
     rmd_text <- rmd_text[seq_len(which(post_lookup) - 1)]
@@ -62,11 +62,7 @@ add_author_posts <- function(a){
     function(x){
       paste0(
         "<a href='",
-          # x$source,
-          here("_site", "posts"), 
-          "/",
-          strsplit(x$blog_relative_path, "/")[[1]][2],
-          "/index.html",
+          x$blog_url,
         "'>",
         x$title,
         "</a><br><em>",
@@ -78,7 +74,7 @@ add_author_posts <- function(a){
   
   # save
   write.table(text_final, 
-    file = a$author_absolute_path[1], 
+    file = a$author_local_path[1], 
     sep = "\n", 
     quote = FALSE, 
     row.names = FALSE,

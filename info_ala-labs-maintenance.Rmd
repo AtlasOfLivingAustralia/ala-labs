@@ -1,6 +1,7 @@
 ---
 title: "Managing the ALA Labs Website"
-author: "Dax Kellie"
+author: 
+  - name: "Dax Kellie"
 date: "27/02/2022"
 output: html_document
 ---
@@ -159,9 +160,9 @@ Other properties are edited using custom CSS. These are (mostly) labelled and re
 
 For example, the following R function and html code are equivalent. They both will create a link of `class = "article-link"`. This class name can be used with CSS in `theme.css` to edit the element style.
 
-```{html, eval = FALSE}
-<!-- html -->
-<a class = "article-link" href = "https://ala.org.au/">my text</a>
+```{r, eval = FALSE}
+#<!-- html -->
+#<a class = "article-link" href = "https://ala.org.au/">my text</a>
 ```
 
 ```{r, eval = FALSE}
