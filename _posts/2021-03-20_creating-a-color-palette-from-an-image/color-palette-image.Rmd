@@ -46,7 +46,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 :::author-card-text
 <h4 style = "margin-bottom:5px">Author:</h4>
-[Martin Westgate](people/Westgate_Martin/index.html)
+[Martin Westgate](https://labs.ala.org.au/people/Westgate_Martin/index.html)
 
 <h4 style = "margin-bottom:5px">Date:</h4>
 March 2021

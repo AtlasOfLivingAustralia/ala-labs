@@ -59,8 +59,8 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 <!-- Author name -->
 <h4 style = "margin-bottom:5px">Author:</h4>
 Matilda Stevenson,
-[Martin Westgate](people/Westgate_Martin/index.html), 
-[Dax Kellie](people/Kellie_Dax/index.html)
+[Martin Westgate](https://labs.ala.org.au/people/Westgate_Martin/index.html), 
+[Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)
 
 <!-- Date -->
 <h4 style = "margin-bottom:5px">Date:</h4>
