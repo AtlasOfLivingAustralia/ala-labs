@@ -124,4 +124,4 @@ saveWidget(
   widget = plotly_image, 
   file = here("images", "plotly", "taxonomy_navigation.html"),
   selfcontained = TRUE)
-# unlink(here("images", "plotly", "taxonomy_navigation_files"))
+unlink(here("images", "plotly", "taxonomy_navigation_files"), recursive = TRUE)
