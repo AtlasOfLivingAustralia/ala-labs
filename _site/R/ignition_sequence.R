@@ -10,6 +10,7 @@ source(here("R", "parse_author_articles.R"))
 
 # add tree-based blog navigation
 source(here("R", "plotly_navigation.R"))
+unlink(here("images", "plotly", "taxonomy_navigation_files"), recursive = TRUE)
 
 # build
 rmarkdown::render_site()

@@ -115,13 +115,9 @@ plotly_image <- as_widget(onRender(
 "))
 
 # export html to a useable location
-dir_path <- here("images", "plotly")
+dir_path <- here("_site", "images", "plotly")
 if(!dir.exists(dir_path)){
   dir.create(dir_path)
 }
-saveWidget(
-  # widget = widgetframe::frameWidget(plotly_image),
-  widget = plotly_image, 
-  file = here("images", "plotly", "taxonomy_navigation.html"),
-  selfcontained = TRUE)
-unlink(here("images", "plotly", "taxonomy_navigation_files"), recursive = TRUE)
+saveWidget(plotly_image, 
+  here("images", "plotly", "taxonomy_navigation.html"))
