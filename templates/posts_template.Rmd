@@ -41,13 +41,13 @@ d-byline {
 <!-- Author image -->
 ```{r, out.width='120px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
 # add author first name at the end of this url (e.g., ".../people/martin.jpg")
-knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/first-name.jpg")
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/first-name.jpg")
 ```
 
 :::author-card-text
 <!-- Author name -->
 <h4 style = "margin-bottom:5px">Author:</h4>
-[FirstName LastName](people/Lastname_Firstname/index.html)
+[FirstName LastName](https://labs.ala.org.au/people/Lastname_Firstname/index.html)
 
 <!-- Date -->
 <h4 style = "margin-bottom:5px">Date:</h4>

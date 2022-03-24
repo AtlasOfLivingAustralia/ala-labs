@@ -44,15 +44,15 @@ d-byline {
 
 <!-- Author image -->
 ```{r, out.width='120px', out.extra='style="float:right; margin-left:5px; margin-right:5px; clip-path: circle();"', echo=FALSE}
-knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/dax.jpg")
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg")
 ```
 
 ```{r, out.width='120px', out.extra='style="float:right; margin-left:5px; margin-right:5px; clip-path: circle();"', echo=FALSE}
-knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/martin.jpg")
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/martin.jpg")
 ```
 
 ```{r, out.width='120px', out.extra='style="float:right; margin-left:5px; margin-right:5px; clip-path: circle();"', echo=FALSE}
-knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/SDS_website/main/images/people/matilda.jpg")
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/matilda.jpg")
 ```
 
 :::author-card-text
