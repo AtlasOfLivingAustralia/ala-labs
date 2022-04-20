@@ -42,7 +42,7 @@ meta() %>%
  
 
 
-<center> <h1>Data Visualisation</h1> </center>
+<center> <h1>Data visualisation</h1> </center>
 
 <center> <span style = "font-style: italic">Click to see related posts on each topic</span> </center>
 
@@ -134,7 +134,7 @@ tags$div(class = "category-row",
         href = "posts.html#category:Mammalia",
         src = "images/vectors/bettong.png",
         class = "category-image sage",
-        style = "height: 120px; width: auto;"
+        style = "height: 90px; width: auto; margin-top: 30px;"
   )),
   tags$p(
     tags$h3(style = "text-align:center",
@@ -145,7 +145,7 @@ tags$div(class = "category-row",
 
 :::
 
-<center> <h1>We Value</h1> </center>
+<center> <h1>We value</h1> </center>
 
 ```{r, layout="l-screen-inset", echo = FALSE}
 # find icons at https://fontawesome.com/v5.15/icons?d=gallery&p=2
@@ -159,7 +159,7 @@ create_values_box1(
 ),
 
 create_values_box2(
-  value = "\   Scientific Transparency",
+  value = "\   Scientific transparency",
   icon = "fas fa-atom",
   text = "Transparency is necessary for reproducible science. We encourage that decisions, methods and deviations in our workflow are clear and transparent from the planning phase, to the retrieval and analysis of data, to the final output"
 ),

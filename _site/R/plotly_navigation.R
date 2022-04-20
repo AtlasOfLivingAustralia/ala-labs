@@ -97,8 +97,13 @@ p <- edge_data %>%
     hoverinfo = "none") %>%
   layout(
     showlegend = FALSE,
-    xaxis = list(visible = FALSE, range = c(-0.5, 5)),
-    yaxis = list(visible = FALSE),
+    xaxis = list(
+      visible = FALSE, 
+      range = c(-0.5, 5),
+      fixedrange = TRUE),
+    yaxis = list(
+      visible = FALSE,
+      fixedrange = TRUE),
     margin = list(l = 10, r = 10, t = 10, b = 10, pad = 0)) %>%
   config(displayModeBar = FALSE)
 

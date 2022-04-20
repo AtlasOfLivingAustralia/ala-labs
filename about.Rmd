@@ -25,7 +25,7 @@ source("R/functions.R")
 
 
 
-# Meet the Team
+# Meet the team
 
 *Click on photos to view their articles and contributions*
 ```{r}

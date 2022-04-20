@@ -2234,7 +2234,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
       margin-top: 10px;
     }
 
-
   d-title { /* Adjust titles on other pages to accommodate for bigger navbar */
       padding-top: 8rem;
   }
@@ -2316,7 +2315,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   .ALA-species-credit {
     font-size: 11px;
-    font-style: italic;
     color: white;
   }
 
@@ -2904,7 +2902,7 @@ Resources
 <li>R package development &amp; maintenance</li>
 <li>Outreach &amp; engagement with the research community</li>
 </ul>
-<h1 id="meet-the-team">Meet the Team</h1>
+<h1 id="meet-the-team">Meet the team</h1>
 <em>Click on photos to view their articles and contributions</em>
 <div class="layout-chunk" data-layout="l-body">
 <div class="row">
@@ -3027,32 +3025,52 @@ Resources
 /*-- Copyright --*/
 
 .copyright-container {
-  width: 50%; 
+  display: flex;
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
   margin-bottom: 30px; 
   margin-top: 30px;
-  max-width: 704px;
 }
 
 .copyright-row {
- width: 100vw;
- position: relative;
- margin-left: -50vw;
- height: 60px;
- margin-bottom: -1.75vw;
- left: 50%;
- background-color: #c44d34;
- background-position: bottom;
- background-size: cover;
- display: flex;
-
+  width: 100%;
+  height: 60px;
+  position: relative;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: -1.75vw;
+  background-color: #c44d34;
+  background-position: bottom;
+  background-size: cover;
+  display: flex;
 }
 
 .copyright-column-left {
   float: left;
-  display: inline-block;
-  padding-left: 30px;
-  margin: auto;
   width: 50%;
+  max-width: 50%;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  display: flex;
+  flex-direction: column;
+  display:inline-block;
+}
+
+.copyright-column-right {
+  float: left;
+  text-align: left;
+  width: 50%;
+  max-width: 50%;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  display: flex;
+  flex-direction: column;
+  display:inline-block;
 }
 
 .copyright-text {
@@ -3069,15 +3087,19 @@ Resources
 
 .footer-container { 
   display: flex;
-  width: 50%; 
-  margin-bottom: 30px; 
+  width: 100%;
+  max-width: 1140px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 50px;
+  padding-bottom: 50px; 
   margin: auto;
-  max-width: 704px;
 }
 
 .distill-site-footer {
   padding-top: 0px;
   padding-bottom: 10px;
+  text-align: left;
 }
 
 .row-footer { /* Do not change the name of this column - it causes issues */
@@ -3089,19 +3111,20 @@ Resources
 
 .column-footer { /* Do not change the name of this column - it causes issues */
   float: left;
-  width: 49%;
+  width: 50%;
   max-width: 50%;
+  padding-left: 15px;
+  padding-right: 15px;
   position: relative;
   min-height: 1px;
   display: flex;
   flex-direction:column;
   display:inline-block;
-  margin:6px;
 }
 
 
 .footer-logo {
-  text-align: center;
+  text-align: left;
   margin:5px;
 }
 
@@ -3200,22 +3223,37 @@ d-article a:hover {
     width: 50%;
   }
   
+  .copyright-column-right {
+    width: 50%;
+  }
+  
   .copyright-row {
     height: 100px;
     margin-bottom: -3.75vw;
   }
 }
 
+.logo-ncris {
+  width: 150px;
+  height: 109px;
+  margin-right: 15px;
+  margin-top: 20px;
+}
+
+.logo-csiro {
+  width: 109px;
+  height: 109px;
+  margin-right: 15px;
+  margin-top: 20px;
+}
+
+.logo-gbif {
+  width: 207px;
+  height: 109px;
+}
+
 </style>
-<div class = "container">
-  <hr style = "opacity: 0.4; margin-top: 10px; margin-bottom:10px"></hr>
-</div>
-<div class = "link-container">
-    <a href = "https://ala.org.au/" style = "border-bottom: none">
-      <button class = "link-button"><strong>To the Atlas of Living Australia</strong>
-        <img src = "images/logos/ALA_Logo_Mark-only.png" class = "ala-icon"></img></button>
-    </a>
-</div>
+<hr style="opacity: 0.4; margin-top: 10px; margin-bottom:10px">
 <div class = "footer-container">
   
   <!--<div class = "row-footer">-->
@@ -3227,13 +3265,25 @@ d-article a:hover {
              <a href = "https://www.gbif.org/en/" id = "d-article" class = "footer-link">GBIF</a>.
       </p>
       <a href = "https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris">
-        <img src = "images/logos/NCRIS_logo.png" style = "width:auto;height:85px;margin-left:0px;margin-right:2px"></img>
+        <img 
+          src = "images/logos/NCRIS_logo.png" 
+          class = "logo-ncris"
+          alt="NCRIS logo">
+        </img>
         </a>
       <a href = "https://csiro.au/">
-        <img src = "images/logos/CSIRO_logo.png" style = "width:auto;height:85px;margin-left:0px;margin-right:0px"></img>
+        <img 
+          src = "images/logos/CSIRO_logo.png" 
+          class = "logo-csiro"
+          alt="CSIRO logo">
+        </img>
         </a>
       <a href = "https://www.gbif.org/en/">
-        <img src = "images/logos/GBIF-2015.png" style = "width:auto;height:85px;margin-left:-10px;margin-right:2px"></img>
+        <img 
+          src = "images/logos/GBIF_109px.png" 
+          class = "logo-gbif"
+          alt="GBIF logo">
+        </img>
         </a>
     </div>
     <div class = "column-footer" id = "footer-logo">
@@ -3246,7 +3296,25 @@ d-article a:hover {
     </div>
 <!--  </div>-->
 </div>
-<p><div class="copyright-row"> <div class="copyright-column-left"> <p class="copyright-text"> This work is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/au/">Creative Commons Attribution 3.0 Australia License</a> <a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/"><img alt="Creative Commons License" style="border-width:0" src="images/logos/cc-by.png"></img></a> </p> </div><!--col end --> </div><!-- row end --></p>
+<div class="copright-container">
+  <div class="copyright-row">
+        <div class="copyright-column-left">
+                <p class="copyright-text">
+                    This work is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/au/">Creative Commons Attribution 3.0 Australia License</a>
+                    <a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/"><img alt="Creative Commons License" style="border-width:0" src="images/logos/cc-by.png"></img></a>
+                </p>
+            </div><!--col end -->
+        <div class="copyright-column-right">
+         <p class="copyright-text">
+           <a href="https://www.ala.org.au/terms-of-use#cy">Copyright</a>
+           &nbsp;&nbsp;
+           <a href="https://www.ala.org.au/terms-of-use">Terms of Use</a>
+           &nbsp;&nbsp;
+           <a href="https://status.ala.org.au/">System Status</a>
+         </p>
+      </div>
+    </div><!-- row end -->
+</div>
 </div>
 <!--/radix_placeholder_navigation_after_body-->
 
