@@ -93,8 +93,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico"/>
 
   <!--  https://schema.org/Article -->
-  <meta property="article:published" itemprop="datePublished" content="2022-04-20"/>
-  <meta property="article:created" itemprop="dateCreated" content="2022-04-20"/>
+  <meta property="article:published" itemprop="datePublished" content="2022-04-26"/>
+  <meta property="article:created" itemprop="dateCreated" content="2022-04-26"/>
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
   <meta property="og:title" content="ALA Labs: galah"/>
@@ -110,7 +110,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","date","output"]}},"value":[{"type":"character","attributes":{},"value":["galah"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["2022-04-20"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["highlight","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["pygments"]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","date","output"]}},"value":[{"type":"character","attributes":{},"value":["galah"]},{"type":"NULL"},{"type":"character","attributes":{},"value":["2022-04-26"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["highlight","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["pygments"]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2841,7 +2841,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"galah","authors":[],"publishedDate":"2022-04-20T00:00:00.000+10:00"}
+{"title":"galah","authors":[],"publishedDate":"2022-04-26T00:00:00.000+10:00"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2946,8 +2946,6 @@ d-title {
 .copyright-container {
   display: flex;
   width: 100%;
-  padding-left: 15px;
-  padding-right: 15px;
   margin-bottom: 30px; 
   margin-top: 30px;
 }
@@ -2956,13 +2954,21 @@ d-title {
   width: 100%;
   height: 60px;
   position: relative;
-  padding-left: 15px;
-  padding-right: 15px;
   margin-bottom: -1.75vw;
   background-color: #c44d34;
   background-position: bottom;
   background-size: cover;
   display: flex;
+}
+
+.copyright-width {
+  display: flex;
+  width: 100%;
+  max-width: 1140px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 30px;
+  margin: auto;
 }
 
 .copyright-column-left {
@@ -2974,13 +2980,13 @@ d-title {
   position: relative;
   min-height: 1px;
   display: flex;
-  flex-direction: column;
+  flex-direction:column;
   display:inline-block;
 }
 
 .copyright-column-right {
-  float: left;
-  text-align: left;
+  float: right;
+  text-align: right;
   width: 50%;
   max-width: 50%;
   padding-left: 15px;
@@ -3217,6 +3223,7 @@ d-article a:hover {
 </div>
 <div class="copright-container">
   <div class="copyright-row">
+     <div class="copyright-width">
         <div class="copyright-column-left">
                 <p class="copyright-text">
                     This work is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/au/">Creative Commons Attribution 3.0 Australia License</a>
@@ -3232,6 +3239,7 @@ d-article a:hover {
            <a href="https://status.ala.org.au/">System Status</a>
          </p>
       </div>
+    </div>
     </div><!-- row end -->
 </div>
 </div>
