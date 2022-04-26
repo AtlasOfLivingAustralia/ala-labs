@@ -2817,7 +2817,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     color: var(--hover-color, white);
   }</style>
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
   <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
   <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
@@ -2906,7 +2906,8 @@ Resources
 <ul>
 <li><a href="#getting-started">Getting started</a>
 <ul>
-<li><a href="#create-an-ala-r-markdown-file">Create an ALA R Markdown file</a></li>
+<li><a href="#create-an-ala-r-markdown-file">Create an ALA R Markdown
+file</a></li>
 <li><a href="#kniting-to-html-safely">Kniting to HTML safely</a></li>
 </ul></li>
 <li><a href="#push-to-github">Push to Github</a></li>
@@ -2914,10 +2915,12 @@ Resources
 <ul>
 <li><a href="#safe-paths">Safe paths</a></li>
 </ul></li>
-<li><a href="#writing-understandable-code">Writing understandable code</a>
+<li><a href="#writing-understandable-code">Writing understandable
+code</a>
 <ul>
 <li><a href="#summarise-your-code">Summarise your code</a></li>
-<li><a href="#style-code-using-styler">Style code using <code>styler</code></a></li>
+<li><a href="#style-code-using-styler">Style code using
+<code>styler</code></a></li>
 </ul></li>
 <li><a href="#styling-your-document">Styling your document</a>
 <ul>
@@ -2926,7 +2929,8 @@ Resources
 <li><a href="#model-output">Model output</a></li>
 <li><a href="#code-chunk-options">Code chunk options</a>
 <ul>
-<li><a href="#example-echo-and-eval">Example: <code>echo</code> and <code>eval</code></a></li>
+<li><a href="#example-echo-and-eval">Example: <code>echo</code> and
+<code>eval</code></a></li>
 </ul></li>
 </ul></li>
 <li><a href="#cool-distill-things">Cool Distill Things</a>
@@ -2936,23 +2940,43 @@ Resources
 </ul>
 </nav>
 </div>
-<p>This document details the Atlas of Living Australia style guide for creating html files from R Markdown</p>
+<p>This document details the Atlas of Living Australia style guide for
+creating html files from R Markdown</p>
 <h1 id="getting-started">Getting started</h1>
-<h2 id="create-an-ala-r-markdown-file">Create an ALA R Markdown file</h2>
-<p>To create new R Markdown file that follows the ALA style guide, install the <a href="https://github.com/AtlasOfLivingAustralia/alatheme">alatheme</a> package.</p>
+<h2 id="create-an-ala-r-markdown-file">Create an ALA R Markdown
+file</h2>
+<p>To create new R Markdown file that follows the ALA style guide,
+install the <a
+href="https://github.com/AtlasOfLivingAustralia/alatheme">alatheme</a>
+package.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>devtools</span><span class='fu'>::</span><span class='fu'><a href='https://devtools.r-lib.org/reference/remote-reexports.html'>install_github</a></span><span class='op'>(</span><span class='st'>"AtlasOfLivingAustralia/alatheme"</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
-<p>The {alatheme} package contains ALA templates for R Markdown files. After installing, create a new template R markdown file by selecting <strong>File</strong> –&gt; <strong>New File</strong> –&gt; <strong>New R Markdown</strong> which opens the “New R Markdown” pane</p>
-<p>In the “New R Markdown” pane, select <strong>From Template</strong> and choose from the list of {alatheme} templates.</p>
-<p>Fill in your information where necessary in the <code>yaml</code> header and in the required code and text chunks.</p>
+<p>The {alatheme} package contains ALA templates for R Markdown files.
+After installing, create a new template R markdown file by selecting
+<strong>File</strong> –&gt; <strong>New File</strong> –&gt; <strong>New
+R Markdown</strong> which opens the “New R Markdown” pane</p>
+<p>In the “New R Markdown” pane, select <strong>From Template</strong>
+and choose from the list of {alatheme} templates.</p>
+<p>Fill in your information where necessary in the <code>yaml</code>
+header and in the required code and text chunks.</p>
 <h2 id="kniting-to-html-safely">Kniting to HTML safely</h2>
-<p>In R Studio, clicking the <strong>Knit</strong> button in the left upper menu above your script renders your R Markdown file into an HTML file.</p>
-<p>However, if your code requires a <code>config</code> setting with personal or sensitive information, . However, packages like <code>galah</code> require users to enter an email address prior to downloading data using <code>galah_config(email = "your-email@email.com")</code>. Knitting without this information in the document will cause an error.</p>
-<p>A better workflow for rendering R Markdown files is by using a separate script combined with the <code>here</code> package. Running the following script outside of your R Markdown file will render your R Markdown file in the file’s directory:</p>
+<p>In R Studio, clicking the <strong>Knit</strong> button in the left
+upper menu above your script renders your R Markdown file into an HTML
+file.</p>
+<p>However, if your code requires a <code>config</code> setting with
+personal or sensitive information, . However, packages like
+<code>galah</code> require users to enter an email address prior to
+downloading data using
+<code>galah_config(email = "your-email@email.com")</code>. Knitting
+without this information in the document will cause an error.</p>
+<p>A better workflow for rendering R Markdown files is by using a
+separate script combined with the <code>here</code> package. Running the
+following script outside of your R Markdown file will render your R
+Markdown file in the file’s directory:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/AtlasOfLivingAustralia/galah'>galah</a></span><span class='op'>)</span>
@@ -2971,9 +2995,19 @@ Resources
 <hr />
 <h1 id="reproducible-workflows">Reproducible workflows</h1>
 <h2 id="safe-paths">Safe paths</h2>
-<p>Using <code>setwd()</code> to set a working directory can cause issues when setting folder paths, and can easily prevent a script or workflow from being reproducible. <br></p>
-<p>One alternative <a href="https://github.com/jennybc/here_here">suggested by Jenny Bryan</a> is to use <code>here::here()</code> from the <a href="https://here.r-lib.org/">here package</a> to build your directory paths. <code>here::here()</code> automatically creates paths relative to the top level directory.</p>
-<p>Read a full description of how to use the <code>here()</code> function to create safe paths in <a href="https://rstats.wtf/safe-paths.html">Chapter 3 of What They Forgot to Teach You About R</a></p>
+<p>Using <code>setwd()</code> to set a working directory can cause
+issues when setting folder paths, and can easily prevent a script or
+workflow from being reproducible. <br></p>
+<p>One alternative <a
+href="https://github.com/jennybc/here_here">suggested by Jenny Bryan</a>
+is to use <code>here::here()</code> from the <a
+href="https://here.r-lib.org/">here package</a> to build your directory
+paths. <code>here::here()</code> automatically creates paths relative to
+the top level directory.</p>
+<p>Read a full description of how to use the <code>here()</code>
+function to create safe paths in <a
+href="https://rstats.wtf/safe-paths.html">Chapter 3 of What They Forgot
+to Teach You About R</a></p>
 <p>For example:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2988,19 +3022,53 @@ Resources
 </div>
 <h1 id="writing-understandable-code">Writing understandable code</h1>
 <h2 id="summarise-your-code">Summarise your code</h2>
-<p>People who read your code should be able to understand what it does and why you made the choices you did. It is helpful to include brief summaries of what your code is meant to do, and the logic of any decision you might make after seeing a result or output. For example, if your code used a statistical model, include your basic interpretation and subsequent decision process after seeing the results. <br></p>
-<p>Use sentences, paragraphs and code chunks to add structure to your script. Try to create a flowing, logical story of how to run an analysis or make a data visualisation. <br></p>
-<p>Code chunks should be brief. They should be supplemented with notes, descriptions or visual output that provides context to what a given chunk of code is meant to do. Users should be able to follow each transformation that is made to your data, each output that results from a transformation, and any final output. <br></p>
-<p>Do not expect your reader to know what they should see in your output. If there is something in your code output that you wish to highlight, it is best to tell your reader what they should see in your output and how you have interpreted it.</p>
-<p>There is no single correct code chunk size; you must use your best judgement. But if it seems that the result of several lines of code is unclear, you may need to split the code chunks to make the results easier to follow. <br></p>
-<h2 id="style-code-using-styler">Style code using <code>styler</code></h2>
-<p>Use the <code>styler</code> package to ensure your code is formatted correctly and/or consistently, The <code>styler</code> package formats your code according to the tidyverse style guide (or another custome style) prior to uploading a finished file document. <br></p>
-<p>See the <code>styler</code> <a href="https://github.com/r-lib/styler">github</a> and <a href="https://www.tidyverse.org/blog/2017/12/styler-1.0.0/">tidyverse</a> pages for more information <br></p>
-<p>Install the <code>styler</code> package to add style buttons to your R Markdown Addins dropdown menu. Clicking <strong>Addins</strong> -&gt; <strong>style active file</strong> will reformat the code in your active file. Clicking ** Addins** -&gt; <strong>style active section</strong> will reformat code in your current section. <br></p>
-<p>Alternatively, you <code>style_file()</code> or <code>style_text()</code> can be run in the console. <br></p>
+<p>People who read your code should be able to understand what it does
+and why you made the choices you did. It is helpful to include brief
+summaries of what your code is meant to do, and the logic of any
+decision you might make after seeing a result or output. For example, if
+your code used a statistical model, include your basic interpretation
+and subsequent decision process after seeing the results. <br></p>
+<p>Use sentences, paragraphs and code chunks to add structure to your
+script. Try to create a flowing, logical story of how to run an analysis
+or make a data visualisation. <br></p>
+<p>Code chunks should be brief. They should be supplemented with notes,
+descriptions or visual output that provides context to what a given
+chunk of code is meant to do. Users should be able to follow each
+transformation that is made to your data, each output that results from
+a transformation, and any final output. <br></p>
+<p>Do not expect your reader to know what they should see in your
+output. If there is something in your code output that you wish to
+highlight, it is best to tell your reader what they should see in your
+output and how you have interpreted it.</p>
+<p>There is no single correct code chunk size; you must use your best
+judgement. But if it seems that the result of several lines of code is
+unclear, you may need to split the code chunks to make the results
+easier to follow. <br></p>
+<h2 id="style-code-using-styler">Style code using
+<code>styler</code></h2>
+<p>Use the <code>styler</code> package to ensure your code is formatted
+correctly and/or consistently, The <code>styler</code> package formats
+your code according to the tidyverse style guide (or another custome
+style) prior to uploading a finished file document. <br></p>
+<p>See the <code>styler</code> <a
+href="https://github.com/r-lib/styler">github</a> and <a
+href="https://www.tidyverse.org/blog/2017/12/styler-1.0.0/">tidyverse</a>
+pages for more information <br></p>
+<p>Install the <code>styler</code> package to add style buttons to your
+R Markdown Addins dropdown menu. Clicking <strong>Addins</strong> -&gt;
+<strong>style active file</strong> will reformat the code in your active
+file. Clicking ** Addins** -&gt; <strong>style active section</strong>
+will reformat code in your current section. <br></p>
+<p>Alternatively, you <code>style_file()</code> or
+<code>style_text()</code> can be run in the console. <br></p>
 <h1 id="styling-your-document">Styling your document</h1>
-<p>See the <a href="https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf">R Markdown cheat sheet</a> for more information on R Markdown formatting <br></p>
-<p>For tips to make your R Markdown output pretty, see <a href="https://holtzy.github.io/Pimp-my-rmd/">Pimp my RMD</a> by Yan Holtz <br></p>
+<p>See the <a
+href="https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf">R
+Markdown cheat sheet</a> for more information on R Markdown formatting
+<br></p>
+<p>For tips to make your R Markdown output pretty, see <a
+href="https://holtzy.github.io/Pimp-my-rmd/">Pimp my RMD</a> by Yan
+Holtz <br></p>
 <h2 id="tables">Tables</h2>
 <p>Several packages can create tables with nice formatting.</p>
 <p>One example is <code>kableExtra</code>:</p>
@@ -3246,7 +3314,8 @@ Hornet Sportabout
 </tbody>
 </table>
 </div>
-<p><code>kableExtra</code> is also able to be used using <code>magittr</code> or <code>base</code> piping:</p>
+<p><code>kableExtra</code> is also able to be used using
+<code>magittr</code> or <code>base</code> piping:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>mtcars</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
@@ -3407,8 +3476,10 @@ Hornet Sportabout
 </table>
 </div>
 <h2 id="figures">Figures</h2>
-<p>Controlling the size of figures can help when you want people to focus on trends of many plots or on details of a single plot. <br></p>
-<p>You can control how many columns your plots created in a chunk are printed into.<br />
+<p>Controlling the size of figures can help when you want people to
+focus on trends of many plots or on details of a single plot. <br></p>
+<p>You can control how many columns your plots created in a chunk are
+printed into.<br />
 Add <code>out.width = c("50%", "50%"), fig.show = "hold"</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="st">``</span>{r out.width<span class="ot">=</span><span class="fu">c</span>(<span class="st">&#39;50%&#39;</span>, <span class="st">&#39;50%&#39;</span>), fig.show<span class="ot">=</span><span class="st">&#39;hold&#39;</span>}</span>
@@ -3419,7 +3490,8 @@ Add <code>out.width = c("50%", "50%"), fig.show = "hold"</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="test_style-guide_files/figure-html5/unnamed-chunk-8-1.png" width="50%" /><img src="test_style-guide_files/figure-html5/unnamed-chunk-8-2.png" width="50%" /></p>
 </div>
-<p>Control other parts of figure output in the chunk header as well. For example:</p>
+<p>Control other parts of figure output in the chunk header as well. For
+example:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="st">``</span>{r, fig.align<span class="ot">=</span><span class="st">&quot;center&quot;</span>, fig.width<span class="ot">=</span><span class="dv">6</span>, fig.height<span class="ot">=</span><span class="dv">6</span>, fig.cap<span class="ot">=</span><span class="st">&quot;Figure: Here is a really important caption.&quot;</span>}</span></code></pre></div>
 </div>
@@ -3441,7 +3513,12 @@ Figure 1: Figure: Here is a really important caption.
 </div>
 </div>
 <h2 id="model-output">Model output</h2>
-<p>Want to show more readable model output? Use the <code>model_parameters()</code> function from the <a href="https://easystats.github.io/parameters/">parameters package</a> to make your output clear and organised. The <code>model_parameters()</code> function can be considered as a lightweight alternative to <code>broom::tidy()</code>:</p>
+<p>Want to show more readable model output? Use the
+<code>model_parameters()</code> function from the <a
+href="https://easystats.github.io/parameters/">parameters package</a> to
+make your output clear and organised. The
+<code>model_parameters()</code> function can be considered as a
+lightweight alternative to <code>broom::tidy()</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://easystats.github.io/parameters/'>parameters</a></span><span class='op'>)</span>
@@ -3461,7 +3538,8 @@ Petal Width                         |        0.62 | 0.14 | [ 0.34,  0.89] |   4.
 Petal Length * Species [versicolor] |       -0.09 | 0.26 | [-0.61,  0.42] |  -0.36 | 0.721 
 Petal Length * Species [virginica]  |       -0.13 | 0.26 | [-0.64,  0.38] |  -0.50 | 0.618 </code></pre>
 </div>
-<p><code>model_parameters()</code> can also be used for parameter standardization:</p>
+<p><code>model_parameters()</code> can also be used for parameter
+standardization:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># standardized parameters</span>
@@ -3470,28 +3548,38 @@ Petal Length * Species [virginica]  |       -0.13 | 0.26 | [-0.64,  0.38] |  -0.
 </div>
 <pre><code>Parameter                           | Coefficient |   SE |         95% CI | t(143) |      p
 -------------------------------------------------------------------------------------------
-(Intercept)                         |        3.59 | 1.30 | [ 1.01,  6.17] |   2.75 | 0.007 
-Petal Length                        |        1.07 | 1.00 | [-0.91,  3.04] |   1.07 | 0.287 
-Species [versicolor]                |       -4.62 | 1.31 | [-7.21, -2.03] |  -3.53 | &lt; .001
-Species [virginica]                 |       -5.51 | 1.38 | [-8.23, -2.79] |  -4.00 | &lt; .001
-Petal Width                         |        1.08 | 0.24 | [ 0.59,  1.56] |   4.41 | &lt; .001
-Petal Length * Species [versicolor] |       -0.38 | 1.06 | [-2.48,  1.72] |  -0.36 | 0.721 
-Petal Length * Species [virginica]  |       -0.52 | 1.04 | [-2.58,  1.54] |  -0.50 | 0.618 </code></pre>
+(Intercept)                         |        2.89 | 0.36 | [ 2.18,  3.60] |   8.01 | &lt; .001
+Petal Length                        |        0.26 | 0.25 | [-0.22,  0.75] |   1.07 | 0.287 
+Species [versicolor]                |       -1.66 | 0.53 | [-2.71, -0.62] |  -3.14 | 0.002 
+Species [virginica]                 |       -1.92 | 0.59 | [-3.08, -0.76] |  -3.28 | 0.001 
+Petal Width                         |        0.62 | 0.14 | [ 0.34,  0.89] |   4.41 | &lt; .001
+Petal Length * Species [versicolor] |       -0.09 | 0.26 | [-0.61,  0.42] |  -0.36 | 0.721 
+Petal Length * Species [virginica]  |       -0.13 | 0.26 | [-0.64,  0.38] |  -0.50 | 0.618 </code></pre>
 </div>
 <p><br></p>
 <h2 id="code-chunk-options">Code chunk options</h2>
-<p>See the <a href="https://rmarkdown.rstudio.com/lesson-3.html">R markdown documentation</a> to view chunk options. <br></p>
-<h3 id="example-echo-and-eval">Example: <code>echo</code> and <code>eval</code></h3>
-<p>Readers should be able to identify where every file in a workflow comes from (little is more frustrating than wondering where a required data file is located). Code used to load or extract data (from <code>galah</code>, for example) should be clearly identified. <br></p>
-<p>However, some code takes a very long time to run and you may have saved it locally or in a repository to save time and/or space. In this case, it is possible to show code without running it. <br></p>
-<p>Add <code>eval = FALSE</code> to the chunk header to display the code but prevent the chunk from running:</p>
+<p>See the <a href="https://rmarkdown.rstudio.com/lesson-3.html">R
+markdown documentation</a> to view chunk options. <br></p>
+<h3 id="example-echo-and-eval">Example: <code>echo</code> and
+<code>eval</code></h3>
+<p>Readers should be able to identify where every file in a workflow
+comes from (little is more frustrating than wondering where a required
+data file is located). Code used to load or extract data (from
+<code>galah</code>, for example) should be clearly identified. <br></p>
+<p>However, some code takes a very long time to run and you may have
+saved it locally or in a repository to save time and/or space. In this
+case, it is possible to show code without running it. <br></p>
+<p>Add <code>eval = FALSE</code> to the chunk header to display the code
+but prevent the chunk from running:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="st">``</span>{r, eval <span class="ot">=</span> <span class="cn">FALSE</span>}</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ala_counts</span>(<span class="at">group_by =</span> <span class="st">&quot;phylum&quot;</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">`</span></span></code></pre></div>
 </div>
-<p>You can then load a local file in the background, without showing the code. <br></p>
-<p>Add <code>echo = FALSE</code> to your chunk header to run the code but prevent the chunk from displaying:</p>
+<p>You can then load a local file in the background, without showing the
+code. <br></p>
+<p>Add <code>echo = FALSE</code> to your chunk header to run the code
+but prevent the chunk from displaying:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="st">``</span>{r, echo <span class="ot">=</span> <span class="cn">FALSE</span>}</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;local_file.rds&quot;</span>)</span>
@@ -3499,7 +3587,8 @@ Petal Length * Species [virginica]  |       -0.52 | 1.04 | [-2.58,  1.54] |  -0.
 </div>
 <h1 id="cool-distill-things">Cool Distill Things</h1>
 <h2 id="code-folding">Code folding</h2>
-<p>Does a plot require a lot of code that distracts from the plot itself? Distill has a really nice code folding feature:</p>
+<p>Does a plot require a lot of code that distracts from the plot
+itself? Distill has a really nice code folding feature:</p>
 <div class="layout-chunk" data-layout="l-body">
 <details>
 <summary>
@@ -3536,12 +3625,12 @@ Show code
 <span class='va'>occurrences_Tas</span><span class='op'>$</span><span class='va'>eventDate</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/as_date.html'>as_date</a></span><span class='op'>(</span><span class='va'>occurrences_Tas</span><span class='op'>$</span><span class='va'>eventDate</span><span class='op'>)</span>
 
 <span class='co'># Wrangling</span>
-<span class='va'>occurrences_Tas</span> <span class='op'>&lt;-</span> <span class='va'>occurrences_Tas</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
+<span class='va'>occurrences_Tas</span> <span class='op'>&lt;-</span> <span class='va'>occurrences_Tas</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>
     month <span class='op'>=</span> <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/IDateTime.html'>month</a></span><span class='op'>(</span><span class='va'>eventDate</span>, label <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='co'># add month col</span>
     year <span class='op'>=</span> <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/IDateTime.html'>year</a></span><span class='op'>(</span><span class='va'>eventDate</span><span class='op'>)</span>                  <span class='co'># add year col</span>
-  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>eventDate</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>             <span class='co'># remove NAs</span>
+  <span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>eventDate</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span>             <span class='co'># remove NAs</span>
   <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html'>as.data.table</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='co'># any(is.na(occurrences_Tas$day))</span>
 
@@ -3554,7 +3643,7 @@ Show code
   <span class='op'>)</span>
 <span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>ggdotchart</span><span class='op'>(</span><span class='va'>month_counts</span>,
+<span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/ggdotchart.html'>ggdotchart</a></span><span class='op'>(</span><span class='va'>month_counts</span>,
   x <span class='op'>=</span> <span class='st'>"month"</span>, y <span class='op'>=</span> <span class='st'>"N"</span>,
   color <span class='op'>=</span> <span class='st'>"month"</span>, <span class='co'># Color by groups</span>
   palette <span class='op'>=</span> <span class='st'>"viridis"</span>, <span class='co'># Custom color palette</span>
@@ -3567,13 +3656,14 @@ Show code
   title <span class='op'>=</span> <span class='st'>"Records added to ALA by month (2018-2020)"</span>,
   ylab <span class='op'>=</span> <span class='st'>"Number of records"</span>,
   xlab <span class='op'>=</span> <span class='st'>"Month"</span>,
-  ggtheme <span class='op'>=</span> <span class='fu'>theme_pubr</span><span class='op'>(</span><span class='op'>)</span> <span class='co'># ggplot2 theme</span>
+  ggtheme <span class='op'>=</span> <span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/theme_pubr.html'>theme_pubr</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'># ggplot2 theme</span>
 <span class='op'>)</span>
 </code></pre>
 </div>
 </details>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -3597,13 +3687,13 @@ Show code
 .copyright-container {
   display: flex;
   width: 100%;
-  margin-bottom: 30px; 
+  margin-bottom: 30px;
   margin-top: 30px;
 }
 
 .copyright-row {
   width: 100%;
-  height: 60px;
+  height: 66px;
   position: relative;
   margin-bottom: -1.75vw;
   background-color: #c44d34;
@@ -3661,14 +3751,14 @@ Show code
 
 /*-- Logos and acknowledgement --*/
 
-.footer-container { 
+.footer-container {
   display: flex;
   width: 100%;
   max-width: 1140px;
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 50px;
-  padding-bottom: 50px; 
+  padding-bottom: 50px;
   margin: auto;
 }
 
@@ -3751,7 +3841,7 @@ d-article a:hover {
   margin: 4px 2px;
   transition-duration: 0.3s;
   cursor: pointer;
-  background-color: white; 
+  background-color: white;
   border: 2px solid #E06E53;
   border-radius: 10px;
 }
@@ -3774,7 +3864,7 @@ d-article a:hover {
     margin-top: 20px;
     margin-bottom: 20px;
   }
-  
+
   .footer-container {
     width: 100%;
     max-width: 100%;
@@ -3794,15 +3884,15 @@ d-article a:hover {
     width: 20em;
     margin: auto;
   }
-  
+
   .copyright-column-left {
     width: 50%;
   }
-  
+
   .copyright-column-right {
     width: 50%;
   }
-  
+
   .copyright-row {
     height: 100px;
     margin-bottom: -3.75vw;
@@ -3831,32 +3921,32 @@ d-article a:hover {
 </style>
 <hr style="opacity: 0.4; margin-top: 10px; margin-bottom:10px">
 <div class = "footer-container">
-  
+
   <!--<div class = "row-footer">-->
     <div class = "column-footer">
-      <p class = "footer-text">The ALA is made possible by contributions from its partners, is supported 
-      by 
-      <a href = "https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris" class = "footer-link">NCRIS</a>, is hosted by 
+      <p class = "footer-text">The ALA is made possible by contributions from its partners, is supported
+      by
+      <a href = "https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris" class = "footer-link">NCRIS</a>, is hosted by
              <a href = "https://csiro.au/" class = "footer-link">CSIRO</a>, and is the Australian node of
              <a href = "https://www.gbif.org/en/" id = "d-article" class = "footer-link">GBIF</a>.
       </p>
       <a href = "https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris">
-        <img 
-          src = "images/logos/NCRIS_logo.png" 
+        <img
+          src = "images/logos/NCRIS_logo.png"
           class = "logo-ncris"
           alt="NCRIS logo">
         </img>
         </a>
       <a href = "https://csiro.au/">
-        <img 
-          src = "images/logos/CSIRO_logo.png" 
+        <img
+          src = "images/logos/CSIRO_logo.png"
           class = "logo-csiro"
           alt="CSIRO logo">
         </img>
         </a>
       <a href = "https://www.gbif.org/en/">
-        <img 
-          src = "images/logos/GBIF_109px.png" 
+        <img
+          src = "images/logos/GBIF_109px.png"
           class = "logo-gbif"
           alt="GBIF logo">
         </img>
@@ -3864,10 +3954,10 @@ d-article a:hover {
     </div>
     <div class = "column-footer" id = "footer-logo">
       <p class = "footer-text"><strong>Acknowledgement of Traditional Owners and Country</strong></p>
-      <p class = "footer-text-small">The Atlas of Living Australia acknowledges Australia's Traditional Owners 
-      and pays respect to the past and present Elders of the nation's Aboriginal 
-      and Torres Strait Islander communities. We honour and celebrate the 
-      spiritual, cultural and customary connections of Traditional Owners to 
+      <p class = "footer-text-small">The Atlas of Living Australia acknowledges Australia's Traditional Owners
+      and pays respect to the past and present Elders of the nation's Aboriginal
+      and Torres Strait Islander communities. We honour and celebrate the
+      spiritual, cultural and customary connections of Traditional Owners to
       country and the biodiversity that forms part of that country.<br></br></p>
     </div>
 <!--  </div>-->
