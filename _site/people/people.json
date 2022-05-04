@@ -4,11 +4,11 @@
     "title": "Matilda Stevenson",
     "description": {},
     "author": [],
-    "date": "2022-04-26",
+    "date": "2022-05-04",
     "categories": [],
     "contents": "\r\n\r\nPosts\r\n\r\nHex\r\nmaps for species occurrence dataHex maps are a neat way to\r\nrepresent spatial information. Here, we show how to draw one using the\r\nmost common species in the ALA database\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2022-04-26T13:05:39+10:00",
+    "last_modified": "2022-05-04T14:59:12+10:00",
     "input_file": {}
   },
   {
@@ -16,11 +16,11 @@
     "title": "Martin Westgate",
     "description": {},
     "author": [],
-    "date": "2022-04-26",
+    "date": "2022-05-04",
     "categories": [],
     "contents": "\r\nBio\r\n\r\n\r\n\r\n\r\nMartin leads the Science & Decision Support Team. He holds a\r\ndoctorate in landscape ecology and conservation biology from the\r\nAustralian National University. His work focuses on conceptual,\r\ncomputational and statistical tools to better understand patterns in\r\nnature.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nPosts\r\n\r\nSunburst\r\nplots for taxonomic dataSince version 1.3.1 of\r\ngalah, it has been possible to download taxonomic data\r\nusing a ‘tree’ format from the data.tree package. Here I’ll\r\ndemonstrate some ideas for plotting these trees using circular\r\ndiagrams.Creating\r\na color palette from an imageThere are hundreds of color\r\npalettes in the R ecosystem, but sometimes we might want to use colors\r\nfrom a specific image. Here I show how to use the paletter\r\npackage to create a color palette for the 2020 Eucalypt of the\r\nYear\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2022-04-26T13:05:36+10:00",
+    "last_modified": "2022-05-04T14:59:07+10:00",
     "input_file": {}
   },
   {
