@@ -21,11 +21,12 @@ library(htmltools)
 source("R/functions.R")
 ```
 
-```{r meta-details, echo=FALSE, results = 'asis'}
+```{r meta-details, include=FALSE, results = 'asis'}
 # This edits meta details that display when people search for website on search engines
 library(metathis)
 
 meta() %>%
+  meta_description("ALA Labs") %>%
   meta_social(
     title = "ALA Labs",
     description = "Experiments in code, data analysis & visualisation from the Atlas of Living Australia",
@@ -36,7 +37,8 @@ meta() %>%
     og_author = "Atlas of Living Australia",
     twitter_card_type = "summary",
     twitter_creator = "@atlaslivingaust"
-  )
+  ) %>%
+  include_meta()
 ```
 
  
