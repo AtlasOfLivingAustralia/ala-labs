@@ -83,7 +83,7 @@ tags$div(class = "row", # Create a row for 3 team-member cards
          
 create_team_card(
   person_page = "people/Balasubramaniam_Shandiya/index.html",
-  img_src = "images/people/shandiya.jpg",
+  img_src = "images/people/shandiya.png",
   name = "Shandiya Balasubramaniam",
   text = "Data Analyst"
 )
