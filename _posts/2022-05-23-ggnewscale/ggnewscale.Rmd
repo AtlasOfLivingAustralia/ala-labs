@@ -75,12 +75,9 @@ Date:
 
 <!------ Post content starts here ------>
 
-> “I found I could say things with color and shapes that I couldn't say any other way”  
-> - Georgia O'Keeffe  
-
 Choropleth maps visually represent how aggregated summaries of a variable (e.g. density of lamp posts, per capita books read) vary across geographic areas. These maps require two inputs: a geospatial object with information on regional boundaries, and a numerical variable that can be mapped to each geographic unit using colour. Here, I walk through the process of mapping the density of plant records from the ALA to geographic bioregions across Australia, using two colour scales to differentiate between marine and terrestrial records. 
 
-# Part 1: Where we intrepidly get data
+# Get geospatial and count data 
 
 Let's start by loading the packages we'll need. 
 
@@ -93,14 +90,13 @@ library(rmapshaper)
 library(dplyr)
 library(stringr)
 library(ggplot2)
-library(showtext)
 library(ggnewscale)
 
 ```
 
-Next up, we'll need some regional boundaries. I think the [IBRA7](https://data.gov.au/dataset/ds-dga-d44dd392-ebea-4f1a-b30e-4a2da154aae4/details?q=ibra) and [IMCRA4](https://data.gov.au/dataset/ds-dga-3245ad6c-cc00-4404-ba1f-476c07b5f762/details?q=imcra) bioregions will work nicely for what we're planning. These boundaries classify Australia's landscapes and waters into geographically distinct bioregions based on variables like climate, geomorphology, and species information. After downloading the data, we can read it in using the `sf` package and check that it looks correct. Here, I've also elected to use `ms_simplify()` from the `rmapshaper` package to simplify the geospatial features and speed up computation.    
+Next, we'll need some regional boundaries. I think the [IBRA7](https://data.gov.au/dataset/ds-dga-d44dd392-ebea-4f1a-b30e-4a2da154aae4/details?q=ibra) and [IMCRA4](https://data.gov.au/dataset/ds-dga-3245ad6c-cc00-4404-ba1f-476c07b5f762/details?q=imcra) bioregions will work nicely for what we're planning. These boundaries classify Australia's landscapes and waters into geographically distinct bioregions based on variables like climate, geomorphology, and species information. After downloading the data, we can read it in using the `sf` package and check that it looks correct. Here, I've also elected to use `ms_simplify()` from the `rmapshaper` package to simplify the geospatial features and speed up computation.    
 
-```{r shapefiles, message = FALSE, warning = FALSE, fig.show = "hold", out.width = "50%"}
+```{r shapefiles, message = FALSE, warning = FALSE}
 
 # read in IMCRA shapefile
 imcra_shp <- st_read(here("_posts", 
@@ -110,8 +106,6 @@ imcra_shp <- st_read(here("_posts",
                      quiet = TRUE) |> 
   ms_simplify(keep = 0.1)
 
-plot(imcra_shp$geometry)
-
 # read in IBRA shapefile
 ibra_shp <- st_read(here("_posts",
                          "data",
@@ -120,20 +114,18 @@ ibra_shp <- st_read(here("_posts",
                     quiet = TRUE) |> 
   ms_simplify(keep = 0.1)
 
-plot(ibra_shp$geometry)
-
 ```
 
-And finally, let's get the number of plant records in the ALA using the `galah` package, grouped by IBRA or IMCRA region. To do this, we need to know what the ALA calls the IBRA and IMCRA layers. We'll get this information using the `search_fields()` function.  
+And finally, let's get the number of plant records in the ALA using the `galah` package, grouped by IBRA or IMCRA region. To do this, we need to know what the ALA calls the IBRA and IMCRA layers. Using the `search_fields()` function, we can determine that the IBRA layer we're after is called **cl1048** and the IMCRA layer, **cl966**.
 
 ```{r fields, echo = TRUE, message = FALSE, warning = FALSE}
 
-galah::search_fields("IBRA")
-galah::search_fields("IMCRA")
+search_fields("IBRA")
+search_fields("IMCRA")
 
 ```
 
-Great! Now that we know the IBRA layer we're after is called **cl1048** and the IMCRA layer, **cl966**, we can pass a query with `galah_call()`, which lets us structure the query using pipes. We can specify that we only want plant records matching *Plantae* or *Chlorophyta* using `galah_identify()`, apply the default set of ALA data quality filters to remove poor quality records using `galah_filter()`, group records by region using `galah_group_by()`, and finally return the counts of records that match all our criteria with `atlas_counts()`.    
+To get counts of records from the ALA, we can pass a query with `galah_call()`, which lets us structure the query using pipes. We can specify that we only want plant records matching *Plantae* or *Chlorophyta* using `galah_identify()`, apply the default set of ALA data quality filters to remove poor quality records using `galah_filter()`, group records by region using `galah_group_by()`, and finally return the counts of records that match all our criteria with `atlas_counts()`.    
 
 ```{r counts, echo = TRUE, message = FALSE, warning = FALSE}
 
@@ -157,11 +149,11 @@ head(imcra_counts)
 
 ```
 
-# Part 2: Where we fearlessly tidy, transform, and join
+# Join geospatial and count data
 
-We've now got the two inputs we need to make a choropleth: IBRA/IMCRA boundaries, and counts of plant records in each region. To create a plot, we need to combine the geospatial and numeric data. But first, a little light tidying.  
+We've now got the two inputs we need to make a choropleth: IBRA/IMCRA boundaries, and counts of plant records in each region. To create a plot, we need to combine the geospatial and numeric data. But first, let's check if the data needs to be tidied.  
 
-Since we're going to be joining the spatial and count data, we need to be sure that the names of the IBRA/IMCRA regions match in both datasets. We check this thusly.
+Since we're going to be joining the spatial and count data, we need to be sure that the names of the IBRA/IMCRA regions match in both datasets. It looks like the IBRA names match perfectly, but there's a mismatch in two IMCRA names. 
 
 ```{r check-names, echo = TRUE, message = FALSE, warning = FALSE}
 
@@ -171,18 +163,12 @@ setdiff(imcra_counts$cl966, imcra_shp$MESO_NAME)
 
 ```
 
-Hmm... Looks like the IBRA region names match in both datasets, but not the IMCRA. Let's dig a bit further.
+Checking for mismatches in IMCRA names shows that Pilbara is incorrectly spelled in the `imcra_counts` dataset. We can easily change this and confirm both sets of names match before continuing. 
 
 ```{r check-names-imcra, echo = TRUE, message = FALSE, warning = FALSE}
 
 # check the reverse for IMCRA names
 setdiff(imcra_shp$MESO_NAME, imcra_counts$cl966)
-
-```
-
-Ok, so Pilbara is incorrectly spelled in the `imcra_counts` dataset. With a little light wrangling, we can rectify this. 
-
-```{r rename-imcra, echo = TRUE, message = FALSE, warning = FALSE}
 
 # replace "Pilbarra" with "Pilbara" 
 imcra_counts <- imcra_counts |> 
@@ -195,9 +181,7 @@ setdiff(imcra_counts$cl966, imcra_shp$MESO_NAME)
 
 ```
 
-Well this is gratifying, now both sets of names match. Onward with our tidying!  
-
-Let's also check the distribution of counts in each dataset. 
+Checking the distribution of counts in each dataset shows a substantial skew to the right.  
 
 ```{r hist, message = FALSE, warning = FALSE, fig.show = "hold", out.width = "50%"}
 
@@ -206,7 +190,7 @@ hist(ibra_counts$count)
 
 ```
 
-That's a substantial skew to the right; let's try a log-transformation.
+Applying a log-transformation to the count data makes the distribution more symmetrical. 
 
 ```{r log-hist, message = FALSE, warning = FALSE, fig.show = "hold", out.width = "50%"}
 
@@ -215,9 +199,7 @@ hist(log(ibra_counts$count))
 
 ```
  
-Much better. Let's get joining!
-
-Here, we join the geospatial and numeric data. Along the way, we rename some columns, remove unnecessary columns, calculate counts as a proportion of the area of each region (so we're plotting density of records, not counts of records), and convert the resulting dataframe into a simple features object. 
+Next, we join the geospatial and numeric data. Along the way, we rename some columns, remove unnecessary columns, calculate counts as a proportion of the area of each region (so we're plotting density of records, not counts of records), and convert the resulting dataframe into a simple features object. 
 
 ```{r join, message = FALSE, warning = FALSE}
 
@@ -240,17 +222,12 @@ ibra_join <- ibra_counts |>
 ```
 
 
-# Part 3: Where we map with gay abandon   
+# Make a map   
 
-Finally, the reason we're all here. Let's get mapping! We'll use the `ggnewscale` package to apply different colour palettes to the marine and terrestrial data. 
+Finally, we'll use the `ggnewscale` package to apply different colour palettes to the marine and terrestrial data in a choropleth map. 
 
-```{r plot, echo = TRUE, message = FALSE, warning = FALSE}
+```{r plot, eval = FALSE}
 
-# add some custom fonts
-font_add_google("Lato", "lato")
-showtext_auto()
-
-# map
 ggplot() + 
   geom_sf(data = imcra_join,
           aes(fill = density_log10),
@@ -262,10 +239,9 @@ ggplot() +
                        labels = c("0.001", "0.01", "0.1", "1", "10"),
                        guide = guide_colorsteps(direction = "horizontal",
                                                 label.position = "bottom",
-                                                title.position = "left",
-                                                title.hjust = 0.8,
-                                                title.vjust = 0.8)) +
-  new_scale_fill() +
+                                                title.position = "left")) +
+  # adds new colour scale
+  ggnewscale::new_scale_fill() +
   geom_sf(data = ibra_join,
           aes(fill = density_log10),
           colour = NA) +
@@ -276,9 +252,8 @@ ggplot() +
                        labels = c("0.1", "1", "10", "100"),
                        guide = guide_colorsteps(direction = "horizontal",
                                                 label.position = "bottom",
-                                                title.position = "left",
-                                                title.hjust = 0.8,
-                                                title.vjust = 0.8)) +  
+                                                title.position = "left")) +
+  # adds a title for both legends
   annotate("text", 
            x = 133, 
            y = -45.5, 
@@ -286,18 +261,18 @@ ggplot() +
            size = 6) +
   coord_sf(xlim = c(110, 155), ylim = c(-45, -10)) +
   theme_void() +
-  theme(text = element_text(family = "lato"),
-        title = element_text(face = "bold"),
-        legend.position = "bottom",
-        legend.key.width = unit(12, 'mm'),
-        plot.background = element_rect(fill = 'white', colour = 'white'),
-        panel.background = element_rect(fill = 'white', colour = 'white'))
+  theme(legend.position = "bottom",
+        legend.key.width = unit(12, 'mm'))
 
 ```
 
+
+```{r image, echo = FALSE, layout="l-body-outset"}
+
+knitr::include_graphics(here("images", "dataviz", "choropleth_ggnewscale.png"))
+
+```
 Success!  
 
-One thing to note is that we didn't necessarily have to use `ggnewscale` here; we could just as easily have combined all the data and plotted them on the same map without keeping the IBRA and IMCRA datasets separate. But, i) it's nice to be able to differentiate marine and terrestrial regions at a glance, and ii) using two legends also makes it clear that there's a stark difference in the number of plant records for marine and terrestrial regions.   
-
-Happy plotting, everyone.
+One thing to note is that we didn't necessarily have to use `ggnewscale` here; we could just as easily have combined all the data and plotted them on the same map without keeping the IBRA and IMCRA datasets separate. But, i) it's nice to be able to differentiate marine and terrestrial regions at a glance, and ii) using two legends also makes it clear that there's a stark difference in the number of plant records for marine and terrestrial regions.  
 
