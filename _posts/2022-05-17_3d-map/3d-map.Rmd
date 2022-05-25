@@ -12,6 +12,7 @@ categories:
   - Eukaryota
   - Plantae
   - Maps
+preview: posts/2022-05-17_3d-map/plants_3d.png
 output: 
   distill::distill_article:
     highlight: tango
@@ -124,7 +125,7 @@ ggplot() +
 
 Now that we have our grid of hexagons, we can download data from the ALA using the [`galah` package](https://atlasoflivingaustralia.github.io/galah/index.html). Rather than downloading all data on the number of species identified since 2020 and then plotting the data as hexagons, we will make a function that sends individual queries to return the number of species identified within *each hexagon*.
 
-Our funtion `get_counts()` works in 3 parts:
+Our function `get_counts()` works in 3 parts:
 
 * The first part does some necessary editing of each Well Known Text (WKT) string so that they are compatible with `galah`. 
 
@@ -259,7 +260,7 @@ plot_gg(hex_map,
         phi = 33)    # adjust height of view
 ```
 
-```{r, echo = FALSE, layout="l-page", preview = TRUE}
+```{r, echo = FALSE, layout="l-page"}
 knitr::include_graphics(here::here("_posts", "2022-05-17_3d-map", "plants_3d.png"))
 ```
 
