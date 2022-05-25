@@ -38,3 +38,4 @@ create_button(
 :::
 <h2>Posts</h2>
 
+<a href='https://labs.ala.org.au/posts/2022-05-17_3d-map/'>Download plant species data by hexagon to make a 3D hex map\n</a><br><em>Making plots eye-catching can be useful for science communication. Here, we show how to make 3D plots in R with the `rayshader` package by visualising the number of species identified from ALA observations since 2020</em><br><br>
