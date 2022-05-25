@@ -27,3 +27,6 @@
 
 # R Environment Variables
 .Renviron
+
+# data folder
+_posts/data/
