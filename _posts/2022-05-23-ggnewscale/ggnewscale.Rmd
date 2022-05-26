@@ -1,7 +1,7 @@
 ---
 title: "Multiple colour scales in choropleth maps with {ggnewscale}"
 description: |
-  Wherein we download records of plants from the ALA and scale the dizzy heights of adding multiple colour scales to differentiate marine and terrestrial records    
+  Using multiple colour scales can be a great way to visually differentiate between geographic categories on a map. Here, we demonstrate this by creating a choropleth map to represent the density of plant records from the ALA across bioregions in Australia, and add multiple colour scales to differentiate marine and terrestrial records    
 author:
   - name: "Shandiya Balasubramaniam"
 date: '2022-05-23'
@@ -76,7 +76,7 @@ Date:
 
 <!------ Post content starts here ------>
 
-Choropleth maps visually summarise how variables (for example, density of lamp posts or books read per capita) varies across geographic areas. These maps require two things:  
+Choropleth maps visually summarise how variables (for example, species richness or population density) vary across geographic areas. These maps require two inputs:  
 
 * a geospatial object with information on regional boundaries
 * a numerical variable that can be mapped to each geographic unit using colour 
@@ -163,9 +163,9 @@ head(imcra_counts)
 
 # Join geospatial and count data
 
-We now have the two things we need to make a choropleth: 
+We now have the two things we need to make a choropleth map: 
 
-* IBRA/IMCRA boundaries, and 
+* IBRA/IMCRA boundaries 
 * counts of plant records in each region
 
 To create a plot, we need to combine the geospatial and numeric data. But first, let's check if the data needs to be tidied.  
@@ -182,7 +182,7 @@ setdiff(imcra_counts$cl966, imcra_shp$MESO_NAME)
 
 ```
 
-Reversing the order of IMCRA data frames in `setdiff()` reveals that that Pilbara is misspelled in the `imcra_counts` dataset. We can easily change this and confirm both sets of names match before continuing. 
+Reversing the order of IMCRA data frames in `setdiff()` reveals that that *Pilbara* is misspelled in the `imcra_counts` dataset. We can easily change this and confirm both sets of names match before continuing. 
 
 ```{r check-names-imcra, echo = TRUE, message = FALSE, warning = FALSE}
 
