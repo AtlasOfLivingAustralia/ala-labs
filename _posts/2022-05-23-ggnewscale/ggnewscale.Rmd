@@ -4,19 +4,19 @@ description: |
   Using multiple colour scales can be a great way to visually differentiate between geographic categories on a map. Here, we demonstrate this by creating a choropleth map to represent the density of plant records from the ALA across bioregions in Australia, and add multiple colour scales to differentiate marine and terrestrial records    
 author:
   - name: "Shandiya Balasubramaniam"
-date: '2022-05-23'
+date: '2022-05-31'
 categories: 
   - Eukaryota
   - Plantae
   - Chlorophyta
   - Maps
+preview: https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/dataviz/choropleth_ggnewscale.png
 output: 
   distill::distill_article:
     highlight: tango
     toc: true
     toc_float: true
     toc_depth: 3  
-draft: true      
 ---
 
 <!------ Complete title, description, author and date for website metadata ------>
@@ -45,7 +45,7 @@ d-byline {
 
 ```{r, out.width='120px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
 # add author first name at the end of this url (e.g., ".../people/martin.jpg")
-knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/shandiya.jpg")
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/shandiya.png")
 ```
 
 ::: author-card-text
@@ -67,7 +67,7 @@ Date:
 
 </h4>
 
-23 May, 2022
+31 May, 2022
 :::
 :::
 :::
@@ -76,7 +76,7 @@ Date:
 
 <!------ Post content starts here ------>
 
-Choropleth maps visually summarise how variables (for example, species richness or population density) vary across geographic areas. These maps require two inputs:  
+Choropleth maps visually summarise how variables (like species richness or population density, for example) vary across geographic areas. These maps require two inputs:  
 
 * a geospatial object with information on regional boundaries
 * a numerical variable that can be mapped to each geographic unit using colour 
@@ -102,7 +102,7 @@ library(ggnewscale)
 
 Next, we'll need some regional boundaries. I think the [IBRA7](https://data.gov.au/dataset/ds-dga-d44dd392-ebea-4f1a-b30e-4a2da154aae4/details?q=ibra) and [IMCRA4](https://data.gov.au/dataset/ds-dga-3245ad6c-cc00-4404-ba1f-476c07b5f762/details?q=imcra) bioregions will work nicely for what we're planning. These boundaries classify Australia's landscapes and waters into geographically distinct bioregions based on variables like climate, geomorphology, and species information. 
 
-After downloading the data, we can read it in using the `sf` package and check that it looks correct. Here, I've also elected to use `ms_simplify()` from the `rmapshaper` package to simplify the geospatial features and speed up computation.    
+After downloading the data, we can read it in using the [`sf` package](https://r-spatial.github.io/sf/) and check that it looks correct. Here, I've also elected to use `ms_simplify()` from the [`rmapshaper` package](https://github.com/ateucher/rmapshaper) to simplify the geospatial features and speed up computation.    
 
 ```{r shapefiles, message = FALSE, warning = FALSE}
 
@@ -124,7 +124,7 @@ ibra_shp <- st_read(here("_posts",
 
 ```
 
-And finally, let's get the number of plant records in the ALA using the `galah` package, grouped by IBRA or IMCRA region. To do this, we need to know what the ALA calls the IBRA and IMCRA layers. 
+And finally, let's get the number of plant records in the ALA using the [`galah` package](https://atlasoflivingaustralia.github.io/galah/index.html), grouped by IBRA or IMCRA region. To do this, we need to know what the ALA calls the IBRA and IMCRA layers. 
 
 Using the `search_fields()` function, we can determine that the IBRA layer we're after is called **cl1048** and the IMCRA layer, **cl966**.
 
@@ -245,7 +245,7 @@ ibra_join <- ibra_counts |>
 
 # Make a map   
 
-Finally, we'll use the `ggnewscale` package to apply different colour palettes to the marine and terrestrial data in a choropleth map. 
+Finally, we'll use the [`ggnewscale` package](https://eliocamp.github.io/ggnewscale/) to apply different colour palettes to the marine and terrestrial data in a choropleth map. 
 
 ```{r plot, eval = FALSE}
 
