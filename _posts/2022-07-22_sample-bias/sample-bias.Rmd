@@ -1,0 +1,337 @@
+---
+title: "Quantify geographic sampling bias with {sampbias}"
+description: |
+  Human biases play a large role in the data we collect of species. Here we show a simple method to quantify the bias of roads, cities, rivers and airports on species observations of legless lizards in the Northern Territory    
+author:
+  - name: "Dax Kellie"
+date: '2022-07-22'
+categories: 
+  - Eukaryota
+  - Animalia
+  - Chordata
+  - Summaries
+preview: add image---------------------------------------!~
+draft: true
+output: 
+  distill::distill_article:
+    highlight: tango
+    toc: true
+    toc_float: true
+    toc_depth: 3  
+---
+
+<!------ Complete title, description, author and date for website metadata ------>
+
+<!-- load html package & get date -->
+
+```{r, include=FALSE}
+library(htmltools)
+date.func <- format(Sys.time(), '%d %B, %Y')
+```
+
+<!-- remove distill metadata section -->
+
+```{css, echo = FALSE}
+d-byline {
+    display: none;
+  }
+```
+
+<!-- Author card -->
+
+::: author-card
+::: float-image
+
+<!-- Author image -->
+
+```{r, out.width='120px', out.extra='style="float:right; margin-left:15px; margin-right:50px; clip-path: circle();"', echo=FALSE}
+# add author first name at the end of this url (e.g., ".../people/martin.jpg")
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg")
+```
+
+::: author-card-text
+<!-- Author name -->
+
+<h4 style="margin-bottom:5px">
+
+Author:
+
+</h4>
+
+[Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)
+
+<!-- Date -->
+
+<h4 style="margin-bottom:5px">
+
+Date:
+
+</h4>
+
+22 July, 2022
+:::
+:::
+:::
+
+<br>
+
+<!------ Post content starts here ------>
+
+Despite our best efforts, being human affects the species we observe, when we observe them and where we observe them. In particular, we tend to collect more data in areas that are closer to places we live or have access to, leading to gaps in areas further from these places. As a result, species observations are inherently human-biased.
+
+However, not all species observations are affected equally by these biases, and it's useful to quantify how biased data are before interpreting them. Thanks to the [`sampbias` package](https://github.com/azizka/sampbias), we can easily quantify and compare the effects of these biases on our data, specifically biases that data are influenced by cities, roads, airports and rivers. 
+
+This post expands on [a Twitter thread by Dr Ian Brennan to show how sampling bias affects museum records of reptiles](https://twitter.com/ian_g_brennan/status/1537397667080179712). Dr Brennan is currently a Post Doctoral researcher at the Australian National University (ANU).
+
+
+# Download data
+
+To begin, we will look at some of Dr Brennan's favourite reptiles: legless lizards from the genus *Delma*
+
+```{r, out.width=c('33%', '33%', '33%'), fig.show='hold', out.extra='style="clip-path: circle();"', echo=FALSE}
+#| fig.cap = "Left: [*Delma desmosa* (tom_brennan CC BY-NC 4.0)](https://images.ala.org.au/image/146a0211-325f-4b4b-938f-d9582ccbe887) Middle: [*Delma inornata* (kenty_8881 CC BY-NC 4.0)](https://images.ala.org.au//image/c295146a-acd0-4f57-a819-d4c1f7f6ab47) Right: [*Delma tincta* (Ryan Shofner CC BY-NC 4.0)](https://images.ala.org.au/image/3a00210e-c043-4d4d-b884-04ce3e3f91be)"
+
+# Images of Delma
+knitr::include_graphics("https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/8/8/e/146a0211-325f-4b4b-938f-d9582ccbe887/original")
+knitr::include_graphics("https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/4/b/a/c295146a-acd0-4f57-a819-d4c1f7f6ab47/original")
+knitr::include_graphics("https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/b/1/9/3a00210e-c043-4d4d-b884-04ce3e3f91be/original")
+```
+
+
+First let's load the packages we need
+
+```{r, message = FALSE, warning = FALSE, error = FALSE}
+library(sampbias)
+library(galah)
+library(sp)
+library(raster)
+library(viridis)
+# library(patchwork)
+library(tidyverse)
+library(ozmaps)
+library(sf)
+```
+
+Next we will use the [galah package]() to download occurrence records of *Delma* in the Northern Territory in the Atlas of Living Australia (ALA).
+
+```{r}
+galah_config(email = "dax.kellie@csiro.au", verbose = FALSE)
+
+delma_records <- galah_call() |>
+  galah_identify("Delma") |>
+  galah_filter(stateProvince == "Northern Territory") |>
+  atlas_occurrences()
+
+# See 
+delma_records |> head(10L)
+```
+
+Now we can edit our data to select the columns we want, remove pesky `NA` values, and filter our records to make sure there are no outliers outside of the Northern Territory
+
+```{r}
+delma_records_filtered <- delma_records |>
+  dplyr::select(scientificName, decimalLatitude, decimalLongitude) |>
+  drop_na() |>
+  mutate(type = rep("Z Delma Occurrence", length.out = n())) |> # Name the occurrence type # FIXME: ??
+  filter(decimalLatitude < -10,
+         decimalLatitude >= -26,
+         decimalLongitude >= 129,
+         decimalLongitude <= 138) 
+```
+
+
+# Make a map
+
+The next step is to get a map of the Northern Territory that we will use to calculate our sample bias. The [`ozmaps` package]() has excellent quality rasters of Australia, and we will use `filter()` to extract mapping info of the Northern Territory. We will also use `st_transform()` and `st_crs()` to make sure the map has the correct WGS84 projection for ALA data
+
+```{r}
+# Get map
+nt_wgs84 <- ozmap_data(data = "states") |>
+  filter(NAME == "Northern Territory") |>
+  sf::st_transform(crs = sf::st_crs("WGS84"))
+
+## check map
+ggplot(nt_wgs84) + geom_sf(fill = "transparent")
+```
+
+<aside>
+
+For context, the Northern Territory is this one:
+```{r, echo = FALSE}
+ggplot(data = ozmap_data(data = "states")) + geom_sf(fill = "transparent") + geom_sf(data = nt_wgs84, fill = "#E06E53") + theme_void()
+```
+
+</aside>
+
+
+# Run the model
+
+It's time to quantify the bias of roads, cities, airports and rivers on *Delma* records!
+
+{`sampbias`} uses a probablistic method to quantify accessibility bias. You can check out their [published paper](https://onlinelibrary.wiley.com/doi/10.1111/ecog.05102) if you'd like to know more about the Bayesian methods underlying these estimates.
+
+The `calculate_bias()` function will output several plots to show us relative estimates of this bias. 
+
+In this model, we've specified a fine spatial scale resolution of `res = 0.05`. We have also added a buffer, which helps our model account for any neighbouring features just outside of our specified area that might affect our data. Finally, we restricted our model to be within our map of the Northern Territory, ensuring it is in the correct format by using `sf:::as_Spatial(nt_wgs84)`.
+
+**Important Note:** *Fine scale resolutions increase how long it takes for the model to run. This example took around 30 minutes. If you are short on time, I'd suggest starting with a higher resolution like `res = 0.5`.*
+
+```{r, eval = FALSE}
+model_bias_delma <- sampbias::calculate_bias(
+  x = nt_delma,
+  res = 0.05,   # scale of spatial resolution
+  buffer = 0.5, # account for neighbouring features
+  restrict_sample = sf:::as_Spatial(nt_wgs84)
+)
+```
+
+```{r, echo = FALSE}
+model_bias_delma <- readRDS(file = here::here("_posts", "data", "nt_out.rds"))
+```
+
+
+# Check your bias
+
+Once the model finishes running, we can use `plot()` to see the results.
+
+**Plot A** compares the strength of sampling bias from our features. A higher posterior weight indicates greater sampling bias. For *Delma* records, we can see airports (in yellow) are the largest source of bias, followed by roads (in green), with rivers and cities adding relatively smaller amounts of bias.
+
+**Plot B** compares the effect of each biasing factor on the sampling rate. Lines that curve more steeply indicate a drop-off in how likely an observation occurs as we get further from each feature. For *Delma*, getting further than 250 km from an airport effectively cuts the expected number of observations by around half.
+
+*Note: It's good to keep in mind the scale of the x axis when reading Plot A, as small numbers suggest these factors don't explain much of the overall variation in our data. A posterior weight of ~0.004 suggests that airports explain some variation, but not very much, of Delma observations.*
+
+```{r, layout="l-body-outset"}
+plot(model_bias_delma)
+```
+
+You can also use `summary()` to view the model's summary statistics
+
+```{r}
+summary(model_bias_delma)
+```
+
+
+***
+
+
+
+
+# Map the bias
+
+Before viewing the mapped output from {`sampbias`}, it would be useful to see where the airports, cities, roads and rivers are.
+
+```{r}
+# NOTE: This is the method that Ian sent to create the plot (plus some minor
+#       editing by me for tidier code). I'm unsure this is the best way to do
+#       this, as the code is quite long, but the map is valuable to see before
+#       seeing the sampbias projected map. 
+
+#       One possibility is to fold this code so people who are interested can 
+#       unfold it to see it.
+
+# Load in data for landscape features
+data(airports)
+data(waterbodies)
+data(cities)
+data(roads)
+data(landmass)
+
+# Rename columns
+colnames(delma_records_filtered)[2:3] <- c("latitude", "longitude")
+
+# Prepare features for plotting (crop to area of interest)
+airp <- airports %>%
+  crop(SpatialPoints(delma_records_filtered[,3:2])) %>%
+  coordinates() %>%
+  as_tibble() %>%
+  dplyr::mutate(type = "Airport")
+
+cit <- cities %>%
+  crop(SpatialPoints(delma_records_filtered[,3:2])) %>%
+  coordinates() %>%
+  as_tibble() %>%
+  dplyr::mutate(type = "City")
+
+pts <- dplyr::bind_rows(cit, airp)
+
+riv <- waterbodies %>%
+  crop(SpatialPoints(delma_records_filtered[,3:2])) %>%
+  fortify() %>%
+  dplyr::mutate(type = "River")
+
+road <- roads %>%
+  crop(SpatialPoints(delma_records_filtered[,3:2])) %>%
+  fortify() %>%
+  dplyr::mutate(type = "Road")
+
+lin <- dplyr::bind_rows(riv, road)
+```
+
+
+```{r, eval = FALSE}
+# FIXME: I think this is a better way to do the above using sf. What do you think?
+#        If you agree, it might be worth replacing the above with this method (or a simpler one?)
+x <- airports |>
+  st_as_sf() |>
+  st_set_crs(st_crs("WGS84")) |>
+  st_intersection(nt_wgs84)
+y <- cities |>
+  st_as_sf() |>
+  st_set_crs(st_crs("WGS84")) |>
+  st_intersection(nt_wgs84)
+```
+
+```{r}
+# PLOT
+nt_wgs84_b <- sf::st_as_sf(nt_wgs84)
+
+
+# Plot all the points on a map alongside the features
+ggplot() +
+  geom_sf(data = nt_wgs84_b,
+          fill = "grey98", color = "grey40") +
+  geom_path(data = lin,
+            mapping = aes(x = long, y = lat, group = group, color = type),
+            size = 1.1) +
+  geom_point(data = pts,
+             mapping = aes(x = longitude, y = latitude, color = type),
+             size = 7) +
+  geom_point(data = dplyr::filter(delma_records_filtered),
+             mapping = aes(x = longitude, y = latitude),
+             color = "#691C32",
+             size = 1.5,
+             alpha = 0.3) +
+  scale_color_brewer(palette = "Set2") +
+  xlab("Longitude")+
+  ylab("Latitude")+
+  theme_void()+
+  theme(legend.position = "bottom")
+```
+
+
+Now to see the projected effect of bias on *Delma* records, we can use `map_bias()`. Viewing the log-transformed predicted sampling rate, we can see a dark line along the furthest distance from the two major airports. 
+
+This function has several ways other ways to view the output, which you can experiment with.
+
+```{r}
+# Projecting the bias effect in space
+delma <- sampbias::project_bias(model_bias_delma)
+
+# Mapping
+# sampbias::map_bias(delma, type="diff_to_max") + 
+#   scale_fill_viridis(option = "C", na.value = "transparent")
+
+# sampbias::map_bias(delma, type="sampling_rate") + 
+#   scale_fill_viridis(option = "C", na.value = "transparent")
+
+sampbias::map_bias(delma, type="log_sampling_rate") + 
+  scale_fill_viridis(option = "A", na.value = "transparent") # I changed the palette for fun, but it's not working correctly hmph
+```
+
+
+# Other species
+
+I thought it would be fun to just show maps for a few other cool species. Any ideas? I was thinking ghost bat :o
+
+
+# Interpret stuff and sign off with a witty slogan
