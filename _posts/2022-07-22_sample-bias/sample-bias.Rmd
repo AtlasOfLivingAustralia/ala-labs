@@ -187,8 +187,6 @@ model_bias_delma <- sampbias::calculate_bias(
 model_bias_delma <- readRDS(file = here::here("_posts", "data", "nt_out.rds"))
 ```
 
-**Editor's note: "B" in the plot is a colliding with the y axis title, might need some finangling**
-
 # Check your bias
 
 Once the model finishes running, we can use `plot()` to see the results.
@@ -340,6 +338,8 @@ delma <- sampbias::project_bias(model_bias_delma)
 
 sampbias::map_bias(delma, type="log_sampling_rate") + 
   scale_fill_viridis(option = "A", na.value = "transparent") # I changed the palette for fun, but it's not working correctly hmph
+# what is it that's not working? the patterns in the two plots look similar to me...
+
 ```
 
 # Other species
