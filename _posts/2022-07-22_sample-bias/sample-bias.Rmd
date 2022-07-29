@@ -225,7 +225,7 @@ Before viewing the mapped output from {`sampbias`}, it would be useful to see wh
 #       unfold it to see it.
 
 # I think folding the code is a great idea; the post looks quite long and 
-# inaccessible otherwise -SB
+# inaccessible otherwise. Does the landmass dataset get used? -SB
 
 # Load in data for landscape features
 data(airports)
@@ -268,6 +268,24 @@ lin <- dplyr::bind_rows(riv, road)
 ```{r, eval = FALSE}
 # FIXME: I think this is a better way to do the above using sf. What do you think?
 #        If you agree, it might be worth replacing the above with this method (or a simpler one?)
+
+# I definitely agree with using sf over sp, and I think you've simplified it quite well. Really easy to 
+# follow the steps,  which was a bit less clear in Ian's code (for me, anyway).
+# You could wrap the whole thing up with purrr if you want to avoid repetition 
+# e.g. 
+# 
+# features <- c(airports, cities, waterbodies, roads)
+# 
+# features_sf <- features |> 
+#   set_names(c("Airport", "City", "River", "Road")) |> 
+#   map_dfr(~st_as_sf(.) |>
+#             st_set_crs(st_crs("WGS84")) |>
+#             st_intersection(nt_wgs84), 
+#           .id = "type")
+# 
+# I guess this has the added bonus of shortening your ggplot code below - you can just use 1 call
+# to geom_sf for all the features and colour by type
+
 x <- airports |>
   st_as_sf() |>
   st_set_crs(st_crs("WGS84")) |>
