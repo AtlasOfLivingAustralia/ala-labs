@@ -94,8 +94,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <link rel="icon" type="image/vnd.microsoft.icon" href="images/favicon.ico"/>
 
   <!--  https://schema.org/Article -->
-  <meta property="article:published" itemprop="datePublished" content="2022-05-31"/>
-  <meta property="article:created" itemprop="dateCreated" content="2022-05-31"/>
+  <meta property="article:published" itemprop="datePublished" content="2022-08-09"/>
+  <meta property="article:created" itemprop="dateCreated" content="2022-08-09"/>
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
   <meta property="og:title" content="ALA Labs: ALA Labs Style Guide"/>
@@ -113,7 +113,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","date","output"]}},"value":[{"type":"character","attributes":{},"value":["ALA Labs Style Guide"]},{"type":"character","attributes":{},"value":["Style guide for R script and R Markdown documents\n"]},{"type":"character","attributes":{},"value":["2022-05-31"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["highlight","toc","toc_float","toc_depth"]}},"value":[{"type":"character","attributes":{},"value":["pygments"]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","date","output"]}},"value":[{"type":"character","attributes":{},"value":["ALA Labs Style Guide"]},{"type":"character","attributes":{},"value":["Style guide for R script and R Markdown documents\n"]},{"type":"character","attributes":{},"value":["2022-08-09"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["highlight","toc","toc_float","toc_depth"]}},"value":[{"type":"character","attributes":{},"value":["pygments"]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -1034,10 +1034,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     margin-top: 1.5em;
   }
 
-  .figure img {
-    width: 100%;
-  }
-
   .figure .caption {
     color: rgba(0, 0, 0, 0.6);
     font-size: 12px;
@@ -1867,6 +1863,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
       // hoverable references
       $('span.citation[data-cites]').each(function() {
+        if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
+          var fn = $(this).children()[0]
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
         var refs = $(this).attr('data-cites').split(" ");
         var refHtml = refs.map(function(ref) {
           return "<p>" + $('#ref-' + ref).html() + "</p>";
@@ -1881,6 +1883,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           placement: 'bottom-start'
         });
       });
+
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
 
       // clear polling timer
       clearInterval(tid);
@@ -1980,6 +2007,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     // mark non-body figures created by knitr chunks as 100% width
     $('.layout-chunk').each(function(i, val) {
       var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
       if ($(this).attr('data-layout') !== "l-body") {
         figures.css('width', '100%');
       } else {
@@ -2002,7 +2031,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     // get rid of index.html references in header
     if (window.location.protocol !== "file:") {
       $('.distill-site-header a[href]').each(function(i,val) {
-        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
       });
     }
 
@@ -2817,7 +2846,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     color: var(--hover-color, white);
   }</style>
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
   <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
   <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
@@ -2846,7 +2875,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"ALA Labs Style Guide","description":"Style guide for R script and R Markdown documents","authors":[],"publishedDate":"2022-05-31T00:00:00.000+10:00"}
+{"title":"ALA Labs Style Guide","description":"Style guide for R script and R Markdown documents","authors":[],"publishedDate":"2022-08-09T00:00:00.000+10:00"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2904,38 +2933,49 @@ Resources
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
-<li><a href="#getting-started">Getting started</a>
+<li><a href="#getting-started" id="toc-getting-started">Getting
+started</a>
 <ul>
-<li><a href="#create-an-ala-r-markdown-file">Create an ALA R Markdown
+<li><a href="#create-an-ala-r-markdown-file"
+id="toc-create-an-ala-r-markdown-file">Create an ALA R Markdown
 file</a></li>
-<li><a href="#kniting-to-html-safely">Kniting to HTML safely</a></li>
+<li><a href="#kniting-to-html-safely"
+id="toc-kniting-to-html-safely">Kniting to HTML safely</a></li>
 </ul></li>
-<li><a href="#push-to-github">Push to Github</a></li>
-<li><a href="#reproducible-workflows">Reproducible workflows</a>
+<li><a href="#push-to-github" id="toc-push-to-github">Push to
+Github</a></li>
+<li><a href="#reproducible-workflows"
+id="toc-reproducible-workflows">Reproducible workflows</a>
 <ul>
-<li><a href="#safe-paths">Safe paths</a></li>
+<li><a href="#safe-paths" id="toc-safe-paths">Safe paths</a></li>
 </ul></li>
-<li><a href="#writing-understandable-code">Writing understandable
-code</a>
+<li><a href="#writing-understandable-code"
+id="toc-writing-understandable-code">Writing understandable code</a>
 <ul>
-<li><a href="#summarise-your-code">Summarise your code</a></li>
-<li><a href="#style-code-using-styler">Style code using
+<li><a href="#summarise-your-code"
+id="toc-summarise-your-code">Summarise your code</a></li>
+<li><a href="#style-code-using-styler"
+id="toc-style-code-using-styler">Style code using
 <code>styler</code></a></li>
 </ul></li>
-<li><a href="#styling-your-document">Styling your document</a>
+<li><a href="#styling-your-document"
+id="toc-styling-your-document">Styling your document</a>
 <ul>
-<li><a href="#tables">Tables</a></li>
-<li><a href="#figures">Figures</a></li>
-<li><a href="#model-output">Model output</a></li>
-<li><a href="#code-chunk-options">Code chunk options</a>
+<li><a href="#tables" id="toc-tables">Tables</a></li>
+<li><a href="#figures" id="toc-figures">Figures</a></li>
+<li><a href="#model-output" id="toc-model-output">Model output</a></li>
+<li><a href="#code-chunk-options" id="toc-code-chunk-options">Code chunk
+options</a>
 <ul>
-<li><a href="#example-echo-and-eval">Example: <code>echo</code> and
+<li><a href="#example-echo-and-eval"
+id="toc-example-echo-and-eval">Example: <code>echo</code> and
 <code>eval</code></a></li>
 </ul></li>
 </ul></li>
-<li><a href="#cool-distill-things">Cool Distill Things</a>
+<li><a href="#cool-distill-things" id="toc-cool-distill-things">Cool
+Distill Things</a>
 <ul>
-<li><a href="#code-folding">Code folding</a></li>
+<li><a href="#code-folding" id="toc-code-folding">Code folding</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -2951,8 +2991,7 @@ href="https://github.com/AtlasOfLivingAustralia/alatheme">alatheme</a>
 package.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>devtools</span><span class='fu'>::</span><span class='fu'><a href='https://devtools.r-lib.org/reference/remote-reexports.html'>install_github</a></span><span class='op'>(</span><span class='st'>"AtlasOfLivingAustralia/alatheme"</span><span class='op'>)</span>
-</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>devtools</span><span class='fu'>::</span><span class='fu'><a href='https://remotes.r-lib.org/reference/install_github.html'>install_github</a></span><span class='op'>(</span><span class='st'>"AtlasOfLivingAustralia/alatheme"</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
 <p>The {alatheme} package contains ALA templates for R Markdown files.
@@ -2979,13 +3018,12 @@ following script outside of your R Markdown file will render your R
 Markdown file in the file’s directory:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/AtlasOfLivingAustralia/galah'>galah</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://atlasoflivingaustralia.github.io/galah/reference/galah_config.html'>galah_config</a></span><span class='op'>(</span>email <span class='op'>=</span> <span class='st'>"your-email@email.com"</span><span class='op'>)</span>
-
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://here.r-lib.org/'>here</a></span><span class='op'>)</span>
-<span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"folder"</span>, <span class='st'>"subfolder"</span>, <span class='st'>"subfolder"</span>, <span class='st'>"your-code.Rmd"</span><span class='op'>)</span>
-<span class='fu'>rmarkdown</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/rmarkdown/reference/render.html'>render</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span>
-</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/AtlasOfLivingAustralia/galah'>galah</a></span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://atlasoflivingaustralia.github.io/galah/reference/galah_config.html'>galah_config</a></span><span class='op'>(</span>email <span class='op'>=</span> <span class='st'>"your-email@email.com"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://here.r-lib.org/'>here</a></span><span class='op'>)</span></span>
+<span><span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"folder"</span>, <span class='st'>"subfolder"</span>, <span class='st'>"subfolder"</span>, <span class='st'>"your-code.Rmd"</span><span class='op'>)</span></span>
+<span><span class='fu'>rmarkdown</span><span class='fu'>::</span><span class='fu'><a href='https://pkgs.rstudio.com/rmarkdown/reference/render.html'>render</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
 <p><br></p>
@@ -3011,13 +3049,12 @@ to Teach You About R</a></p>
 <p>For example:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://here.r-lib.org/'>here</a></span><span class='op'>)</span>
-
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.delim</a></span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"projects"</span>, , <span class='st'>"style_guide"</span>, <span class='st'>"data.csv"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsave.html'>ggsave</a></span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"plots"</span>, <span class='st'>"foofy_scatterplot.png"</span><span class='op'>)</span><span class='op'>)</span>
-</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://here.r-lib.org/'>here</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.delim</a></span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"projects"</span>, , <span class='st'>"style_guide"</span>, <span class='st'>"data.csv"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsave.html'>ggsave</a></span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"plots"</span>, <span class='st'>"foofy_scatterplot.png"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
 <h1 id="writing-understandable-code">Writing understandable code</h1>
@@ -3074,11 +3111,10 @@ Holtz <br></p>
 <p>One example is <code>kableExtra</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://haozhu233.github.io/kableExtra/'>kableExtra</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mtcars</span>, n<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_styling.html'>kable_styling</a></span><span class='op'>(</span><span class='op'>)</span>
-</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://haozhu233.github.io/kableExtra/'>kableExtra</a></span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mtcars</span>, n<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_styling.html'>kable_styling</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
@@ -3318,13 +3354,12 @@ Hornet Sportabout
 <code>magittr</code> or <code>base</code> piping:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>mtcars</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>gear</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
-  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>cyl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>cyl</span><span class='op'>)</span>,
-            disp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>disp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kbl.html'>kbl</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_styling.html'>kable_styling</a></span><span class='op'>(</span><span class='op'>)</span>
-</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>mtcars</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>gear</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> </span>
+<span>  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>cyl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>cyl</span><span class='op'>)</span>,</span>
+<span>            disp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>disp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kbl.html'>kbl</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_styling.html'>kable_styling</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
@@ -3379,11 +3414,10 @@ disp
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mtcars</span> |&gt;
-  <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/subset.data.table.html'>subset</a></span><span class='op'>(</span>select <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cyl"</span>, <span class='st'>"disp"</span>, <span class='st'>"gear"</span><span class='op'>)</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span> |&gt;
-  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kbl.html'>kbl</a></span><span class='op'>(</span><span class='op'>)</span> |&gt;
-  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_styling.html'>kable_styling</a></span><span class='op'>(</span><span class='op'>)</span>
-</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>mtcars</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/base/subset.html'>subset</a></span><span class='op'>(</span>select <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cyl"</span>, <span class='st'>"disp"</span>, <span class='st'>"gear"</span><span class='op'>)</span><span class='op'>)</span>, n <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kbl.html'>kbl</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/pkg/kableExtra/man/kable_styling.html'>kable_styling</a></span><span class='op'>(</span><span class='op'>)</span></span></code></pre>
 </div>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <thead>
@@ -3497,13 +3531,12 @@ example:</p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='va'>mpg</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>class</span>, <span class='va'>hwy</span><span class='op'>)</span>, y<span class='op'>=</span><span class='va'>hwy</span>, fill<span class='op'>=</span><span class='va'>class</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> 
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>geom_boxplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>xlab</a></span><span class='op'>(</span><span class='st'>"class"</span><span class='op'>)</span> <span class='op'>+</span>
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position<span class='op'>=</span><span class='st'>"none"</span><span class='op'>)</span>
-</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='va'>mpg</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>class</span>, <span class='va'>hwy</span><span class='op'>)</span>, y<span class='op'>=</span><span class='va'>hwy</span>, fill<span class='op'>=</span><span class='va'>class</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_boxplot.html'>geom_boxplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>xlab</a></span><span class='op'>(</span><span class='st'>"class"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position<span class='op'>=</span><span class='st'>"none"</span><span class='op'>)</span></span></code></pre>
 </div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-10"></span>
 <img src="test_style-guide_files/figure-html5/unnamed-chunk-10-1.png" alt="Figure: Here is a really important caption." width="576" />
@@ -3521,12 +3554,11 @@ make your output clear and organised. The
 lightweight alternative to <code>broom::tidy()</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://easystats.github.io/parameters/'>parameters</a></span><span class='op'>)</span>
-<span class='va'>model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>Sepal.Width</span> <span class='op'>~</span> <span class='va'>Petal.Length</span> <span class='op'>*</span> <span class='va'>Species</span> <span class='op'>+</span> <span class='va'>Petal.Width</span>, data <span class='op'>=</span> <span class='va'>iris</span><span class='op'>)</span>
-
-<span class='co'># regular model parameters</span>
-<span class='fu'><a href='https://easystats.github.io/parameters/reference/model_parameters.html'>model_parameters</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span>
-</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://easystats.github.io/parameters/'>parameters</a></span><span class='op'>)</span></span>
+<span><span class='va'>model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>Sepal.Width</span> <span class='op'>~</span> <span class='va'>Petal.Length</span> <span class='op'>*</span> <span class='va'>Species</span> <span class='op'>+</span> <span class='va'>Petal.Width</span>, data <span class='op'>=</span> <span class='va'>iris</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># regular model parameters</span></span>
+<span><span class='fu'><a href='https://easystats.github.io/parameters/reference/model_parameters.html'>model_parameters</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span></span></code></pre>
 </div>
 <pre><code>Parameter                           | Coefficient |   SE |         95% CI | t(143) |      p
 -------------------------------------------------------------------------------------------
@@ -3542,19 +3574,18 @@ Petal Length * Species [virginica]  |       -0.13 | 0.26 | [-0.64,  0.38] |  -0.
 standardization:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># standardized parameters</span>
-<span class='fu'><a href='https://easystats.github.io/parameters/reference/model_parameters.html'>model_parameters</a></span><span class='op'>(</span><span class='va'>model</span>, standardize <span class='op'>=</span> <span class='st'>"refit"</span><span class='op'>)</span>
-</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># standardized parameters</span></span>
+<span><span class='fu'><a href='https://easystats.github.io/parameters/reference/model_parameters.html'>model_parameters</a></span><span class='op'>(</span><span class='va'>model</span>, standardize <span class='op'>=</span> <span class='st'>"refit"</span><span class='op'>)</span></span></code></pre>
 </div>
 <pre><code>Parameter                           | Coefficient |   SE |         95% CI | t(143) |      p
 -------------------------------------------------------------------------------------------
-(Intercept)                         |        2.89 | 0.36 | [ 2.18,  3.60] |   8.01 | &lt; .001
-Petal Length                        |        0.26 | 0.25 | [-0.22,  0.75] |   1.07 | 0.287 
-Species [versicolor]                |       -1.66 | 0.53 | [-2.71, -0.62] |  -3.14 | 0.002 
-Species [virginica]                 |       -1.92 | 0.59 | [-3.08, -0.76] |  -3.28 | 0.001 
-Petal Width                         |        0.62 | 0.14 | [ 0.34,  0.89] |   4.41 | &lt; .001
-Petal Length * Species [versicolor] |       -0.09 | 0.26 | [-0.61,  0.42] |  -0.36 | 0.721 
-Petal Length * Species [virginica]  |       -0.13 | 0.26 | [-0.64,  0.38] |  -0.50 | 0.618 </code></pre>
+(Intercept)                         |        3.59 | 1.30 | [ 1.01,  6.17] |   2.75 | 0.007 
+Petal Length                        |        1.07 | 1.00 | [-0.91,  3.04] |   1.07 | 0.287 
+Species [versicolor]                |       -4.62 | 1.31 | [-7.21, -2.03] |  -3.53 | &lt; .001
+Species [virginica]                 |       -5.51 | 1.38 | [-8.23, -2.79] |  -4.00 | &lt; .001
+Petal Width                         |        1.08 | 0.24 | [ 0.59,  1.56] |   4.41 | &lt; .001
+Petal Length * Species [versicolor] |       -0.38 | 1.06 | [-2.48,  1.72] |  -0.36 | 0.721 
+Petal Length * Species [virginica]  |       -0.52 | 1.04 | [-2.58,  1.54] |  -0.50 | 0.618 </code></pre>
 </div>
 <p><br></p>
 <h2 id="code-chunk-options">Code chunk options</h2>
@@ -3595,23 +3626,22 @@ itself? Distill has a really nice code folding feature:</p>
 Show code
 </summary>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/AtlasOfLivingAustralia/galah'>galah</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-datatable.com'>data.table</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dtplyr.tidyverse.org'>dtplyr</a></span><span class='op'>)</span> <span class='co'># provides data.table backend for dplyr</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://lubridate.tidyverse.org'>lubridate</a></span><span class='op'>)</span> <span class='co'># for dates</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rpkgs.datanovia.com/ggpubr/'>ggpubr</a></span><span class='op'>)</span>
-
-<span class='co'># Might need to config email to get ALA data</span>
-<span class='fu'><a href='https://atlasoflivingaustralia.github.io/galah/reference/deprecated.html'>ala_config</a></span><span class='op'>(</span>email <span class='op'>=</span> <span class='st'>"dax.kellie@csiro.au"</span><span class='op'>)</span>
-
-
-<span class='co'># Get records</span>
-<span class='va'>occurrences_Tas</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://atlasoflivingaustralia.github.io/galah/reference/deprecated.html'>ala_occurrences</a></span><span class='op'>(</span>filters <span class='op'>=</span> <span class='fu'><a href='https://atlasoflivingaustralia.github.io/galah/reference/deprecated.html'>select_filters</a></span><span class='op'>(</span>stateProvince <span class='op'>=</span> <span class='st'>"Tasmania"</span>,
-                                               year <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>2018</span>, <span class='fl'>2020</span><span class='op'>)</span>,
-                                               basisOfRecord <span class='op'>=</span> <span class='st'>"HumanObservation"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>occurrences_Tas</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/setDT.html'>setDT</a></span><span class='op'>(</span><span class='va'>occurrences_Tas</span><span class='op'>)</span> <span class='co'># make data.table</span>
-</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/AtlasOfLivingAustralia/galah'>galah</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-datatable.com'>data.table</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dtplyr.tidyverse.org'>dtplyr</a></span><span class='op'>)</span> <span class='co'># provides data.table backend for dplyr</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://lubridate.tidyverse.org'>lubridate</a></span><span class='op'>)</span> <span class='co'># for dates</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rpkgs.datanovia.com/ggpubr/'>ggpubr</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Might need to config email to get ALA data</span></span>
+<span><span class='fu'><a href='https://atlasoflivingaustralia.github.io/galah/reference/deprecated.html'>ala_config</a></span><span class='op'>(</span>email <span class='op'>=</span> <span class='st'>"dax.kellie@csiro.au"</span><span class='op'>)</span></span>
+<span></span>
+<span></span>
+<span><span class='co'># Get records</span></span>
+<span><span class='va'>occurrences_Tas</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://atlasoflivingaustralia.github.io/galah/reference/deprecated.html'>ala_occurrences</a></span><span class='op'>(</span>filters <span class='op'>=</span> <span class='fu'><a href='https://atlasoflivingaustralia.github.io/galah/reference/deprecated.html'>select_filters</a></span><span class='op'>(</span>stateProvince <span class='op'>=</span> <span class='st'>"Tasmania"</span>,</span>
+<span>                                               year <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>2018</span>, <span class='fl'>2020</span><span class='op'>)</span>,</span>
+<span>                                               basisOfRecord <span class='op'>=</span> <span class='st'>"HumanObservation"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>occurrences_Tas</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/setDT.html'>setDT</a></span><span class='op'>(</span><span class='va'>occurrences_Tas</span><span class='op'>)</span> <span class='co'># make data.table</span></span></code></pre>
 </div>
 </details>
 </div>
@@ -3621,44 +3651,43 @@ Show code
 Show code
 </summary>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># date format</span>
-<span class='va'>occurrences_Tas</span><span class='op'>$</span><span class='va'>eventDate</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/as_date.html'>as_date</a></span><span class='op'>(</span><span class='va'>occurrences_Tas</span><span class='op'>$</span><span class='va'>eventDate</span><span class='op'>)</span>
-
-<span class='co'># Wrangling</span>
-<span class='va'>occurrences_Tas</span> <span class='op'>&lt;-</span> <span class='va'>occurrences_Tas</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>
-    month <span class='op'>=</span> <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/IDateTime.html'>month</a></span><span class='op'>(</span><span class='va'>eventDate</span>, label <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='co'># add month col</span>
-    year <span class='op'>=</span> <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/IDateTime.html'>year</a></span><span class='op'>(</span><span class='va'>eventDate</span><span class='op'>)</span>                  <span class='co'># add year col</span>
-  <span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>eventDate</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://rpkgs.datanovia.com/ggpubr/reference/pipe.html'>%&gt;%</a></span>             <span class='co'># remove NAs</span>
-  <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html'>as.data.table</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='co'># any(is.na(occurrences_Tas$day))</span>
-
-<span class='co'># get month counts</span>
-<span class='va'>month_counts</span> <span class='op'>&lt;-</span> <span class='va'>occurrences_Tas</span><span class='op'>[</span>, <span class='va'>.N</span>, by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"month"</span><span class='op'>)</span><span class='op'>]</span>
-<span class='va'>month_counts</span><span class='op'>$</span><span class='va'>month</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>ordered</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>month_counts</span><span class='op'>$</span><span class='va'>month</span>,
-  levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-    <span class='st'>"Jan"</span>, <span class='st'>"Feb"</span>, <span class='st'>"Mar"</span>, <span class='st'>"Apr"</span>, <span class='st'>"May"</span>, <span class='st'>"Jun"</span>,
-    <span class='st'>"Jul"</span>, <span class='st'>"Aug"</span>, <span class='st'>"Sep"</span>, <span class='st'>"Oct"</span>, <span class='st'>"Nov"</span>, <span class='st'>"Dec"</span>
-  <span class='op'>)</span>
-<span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/ggdotchart.html'>ggdotchart</a></span><span class='op'>(</span><span class='va'>month_counts</span>,
-  x <span class='op'>=</span> <span class='st'>"month"</span>, y <span class='op'>=</span> <span class='st'>"N"</span>,
-  color <span class='op'>=</span> <span class='st'>"month"</span>, <span class='co'># Color by groups</span>
-  palette <span class='op'>=</span> <span class='st'>"viridis"</span>, <span class='co'># Custom color palette</span>
-  sorting <span class='op'>=</span> <span class='st'>"none"</span>, <span class='co'># Sort value in descending order</span>
-  add <span class='op'>=</span> <span class='st'>"segments"</span>, <span class='co'># Add segments from y = 0 to dots</span>
-  legend <span class='op'>=</span> <span class='st'>"none"</span>,
-  rotate <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  dot.size <span class='op'>=</span> <span class='fl'>4</span>,
-  add.params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"month"</span>, size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,
-  title <span class='op'>=</span> <span class='st'>"Records added to ALA by month (2018-2020)"</span>,
-  ylab <span class='op'>=</span> <span class='st'>"Number of records"</span>,
-  xlab <span class='op'>=</span> <span class='st'>"Month"</span>,
-  ggtheme <span class='op'>=</span> <span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/theme_pubr.html'>theme_pubr</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'># ggplot2 theme</span>
-<span class='op'>)</span>
-</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># date format</span></span>
+<span><span class='va'>occurrences_Tas</span><span class='op'>$</span><span class='va'>eventDate</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/as_date.html'>as_date</a></span><span class='op'>(</span><span class='va'>occurrences_Tas</span><span class='op'>$</span><span class='va'>eventDate</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Wrangling</span></span>
+<span><span class='va'>occurrences_Tas</span> <span class='op'>&lt;-</span> <span class='va'>occurrences_Tas</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
+<span>    month <span class='op'>=</span> <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/IDateTime.html'>month</a></span><span class='op'>(</span><span class='va'>eventDate</span>, label <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>, <span class='co'># add month col</span></span>
+<span>    year <span class='op'>=</span> <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/IDateTime.html'>year</a></span><span class='op'>(</span><span class='va'>eventDate</span><span class='op'>)</span>                  <span class='co'># add year col</span></span>
+<span>  <span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>eventDate</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span>             <span class='co'># remove NAs</span></span>
+<span>  <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html'>as.data.table</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span><span class='co'># any(is.na(occurrences_Tas$day))</span></span>
+<span></span>
+<span><span class='co'># get month counts</span></span>
+<span><span class='va'>month_counts</span> <span class='op'>&lt;-</span> <span class='va'>occurrences_Tas</span><span class='op'>[</span>, <span class='va'>.N</span>, by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"month"</span><span class='op'>)</span><span class='op'>]</span></span>
+<span><span class='va'>month_counts</span><span class='op'>$</span><span class='va'>month</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>ordered</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>month_counts</span><span class='op'>$</span><span class='va'>month</span>,</span>
+<span>  levels <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
+<span>    <span class='st'>"Jan"</span>, <span class='st'>"Feb"</span>, <span class='st'>"Mar"</span>, <span class='st'>"Apr"</span>, <span class='st'>"May"</span>, <span class='st'>"Jun"</span>,</span>
+<span>    <span class='st'>"Jul"</span>, <span class='st'>"Aug"</span>, <span class='st'>"Sep"</span>, <span class='st'>"Oct"</span>, <span class='st'>"Nov"</span>, <span class='st'>"Dec"</span></span>
+<span>  <span class='op'>)</span></span>
+<span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/ggdotchart.html'>ggdotchart</a></span><span class='op'>(</span><span class='va'>month_counts</span>,</span>
+<span>  x <span class='op'>=</span> <span class='st'>"month"</span>, y <span class='op'>=</span> <span class='st'>"N"</span>,</span>
+<span>  color <span class='op'>=</span> <span class='st'>"month"</span>, <span class='co'># Color by groups</span></span>
+<span>  palette <span class='op'>=</span> <span class='st'>"viridis"</span>, <span class='co'># Custom color palette</span></span>
+<span>  sorting <span class='op'>=</span> <span class='st'>"none"</span>, <span class='co'># Sort value in descending order</span></span>
+<span>  add <span class='op'>=</span> <span class='st'>"segments"</span>, <span class='co'># Add segments from y = 0 to dots</span></span>
+<span>  legend <span class='op'>=</span> <span class='st'>"none"</span>,</span>
+<span>  rotate <span class='op'>=</span> <span class='cn'>FALSE</span>,</span>
+<span>  dot.size <span class='op'>=</span> <span class='fl'>4</span>,</span>
+<span>  add.params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"month"</span>, size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>,</span>
+<span>  title <span class='op'>=</span> <span class='st'>"Records added to ALA by month (2018-2020)"</span>,</span>
+<span>  ylab <span class='op'>=</span> <span class='st'>"Number of records"</span>,</span>
+<span>  xlab <span class='op'>=</span> <span class='st'>"Month"</span>,</span>
+<span>  ggtheme <span class='op'>=</span> <span class='fu'><a href='https://rpkgs.datanovia.com/ggpubr/reference/theme_pubr.html'>theme_pubr</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'># ggplot2 theme</span></span>
+<span><span class='op'>)</span></span></code></pre>
 </div>
 </details>
 </div>

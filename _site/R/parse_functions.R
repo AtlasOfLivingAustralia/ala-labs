@@ -29,7 +29,7 @@ parse_blog_html <- function(a){
     text_raw,
     cumsum(as.numeric(grepl("^\"", text_raw))))
   text_cleaned <- unlist(lapply(
-    text_list, 
+    text_list,
     function(x){paste(x, collapse = ",")}))
   text_cleaned <- gsub("\"|\\{|\"authors\":\\[\\{\"", "", text_cleaned)
   # convert to data.frame
@@ -48,7 +48,7 @@ parse_blog_html <- function(a){
 add_author_posts <- function(a){
   # import rmd
   rmd_text <- scan(a$author_local_path[1], what = "character", sep = "\n")
-  
+
   # If there are already posts, remove them
   post_lookup <- rmd_text == "<h2>Posts</h2>"
   if(any(post_lookup)){
@@ -71,12 +71,12 @@ add_author_posts <- function(a){
       )
     })
   text_final <- c(rmd_text, "<h2>Posts</h2>", "", unlist(text_list))
-  
+
   # save
-  write.table(text_final, 
-    file = a$author_local_path[1], 
-    sep = "\n", 
-    quote = FALSE, 
+  write.table(text_final,
+    file = a$author_local_path[1],
+    sep = "\n",
+    quote = FALSE,
     row.names = FALSE,
-    col.names = FALSE) 
+    col.names = FALSE)
 }

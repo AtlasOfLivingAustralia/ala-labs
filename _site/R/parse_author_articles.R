@@ -1,9 +1,10 @@
-# script to parse author names from html files in `_posts` and add to 
+# script to parse author names from html files in `_posts` and add to
 # .Rmd files in `_people`
 
 # libraries etc
 library(data.table)
 library(rmarkdown)
+library(stringr)
 library(here)
 source(here("R", "parse_functions.R"))
 base_url <- "https://labs.ala.org.au/"
@@ -29,6 +30,8 @@ author_df <- data.frame(
 ## locate _post files, and detect author names
 post_paths <- here("_posts")
 post_html_files <- get_nested_files(post_paths, "html")
+# articles only
+post_html_files <- post_html_files |> filter(str_detect(relative_path, ".*[0-9].*"))
 
 # get data.frame of post metadata
 post_content_list <- lapply(post_html_files$local_path, parse_blog_html)
@@ -38,7 +41,7 @@ post_df$blog_url <- paste0(
   base_url,
   "posts/",
   unlist(lapply(
-    strsplit(post_df$blog_relative_path, "\\/"), 
+    strsplit(post_df$blog_relative_path, "\\/"),
     function(a){a[[2]]}
   )),
   "/")
@@ -46,9 +49,9 @@ post_df$blog_url <- paste0(
 # remove irrelevant info from dates
 post_df$publishedDate <- substr(post_df$publishedDate, 1, 10)
 # remove line breaks from descriptions, and two or more consecutive spaces
-post_df$description <- gsub("\\s{2,}", " ",  
+post_df$description <- gsub("\\s{2,}", " ",
   gsub("\\n", " ", post_df$description, fixed = TRUE))
-  
+
 # merge author and post information
 merge_df <- merge(author_df, post_df, all.x = FALSE, all.y = TRUE)
 

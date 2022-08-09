@@ -38,4 +38,4 @@ create_button(
 :::
 <h2>Posts</h2>
 
-<a href='https://labs.ala.org.au/posts/2022-05-23-multiple-scales-in-choropleth-maps-with-ggnewscale/'>Multiple scales in choropleth maps with ggnewscale}</a><br><em>Wherein we download records of plants from the ALA and scale the dizzy heights of adding multiple colour scales to differentiate marine and terrestrial records</em><br><br>
+<a href='https://labs.ala.org.au/posts/2022-05-23-ggnewscale/'>Multiple colour scales in choropleth maps with ggnewscale}</a><br><em>Using multiple colour scales can be a great way to visually differentiate between geographic categories on a map. Here, we demonstrate this by creating a choropleth map to represent the density of plant records from the ALA across bioregions in Australia, and add multiple colour scales to differentiate marine and terrestrial records</em><br><br>
