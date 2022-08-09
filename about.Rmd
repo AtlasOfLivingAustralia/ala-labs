@@ -86,6 +86,13 @@ create_team_card(
   img_src = "images/people/shandiya.png",
   name = "Shandiya Balasubramaniam",
   text = "Data Analyst"
+),
+
+create_team_card(
+  person_page = "people/Schneider_Margot/index.html",
+  img_src = "images/people/margot.jpg",
+  name = "Margot Schneider",
+  text = "Project Manager"
 )
 
 )
