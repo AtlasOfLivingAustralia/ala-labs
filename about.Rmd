@@ -46,10 +46,10 @@ create_team_card(
 ),
 
 create_team_card(
-  person_page = "people/Wraith_Jenna/index.html",
-  img_src = "images/people/jenna.jpg",
-  name = "Jenna Wraith",
-  text = "Training & Outreach Coordinator"
+  person_page = "people/Buyan_Amanda/index.html",
+  img_src = "images/people/amanda.jpg",
+  name = "Amanda Buyan",
+  text = "Data Analyst"
 )
 
 )
@@ -71,9 +71,9 @@ create_team_card(
 ),
 
 create_team_card(
-  person_page = "people/Buyan_Amanda/index.html",
-  img_src = "images/people/amanda.jpg",
-  name = "Amanda Buyan",
+  person_page = "people/Kar_Fonti/index.html",
+  img_src = "images/people/fonti.jpg",
+  name = "Fonti Kar",
   text = "Data Analyst"
 )
 

@@ -4,6 +4,7 @@
 # libraries etc
 library(data.table)
 library(rmarkdown)
+library(dplyr)
 library(stringr)
 library(here)
 source(here("R", "parse_functions.R"))
@@ -31,7 +32,7 @@ author_df <- data.frame(
 post_paths <- here("_posts")
 post_html_files <- get_nested_files(post_paths, "html")
 # articles only
-post_html_files <- post_html_files |> filter(str_detect(relative_path, ".*[0-9].*"))
+post_html_files <- post_html_files |> dplyr::filter(str_detect(relative_path, ".*[0-9].*"))
 
 # get data.frame of post metadata
 post_content_list <- lapply(post_html_files$local_path, parse_blog_html)
@@ -53,7 +54,7 @@ post_df$description <- gsub("\\s{2,}", " ",
   gsub("\\n", " ", post_df$description, fixed = TRUE))
 
 # merge author and post information
-merge_df <- merge(author_df, post_df, all.x = FALSE, all.y = TRUE)
+merge_df <- merge(author_df, post_df, by.x = NULL, by.y = NULL, all.x = FALSE, all.y = TRUE)
 
 # for each author, add to Rmd
 lapply(
