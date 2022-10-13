@@ -87,10 +87,6 @@ library(pacman)
 # install.packages('BiocManager')
 pacman::p_load(remotes, galah, tidyverse, alphahull, sp, sf, ozmaps, hull2spatial, patchwork, xaringanExtra)
 
-galah_config(email = "margot.schneider@csiro.au", 
-             atlas = "Australia",
-             download_reason_id = 10 # testing
-             )
 ```
 
 ```{r include=FALSE}
