@@ -391,7 +391,8 @@ The published paper didn't provide a visual of this species' distribution, so we
 
 <details><summary>Expand for code to create map</summary>
 
-```{r include=FALSE}
+```{r}
+# Download records
 galah_call() |> 
   galah_identify("Mesembriomys gouldii") |> 
   galah_filter(profile = "ALA") |> 
@@ -413,15 +414,20 @@ tree_ratclean |>
   select(decimalLongitude, decimalLatitude) |> 
   ahull(alpha = 2) -> tree_rat_ahull
 
-# Transform our `ahull` object into a `sp` object and then into a `sf` object
+# Transform `ahull` to `sf`, set projection
 hull2spatial::ahull2poly(tree_rat_ahull) |> 
-  st_as_sf() -> tree_rat_sf_ahull
+  st_as_sf() |>
+  st_set_crs(st_crs(aus)) -> tree_rat_sf_ahull
+
+# Convert occurrence points to sf for plotting
+tree_ratclean |> 
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
+           crs = 4326) -> tree_rat_sf
 
 # Get map of Australia & set projection
 aus <- st_transform(ozmaps::ozmap_country, 4326)
 
-# Set the coordinate system using `aus` object
-tree_rat_sf_ahull %>% st_set_crs(st_crs(aus)) -> tree_rat_sf_ahull
+#---
 
 # Download tree rat records after 2000
 galah_call() |>
@@ -436,27 +442,27 @@ Rtree_rat |>
   filter(!duplicated(decimalLongitude) & !duplicated(decimalLatitude)) |> 
   filter(!is.na(decimalLongitude) & !is.na(decimalLatitude) ) -> Rtree_ratclean
 
-# Transform occurrence points to sf for plotting 
-Rtree_ratclean |> 
-  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
-           crs = 4326) -> Rtree_rat_sf
-
 # Compute an alpha hull for our specimen only occurrences
 Rtree_ratclean |> 
   select(decimalLongitude, decimalLatitude) |> 
   ahull(alpha = 2) -> Rtree_rat_ahull
 
-# Transform `ahull` into spatial object, convert to sf
+# Transform `ahull` to sf, set coordinates
 hull2spatial::ahull2poly(Rtree_rat_ahull) |> 
   st_as_sf() |> 
   st_set_crs(st_crs(aus)) -> Rtree_rat_sf_ahull
-```
 
+# Transform occurrence points to sf for plotting 
+Rtree_ratclean |> 
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
+           crs = 4326) -> Rtree_rat_sf
 
-```{r, echo = FALSE, fig.width=14, fig.height=8}
+#---
+
 # Nice title
 rat_title <- expression(italic("Mesembriomys gouldii "), "alpha hulls")
 
+# Plot!
 ggplot() + 
   geom_sf(data = aus, colour = "black", fill = "white")  +
   geom_sf(data = tree_rat_sf_ahull, aes(fill = "chartreuse3") ,alpha = 0.5, colour = "black", position = "identity") +
