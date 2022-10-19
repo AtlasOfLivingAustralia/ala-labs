@@ -70,7 +70,7 @@ knitr::include_graphics(c("https://raw.githubusercontent.com/AtlasOfLivingAustra
 
 The ability to predict where a species resides is important in conservation ecology, but when a species has very few existing observations (i.e. a *data-deficient species*), predicting its distribution can be difficult (or impossible) using standard methods for species distributions. 
 
-**Convex hulls** and **alpha hulls** are two ways to plot the spatial distribution of data-deficient species, making it possible to calculate metrics that help us predict whether a species is threatened to become extinct (i.e. [IUCN metrics](https://www.ala.org.au/spatial-portal-help/aoo/)).
+**Convex hulls** and **alpha hulls** are two ways to plot the spatial distribution of data-deficient species, making it possible to calculate metrics that help us predict whether a species is threatened to become extinct (i.e. [IUCN metrics](https://link.springer.com/article/10.1007/s10531-019-01697-9)).
 
 Recently, [Dr. Marsh and colleagues](https://onlinelibrary.wiley.com/doi/full/10.1111/geb.13550) used alpha hulls to estimate the impact of the 2020 mega bushfires  on invertebrates in southern Australia. Since invertebrate data is inherently sparse, alpha hulls are really useful when you only have a handful of records to work with.  
 
@@ -378,7 +378,7 @@ dflysp_ahull_p
 
 Alpha hulls, and their ability to generate multiple hulls when data is sparse, can help us understand how sensitive certain species are to environmental change over time, even when species have few existing observations. 
 
-For example, [Dr. Takach and their team](https://onlinelibrary.wiley.com/doi/10.1111/ddi.13145) wanted to investigate how the distribution of mammals in the tropical savanna like [*Mesembriomys gouldii* (the Black-Footed Tree Rat)](https://biocache.ala.org.au/occurrences/c6e1ff2d-ac80-4cc1-806c-6107e8e24617) shrink or expand in response to pressures like habitat loss and changing climate. Using alpha hulls, they found that the ecological niche of this species has shrunk due to a loss of suitable habitat over time.
+For example, [Dr. Takach and their team](https://onlinelibrary.wiley.com/doi/10.1111/ddi.13145) wanted to investigate how the distribution of mammals in the tropical savanna like [*Mesembriomys gouldii* (the Black-Footed Tree Rat)](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/f38bcd7e-ae6a-4734-bd64-06995bc230eb) shrink or expand in response to pressures like habitat loss and changing climate. Using alpha hulls, they found that the ecological niche of this species has shrunk due to a loss of suitable habitat over time.
 
 ```{r, out.width = c("33%"), fig.align='center', fig.show='hold', out.extra='style="width = 140px; clip-path: circle(); object-fit: cover"', echo=FALSE}
 #| fig.cap = "A Black-Footed Tree Rat perched on a branch by Colin Trainor CC-BY-NC 4.0](https://images.ala.org.au/image/a197988c-5da5-4260-8f2a-5bb55b468fce)"
