@@ -52,7 +52,7 @@ knitr::include_graphics(c("https://raw.githubusercontent.com/AtlasOfLivingAustra
 :::author-card-text
 <!-- Author name -->
 <h4 style = "margin-bottom:5px">Author:</h4>
-[Margot Schneider](https://labs.ala.org.au/people/Schieder_Margot/index.html)
+[Margot Schneider](https://labs.ala.org.au/people/Schneider_Margot/index.html)
 [Fonti Kar](https://labs.ala.org.au/people/Kar_Fonti/index.html)
 
 <!-- Date -->
