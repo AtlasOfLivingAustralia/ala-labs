@@ -1,14 +1,10 @@
 ---
-title: "Creating spatial data points and using shapefiles with {galah}"
+title: "Extract the number of points within each polygon for choropleth maps"
 description: |
-  Shapefiles are frequently used to visualise spatial data. 
-  While the `galah` package has some inbuilt [fields](http://galah.ala.org.au/articles/narrow_your_results.html#galah_filter) 
-  that you can use to spatially summarise data, it may not have what you 
-  require. Here, we will show you how to use your own shapefile with data from 
-  the ALA using the {galah} package. 
+  Choropleth maps are an excellent way to visualise numbers of observations in each region. When using point data, calculating the number of points in each polygon can be difficult when using shapefiles. Here we demonstrate how to extract and summarise the number of points in each polygon within a shapefile to create a choropleth map. 
 author: 
-  - name: "Dax Kellie"
   - name: "Olivia Torresan"
+  - name: "Dax Kellie"
 date: "2022-11-21"
 categories:
   - Summaries
@@ -23,11 +19,6 @@ output:
     toc_depth: 3
 draft: true
 ---
-
-
-
-
-
 
 
 <!------ Complete title, description, author and date for website metadata ------>
@@ -59,8 +50,8 @@ knitr::include_graphics(c("https://raw.githubusercontent.com/AtlasOfLivingAustra
 :::author-card-text
 <!-- Author name -->
 <h4 style = "margin-bottom:5px">Author:</h4>
-[Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)
 [Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/index.html)
+[Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)
 
 <!-- Date -->
 <h4 style = "margin-bottom:5px">Date:</h4>
@@ -75,13 +66,15 @@ knitr::include_graphics(c("https://raw.githubusercontent.com/AtlasOfLivingAustra
 
 
 <!------ Post content starts here ------>
+While the `galah` package has some inbuilt [fields](http://galah.ala.org.au/articles/narrow_your_results.html#galah_filter)
 
-In some data visualizations, it might be worthwhile making use of an external shapefile when using the {galah} package. 
+Choropleth maps are an excellent way to visualise differences of a variable across a geographic region, such as the number of species in each region. Often, creating a choropleth map requires that you find and download a shapefile specific to your area of interest, or a file with vector data of a specific geographic location with detailed information of its geographic features. 
 
-A shapefile is a data format that allows you to delineate specific geographical bounds on a map. `galah` has some fields that you can use to display data on a map (e.g. electoral regions) - but you may have a specific purpose in mind with bounds that are not available.
+Species observations, however, are recorded as point data, or the specific longitude and latitude coordinates of where an individual was observed. To create a choropleth map that summarises our species observations will require us to convert information from points to a summary statistic for each polygon of a shapefile. This conversion from points to polygons can sometimes be tricky.
 
-Here, we will show you how to work with external shapefiles and convert ALA data to points from `galah`, using many prominent packages within the `tidyverse` (e.g. `ggplot2`). 
+Here, we will show you how to extract the number of individual points of species observations inside each polygon of a downloaded shapefile to create a choropleth map. 
 
+## Download data
 
 First we will load the R packages that we need: 
 
@@ -98,13 +91,11 @@ library(tidyverse)
 ```
 
 
-## Download shapefile of interest
+### Download shapefile
 
 You can find many shapefiles online from reputable sources. For this example, I've retrieved a shapefile of suburb boundaries in the city of Canberra, Australian Capital Territory (ACT) (act_localities) from an [open-access state government source](https://www.actmapi.act.gov.au/download.html). 
 
-If your downloaded file is zipped and it needs to be unzipped - you can do so here. Sometimes R responds better to the file if it is unzipped internally. 
-
-****************************
+Save your downloaded file in a local folder. If your downloaded file is zipped and it needs to be unzipped, you can unzip it with the following code: 
 
 ```{r, eval = FALSE}
 zipF <- here::("folder", "act_localities-file.zip") 
@@ -112,26 +103,35 @@ outDir <- "name-of-folder-to-save-unzipped-files"
 unzip(zipF, exdir = outDir) 
 ```
 
-This chunk of code will load the shapefile into your R environment. 
+Now you can load your unzipped shapefile into R. To save space, we'll simplify our polygon with `ms_simplify()` from the {rmapshaper} package, removing some complexity from our shapefile.
 
-```{r}
+```{r, eval = FALSE}
+actsuburbs <- st_read(here("folder",
+                           "act_localities_unzipped",
+                           "act_localities.shp"),
+                      quiet = TRUE) |>
+  ms_simplify(keep = 0.1)
+```
+
+
+```{r, echo = FALSE}
 actsuburbs <- st_read(here("_posts", 
                            "2022-11-22_backyard-birds",
                            "data", 
                            "act_localitiesunzip", 
-                          "act_localities.shp"), 
+                           "act_localities.shp"), 
                      quiet = TRUE) |> 
   ms_simplify(keep = 0.1) 
 ```
 
 
-The actsuburbs shapefile countains both suburb boundaries and larger, encompassing "district" boundaries (see actsuburbs in environment). There are overlaps in these names, so to avoid confusion we will remove the districts as we are only interested in suburbs. 
+The `actsuburbs` shapefile contains both suburb boundaries and district boundaries. Districts can encompass several suburbs, and so to avoid confusion we will remove the districts as we are only interested in suburbs. 
 
 ```{r}
 actsuburbsonly <- subset(actsuburbs, LOC_CLASS != "District") 
 ```
 
-Seeing if the shapefile works before proceeding is good practice. Here, we also set its spatial projection to be consistent with that of `galah` - WGS84 - so it lines up accurately with the rest of our data.
+Now let's see our shapefile. First we will set the spatial projection of our shapefile to be consistent with that of the ALA - WGS84 - to ensure our map uses the correct coordinates for our data. We'll also use `st_make_valid()` to make sure any weird invalid geometries in our shapefile are made valid, and therefore plot correctly.
 
 ```{r}
 actsuburbs <- actsuburbsonly |> 
@@ -139,26 +139,31 @@ actsuburbs <- actsuburbsonly |>
   st_make_valid() 
 ```
 
-You can then plot your shapefile in ggplot2.
+And now to see our shapefile we'll use `geom_sf()`, with a few extra theme adjustments to make it look nice.
 
 ```{r}
-ggplot() + 
-  geom_sf(data = actsuburbs) + 
-   theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        panel.background = element_blank(), 
-        axis.text.x = element_text(size = 6),
-        axis.text.y = element_text(size= 6))
+ggplot() +
+  geom_sf(data = actsuburbs) +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.background = element_blank(),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 6)
+  )
 ```
 
-Now let's use `galah` to download occurrence records from the [Atlas of Living Australia (ALA)](https://www.ala.org.au/). Note that you will need to first enter a [registered email with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount) using `galah_config` before fetching records.
+
+### Download species observations
+
+Now let's use `galah` to download bird occurrence records from the [Atlas of Living Australia (ALA)](https://www.ala.org.au/). You will need to first enter a [registered email with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount) using `galah_config()` before fetching records.
 
 ```{r}
 galah_config(email = "oliviajane.t@hotmail.com", verbose = FALSE) 
 ```
 
 
-Here, we use the example of bird data ("Aves") provided by BirdLife Australia in each suburb. I've also restricted the search to the decimal longitude and latitude within the ACT region to improve the download speed.
+Here, we download all *Aves* data provided by BirdLife Australia in each suburb. I've also used `galah_filter()` to narrow our download to only records within the longitude and latitude of the ACT region.
 
 ```{r}
 birdocc <- galah_call() |> 
@@ -166,11 +171,13 @@ birdocc <- galah_call() |>
   galah_filter(profile = "ALA", 
                decimalLongitude > 148.0 & decimalLongitude < 150, 
                decimalLatitude < -35.0 & decimalLongitude > -36,
-              dataProviderName == "BirdLife Australia") |>  
+               dataProviderName == "BirdLife Australia") |>  
   atlas_occurrences() 
 ```
 
-## Prepare 'galah' data to merge with shapefile 
+
+
+## Prepare data to merge with shapefile 
 
 This prepares our data to be recognized as points on a map. It takes each row (`1:nrow(.)`) (our points) and "stores" them as latitude and longitude values.
 
@@ -197,13 +204,13 @@ intersect <- st_intersects(points_geomall, actsuburbs)
 ```
 
 
-## Count summary - suburb bird count
+## Summarise counts
 
 Given the bird data and the shapefile are intersected, we can figure out a summary bird count value for each suburb polygon.
 
 Each point is allocated with a suburb ID number (e.g. row 121 = the suburb of Yarralumla). There are 545 "121" values, meaning 545 records in Yarralumla. 
 
-To do this, we need to ['unlist'] (https://purrr.tidyverse.org/reference/flatten.html) the list object we just named "intersect" (as in this state, it cannot be worked with). A list object can be understood as 3D vs 2D - it comprises many data frames within itself (which can be helpful sometimes). We want this to all be in one data frame, though, therefore, we "flatten" it into one. "int" means we are converting the values into integer form.
+Next let's summarise how many points are in each polygon. Our `intersect` object has matched each point to a suburb, but has returned this information as a list. To summarise our counts, it's easiest to convert this information back to a `tibble`. So, we can flatten our `intersect` object from a list to a vector of integers using `flatten_int()`, save them as a tibble, group by each suburb, and summarise the count of records using `n()`.
 
 
 ```{r}
@@ -211,13 +218,15 @@ points_in_polygons <- intersect |>
   flatten_int() |> 
   as_tibble() |> 
   group_by(value) |> 
-  summarise(count = n()) 
+  summarise(count = n())
+
+point_in_polygons |> head(5L)
 ```
 
 
-## Join count data to each suburb polygon
+## Join summary data to polygons
 
-In order to join the count data to each suburb polygon, there are a few things that we need to clean up. Firstly, we need to create a column in the shapefile (actsuburbs) representing the row number, as this will be our suburb or region ID that will then match up with the count values (from the last step). These count values are named "value", but I've renamed it to ID as this is a bit misleading (`rename(id = value)`). We also replace any not available (na) numbers with 0. Doing this means our map will actually produce a representative color in the NA regions. Lastly, save as a spatial object (sf) ready to be mapped with ggplot2. 
+In order to join the count data to each suburb polygon, there are a few things that we need to clean up. Firstly, we need to create a column in the shapefile (actsuburbs) representing the row number, as this will be our suburb or region ID that will then match up with the count values (from the last step). These count values are named "value", but I've renamed it to `id` as this is a bit misleading (`rename(id = value)`). We also replace any not available (na) numbers with 0. Doing this means our map will actually produce a representative color in the NA regions. Lastly, save as a spatial object (sf) ready to be mapped with ggplot2. 
 
 ```{r}
 actsuburbs <- actsuburbs |>
@@ -245,8 +254,9 @@ print_pal(galah)
 
 </aside>
 
-## Log10 transform  data 
-This will make the colors on the map  easier to interpret against one another. The range of the log10 data (0-1, 1-2, 2-3, 3-4, 4-5, 5>) are then allocated to sections that represent its true values (0-9, 10-99, 100-999, 1,000- 9,000, 10,000>). Any values that are NA are replaced with 0 so that the map can actually produce a representative color in the NA regions, as noted earlier. 
+# Map data
+
+This will make the colors on the map easier to interpret against one another. The range of the log10 data (0-1, 1-2, 2-3, 3-4, 4-5, 5>) are then allocated to sections that represent its true values (0-9, 10-99, 100-999, 1,000- 9,000, 10,000>). Any values that are NA are replaced with 0 so that the map can actually produce a representative color in the NA regions, as noted earlier. 
 
 
 ```{r}
@@ -263,7 +273,7 @@ counts_map <- counts_map |>
 
 `ggplot2` is used in `tidyverse`to plot the log10 transformed data, and our labels are marked to represent the true values.
 
-```{r}
+```{r, layout="l-body-outset"}
 ggplot() +
   geom_sf(
     data = counts_map,
@@ -293,7 +303,9 @@ ggplot() +
 
 
 
+# Final thoughts
 
+Info here!
 
 
 
