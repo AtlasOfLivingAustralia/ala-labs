@@ -131,7 +131,7 @@ The `actsuburbs` shapefile contains both suburb boundaries and district boundari
 actsuburbsonly <- subset(actsuburbs, LOC_CLASS != "District") 
 ```
 
-Now let's see our shapefile. First we will set the spatial projection of our shapefile to be consistent with that of the ALA - WGS84 - to ensure our map uses the correct coordinates for our data. We'll also use `st_make_valid()` to make sure any weird invalid geometries in our shapefile are made valid, and therefore plot correctly.
+Now let's prepare our shapefile. First we will set the spatial projection of our shapefile to be consistent with that of the ALA - WGS84 - to ensure our map uses the correct coordinates for our data. We'll also use `st_make_valid()` to make sure any weird invalid geometries in our shapefile are made valid, and therefore plot correctly.
 
 ```{r}
 actsuburbs <- actsuburbsonly |> 
@@ -196,8 +196,7 @@ points_geomall <- allbirdpoints |> st_as_sfc() |> st_set_crs("WGS84")
 ```
 
 
-Now, we need to intersect the points we have created with our shapefile of interest using the `sf` package.
-
+Now we'll find which points are in each of our suburbs using `st_intersects()`. This function checks whether each point is within, or "intersects", a specified `POLYGON` and then marks it as `TRUE` or `FALSE` in a matrix. In our case, we'll mark the points that intersect with each suburb.
 
 ```{r}
 intersect <- st_intersects(points_geomall, actsuburbs) 
@@ -206,27 +205,35 @@ intersect <- st_intersects(points_geomall, actsuburbs)
 
 ## Summarise counts
 
-Given the bird data and the shapefile are intersected, we can figure out a summary bird count value for each suburb polygon.
+Now the bird occurrence data and the shapefile are intersected, we can figure out a summary count value for each suburb polygon.
 
-Each point is allocated with a suburb ID number (e.g. row 121 = the suburb of Yarralumla). There are 545 "121" values, meaning 545 records in Yarralumla. 
+Our `intersect` object has matched each point to a suburb - but has returned this information in a "list" format. To summarise our counts, it's easiest to convert this information back to a `tibble`. So, we "flatten" our `intersect` object from a list to a vector of integers using `flatten_int()`, save them as a tibble, group by each suburb, and summarise the count of records using `n()`.
 
-Next let's summarise how many points are in each polygon. Our `intersect` object has matched each point to a suburb, but has returned this information as a list. To summarise our counts, it's easiest to convert this information back to a `tibble`. So, we can flatten our `intersect` object from a list to a vector of integers using `flatten_int()`, save them as a tibble, group by each suburb, and summarise the count of records using `n()`.
+The way this works is that each point is allocated with a suburb ID number (`value`) (analogous to row number) depending on where it falls (e.g. row 121 = the suburb of Yarralumla ). There are 545 individual "121" values, meaning 545 records in Yarralumla. We will summarise these in the next step.
 
 
 ```{r}
 points_in_polygons <- intersect |>
   flatten_int() |> 
-  as_tibble() |> 
+  as_tibble() |> #to see individual values, run code to here
   group_by(value) |> 
   summarise(count = n())
 
-point_in_polygons |> head(5L)
+points_in_polygons |> head(5L)
 ```
 
 
 ## Join summary data to polygons
 
-In order to join the count data to each suburb polygon, there are a few things that we need to clean up. Firstly, we need to create a column in the shapefile (actsuburbs) representing the row number, as this will be our suburb or region ID that will then match up with the count values (from the last step). These count values are named "value", but I've renamed it to `id` as this is a bit misleading (`rename(id = value)`). We also replace any not available (na) numbers with 0. Doing this means our map will actually produce a representative color in the NA regions. Lastly, save as a spatial object (sf) ready to be mapped with ggplot2. 
+In order to present summary count data for each suburb polygon, there are a few things that we need to clean up.
+
+Firstly,  we need to join the `points_in_polygons` data with the shapefile `actsuburbs`. To do this, we create a column (using `mutate`) in (`actsuburbs`) representing row numbers. Row number is analogous to our suburb or region ID from the last step in `points in polygons`). 
+
+Suburb ID numbers that produce our count are named `value` in the points_in_polygons `tibble`, but here, I renamed them to `id` for clarity.
+
+We also replace any not available (na) numbers with 0. Doing this means our map will actually produce a representative color in regions without any records. 
+
+Lastly, save as a spatial object (sf) ready to be mapped with ggplot2. 
 
 ```{r}
 actsuburbs <- actsuburbs |>
@@ -256,7 +263,13 @@ print_pal(galah)
 
 # Map data
 
-This will make the colors on the map easier to interpret against one another. The range of the log10 data (0-1, 1-2, 2-3, 3-4, 4-5, 5>) are then allocated to sections that represent its true values (0-9, 10-99, 100-999, 1,000- 9,000, 10,000>). Any values that are NA are replaced with 0 so that the map can actually produce a representative color in the NA regions, as noted earlier. 
+Log transformation will reduce the skew in our data (histogram below), making the colours of our representative scale easier to interpret (as incremental gaps between numbers are balanced within a smaller range, and each group is allocated a distinct color). 
+```{r}
+hist(counts_map$count)
+hist(counts_map$count)
+```
+
+The range of the log10 data (here, 0-1, 1-2, 2-3, 3-4, 4-5, 5>) are labelled against sections that represent its true values (0-9, 10-99, 100-999, 1,000- 9,000, 10,000>). Any values that are NA are replaced with 0 so that the map can actually produce a representative color in the NA regions, as noted earlier. 
 
 
 ```{r}
@@ -271,7 +284,7 @@ counts_map <- counts_map |>
 ```
 
 
-`ggplot2` is used in `tidyverse`to plot the log10 transformed data, and our labels are marked to represent the true values.
+`ggplot2` is used in `tidyverse`to plot the log10 transformed data, and our labels are marked to represent their true values.
 
 ```{r, layout="l-body-outset"}
 ggplot() +
@@ -305,15 +318,14 @@ ggplot() +
 
 # Final thoughts
 
-Info here!
+And here's the final map!
+
+You can also manually create polygons and query the ALA for records within each polygon using [`galah_geolocate`] (http://galah.ala.org.au/articles/narrow_your_results.html#galah_geolocate). This is helpful sometimes, but here - creates more work than is necessary.
+
+Adding labels to the map using `geom_text_repel` or `geom_label_repel` in the [`ggrepel`] (https://ggrepel.slowkow.com/index.html) package is also an option.
 
 
-
-
-
-
-
-
+If you want to see how to create a similar chloropleth map without a shapefile using `galah`'s inbuilt fields, you can find a helpful blog post by [Shandiya](https://labs.ala.org.au/people/Balasubramaniam_Shandiya/index.html) using this [link](https://labs.ala.org.au/posts/2022-05-23-ggnewscale/). 
 
 
 
