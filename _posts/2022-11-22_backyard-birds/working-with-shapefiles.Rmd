@@ -151,14 +151,8 @@ ggplot() +
 
 Now let's use {galah} to download bird occurrence records from the [Atlas of Living Australia (ALA)](https://www.ala.org.au/). You will need to first enter a [registered email with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount) using `galah_config()` before fetching records.
 
-
-```{r, eval = FALSE}
-galah_config(email = "your-email@email.com", verbose = FALSE) 
-```
-
-
-```{r, echo = FALSE}
-galah_config(email = "oliviajane.t@hotmail.au", verbose = FALSE) 
+```{r}
+galah_config(email = "dax.kellie@csiro.au", verbose = FALSE) 
 ```
 
 
