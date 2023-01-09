@@ -103,7 +103,7 @@ unzip(zip_folder, exdir = output_dir)
 
 Now we load this unzipped shapefile into R. To save space, we'll remove some complexity from our shapefile polygons with `ms_simplify()` from the {rmapshaper} package.
 
-```{r, eval = FALSE}
+```{r}
 actsuburbs <- st_read(here("_posts",
                            "2022-11-22_backyard-birds",
                            "data",
@@ -132,7 +132,8 @@ Now to see if our shapefile plots correctly, we can use `geom_sf()` (and it look
 
 ```{r}
 ggplot() +
-  geom_sf(data = actsuburbs)
+  geom_sf(data = actsuburbs) +
+  theme(axis.text.x=element_text(angle = -90, hjust = 0))
 ```
 
 
@@ -154,8 +155,9 @@ birdocc <- galah_call() |>
                decimalLongitude > 148.0 & decimalLongitude < 150, 
                decimalLatitude < -35.0 & decimalLongitude > -36,
                dataProviderName == "BirdLife Australia") |>  
-atlas_counts() 
+atlas_occurrences() 
 ```
+
 
 
 ## Prepare data to merge with shapefile 
@@ -217,7 +219,7 @@ Before making our map, there are a few final steps that we need to do to clean u
 
 First, we need to join the `points_in_polygons` data with the shapefile `actsuburbs`. Because each suburb ID number (`value`) was assigned based on the row number of each suburb polygon in `actsuburbs`, we can match these IDs back to our polygons by creating a column containing the suburb `row_number`! 
 
-```{r}
+```{r layout = 'l-body-outset'}
 actsuburbs <- actsuburbs |>
   mutate(region_id = row_number()) 
 
@@ -226,7 +228,7 @@ actsuburbs |> head(5L)
 
 Now we can use `full_join()` to merge `points_in_polygons` to `actsuburbs`, specifying that the `value` column is equal to the `region_id` column we just made. We also replace any `NA` values with 0s using `replace_na()` and convert to a spatial object with `st_as_sf()`. Doing this means our map will actually produce a representative color in regions without any records.
 
-```{r}
+```{r layout = 'l-body-outset'}
 counts_map <- points_in_polygons |>
   full_join(actsuburbs, by = c("value" = "region_id")) |> 
   tidyr::replace_na(list(count = 0)) |> 
