@@ -1,5 +1,53 @@
 [
   {
+    "path": "people/Kar_Fonti/",
+    "title": "Fonti Kar",
+    "description": {},
+    "author": [],
+    "date": "2023-01-12",
+    "categories": [],
+    "contents": "\r\nBio\r\n\r\n\r\n\r\n\r\nFonti is an evolutionary biologist wearing R developer shoes. Her\r\ninterests include biostatistics, reproducible science, learning about\r\nthe latest coding practices and teaching others to enjoy using R. Her\r\nwork at ALA as a Data Analyst involves streamlining data cleaning\r\nworkflows.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nPosts\r\n\r\nConvex\r\nand alpha hulls for conservation mappingConvex hulls and\r\nalpha hulls are wonderful alternatives for visualising species\r\ndistributions when a species has very few existing observations. Here,\r\nwe will show you how to create these spatial polygons using data from\r\nthe ALA.\r\n\r\n\r\n\r\n",
+    "preview": "people/Kar_Fonti/distill-preview.png",
+    "last_modified": "2023-01-12T15:53:10+11:00",
+    "input_file": {}
+  },
+  {
+    "path": "people/Kellie_Dax/",
+    "title": "Dax Kellie",
+    "description": {},
+    "author": [],
+    "date": "2023-01-12",
+    "categories": [],
+    "contents": "\r\nBio\r\n\r\n\r\n\r\n\r\nDax is an evolutionary biologist, with a PhD in biological sciences\r\nand social psychology. As a data analyst at the ALA, he tries to make\r\ndata in the ALA accessible for scientists and citizen scientists to use\r\nin ways that are scientifically robust and transparent.\r\nDax is the primary editor of ALA Labs, too!\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nPosts\r\n\r\nCounting\r\npoints in multipolygon shapefiles for choropleth\r\nmappingChoropleth maps are an excellent way to visualise\r\nnumbers of observations in each region. When using point data,\r\ncalculating the number of points in each polygon can be difficult when\r\nusing shapefiles. Here we demonstrate how to extract and summarise the\r\nnumber of points in each polygon within a shapefile to create a\r\nchoropleth map.Quantify\r\ngeographic sampling bias with {sampbias}Human biases play a\r\nlarge role in the data we collect about species. Here we show a simple\r\nmethod to quantify the bias of roads, cities, rivers and airports on\r\nspecies observations of legless lizards in the Northern\r\nTerritoryDownload\r\nplant species data by hexagon to make a 3D hex mapMaking\r\nplots eye-catching can be useful for science communication. Here, we\r\nshow how to make 3D plots in R with the rayshader package\r\nby visualising the number of species identified from ALA observations\r\nsince 2020\r\n\r\n\r\n\r\n",
+    "preview": "people/Kellie_Dax/distill-preview.png",
+    "last_modified": "2023-01-12T15:53:57+11:00",
+    "input_file": {}
+  },
+  {
+    "path": "people/Schneider_Margot/",
+    "title": "Margot Schneider",
+    "description": {},
+    "author": [],
+    "date": "2023-01-12",
+    "categories": [],
+    "contents": "\r\nBio\r\n\r\n\r\n\r\n\r\nMargot is a graduate of the Australian National University (ANU) with a\r\nBachelor of Science (Honours), focussed on bushfire chemical ecology.\r\nShe works to improve data quality in the ALA. Margot is a strong\r\nadvocate for diversity and inclusion in the STEMM fields.\r\n\r\n\r\n\r\n\r\n\r\nPosts\r\n\r\nConvex\r\nand alpha hulls for conservation mappingConvex hulls and\r\nalpha hulls are wonderful alternatives for visualising species\r\ndistributions when a species has very few existing observations. Here,\r\nwe will show you how to create these spatial polygons using data from\r\nthe ALA.\r\n\r\n\r\n\r\n",
+    "preview": "people/Schneider_Margot/distill-preview.png",
+    "last_modified": "2023-01-12T15:53:22+11:00",
+    "input_file": {}
+  },
+  {
+    "path": "people/Torresan_Olivia/",
+    "title": "Olivia Torresan",
+    "description": {},
+    "author": [],
+    "date": "2023-01-12",
+    "categories": [],
+    "contents": "\r\nBio\r\n\r\n\r\n\r\n\r\nOlivia is a graduate from the Australian National University (ANU),\r\nacquiring an interdisciplinary double degree in philosophy and natural\r\nresource management. At the ALA, she works as a support officer with a\r\nprimary focus on monitoring the research impact of the Atlas. She is\r\npassionate about accessibility, environmental justice and diversity in\r\nSTEMM.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nPosts\r\n\r\nCounting\r\npoints in multipolygon shapefiles for choropleth\r\nmappingChoropleth maps are an excellent way to visualise\r\nnumbers of observations in each region. When using point data,\r\ncalculating the number of points in each polygon can be difficult when\r\nusing shapefiles. Here we demonstrate how to extract and summarise the\r\nnumber of points in each polygon within a shapefile to create a\r\nchoropleth map.\r\n\r\n\r\n\r\n",
+    "preview": "people/Torresan_Olivia/distill-preview.png",
+    "last_modified": "2023-01-12T15:53:38+11:00",
+    "input_file": {}
+  },
+  {
     "path": "people/Balasubramaniam_Shandiya/",
     "title": "Shandiya Balasubramaniam",
     "description": {},
@@ -36,18 +84,6 @@
     "input_file": {}
   },
   {
-    "path": "people/Kellie_Dax/",
-    "title": "Dax Kellie",
-    "description": {},
-    "author": [],
-    "date": "2022-10-19",
-    "categories": [],
-    "contents": "\r\nBio\r\n\r\n\r\n\r\n\r\nDax is an evolutionary biologist, with a PhD in biological sciences\r\nand social psychology. As a data analyst at the ALA, he tries to make\r\ndata in the ALA accessible for scientists and citizen scientists to use\r\nin ways that are scientifically robust and transparent.\r\nDax is the primary editor of ALA Labs, too!\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\nPosts\r\n\r\nQuantify\r\ngeographic sampling bias with {sampbias}Human biases play a\r\nlarge role in the data we collect about species. Here we show a simple\r\nmethod to quantify the bias of roads, cities, rivers and airports on\r\nspecies observations of legless lizards in the Northern\r\nTerritoryDownload\r\nplant species data by hexagon to make a 3D hex mapMaking\r\nplots eye-catching can be useful for science communication. Here, we\r\nshow how to make 3D plots in R with the rayshader package\r\nby visualising the number of species identified from ALA observations\r\nsince 2020\r\n\r\n\r\n\r\n",
-    "preview": "people/Kellie_Dax/distill-preview.png",
-    "last_modified": "2022-10-19T14:06:55+11:00",
-    "input_file": {}
-  },
-  {
     "path": "people/Westgate_Martin/",
     "title": "Martin Westgate",
     "description": {},
@@ -57,42 +93,6 @@
     "contents": "\r\nBio\r\n\r\n\r\n\r\n\r\nMartin leads the Science & Decision Support Team. He holds a\r\ndoctorate in landscape ecology and conservation biology from the\r\nAustralian National University. His work focuses on conceptual,\r\ncomputational and statistical tools to better understand patterns in\r\nnature.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
     "preview": "people/Westgate_Martin/distill-preview.png",
     "last_modified": "2022-10-19T14:07:36+11:00",
-    "input_file": {}
-  },
-  {
-    "path": "people/Kar_Fonti/",
-    "title": "Fonti Kar",
-    "description": {},
-    "author": [],
-    "date": "2022-10-18",
-    "categories": [],
-    "contents": "\r\nBio\r\n\r\n\r\n\r\n\r\nFonti is an evolutionary biologist wearing R developer shoes. Her\r\ninterests include biostatistics, reproducible science, learning about\r\nthe latest coding practices and teaching others to enjoy using R. Her\r\nwork at ALA as a Data Analyst involves streamlining data cleaning\r\nworkflows.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-    "preview": "people/Kar_Fonti/distill-preview.png",
-    "last_modified": "2022-10-18T17:43:58+11:00",
-    "input_file": {}
-  },
-  {
-    "path": "people/Schneider_Margot/",
-    "title": "Margot Schneider",
-    "description": {},
-    "author": [],
-    "date": "2022-10-18",
-    "categories": [],
-    "contents": "\r\nBio\r\n\r\n\r\n\r\n\r\nMargot is a graduate of the Australian National University (ANU) with a\r\nBachelor of Science (Honours), focussed on bushfire chemical ecology.\r\nShe works to improve data quality in the ALA. Margot is a strong\r\nadvocate for diversity and inclusion in the STEMM fields.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-    "preview": "people/Schneider_Margot/distill-preview.png",
-    "last_modified": "2022-10-18T17:52:09+11:00",
-    "input_file": {}
-  },
-  {
-    "path": "people/Torresan_Olivia/",
-    "title": "Olivia Torresan",
-    "description": {},
-    "author": [],
-    "date": "2022-10-18",
-    "categories": [],
-    "contents": "\r\nBio\r\n\r\n\r\n\r\n\r\nOlivia is a graduate from the Australian National University (ANU),\r\nacquiring an interdisciplinary double degree in philosophy and natural\r\nresource management. At the ALA, she works as a support officer with a\r\nprimary focus on monitoring the research impact of the Atlas. She is\r\npassionate about accessibility, environmental justice and diversity in\r\nSTEMM.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
-    "preview": "people/Torresan_Olivia/distill-preview.png",
-    "last_modified": "2022-10-18T17:49:58+11:00",
     "input_file": {}
   },
   {

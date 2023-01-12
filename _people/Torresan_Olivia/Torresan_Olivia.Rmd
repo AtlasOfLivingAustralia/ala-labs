@@ -28,3 +28,6 @@ create_button(
 )
 ```
 :::
+<h2>Posts</h2>
+
+<a href='https://labs.ala.org.au/posts/2023-01-12_counting-points-in-shapefiles/'>Counting points in multipolygon shapefiles for choropleth mapping</a><br><em>Choropleth maps are an excellent way to visualise numbers of observations in each region. When using point data, calculating the number of points in each polygon can be difficult when using shapefiles. Here we demonstrate how to extract and summarise the number of points in each polygon within a shapefile to create a choropleth map.</em><br><br>

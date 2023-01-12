@@ -23,4 +23,6 @@ tags$div(class = "row", style = "display: flex;"
 )
 ```
 :::
+<h2>Posts</h2>
 
+<a href='https://labs.ala.org.au/posts/2022-10-12_alpha-hulls/'>Convex and alpha hulls for conservation mapping</a><br><em>Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions when a species has very few existing observations. Here, we will show you how to create these spatial polygons using data from the ALA.</em><br><br>

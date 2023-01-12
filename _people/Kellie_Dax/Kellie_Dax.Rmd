@@ -40,5 +40,6 @@ create_button(
 :::
 <h2>Posts</h2>
 
+<a href='https://labs.ala.org.au/posts/2023-01-12_counting-points-in-shapefiles/'>Counting points in multipolygon shapefiles for choropleth mapping</a><br><em>Choropleth maps are an excellent way to visualise numbers of observations in each region. When using point data, calculating the number of points in each polygon can be difficult when using shapefiles. Here we demonstrate how to extract and summarise the number of points in each polygon within a shapefile to create a choropleth map.</em><br><br>
 <a href='https://labs.ala.org.au/posts/2022-07-22_sample-bias/'>Quantify geographic sampling bias with {sampbias}</a><br><em>Human biases play a large role in the data we collect about species. Here we show a simple method to quantify the bias of roads, cities, rivers and airports on species observations of legless lizards in the Northern Territory</em><br><br>
 <a href='https://labs.ala.org.au/posts/2022-05-17_3d-map/'>Download plant species data by hexagon to make a 3D hex map\n</a><br><em>Making plots eye-catching can be useful for science communication. Here, we show how to make 3D plots in R with the `rayshader` package by visualising the number of species identified from ALA observations since 2020</em><br><br>
