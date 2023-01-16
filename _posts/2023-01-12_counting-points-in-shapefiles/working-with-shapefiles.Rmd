@@ -1,7 +1,7 @@
 ---
 title: "Counting points in multipolygon shapefiles for choropleth mapping"
 description: |
-  Choropleth maps are an excellent way to visualise numbers of observations in each region. When using point data, calculating the number of points in each polygon can be difficult when using shapefiles. Here we demonstrate how to extract and summarise the number of points in each polygon within a shapefile to create a choropleth map. 
+  Choropleth maps are an excellent way to visualise numbers of observations, but when using point data, calculating the number of points in each polygon can be difficult when using shapefiles. Here we demonstrate how to extract and summarise the number of points in each polygon to create a choropleth map. 
 author: 
   - name: "Olivia Torresan"
   - name: "Dax Kellie"
@@ -71,7 +71,7 @@ Choropleth maps are an excellent way to visualise differences in variables (eg. 
   1.  A shapefile - a file with vector data of a specific geographic location, with detailed info of its geographic features
   2.  Species observations recorded as point data - the specific longitude and latitude coordinates of where an individual was observed. 
   
-However, to create a choropleth map that summarises species observations requires us to summarise our points to a single statistic for each polygon of a shapefile. This conversion from points to polygons can sometimes be tricky.
+However, to create a choropleth map of species observations requires us to summarise our points to a single statistic for each polygon of our shapefile. This conversion from points to polygons can sometimes be tricky!
 
 Here, we show you how to extract and count the number of points inside each polygon of a shapefile to create a choropleth map of the total number of species observations in each suburb of the Australian Capital Territory (ACT). 
 
@@ -240,7 +240,7 @@ hist(as.numeric(act_counts$bird_count))
 
 Log transformation will reduce the skew in our data, ultimately making our final choropleth map easier to interpret. 
 
-To add log-transformed counts to our First, let's add log-transformed counts to a new `log_counts` column. Next we'll add a column called `counts_discrete` which uses `cut()` to assign a number from 0 to 5 depending on what range each `log_counts` number falls within (0-1, 1-2, 2-3, 3-4 or 4-5). To make this easier to interpret, we have also added labels that correspond to the normal count values (0, 10, 100, 1000, 10000). Finally, we'll make sure any `NA` values are converted to 0.
+Let's add log-transformed counts to a new column `log_counts`. Next we'll add a column called `counts_discrete` and use `cut()` to assign a number from 0 to 5 depending on what range each `log_counts` number falls within (0-1, 1-2, 2-3, 3-4 or 4-5). To make this easier to interpret, we've added labels that correspond to the un-transformed values (0, 10, 100, 1000, 10000). Finally, we replace any pesky `NA` values with 0.
 
 
 ```{r, layout = "l-body-outset"}
