@@ -50,6 +50,15 @@ html {
 
 /* navbar */
 
+@media screen and (max-width: 952px){
+  /*--    --*/
+  .navbar-brand.navbar-brand-logo {
+    background-attachment: scroll;
+    display: none;
+  }
+
+}
+
 .navbar-brand>img {
     max-height: 48px;
     width: auto;

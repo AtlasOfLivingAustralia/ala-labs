@@ -78,8 +78,19 @@
 
 @media screen and (max-width: 952px){
   /*--    --*/
+  .hero-container {
+    max-height: 75vh;
+    height: 72vh;
+    display: flex;
+  }
   .hero-image {
     background-attachment: scroll;
+    display: block;
+    padding: none;
+    margin: auto;
+    margin-right: 5px;
+    align-content: center;
+    object-fit: cover;
   }
 
 }
