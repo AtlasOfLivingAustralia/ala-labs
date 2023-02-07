@@ -76,6 +76,14 @@
   }
 }
 
+@media (max-height: 876px) {
+  .hero-container {
+    max-height: 75vh;
+    height: 66vh;
+    display: flex;
+  }
+}
+
 @media screen and (max-width: 952px){
   /*--    --*/
   .hero-container {
