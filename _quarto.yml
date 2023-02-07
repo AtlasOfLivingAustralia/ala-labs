@@ -4,6 +4,8 @@ project:
 website:
   title: "ALA Labs"
   description: "Demo projects, experiments, debugging data and so on from the [Atlas of Living Australia (ALA)](https://ala.org.au/)"
+  twitter-card: true
+  site-url: https://labs.ala.org.au/
   google-analytics: "UA-4355440-1"
   favicon: images/favicon.ico
   navbar:
