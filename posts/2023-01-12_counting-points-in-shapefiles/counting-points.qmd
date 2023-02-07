@@ -1,0 +1,360 @@
+---
+title: "Counting points in multipolygon shapefiles for choropleth mapping"
+description: |
+  Choropleth maps are an excellent way to visualise numbers of observations, but when using point data, calculating the number of points in each polygon can be difficult when using shapefiles. Here we demonstrate how to extract and summarise the number of points in each polygon to create a choropleth map.
+author:
+  - name: "Olivia Torresan"
+  - name: "Dax Kellie"
+date: "2023-02-06"
+title-block-banner: "#B8573E"
+toc: true
+toc-location: left
+toc-depth: 3
+categories:
+  - Maps
+  - Eukaryota
+  - Animalia
+  - Chordata
+  - Aves
+image: act-suburbs-map.png
+freeze: true
+---
+
+```{r}
+#| include: false
+library(htmltools)
+```
+<!-- remove metadata section -->
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Author card -->
+
+:::{.author-card}
+:::{.author-card-text}
+
+#### Author
+[Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/index.html)  
+[Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)
+
+#### Date
+6 February 2023
+
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/olivia.jpg")
+```
+:::
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg")
+```
+:::
+
+
+:::
+
+<!------------------------ Post starts here ------------------------>
+
+Choropleth maps are an excellent way to visualise differences in variables (eg. number of species observed) across several geographic regions (eg. countries, states, study areas). Often, creating a choropleth map from species observations requires two things:
+
+1.  A shapefile - a file with vector data of a specific geographic location, with detailed info of its geographic features
+2.  Species observations recorded as point data - the specific longitude and latitude coordinates of where an individual was observed
+
+However, to create a choropleth map of species observations requires us to summarise our points to a single statistic for each polygon of our shapefile. This conversion from points to polygons can sometimes be tricky!
+
+Here, we show you how to extract and count the number of points inside each polygon of a shapefile to create a choropleth map of the number of species observations per km^2^ in each suburb of the Australian Capital Territory (ACT).
+
+
+## Download data
+
+First we will load the R packages that we need:
+
+```{r}
+#| warning: false
+#| message: false
+library(galah)
+library(here) 
+library(rmapshaper) 
+library(tidyverse) 
+library(sf)
+library(ggtext)
+```
+
+### Download shapefile
+
+Next we will need a shapefile. You can find many shapefiles online from reputable sources. For this example, I've downloaded a shapefile of suburb boundaries in the city of Canberra, ACT from the [ACT's open-access map database](https://www.actmapi.act.gov.au/download.html).
+
+Usually when you download a shapefile, it is compressed within a zip folder. Save this downloaded zip folder in a local folder inside your current [R project](https://r4ds.had.co.nz/workflow-projects.html). If you need to unzip your folder, you can do so with the following code:
+
+```{r}
+#| eval: false
+zip_folder <- here("folder-name", "shapefile-folder-name.zip")
+output_dir <- "folder-name-to-save-unzipped-files" 
+unzip(zip_folder, exdir = output_dir) 
+```
+
+Now we load this unzipped shapefile into R. To save space, we'll remove some complexity from our shapefile polygons with `ms_simplify()` from the `{rmapshaper}` package.
+
+The `actsuburbs` shapefile contains both suburb boundaries and "district" boundaries, which can encompass several suburbs. To avoid confusion, we will remove districts using `filter(LOC_CLASS != "District")`. We'll also use `st_make_valid()` to make sure any weird invalid geometries in our shapefile are made valid, and therefore plot correctly.
+
+```{r}
+#| eval: false
+actsuburbs <- st_read(here("folder-name",
+                           "folder-name-2",
+                           "shapefilename.shp")) |>
+                     ms_simplify(keep = 0.1) |> 
+  st_transform(crs = st_crs("WGS84")) |> 
+  st_make_valid() |> 
+  filter(LOC_CLASS != "District")
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| results: hide
+actsuburbs <- st_read(here("posts", 
+                           "2023-01-12_counting-points-in-shapefiles", 
+                           "data", 
+                           "act_localitiesunzip", 
+                           "act_localities.shp")) |> 
+  ms_simplify(keep = 0.1) |> 
+  st_transform(crs = st_crs("WGS84")) |> 
+  st_make_valid() |> 
+  filter(LOC_CLASS != "District")
+```
+
+Now to see if our shapefile plots correctly, we can use `geom_sf()` (and it looks like it does!)
+
+```{r}
+ggplot() +
+  geom_sf(data = actsuburbs) +
+  theme(axis.text.x = element_text(angle = -90, hjust = 0))
+```
+
+### Download species observations
+
+Next let's use the [{galah} package](http://galah.ala.org.au/) to download bird occurrence records from the [Atlas of Living Australia (ALA)](https://www.ala.org.au/).
+
+We can download all *Aves* (bird) data provided by BirdLife Australia within the ACT by using `galah_filter()` to narrow our download. We'll also add ALA's data profile, or what the ALA calls a set of data quality filters to remove suspicious records, using `galah_apply_profile(ALA)`.
+
+You will need to provide a [registered email with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount) using `galah_config()` before retrieving records.
+
+```{r}
+#| eval: false
+galah_config(email = "your-email@email.com") 
+```
+
+```{r}
+#| echo: false
+galah_config(email = "dax.kellie@csiro.au", verbose = FALSE) 
+```
+
+```{r}
+birdocc <- galah_call() |> 
+  galah_identify("Aves") |> 
+  galah_apply_profile(ALA) |>
+  galah_filter(stateProvince == "Australian Capital Territory",
+               dataProviderName == "BirdLife Australia") |>  
+atlas_occurrences()
+
+birdocc |> head(8L)
+```
+
+<aside>
+
+For those unfamiliar with Australian geography, the ACT is located here:
+
+```{r}
+#| echo: false
+library(ozmaps)
+act_wgs84 <- ozmap_data(data = "states") |>
+  filter(NAME == "Australian Capital Territory") |>
+ sf::st_transform(crs = sf::st_crs("WGS84"))
+
+#create the start and end points of the label arrow
+arrows <- 
+  tibble(
+    x1 = c(152),
+    x2 = c(149),
+    y1 = c(-40),
+    y2 = c(-36.5))
+
+act_wgs84 <- ozmap_data(data = "states") |>
+  filter(NAME == "Australian Capital Territory") |>
+ sf::st_transform(crs = sf::st_crs("WGS84"))
+
+acthighlightplot <- ggplot(data = ozmap_data(data = "states")) + 
+  geom_sf(fill = "transparent") + 
+  geom_sf(data = act_wgs84, fill = "#E06E53")
+
+acthighlightplot + 
+  theme_void() + 
+  geom_curve(
+    data = arrows, aes(x = x1, y = y1, xend = x2, yend = y2),
+    arrow = arrow(length = unit(0.08, "inch")), 
+    size = 1.5,
+    color = "gray10", 
+    curvature = -0.3) + 
+  annotate("text", x = 157, y = -40, label = "ACT", size = 10) 
+```
+
+</aside>
+
+## Count points in each polygon
+
+To prepare our data, we'll convert each observation into a format suitable for spatial mapping. `st_as_sf()` transforms each point into an `sf` spatial object (which plots nicely with {`ggplot2`}). We'll also make sure the points are projected to `crs = set_crs("WGS84")`, the same as our shapefile, so that the points line up correctly.
+
+```{r}
+bird_points_sf <- birdocc |> 
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
+  crs = st_crs("WGS84"))
+```
+
+Now we'll find and count how many points are in each of our suburbs.
+
+The `st_intersects()` function checks whether each point is within, or "intersects", a specified `POLYGON` and then marks it as `TRUE` or `FALSE` in a matrix. Using `st_intersects()` in a loop with `pmap()` allows us to run `st_intersects()` on each row of a supplied list.
+
+In our case, because each row of `actsuburbs$geometry` corresponds to each suburb, `pmap_dbl()` recursively checks which points are within each of our ACT suburbs! Adding `lengths()` around `st_intersects()` will count the number of rows returned for each suburb list, returning the total number of points that intersect each suburb. [^1]. We've saved this count in a new column `bird_count`.
+
+[^1]: Many thanks to Shandiya Balasubramaniam for suggesting this method, and for many other very helpful edits!
+
+:::{.callout-warning}
+This function takes \~3.5 minutes to run
+:::
+
+```{r}
+act_counts <- actsuburbs |> 
+  mutate(bird_count = pmap_dbl(.l = list(x = actsuburbs$geometry),
+                           .f = function(x) {
+                             lengths(st_intersects(x, bird_points_sf))
+                             }))
+
+act_counts |> 
+  select(LOC_NAME, bird_count) |> 
+  head(8L) # see sample of counts
+```
+
+
+Showing the *total* number of bird observations on a choropleth map can be misleading because areas that are larger might have more records simply because they are large areas! It's a good idea to *standardise* your data to avoid this bias. In this case, we will show the number of observations *per square kilometer*.
+
+To do this, we will use `sf::st_area()` to help us get the area per m^2^ of our suburbs & convert it to km^2^ by dividing by 1000, saving this in a new column `area_km2`. Then we'll divide our `bird_count` by `area_km2`.
+
+
+```{r}
+#| column: body-outset
+
+act_counts <- act_counts |>
+  rowwise() |> 
+  mutate(area_km2 = as.integer(st_area(geometry))/1000,
+         counts_km2 = bird_count/area_km2) |>
+  replace_na(list(counts_km2 = 0))
+
+act_counts |> rmarkdown::paged_table() # final data frame
+```
+
+
+It's a good idea to check the distribution of our data before we plot so we know what we should expect it to look like. If we check our bird counts, we can notice that our count data is skewed because many regions have lower numbers of observations, and only a few regions have very high numbers of observations.
+
+```{r}
+hist(act_counts$bird_count, main = "bird_count distribution")
+```
+
+Log transformation will reduce the skew in our data, ultimately making our final choropleth map easier to interpret. We will handle this when we make our ggplot in the final step!
+
+
+
+# Make a map
+
+Now we can use `{ggplot2}` to make our choropleth map!
+
+One easy way we can log-transform our `counts_km2` column is to use the `trans` argument within `scale_fill_stepsn()`, allowing us to transform our data when we are setting the color palette!
+
+```{r}
+# make galah palette
+galah <- colorRampPalette(c("#FFD2CF", 
+                            "#EC9FAC", 
+                            "#D96D89", 
+                            "#B55474", 
+                            "#80556D"))(5) 
+```
+
+<aside>
+
+In the spirit of {galah}, we created a galah palette inspired by the [`{feathers}` package](https://github.com/shandiya/feathers): a set of colour palettes from female bird plumage by [Shandiya Balasubramaniam](https://labs.ala.org.au/people/Balasubramaniam_Shandiya/index.html).
+
+```{r, echo = FALSE}
+library(feathers)
+print_pal(galah) 
+```
+
+</aside>
+
+```{r}
+#| column: page
+#| fig-align: center
+#| fig-height: 10
+#| warning: false
+ggplot() +
+  geom_sf(
+    data = act_counts,
+    mapping = aes(fill = counts_km2), 
+    colour = "grey90" 
+  ) +
+  scale_fill_stepsn(
+    name = "Number of <br>observations* <br>per km^2", 
+    breaks = c(0.001, .01, .1, 1),
+    labels = c("0.001", "0.01", "0.01", "1"),
+    trans = "log10", # log-transform
+    colours = galah,
+    na.value = "#FFD2CF",
+    guide = guide_colorsteps( 
+      direction = "vertical", 
+      label.position = "right",
+      title.position = "top",
+      draw.ulim = FALSE, 
+      draw.llim = FALSE,
+    )
+  ) +
+  labs( 
+    title = "Bird Records by Suburb",
+    subtitle = "Canberra (ACT)",
+    caption = "*ALA BirdLife Australia data"
+  ) + 
+  theme_void() + 
+  theme(legend.title = element_markdown())
+```
+
+
+# Final thoughts
+
+There's not much better than a galah-themed choropleth map!
+
+One way you can extend this map is to add floating labels with `geom_text_repel()` or `geom_label_repel()` from the [`{ggrepel}` package](https://ggrepel.slowkow.com/index.html), which we added for our [final version of our map we posted for National Bird Week 2022](https://twitter.com/atlaslivingaust/status/1582495493308829696). Code to add floating labels can be found [here](https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2022-10-19_backyard-birds-map/backyard%20birds.Rmd).
+
+You can also [learn how to create a choropleth map with two different colour scales in this ALA Labs post](https://labs.ala.org.au/posts/2022-05-23-ggnewscale/)!
+
+<details>
+
+<summary style="color: #E06E53;">
+
+Expand for session info
+
+</summary>
+
+```{r, echo = FALSE}
+library(sessioninfo)
+# save the session info as an object
+pkg_sesh <- session_info(pkgs = "attached")
+# print it out
+pkg_sesh
+```
+
+</details>

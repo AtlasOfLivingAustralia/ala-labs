@@ -1,0 +1,314 @@
+---
+title: "Sunburst plots for taxonomic data"
+description: |
+  Since version 1.3.1 of {galah}, it has been possible to download taxonomic
+  data using a 'tree' format from the {data.tree} package. Here I'll demonstrate
+  some ideas for plotting these trees using circular diagrams.
+author: "Martin Westgate"
+date: "2022-02-17"
+title-block-banner: "#B8573E"
+toc: true
+toc-location: left
+toc-depth: 3
+categories:
+  - Trees
+  - Eukaryota
+  - Animalia
+  - Chordata
+image: sunburst-tree.png
+freeze: true
+---
+
+```{r}
+#| include: false
+library(htmltools)
+```
+
+<!-- remove metadata section -->
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Author card -->
+
+:::{.author-card}
+:::{.author-card-text}
+
+#### Author
+[Martin Westgate](https://labs.ala.org.au/people/Westgate_Martin/index.html)  
+
+#### Date
+February 17 2022
+
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/martin.jpg")
+```
+:::
+
+:::
+
+<!------------------------ Post starts here ------------------------>
+
+Taxonomy is pretty important at the ALA. Every occurrence record in the atlas 
+is linked to a unique taxonomic identifier. These identifiers are themselves
+drawn from expertly curated taxonomic datasets. This system of classification 
+is so important to our infrastructure that we have a special name for it; the 
+'taxonomic backbone'. But what does it _look_ like?
+
+Visualising trees is not particularly easy for me; I didn't train in it, and the
+data structures involved can be a bit complex. More importantly, until recently 
+it was difficult to download detailed taxonomic information from the ALA. Since 
+version 1.3.1 of `galah`, however, it has been possible to download taxonomic
+trees using the `atlas_taxonomy()` function. Let's have a go at visualising
+these trees now. 
+
+# Downloading taxonomic trees
+
+The first step is to choose a taxonomic group to represent in tree form. I've 
+chosen the chordates (Phylum Chordata) because they aren't too large a group 
+and the names are fairly well-known. We can specify this within `galah` using
+the function `galah_identify`. The second piece of information we need to 
+supply is how far 'down' the tree to travel. I've chosen the Order level here
+using `galah_down_to(order)`; while we could have gone to the Family or even
+Genus, trying to traverse too many levels (i.e. to Genus or Species) would take 
+a _very_ long time. A full list of accepted ranks can be found by calling
+`show_all_ranks()`.
+
+```{r}
+#| warning: false
+library(galah)
+chordate_orders <- galah_call() |>
+  galah_identify("chordata") |>
+  galah_down_to(order) |>
+  atlas_taxonomy()
+```
+
+The object returned by `atlas_taxonomy` is slightly unusual; it uses the 
+`data.tree` package, meaning that the dataset is literally structured like a 
+tree. This is notably different from other representations of networks, such
+as you might find in `igraph`, for example. To get an idea of what the data 
+look like, we can use the inbuilt `print` method for this data type:
+
+```{r}
+library(data.tree)
+print(chordate_orders, pruneMethod = "dist", limit = 10)
+```
+
+This shows there are three nodes directly beneath Chordata in the taxonomic 
+hierarchy, of which the largest (by number of sub-nodes) is the vertebrates
+(Vertebrata). There is a lot we could do with this tree; each node
+contains a unique taxonomic identifer, for example, meaning that we could use
+individual nodes to make new queries using `galah`. However, for now a useful 
+task is simply to visualise the structure of the whole tree.
+
+# Getting plot-ready data
+Taxonomic trees are complex. While all species have a Kingdom, Phylum, Order,
+Class and Family, there are many intermediate categories that are 'optional'. 
+In practice, this means that when we convert to a `data.frame` for 
+plotting, there are a lot of missing values; nodes that apply to some rows but
+not others.
+
+```{r}
+df_rank <- ToDataFrameTypeCol(chordate_orders, type = "rank")
+df_rank[10:20,] |> tibble::as_tibble() |> print(max_footer_lines = 2)
+```
+
+These missing values will show up as empty sections in the resulting diagram,
+which isn't ideal. Instead, we can build this `data.frame` so as to place
+all nodes in order by row, with empty 'levels' being placed at the end. This 
+also avoids the problem where 'unnamed' ranks are grouped in the same column.
+To achieve this, we simply choose a different node attribute (`level` in this 
+case) to supply to the `type` argument.
+
+```{r}
+df_level <- ToDataFrameTypeCol(chordate_orders, type = "level")
+df_level[10:20, ] |> tibble::as_tibble()
+```
+ 
+Another problem in this dataset is the existence of duplicated taxonomic
+names. This happens because different authorities place the same taxon in
+different parts of the tree, and while the ALA tries to clean up these issues,
+some disagreements remain. The code below assumes that each name is only
+present once, so we have to remove duplicates to proceed. Fortunately there is 
+a function in package `base` that flags duplcated values as `TRUE` and unique 
+values as `FALSE`. We can use this function to identify rows where `order` is
+not unique.
+
+```{r}
+#| message: false
+#| warning: false
+library(dplyr)
+keep_rows <- !duplicated(df_rank$rank_order)
+df_rank <- filter(df_rank, keep_rows)
+df_level <- filter(df_level, keep_rows)
+```
+
+The next step is to determine how to represent this structure in a plot. At the
+moment we can't do this, because the data are in 'wide' format. Instead, we need
+to reorder our data so that each node/taxon is represented once, and other
+plotting aesthetics can be added as additional columns. To achieve this, we 
+first convert to 'long' format, preserving information like what row and column
+each taxonomic label was recorded in.
+
+```{r}
+df_long <- tibble(
+  row = rep(seq_len(nrow(df_level)), ncol(df_level)),
+  level = rep(seq_len(ncol(df_level)), each = nrow(df_level)),
+  taxon = do.call(c, df_level)) |> 
+  filter(!is.na(taxon)) # remove missing values
+```
+
+Then, we can summarize this plot so that each row is a single taxon, recording
+some metadata about rows and columns from the original dataset
+
+```{r} 
+df_plot <- df_long |>
+  group_by(taxon) |>
+  summarize(
+    xmin = min(row) - 1, 
+    xmax = max(row), 
+    ymin = level[1] - 1,
+    ymax = level[1])
+     
+df_plot
+```
+
+# Drawing
+Our dataset now contains all the information we need to plot the structure of 
+our taxonomic tree. As usual, we're going to plot this with `ggplot2`.
+
+```{r}
+#| message: false
+#| warning: false
+#| column: body-outset
+#| fig-align: center
+library(ggplot2)
+ggplot(df_plot) +
+  geom_rect(
+    mapping = aes(
+      xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, 
+      group = taxon,
+      fill = ymax),
+    color = "white")
+```
+
+While this is (probably) accurate, it's not very informative. The most obvious
+missing element is labels; to add these, we'll need to determine which nodes 
+are 'leaves', and which are 'branches'. We'll also want to restrict labelling 
+to larger branches, to avoid the text looking crowded. Finally, there is no 
+need to label leaves with both a rectangle and text; so we'll remove the leaf
+rectangles from the plot.
+
+```{r}
+#| fig-align: center
+df_plot <- df_plot |> mutate(
+  x_dist = xmax - xmin,
+  is_leaf = taxon %in% df_rank$rank_order)
+
+p <- ggplot() +
+  geom_rect(
+    data = filter(df_plot, !is_leaf),
+    mapping = aes(
+      xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, 
+      group = taxon,
+      fill = ymax),
+    color = "white")
+
+p +
+  # branch labels
+  geom_text(
+    data = filter(df_plot, x_dist > 5),
+    mapping = aes(
+      x = xmin + (x_dist * 0.5), 
+      y = ymin + 0.5,
+      label = taxon),
+    color  = "white",
+    size = 3) +
+  # leaf labels
+  geom_text(
+    data = filter(df_plot, is_leaf),
+    aes(x = xmin + 0.5, y = ymin, label = taxon),
+    angle = 90,
+    hjust = 0,
+    size = 2.5,
+    color = "grey20") 
+```
+
+This is better, but not ideal. A much more pleasing look is to use 
+`coord_polar()` to generate a circular plot; but this leads to linear text on a 
+circular plot, which looks messy. Fortunately, the new package `geomtextpath` 
+solves this problem. All we have to do is replace `geom_text` with 
+`geom_textpath`, leaving all other code the same, and add `coord_polar()` at 
+the end.
+
+```{r}
+#| column: page
+#| fig-align: center
+#| fig-height: 10
+
+library(geomtextpath)
+
+p <- p + 
+  geom_textpath(
+    data = filter(df_plot, x_dist > 5),
+    mapping = aes(
+      x = xmin + (x_dist * 0.5), 
+      y = ymin + 0.5,
+      label = taxon),
+    color  = "white",
+    size = 2.7) +
+  geom_textpath(
+    data = filter(df_plot, is_leaf),
+    aes(x = xmin + 0.5, y = ymin, label = taxon),
+    angle = 90,
+    hjust = 0,
+    size = 2.3,
+    color = "grey20") +
+  coord_polar()
+p
+```
+
+Finally, we can add some finishing touches by changing the color scheme, 
+hiding the background colors and legend, and resizing the y axis so all the 
+labels are visible.
+
+```{r}
+#| message: false
+#| warning: false
+#| column: body-outset
+#| fig-align: center
+#| fig-width: 8
+
+library(viridis)
+
+p +
+  scale_fill_viridis(begin = 0, end = 0.9, direction = -1) +
+  lims(y = c(0, 9)) +
+  theme_void() + 
+  theme(legend.position = "none")
+```
+
+Done! This is a fun plot, but there are ways it could be expanded or improved,
+the most obvious of which is to find ways to add supplementary information. Wouldn't it be great, for example, to add leaf-level record counts as
+marginal barplots? Or scale the size of segments to the number of records, 
+rather than the number of clades? While none of these are impossible, I'm
+going to leave this here for now. I hope you like the result!
+
+
+<details><summary style = "color: #E06E53;">Expand for session info</summary>
+
+```{r, echo = FALSE}
+library(sessioninfo)
+# save the session info as an object
+pkg_sesh <- session_info(pkgs = "attached")
+# print it out
+pkg_sesh
+```
+
+</details>

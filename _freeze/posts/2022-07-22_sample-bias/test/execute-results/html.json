@@ -1,0 +1,14 @@
+{
+  "hash": "35c18e7922362720c4c3c4af3a6bdfab",
+  "result": {
+    "markdown": "---\ntitle: \"Untitled\"\n---\n\n::: {.cell layout-ncol=\"3\"}\n::: {.cell-output-display}\n![Left: [*Delma desmosa* (tom_brennan CC BY-NC 4.0)](https://images.ala.org.au/image/146a0211-325f-4b4b-938f-d9582ccbe887) Middle: [*Delma inornata* (kenty_8881 CC BY-NC 4.0)](https://images.ala.org.au//image/c295146a-acd0-4f57-a819-d4c1f7f6ab47) Right: [*Delma tincta* (Ryan Shofner CC BY-NC 4.0)](https://images.ala.org.au/image/3a00210e-c043-4d4d-b884-04ce3e3f91be)](https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/8/8/e/146a0211-325f-4b4b-938f-d9582ccbe887/original){style=\"clip-path: circle();\"}\n:::\n\n::: {.cell-output-display}\n![Left: [*Delma desmosa* (tom_brennan CC BY-NC 4.0)](https://images.ala.org.au/image/146a0211-325f-4b4b-938f-d9582ccbe887) Middle: [*Delma inornata* (kenty_8881 CC BY-NC 4.0)](https://images.ala.org.au//image/c295146a-acd0-4f57-a819-d4c1f7f6ab47) Right: [*Delma tincta* (Ryan Shofner CC BY-NC 4.0)](https://images.ala.org.au/image/3a00210e-c043-4d4d-b884-04ce3e3f91be)](https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/4/b/a/c295146a-acd0-4f57-a819-d4c1f7f6ab47/original){style=\"clip-path: circle();\"}\n:::\n\n::: {.cell-output-display}\n![Left: [*Delma desmosa* (tom_brennan CC BY-NC 4.0)](https://images.ala.org.au/image/146a0211-325f-4b4b-938f-d9582ccbe887) Middle: [*Delma inornata* (kenty_8881 CC BY-NC 4.0)](https://images.ala.org.au//image/c295146a-acd0-4f57-a819-d4c1f7f6ab47) Right: [*Delma tincta* (Ryan Shofner CC BY-NC 4.0)](https://images.ala.org.au/image/3a00210e-c043-4d4d-b884-04ce3e3f91be)](https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/b/1/9/3a00210e-c043-4d4d-b884-04ce3e3f91be/original){style=\"clip-path: circle();\"}\n:::\n:::\n\n\n<img src=\"https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/8/8/e/146a0211-325f-4b4b-938f-d9582ccbe887/original\">",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -34,76 +34,55 @@ html {
   --navbar-font:     'Lato' sans-serif;  /* websites + blogs only */
 }
 
-/*-- ARTICLE METADATA --*/
-d-byline {
-  --heading-size:    1rem;
-  --heading-color:   rgba(0, 0, 0, 0.5);
-  --body-size:       0.8rem;
-  --body-color:      rgba(0, 0, 0, 0.8);
-}
-
-/*-- ARTICLE TABLE OF CONTENTS --*/
-.d-contents {
-  --heading-size:    18px;
-  --contents-size:   13px;
-}
-
-/*-- ARTICLE APPENDIX --*/
-d-appendix {
-  --heading-size:    15px;
-  --heading-color:   rgba(0, 0, 0, 0.65);
-  --text-size:       0.8em;
-  --text-color:      rgba(0, 0, 0, 0.5);
-}
-
-d-title {
-  padding-top: 5rem;
-}
-
-/*-- WEBSITE HEADER + FOOTER --*/
-/* These properties only apply to Distill sites and blogs  */
-
-.distill-site-header {
-  --title-size:       19px;
-  --text-color:       white;
-  --text-size:        19px;
-  --hover-color:      #E06E53;
-  --bkgd-color:       rgba(34, 35, 34)
-}
-
-.distill-site-footer {
-  --text-color:       black;
-  --text-size:        15px;
-  --hover-color:      #E06E53;
-  --bkgd-color:       white;
+:root {
+  --primary-orange: #E06E53;
+  --secondary-orange: #B8573E;
+  --accent-brown: #CC9364;
+  --accent-green: #273B2D;
+  --main-font: 'Roboto', sans-serif;
+  --subheader-font: 'Roboto', sans-serif;
+  --mono-font: 'Fira Mono', monospace;
+  --header-font: 'Lato' sans-serif;
 }
 
 /*-- Additional custom styles --*/
 /* Add any additional CSS rules below                      */
 
-/* Make ALA Logo in navbar bigger */
+/* navbar */
 
-.distill-site-header .logo img {
+.navbar-brand>img {
     max-height: 48px;
     width: auto;
     padding-left: 9px;
-    padding-top: 13px;
-    padding-bottom: 15px;
-    margin-bottom: -22px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 20px;
 }
 
-.distill-site-header a, .distill-site-header .title {
-    padding: 35px 12px 10px 10px;
+.navbar {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
-.distill-site-header {
-  padding-top: 5px;
-  padding-bottom: 5px;
+a.nav-link,
+a.nav-link:after,
+a.nav-link:before {
+  transition: all .3s;
 }
 
-/* Add Labs Logo in navbar */
+a.nav-link {
+  position: relative;
+}
 
-.distill-site-header .title:before {
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: var(--primary-orange) !important;
+}
+
+.navbar-title:hover {
+    color: var(--primary-orange) !important;
+}
+
+.navbar-title {
   display: inline-block;
   padding: 0;
   content: url("./images/logos/labs-logo_transparent.png");
@@ -113,12 +92,26 @@ d-title {
   margin: auto;
 }
 
-.distill-site-header .nav-right { /* Adjust right navbar location */
-    margin-top: 10px;
-  }
+.navbar-title:hover {
+  opacity:50;
+  content: url("./images/logos/labs-logo_coloured_transparent.png");
+}
 
-d-title { /* Adjust titles on other pages to accommodate for bigger navbar */
-    padding-top: 8rem;
+.navbar-dark .navbar-nav .show>.nav-link,
+.navbar-dark .navbar-nav .active>.nav-link,
+.navbar-dark .navbar-nav .nav-link.active,
+.navbar-dark .navbar-nav .nav-link:focus {
+    color: var(--primary-orange) !important;
+}
+
+
+.sidebar nav[role=doc-toc] ul>li>a.active {
+    border-left: 1px solid var(--primary-orange) !important;
+    color: var(--primary-orange) !important;
+}
+
+.dropdown-item:active{
+  background-color: var(--primary-orange);
 }
 
 /*  A circle image cropper  */
@@ -127,221 +120,37 @@ d-title { /* Adjust titles on other pages to accommodate for bigger navbar */
     clip-path: circle();
 }
 
-/*  Change code in-text background color */
+/* link color */
 
-d-article div.sourceCode {
-    background-color: #f7f7f7;
+a {
+  text-decoration: none;
 }
 
-.code {
-  background-color: #f7f7f7;
-  font-size: 1.02rem;
-  all: revert;
+a:hover {
+  color: var(--primary-orange);
 }
 
-/* ----------- INDEX PAGE -----------*/
+/* ALA navbar favicon color */
 
-/* LARGE HERO IMAGE AT TOP OF PAGE*/
-
-.hero-image {
-    position: relative;
-    margin-bottom: 2em;
-    /* liner gradient tints the image darker for readability*/
-    background-image: linear-gradient( rgba(0,0,0,.3), rgba(0,0,0,.3) ), url(images/galah_image.jfif);
-    height: 150px;
-    background-size: cover;
-    background-color: #141c25f2;
-    background-position: 50%;
-    display: flex; /* Change to `display: none` for no hero image */
-    justify-content: center;
-    align-items: center;
-
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    padding: 230px 0;
-    color: #fff;
-    box-shadow: 0 0 8px rgb(0 0 0 / 30%);
+.bi-ala {
+  content: url("./images/favicon.ico");
+  height:26px;
 }
 
-.ALA-top {
-  position: relative;
+.bi-ala:hover {
+  opacity: 50;
+  background-color: white;
+  transition: all .3s;
+  clip-path: circle();
+}
+
+/* figure captions */
+
+.figure-caption {
   text-align: center;
-  font-size: 100px;
-  color: #ffffff;
-  padding-right: 120px;
-  margin-bottom: 2.5rem;
-  font-weight: bold;
+  font-size: .8rem;
 }
 
-.ALA-bottom {
-  position: relative;
-  text-align: center;
-  font-size: 100px;
-  color: #EEECEA;
-  padding-left: 122px;
-  font-weight: bold;
-}
-
-.ALA-byline {
-  font-size: 20px;
-  text-align: center;
-  color: #ffffff;
-  padding-top: 100px;
-}
-
-.credit-text {
-  position: absolute;
-  text-align: left;
-  left: 2%;
-  bottom: 5%;
-}
-
-.ALA-species-credit {
-  font-size: 11px;
-  color: white;
-}
-
-.ALA-image-credit {
-  text-align: left;
-  font-size: 14px;
-  color: white;
-}
-
-@media (min-width: 992px){
-  .credit-text {
-    position: absolute;
-    bottom: 3%;
-  }
-}
-
-@media screen and (max-width: 952px){
-  /*--    --*/
-  .hero-image {
-    background-attachment: scroll;
-  }
-
-}
-
-/*----------------------------------------------*/
-
-/*-- Our values --*/
-
-.px-0 {
-    padding-left: 0!important;
-    padding-right: 0!important;
-}
-
-.values-row {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-}
-
-@media (min-width: 992px){
-  .col-lg-4 {
-    float:left;
-    width: 33.333333%;
-    flex: 1;
-    max-width: 33.333333%;
-    position: relative;
-    width: 100%;
-    min-height: 1px;
-    display:flex;
-  }
-}
-
-.value-feature-1 {
-    background: #B8573E;
-    color: white;
-}
-
-.value-feature-2 {
-    background: #E06E53;
-    color: white;
-}
-
-.value-feature-3 {
-    background: #B8573E;
-    color: white;
-}
-
-.value-text {
-  color: white;
-}
-
-.value-block {
-    color: #fff;
-    padding: 85px 65px;
-    float: left;
-    display: block;
-}
-
-
-/*----------------------------------------------*/
-
-/*-- Categories of posts buttons --*/
-
-/* Three columns side by side */
-.category-column {
-  float: left;
-  width: 30%;
-  margin-bottom: 16px;
-  padding: 0 12px;
-  flex-direction: column
-}
-
-
-/* Display the columns below each other instead of side by side on small screens */
-
-@media screen and (max-width: 952px) {
-  .category-column {
-    width: 100%;
-    display: block;
-  }
-}
-
-/* Add some shadows to create a card effect */
-
-
-.category-image {
-  display: block;
-  margin: auto;
-  width: auto;
-  height: 120px;
-  width:100%;
-  text-align: center;
-  backface-visibility: hidden;
-  transform: perspective(1px) translate3d(0, 15px, 0);
-  transition: all .1ms;
-}
-
-
-.honey {
-  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
-}
-
-.honey:hover {
-  filter: invert(95%) sepia(43%) saturate(3246%) hue-rotate(313deg) brightness(100%) contrast(102%);
-}
-
-.sage {
-  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
-}
-
-.sage:hover {
-  filter: invert(94%) sepia(12%) saturate(881%) hue-rotate(28deg) brightness(88%) contrast(81%);
-}
-
-.ocean {
-  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
-}
-
-.ocean:hover {
-  filter: invert(17%) sepia(24%) saturate(5973%) hue-rotate(191deg) brightness(93%) contrast(104%);
-}
 
 
 
@@ -411,13 +220,15 @@ d-article div.sourceCode {
 }
 
 .name {
-  color: #B8573E;
+  color: #B8573E !important;
   margin-bottom: 4px;
   line-height: 1.2;
+  text-decoration: none !important;
 }
 
 .name:hover {
-  color: #E06E53;
+  color: #E06E53 !important;
+  text-decoration: none !important;
 }
 
 .job-title {
@@ -509,34 +320,52 @@ d-article div.sourceCode {
     background-color: white;
     box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(184, 87, 62, 0.1) 0px 0px 8px;
     /*box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(184, 87, 62) 0px 0px 0px 1px inset;*/
+    border-radius: 30px;
     transition: 0.3s;
     text-decoration: none;
-    display: block;
-    margin-top: -20px;
-    padding-left: 15px;
-    padding-top: 2px;
+    display: flex;
+    margin-bottom: 80px;
+    padding-left: 30px;
+    padding-top: 20px;
     padding-bottom:8px;
 }
 
 .author-card-text {
   font-size: 0.9rem;
+  width: 50%;
 }
 
+.author-card-image {
+  flex: left;
+  width: 16%;
+  margin: auto;
+  object-fit: contain;
+}
 
 @media screen and (max-width: 952px) {
   .author-card {
     color: black;
     background-color: white;
     border-style: solid;
-    border-radius: 1px;
+    border-radius: 30px;
     border-color: #E06E53;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
-    border-radius: 10px;
-    margin: 16px 16px;
     text-decoration: none;
+    display: flex;
+  }
+  .author-card-text {
+    font-size: 0.9rem;
+    width: 100%;
+  }
+
+  .author-card-image {
     display: block;
-    width: 300px;
+    width: 50%;
+    margin: auto;
+    margin-right: 5px;
+    align-content: center;
+    object-fit: center;
   }
 }
 

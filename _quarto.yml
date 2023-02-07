@@ -1,0 +1,48 @@
+project:
+  type: website
+
+website:
+  title: "ALA Labs"
+  description: "Demo projects, experiments, debugging data and so on from the [Atlas of Living Australia (ALA)](https://ala.org.au/)"
+  google-analytics: "UA-4355440-1"
+  favicon: images/favicon.ico
+  navbar:
+    background: "#222322"
+    foreground: "#FFFFFF"
+    title: ""
+    search: true
+    logo: images/logos/ALA_Logo_Inline_REV-RGB.png
+    right:
+      - href: index.qmd
+        icon: house-door-fill
+        text: " "
+      - href: about.qmd
+        text: "About"
+      - href: posts.qmd
+        text: "Posts"
+      - text: "References"
+        menu:
+        - href: galah.qmd
+          text: "galah"
+        - href: https://ala.org.au/contact-us/
+          text: "Contact Us"
+      - href: https://www.ala.org.au
+        icon: ala
+      - href: https://github.com/AtlasOfLivingAustralia/science
+        icon: github
+
+format:
+  html:
+    include-after-body: _footer.html
+    highlight-style: ally
+    css: [theme.css, custom_theme.scss]
+    toc: true
+    code-overflow: scroll
+    linkcolor: "#B8573E"
+    grid:
+      sidebar-width: 250px
+      body-width: 950px
+      margin-width: 300px
+
+
+

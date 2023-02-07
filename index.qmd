@@ -1,0 +1,171 @@
+---
+toc: false
+format: 
+  html: 
+    include-in-header: hero-image.html
+    sidebar: false
+    css: [theme.css, index.css]
+---
+
+<a class = "navbar-brand navbar-brand-logo" href = "ala.org.au/"></a>
+
+```{r}
+#| include: false
+# To change the hero-image:
+
+# open theme.css
+# find the .hero-image section
+```
+
+```{r}
+#| include: false
+library(htmltools)
+source("R/functions.R")
+```
+
+# Welcome to ALA Labs
+
+This site is a resource for coding projects that use data sourced from the ALA. We hope that users will find interesting content, whether their focus is ecological modelling, data visualisation, or simply investigating the natural world through a digital lens. Enjoy!
+
+
+---
+
+:::{.column-page}
+
+
+<center> <h1>Data visualisation</h1> </center>
+
+<center> <span style = "font-style: italic">Click to see related posts on each topic</span> </center>
+
+
+
+```{r, echo = FALSE}
+tags$div(class = "category-row",
+         
+  tags$div( 
+    class = "category-column",
+    tags$a(href = "posts.html#category=Summaries",
+      tags$img(
+        href = "posts.html#category=Summaries",
+        src = "images/vectors/barplot.svg",
+        class = "category-image honey"
+  )),
+  tags$p(
+    tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category=Summaries", "Summaries")))),
+  
+  tags$div( 
+    class = "category-column",
+    tags$a(href = "posts.html#category=Maps",
+      tags$img(
+        href = "posts.html#category=Maps",
+        src = "images/vectors/Australia.svg",
+        class = "category-image honey"
+  )),
+  tags$p(
+    tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category=Maps", "Maps")))),
+  
+  tags$div( 
+    class = "category-column",
+    tags$a(href = "posts.html#category:Trees",
+      tags$img(
+        href = "posts.html#category=Trees",
+        src = "images/vectors/tree.svg",
+        class = "category-image honey"
+  )),
+  tags$p(
+    tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category=Trees", "Trees"))))
+  
+  )
+```
+
+
+
+
+<center> <h1>Taxonomy</h1> </center>
+
+<center> <span style = "font-style: italic">Click to see related posts on each topic</span> </center>
+
+
+
+```{r, echo = FALSE}
+tags$div(class = "category-row",
+         
+  tags$div( 
+    class = "category-column",
+    tags$a(href = "posts.html#category=Plantae",
+      tags$img(
+        href = "posts.html#category=Plantae",
+        src = "images/vectors/eucalypt.svg",
+        class = "category-image sage"
+  )),
+  tags$p(
+    tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category=Plantae", "Plants")))),
+  
+  tags$div( 
+    class = "category-column",
+    tags$a(href = "posts.html#category=Aves",
+      tags$img(
+        href = "posts.html#category=Aves",
+        src = "images/vectors/falco.svg",
+        class = "category-image sage",
+        style = "height: 140px; width: auto;"
+  )),
+  tags$p(
+    tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category=Aves", "Birds")))),
+  
+  tags$div( 
+    class = "category-column",
+    tags$a(href = "posts.html#category=Mammalia",
+      tags$img(
+        href = "posts.html#category=Mammalia",
+        src = "images/vectors/bettong.png",
+        class = "category-image sage",
+        style = "height: 110px; width: auto; margin-top: 30px;"
+  )),
+  tags$p(
+    tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category=Mammalia", "Mammals"))))
+  
+  )
+```
+
+
+
+<center> <h1>{{< fa earth-oceania >}} We value</h1> </center>
+
+:::
+
+:::{.column-screen}
+
+```{r, echo = FALSE}
+# find icons at https://fontawesome.com/v5.15/icons?d=gallery&p=2
+
+tags$div(class = "values-row",
+         
+create_values_box1(
+  value = "\    Openness",
+  icon = "fas fa-book-open",
+  text = "Data are most useful when they are widely available and easy to use. We try to encourage the sharing of tools that make data from the Atlas of Living Australia more open and useful for everyone"
+),
+
+create_values_box2(
+  value = "\    Scientific transparency",
+  icon = "fas fa-dna",
+  text = "Transparency is necessary for reproducible science. We encourage that decisions, methods and deviations in our workflow are clear and transparent from the planning phase, to the retrieval and analysis of data, to the final output"
+),
+
+create_values_box3(
+  value = "\    Robust methods",
+  icon = "far fa-chart-bar",
+  text = "No method or analytic procedure is perfect. We value consideration for strengths and limitations of each method or analysis to help choose the methods that provide robust, reliable results"
+)
+
+)
+```
+
+:::

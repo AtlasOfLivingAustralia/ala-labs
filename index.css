@@ -1,0 +1,195 @@
+/* ----------- INDEX PAGE -----------*/
+
+/* HERO IMAGE AT TOP OF PAGE*/
+
+.hero-container {
+  overflow: hidden;
+  position: relative;
+  max-height: 52vh;
+  height: 52vh;
+}
+
+.hero-image {
+  position: absolute;
+  bottom: 0;
+  /* liner gradient tints the image darker for readability*/
+  background-image: linear-gradient( rgba(0,0,0,.3), rgba(0,0,0,.3) ), url(images/frog.jpg);
+  background-size: cover;
+  height: auto;
+  width: 100vw;
+  background-color: #141c25;
+  display: flex; /* Change to `display: none` for no hero image */
+  justify-content: center;
+  align-items: center;
+  background-repeat: no-repeat;
+  padding: 20vh 0;
+}
+
+.ALA-top {
+  position: relative;
+  text-align: center;
+  font-size: 100px;
+  color: #ffffff;
+  padding-right: 115px;
+  margin-bottom: -4.7rem;
+  font-weight: bold;
+}
+
+.ALA-bottom {
+  position: relative;
+  text-align: center;
+  font-size: 100px;
+  color: #EEECEA;
+  padding-left: 122px;
+  font-weight: bold;
+}
+
+.ALA-byline {
+  font-size: 20px;
+  text-align: center;
+  color: #ffffff;
+  padding-top: 0px;
+}
+
+.credit-text {
+  position: absolute;
+  text-align: left;
+  left: 2%;
+  bottom: 5%;
+}
+
+.ALA-species-credit {
+  font-size: 11px;
+  color: white;
+}
+
+.ALA-image-credit {
+  text-align: left;
+  font-size: 14px;
+  color: white;
+}
+
+@media (min-width: 992px){
+  .credit-text {
+    position: absolute;
+    bottom: 3%;
+  }
+}
+
+@media screen and (max-width: 952px){
+  /*--    --*/
+  .hero-image {
+    background-attachment: scroll;
+  }
+
+}
+
+/*----------------------------------------------*/
+
+/*-- Our values --*/
+
+.px-0 {
+    padding-left: 0!important;
+    padding-right: 0!important;
+}
+
+.values-row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 992px){
+  .col-lg-4 {
+    float:left;
+    width: 33%;
+    flex: 1;
+    max-width: 33.3333333%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    display:flex;
+  }
+}
+
+.value-feature-1 {
+    background: #B8573E;
+    color: white;
+}
+
+.value-feature-2 {
+    background: #E06E53;
+    color: white;
+}
+
+.value-feature-3 {
+    background: #B8573E;
+    color: white;
+}
+
+.value-text {
+  color: white;
+}
+
+.value-block {
+    color: #fff;
+    padding: 85px 65px;
+    float: left;
+    display: block;
+}
+
+
+/*----------------------------------------------*/
+
+/*-- Categories of posts buttons --*/
+
+/* Three columns side by side */
+.category-column {
+  float: left;
+  width: 33%;
+  padding: 0 0px;
+  flex-direction: column
+}
+
+
+/* Display the columns below each other instead of side by side on small screens */
+
+@media screen and (max-width: 952px) {
+  .category-column {
+    width: 100%;
+    display: block;
+  }
+}
+
+/* Add some shadows to create a card effect */
+
+
+.category-image {
+  display: block;
+  margin: auto;
+  width: auto;
+  height: 140px;
+  width:100%;
+  text-align: center;
+  backface-visibility: hidden;
+  transform: perspective(1px) translate3d(0, 15px, 0);
+  transition: all .1ms;
+}
+
+
+.honey {
+  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
+}
+
+.honey:hover {
+  filter: invert(95%) sepia(43%) saturate(3246%) hue-rotate(313deg) brightness(100%) contrast(102%);
+}
+
+.sage {
+  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
+}
+
+.sage:hover {
+  filter: invert(94%) sepia(12%) saturate(881%) hue-rotate(28deg) brightness(88%) contrast(81%);
+}

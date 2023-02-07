@@ -5,7 +5,7 @@
 /*-- Copyright --*/
 
 .copyright-container {
-  display: flex;
+  display: flex!important;
   width: 100%;
   margin-bottom: 30px;
   margin-top: 30px;
@@ -13,9 +13,9 @@
 
 .copyright-row {
   width: 100%;
-  height: 66px;
+
   position: relative;
-  margin-bottom: -1.75vw;
+
   background-color: #c44d34;
   background-position: bottom;
   background-size: cover;
@@ -28,7 +28,7 @@
   max-width: 1140px;
   padding-left: 15px;
   padding-right: 15px;
-  padding-bottom: 30px;
+  padding-bottom: 0px;
   margin: auto;
 }
 
@@ -40,7 +40,7 @@
   padding-right: 15px;
   position: relative;
   min-height: 1px;
-  display: flex;
+  display: flex!important;
   flex-direction:column;
   display:inline-block;
 }
@@ -54,7 +54,7 @@
   padding-right: 15px;
   position: relative;
   min-height: 1px;
-  display: flex;
+  display: flex!important;
   flex-direction: column;
   display:inline-block;
 }
@@ -72,7 +72,7 @@
 /*-- Logos and acknowledgement --*/
 
 .footer-container {
-  display: flex;
+  display: flex!important;
   width: 100%;
   max-width: 1140px;
   padding-left: 15px;
@@ -135,10 +135,6 @@
   margin-top: 10px;
 }
 
-d-article a:hover {
-  color: #E06E53;
-}
-
 /*-- Back to ALA button --*/
 
 .link-container {
@@ -197,7 +193,6 @@ d-article a:hover {
     max-width: 100%;
     display: block;
     margin-top: 20px;
-    margin-bottom: 20px;
   }
   .link-container {
     display: block;
@@ -220,29 +215,37 @@ d-article a:hover {
 }
 
 .logo-ncris {
-  width: 150px;
+  width: auto;
   height: 109px;
   margin-right: 15px;
   margin-top: 20px;
 }
 
 .logo-csiro {
-  width: 109px;
+  width: auto;
   height: 109px;
   margin-right: 15px;
   margin-top: 20px;
 }
 
 .logo-gbif {
-  width: 207px;
+  width: auto;
   height: 109px;
+}
+
+@media (min-width: 992px) {}
+body .page-columns{
+  grid-column: screen-start/screen-end;
+  z-index: 998;
+  transform: translate3d(0, 0, 0);
+}
 }
 
 </style>
 
-<hr style="opacity: 0.4; margin-top: 10px; margin-bottom:10px">
+<hr style="padding-top: 1px">
 
-<div class = "footer-container">
+<div class = "footer-container column-screen">
 
   <!--<div class = "row-footer">-->
     <div class = "column-footer">
@@ -285,22 +288,22 @@ d-article a:hover {
 <!--  </div>-->
 </div>
 
-<div class="copright-container">
+<div class="copright-container column-screen">
   <div class="copyright-row">
      <div class="copyright-width">
   		<div class="copyright-column-left">
   				<p class="copyright-text">
-  					This work is licensed under a <a href="https://creativecommons.org/licenses/by/3.0/au/">Creative Commons Attribution 3.0 Australia License</a>
+  					This work is licensed under a <a style = "color:#fff!important;" href="https://creativecommons.org/licenses/by/3.0/au/">Creative Commons Attribution 3.0 Australia License</a>
   					<a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/"><img alt="Creative Commons License" style="border-width:0" src="images/logos/cc-by.png"></img></a>
   				</p>
 			</div><!--col end -->
     	<div class="copyright-column-right">
          <p class="copyright-text">
-           <a href="https://www.ala.org.au/terms-of-use#cy">Copyright</a>
+           <a style = "color:#fff!important;" href="https://www.ala.org.au/terms-of-use#cy">Copyright</a>
            &nbsp;&nbsp;
-           <a href="https://www.ala.org.au/terms-of-use">Terms of Use</a>
+           <a style = "color:#fff!important;" href="https://www.ala.org.au/terms-of-use">Terms of Use</a>
            &nbsp;&nbsp;
-           <a href="https://status.ala.org.au/">System Status</a>
+           <a style = "color:#fff!important;" href="https://status.ala.org.au/">System Status</a>
          </p>
       </div>
     </div>

@@ -1,0 +1,52 @@
+---
+title: "Dax Kellie"
+---
+
+```{r, include=FALSE}
+library(htmltools)
+library(here)
+source(here("R", "functions.R"))
+```
+
+### {{< fa circle-user >}} Bio 
+
+::: {.grid}
+::: {.g-col-6}
+
+Dax is an evolutionary biologist, with a PhD in biological sciences and social psychology. As a data analyst at the ALA, he tries to make data in the ALA accessible for scientists and citizen scientists to use in ways that are scientifically robust and transparent. 
+
+Dax is the primary editor of ALA Labs.
+
+```{r}
+#| echo: false
+
+tags$div(class = "row", style = "display: flex;",
+         
+create_button(
+  icon = "fab fa-github fa-xl",
+  url = "https://github.com/daxkellie"
+),
+create_button(
+  icon = "fas fa-globe fa-xl",
+  url = "https://daxkellie.com/"
+),
+create_button(
+  icon = "fab fa-twitter fa-xl",
+  url = "https://twitter.com/daxkellie"
+)
+)
+```
+:::
+::: {.g-col-6}
+```{r out.width='275px', out.extra='style="float:right; margin-left:15px; margin-right:15px; clip-path: circle();"'}
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg")
+```
+:::
+:::
+
+### {{< fa newspaper >}} Posts 
+
+<a href='https://labs.ala.org.au/posts/2023-01-12_counting-points-in-shapefiles/'>Counting points in multipolygon shapefiles for choropleth mapping</a><br><em>Choropleth maps are an excellent way to visualise numbers of observations in each region. When using point data, calculating the number of points in each polygon can be difficult when using shapefiles. Here we demonstrate how to extract and summarise the number of points in each polygon within a shapefile to create a choropleth map.</em><br><br>
+<a href='https://labs.ala.org.au/posts/2022-07-22_sample-bias/'>Quantify geographic sampling bias with {sampbias}</a><br><em>Human biases play a large role in the data we collect about species. Here we show a simple method to quantify the bias of roads, cities, rivers and airports on species observations of legless lizards in the Northern Territory</em><br><br>
+<a href='https://labs.ala.org.au/posts/2022-05-17_3d-map/'>Download plant species data by hexagon to make a 3D hex map\n</a><br><em>Making plots eye-catching can be useful for science communication. Here, we show how to make 3D plots in R with the `rayshader` package by visualising the number of species identified from ALA observations since 2020</em><br><br>

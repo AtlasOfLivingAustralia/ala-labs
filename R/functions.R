@@ -63,26 +63,6 @@ create_values_box3 = function(value, icon, text){
   )
 }
 
-# Project cards - note: these are not in use
-
-create_proj_card = function(img_src, url, title, text, text2){
-  tags$div(
-    class = "card",
-    tags$img(class="card-img-top",
-             src=img_src,
-             style="width:250px;height:100%"),
-    tags$div(
-      class = "card-body",
-      h4(
-        a(href = url,  
-          title)),
-      p(class = "card-text", 
-        text, br(), text2)
-    )
-  )
-  
-}
-
 # About: Team member card
 
 create_team_card <- function(person_page, img_src, name, alt, text, url_web, url_twitter, url_github) {
@@ -95,7 +75,7 @@ create_team_card <- function(person_page, img_src, name, alt, text, url_web, url
       tags$div(
         class = "container",
         a(href = person_page, 
-          h3(class = "name", name)),
+          h4(class = "name", name)),
         p(class = "job-title", text)
       )))
 }

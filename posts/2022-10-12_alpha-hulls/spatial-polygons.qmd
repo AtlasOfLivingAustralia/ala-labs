@@ -1,0 +1,541 @@
+---
+title: "Convex and alpha hulls for conservation mapping"
+description: |
+  Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions 
+  when a species has very few existing observations.
+  Here, we will show you how to create these spatial polygons using data
+  from the ALA.
+author:
+  - name: "Margot Schneider"
+  - name: "Fonti Kar"
+date: "2022-10-20"
+title-block-banner: "#B8573E"
+toc: true
+toc-location: left
+toc-depth: 3
+categories:
+  - Summaries
+  - Maps
+  - Eukaryota
+  - Animalia
+image: alpha-hull-fig.png
+freeze: true
+---
+
+```{r}
+#| include: false
+library(htmltools)
+```
+<!-- remove metadata section -->
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Author card -->
+
+:::{.author-card}
+:::{.author-card-text}
+
+#### Author
+[Margot Schneider](https://labs.ala.org.au/people/Schneider_Margot/index.html)
+[Fonti Kar](https://labs.ala.org.au/people/Kar_Fonti/index.html) 
+
+#### Date
+20 October 2022
+
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/margot.jpg")
+```
+:::
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/fonti.jpg")
+```
+:::
+
+
+:::
+
+<!------------------------ Post starts here ------------------------>
+
+The ability to predict where a species resides is important in conservation ecology, but when a species has very few existing observations (i.e. a *data-deficient species*), predicting its distribution can be difficult (or impossible) using standard methods for species distributions. 
+
+**Convex hulls** and **alpha hulls** are two ways to plot the spatial distribution of data-deficient species, making it possible to calculate metrics that help us predict whether a species is threatened to become extinct (i.e. [IUCN metrics](https://link.springer.com/article/10.1007/s10531-019-01697-9)).
+
+Recently, [Dr. Marsh and colleagues](https://onlinelibrary.wiley.com/doi/full/10.1111/geb.13550) used alpha hulls to estimate the impact of the 2020 mega bushfires  on invertebrates in southern Australia. Since invertebrate data is inherently sparse, alpha hulls are really useful when you only have a handful of records to work with.  
+
+In this post, we'll explain the difference between convex hulls and alpha hulls and show you how to make them yourself!
+
+
+## Download data
+
+To illustrate the various spatial polygons you can make, let's look at an invertebrate species from Dr. Marsh's study: an endemic damselfly, *Austroargiolestes calcaris*, commonly known as the [Powdered Flatwing](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/2d944503-2f03-48ec-8a8a-b78bc2b674af)
+
+:::{layout="[-1, 1, -1]"}
+<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/5/a/9/2/f6f52563-3bb4-45f3-a5cd-26a3773329a5/original"></img>
+:::
+::: {.figure-caption}
+[A Powdered Flatwing perched on a plant by Reiner Richter CC-BY 4.0](https://images.ala.org.au/image/f6f52563-3bb4-45f3-a5cd-26a3773329a5)
+:::
+
+First we will load the R packages we'll need:
+
+```{r}
+#| include: false
+library(pacman)
+# remotes::install_github("babichmorrowc/hull2spatial")
+# install.packages('BiocManager')
+pacman::p_load(remotes, galah, tidyverse, alphahull, sp, sf, ozmaps, hull2spatial, patchwork, xaringanExtra)
+
+```
+
+```{r}
+#| eval: false
+# install.packages("pacman")
+pacman::p_load(remotes, galah, tidyverse, alphahull, 
+               sp, sf, ozmaps, patchwork)
+```
+
+Now let's use `galah` to download occurrence records from the [Atlas of Living Australia (ALA)](https://www.ala.org.au/). Note that you will need to first enter a [registered email with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount) using `galah_config` before fetching records.
+
+```{r}
+#| echo: false
+# Add registered email (register at ala.org.au)
+galah_config(email = "dax.kellie@csiro.au", verbose = FALSE)
+```
+
+```{r}
+#| eval: false
+# Add registered email (register at ala.org.au)
+galah_config(email = "your-email@email.com")
+```
+
+```{r}
+#| warning: true
+#| message: true
+
+# Download Powdered flatwing records 
+galah_call() |> 
+  galah_identify("Austroargiolestes calcaris") |> 
+  galah_filter(profile="ALA") |> 
+  galah_select(group = "basic") |> 
+  atlas_occurrences() -> dfly
+
+# See first 10 rows
+dfly |> head(10L)
+```
+
+Before we can plot anything, we will also need to remove all duplicated values and any NA values!
+
+```{r}
+# Remove duplicates & NAs
+dfly |> 
+  filter(!duplicated(decimalLongitude) & !duplicated(decimalLatitude)) |> 
+  filter(!is.na(decimalLongitude) & !is.na(decimalLatitude) ) -> dfly_clean
+```
+
+## Map a convex hull
+
+A **convex hull** is a way to draw around all the points of a species on a map with as few lines as possible. It's defined as the smallest polygon that _encloses all the points_ in the data set.
+
+To plot a convex hull on a map, we can use `chull()` to compute a convex hull from our cleaned Powdered Flatwing data. `chull()` computes a series of points that make up our convex hull.
+
+```{r}
+# Compute convex hull
+dfly_clean |> 
+  dplyr::select(decimalLongitude, decimalLatitude) |>  
+  chull() -> dfly_chull
+
+dfly_chull
+```
+
+Next, we join the first point of the hull vector to the last point, creating a closed outline which can be plotted on a map.  
+
+```{r, class.source = "fold-show"}
+# Join first point of hull to the last point
+dfly_chull_pts <- c(dfly_chull, dfly_chull[1])
+```
+
+Now we can get a map of Australia from the `{ozmaps}` package and use `st_transform()` to make sure it has the correct projection of `4326`. 
+
+```{r}
+# Get map of Australia
+aus <- st_transform(ozmaps::ozmap_country, 4326)
+```
+
+And finally, we plot our Powdered Flatwing occurrence records and its convex hull on a map!  
+
+```{r}
+#| column: body-outset
+#| fig-align: center
+#| fig-height: 7
+
+# Plot occurrences and convex hull
+ggplot() + 
+  geom_sf(data = aus, 
+          colour = "black", 
+          fill = "white")  + 
+  geom_point(data = dfly_clean, 
+             mapping = aes(decimalLongitude, decimalLatitude), 
+             colour = "black", size = 0.8) + 
+  geom_polygon(data = dfly_clean[dfly_chull_pts, ], 
+               mapping = aes(decimalLongitude, decimalLatitude), 
+               fill = "orange", 
+               colour = "black", 
+               alpha = 0.5) + 
+  coord_sf(xlim=c(142, 152), 
+           ylim=c(-32,-44)) +
+  labs(title = "Convex hull", 
+       x = "Longtitude (DD)", 
+       y = "Latitude (DD)") + ## DD here stands for decimal degrees
+  theme_bw()
+```
+
+
+## What is an alpha hull?
+
+Like a convex hull, an **alpha hull** is also a way to draw the smallest polygon that encloses all the points in a data set. However, alpha hulls differ because they use an **alpha parameter** to control how tightly the boundary fits around a set of points. This method creates concave, arched edges that fit around occurrence records more tightly. A tighter boundary around our points helps us avoid over-predicting the range of a species.
+
+To illustrate, here are three alpha hulls with _increasing_ values for alpha. Notice as the alpha value increases, the tightness of our boundary decreases.
+
+```{r}
+#| warning: false
+#| code-fold: true
+
+# Compute alpha shapes and store in list column within a tibble
+tibble(
+  alpha_value = c(1, 2, 5),
+  ahull_ls = map(.x = c(1, 2, 5),
+                 .f = ~ dfly_clean |> 
+                   select(decimalLongitude, decimalLatitude) |> 
+                   ahull(alpha = .x)) 
+) -> dfly_ahulls
+
+
+# Transform alpha hull to an `sp` object and set map projection to 4326
+set_map_proj <- function(sp_obj){
+sp_obj@proj4string <- sp::CRS("EPSG:4326") 
+
+sp_obj
+}
+
+dfly_ahulls |> 
+  mutate(ahull_sp = map(.x = ahull_ls,
+                        .f = hull2spatial::ahull2poly),
+         ahull_sp = map(.x = ahull_sp,
+                        .f = set_map_proj)
+         ) -> dfly_ahulls
+
+
+# Transform `sp` object into a `sf` object 
+dfly_ahulls |> 
+  mutate(ahull_sf = map(.x = ahull_sp,
+                        .f = st_as_sf)
+         ) -> dfly_ahulls
+
+# Transform occurrences into `sf` object for plotting
+st_as_sf(dfly_clean, 
+         coords = c("decimalLongitude", "decimalLatitude"), 
+         crs = 4326) -> dfly_sf
+
+## A function to compose map 
+plot_ahull_fun <- function(ahull_sf, title = NULL){
+  p <- ggplot() + 
+    geom_sf(data = aus, colour = "black", fill = "white")  +
+    geom_sf(data = dfly_sf, colour = "black", size = 0.5) +  
+    geom_sf(data = ahull_sf, fill = "orange", alpha = 0.5) +
+    coord_sf(xlim=c(142, 152),ylim=c(-32,-44)) +
+    ggtitle(paste("a = ", as.character(title))) +
+    labs(x = "Longtitude (DD)", y = "Latitude (DD)") + 
+    theme_bw(base_size = 12)
+  
+  p
+}
+
+dfly_ahulls |> 
+  mutate(ahull_maps = map2(.x = ahull_sf,
+                           .y = alpha_value,
+                           .f = ~ plot_ahull_fun(.x , .y)) 
+  ) -> dfly_ahulls
+```
+
+```{r}
+#| fig-width: 12
+#| fig-height: 6
+#| echo: false
+#| column: body-outset
+#| fig-align: center
+wrap_plots(dfly_ahulls$ahull_maps)
+```
+
+**Alpha = 2** is the alpha value we've most commonly come across in research, and is the value recommended by the IUCN for various forms of species vulnerability analysis. 
+
+So, let's learn how to make the **a = 2** plot above!
+
+## Map an alpha hull
+
+To make an alpha hull, we will rely on the `hull2spatial` package (developed by Cecina Babich Morrow). This package allows us to convert "`ahull`" objects into ggplot-friendly objects (to learn more, [check out their blog post about the package](https://babichmorrowc.github.io/post/2019-03-18-alpha-hull/)). 
+
+Install the package from GitHub using:
+
+```{r}
+#| eval: false
+remotes::install_github("babichmorrowc/hull2spatial")
+library(hull2spatial)
+```
+
+
+To compute our alpha hull, we'll provide the longitude and latitude coordinates of our data points to the `ahull()` function, and set `alpha = 2`. `ahull()` creates a `list` object with far more complexity than our convex hull. A nice way to understand the difference is to look at the first 5 rows of the `arcs` component of our list `dfly_ahull`, which stores information like the center and radius of each arch in our alpha hull.
+
+```{r}
+# Compute an alpha hull
+dfly_clean |> 
+  dplyr::select(decimalLongitude, decimalLatitude) |> 
+  ahull(alpha = 2) -> dfly_ahull
+
+# See first 5 values of `arcs` component of list
+dfly_ahull$arcs |> head(5L)
+```
+
+Next we'll transform our alpha hull and occurrence points into spatial objects for plotting. 
+
+The `ahull2poly()` function converts our alpha hull to one type of spatial object (an `sp` object), but we'll use `st_as_sf()` to convert our result to an `sf` object (because it's easier to plot) and set our map projection to `4326`. We'll do the same for our damselfly occurrence points.
+
+```{r}
+# Transform  `ahull` into spatial object, convert to sf, set coordinates
+hull2spatial::ahull2poly(dfly_ahull) |> 
+  st_as_sf() |> 
+  st_set_crs(st_crs(aus)) -> dfly_sf_ahull
+
+# Convert occurrence points to `sf` for plotting
+dfly_clean |> 
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
+           crs = 4326) -> dfly_sf
+```
+
+Finally, we can create our plot!
+
+```{r}
+#| column: body-outset
+#| fig-align: center
+#| fig-height: 7
+
+# Plot the occurrences and alpha hull
+ggplot() + 
+  geom_sf(data = aus, colour = "black", fill = "white")  +
+  geom_sf(data = dfly_sf, colour = "black", size = 0.5) +  
+  geom_sf(data = dfly_sf_ahull, fill = "orange", alpha = 0.5) +
+  coord_sf(xlim=c(142, 152),ylim=c(-32,-44)) +
+  ggtitle("Alpha hull") +
+  labs(x = "Longtitude (DD)", y = "Latitude (DD)") + 
+  theme_bw()
+```
+
+### Alpha hull with filtered observations
+
+Citizen science data are often excluded from scientific analyses due to poor data quality e.g. rare species can be misidentified by someone who's not an expert. Although a strict data criteria will reduce the number of data points, we can still compute and plot alpha hulls for the Powdered Flatwing - this is the beauty of them!
+
+Let's repeat exactly the same steps as above for generating an alpha hull, but only use a subset of our damselfly observations that comes from specimen data. We can do this by specifying the `basisOfRecord` with `galah_filter()`.
+
+```{r}
+#| cache: true
+#| results: hide
+#| class-source: fold-show
+
+# Create a vector excluding human observations
+institution_only <- c("PRESERVED_SPECIMEN", "LIVING_SPECIMEN", 
+                   "MACHINE_OBSERVATION", "MATERIAL_SAMPLE")
+
+galah_call() |> 
+  galah_identify("Austroargiolestes calcaris") |> 
+  galah_filter(basisOfRecord == institution_only,
+               profile = "ALA") |> 
+  galah_select(group = "basic") |> 
+   atlas_occurrences() -> dfly_specionly
+```
+
+Below is our alpha hull of our specimen-only damselfly data. You'll notice that there are **two separate hulls** in this map! This is another benefit of using an alpha hull over a convex hull. The mathematical constraints of a convex hull mean all points must be contained within a single polygon - this can lead to an over-estimation of a species' range.
+
+```{r}
+#| include: false
+
+# Remove duplicates & exclude NAs
+dfly_specionly |> 
+  filter(!duplicated(decimalLongitude) & !duplicated(decimalLatitude)) |>
+  filter(!is.na(decimalLongitude) & !is.na(decimalLatitude) ) -> dflysp_clean
+
+# Compute alpha hull
+dflysp_clean |> 
+  select(decimalLongitude, decimalLatitude) |> 
+  ahull(alpha = 2) -> dflysp_ahull
+
+# Transform `ahull` into spatial object, convert to sf
+hull2spatial::ahull2poly(dflysp_ahull) |> 
+  st_as_sf() |> 
+  st_set_crs(st_crs(aus)) -> dflysp_sf_ahull
+
+# Transform occurrence points to sf
+dflysp_clean |> 
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
+           crs = 4326) -> dflysp_sf
+
+ggplot() + 
+  geom_sf(data = aus, colour = "black", fill = "white")  +
+  geom_sf(data = dflysp_sf, colour = "black", size = 0.5) +  
+  geom_sf(data = dflysp_sf_ahull, fill = "orange", alpha = 0.5) +
+  coord_sf(xlim=c(142, 152),ylim=c(-32,-44)) +
+  ggtitle("Specimen only alpha hull") +
+  labs(x = "Longtitude (DD)", y = "Latitude (DD)") + 
+  theme_bw() -> dflysp_ahull_p
+```
+
+```{r}
+#| echo: false
+#| column: body-outset
+#| fig-align: center
+#| fig-height: 7
+dflysp_ahull_p
+```
+
+
+
+
+## A real-life example
+
+Alpha hulls, and their ability to generate multiple hulls when data is sparse, can help us understand how sensitive certain species are to environmental change over time, even when species have few existing observations. 
+
+For example, [Dr. Takach and their team](https://onlinelibrary.wiley.com/doi/10.1111/ddi.13145) wanted to investigate how the distribution of mammals in the tropical savanna like [*Mesembriomys gouldii* (the Black-Footed Tree Rat)](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/f38bcd7e-ae6a-4734-bd64-06995bc230eb) shrink or expand in response to pressures like habitat loss and changing climate. Using alpha hulls, they found that the ecological niche of this species has shrunk due to a loss of suitable habitat over time.
+
+
+:::{layout="[-1, 1, -1]"}
+![](images/species/black-rat-cropped.jfif){.clipped style="object-fit:cover;"}
+:::
+::: {.figure-caption}
+[A Black-Footed Tree Rat perched on a branch by Colin Trainor CC-BY-NC 4.0](https://images.ala.org.au/image/a197988c-5da5-4260-8f2a-5bb55b468fce)
+:::
+
+
+The published paper didn't provide a visual of this species' distribution, so we've made a map below with ALA data to show the change in distribution over time:
+
+```{r}
+#| code-fold: true
+
+# Download records
+galah_call() |> 
+  galah_identify("Mesembriomys gouldii") |> 
+  galah_filter(profile = "ALA") |> 
+  galah_select(group = "basic") |> 
+  atlas_occurrences() -> tree_rat
+
+# Remove duplicates and NAs
+tree_rat |> 
+  filter(! duplicated(decimalLongitude) & ! duplicated(decimalLatitude)) |> 
+  filter(! is.na(decimalLongitude) & ! is.na(decimalLatitude) ) -> tree_ratclean
+
+# Convert occurrence points to sf for plotting
+tree_ratclean |> 
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
+           crs = 4326) -> tree_rat_sf
+
+# Compute alpha hull
+tree_ratclean |> 
+  select(decimalLongitude, decimalLatitude) |> 
+  ahull(alpha = 2) -> tree_rat_ahull
+
+# Transform `ahull` to `sf`, set projection
+hull2spatial::ahull2poly(tree_rat_ahull) |> 
+  st_as_sf() |>
+  st_set_crs(st_crs(aus)) -> tree_rat_sf_ahull
+
+# Convert occurrence points to sf for plotting
+tree_ratclean |> 
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
+           crs = 4326) -> tree_rat_sf
+
+# Get map of Australia & set projection
+aus <- st_transform(ozmaps::ozmap_country, 4326)
+
+#---
+
+# Download tree rat records after 2000
+galah_call() |>
+  galah_identify("Mesembriomys gouldii") |>
+  galah_filter(profile = "ALA",
+               year >= 2000,) |>
+  galah_select(group = "basic") |>
+  atlas_occurrences() -> Rtree_rat
+
+# Remove duplicates & exclude NAs
+Rtree_rat |> 
+  filter(!duplicated(decimalLongitude) & !duplicated(decimalLatitude)) |> 
+  filter(!is.na(decimalLongitude) & !is.na(decimalLatitude) ) -> Rtree_ratclean
+
+# Compute an alpha hull for our specimen only occurrences
+Rtree_ratclean |> 
+  select(decimalLongitude, decimalLatitude) |> 
+  ahull(alpha = 2) -> Rtree_rat_ahull
+
+# Transform `ahull` to sf, set coordinates
+hull2spatial::ahull2poly(Rtree_rat_ahull) |> 
+  st_as_sf() |> 
+  st_set_crs(st_crs(aus)) -> Rtree_rat_sf_ahull
+
+# Transform occurrence points to sf for plotting 
+Rtree_ratclean |> 
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
+           crs = 4326) -> Rtree_rat_sf
+
+#---
+
+# Nice title
+rat_title <- expression(italic("Mesembriomys gouldii "), "alpha hulls")
+
+# Plot!
+ggplot() + 
+  geom_sf(data = aus, colour = "black", fill = "white")  +
+  geom_sf(data = tree_rat_sf_ahull, aes(fill = "chartreuse3") ,alpha = 0.5, colour = "black", position = "identity") +
+    geom_sf(data = Rtree_rat_sf_ahull, aes(fill = "blueviolet"), alpha = 0.5, colour = "black", position = "identity") +
+  scale_fill_identity(guide = "legend",
+                      name = "Record date ranges",
+                      labels = c('2000 Onwards', 'All Records')) +
+  guides(colour = guide_legend(override.aes = list(alpha = 0.1))) +
+  coord_sf(xlim=c(125, 145),ylim=c(-20,-10)) +
+  ggtitle(rat_title) +
+  labs(x = "Longtitude (DD)", y = "Latitude (DD)") + 
+  theme_bw() +
+  theme(legend.position = "bottom") -> combinedtree_rat_ahull_p
+```
+
+</details>
+
+```{r}
+#| echo: false
+#| column: page
+#| fig-align: center
+#| fig-width: 14
+#| fig-height: 8
+combinedtree_rat_ahull_p 
+```
+
+## Final thoughts
+
+While sophisticated tools for modelling species distribution exist, they require a lot of data to make reliable estimates. **Convex polygons** and **alpha hulls** are flexible alternatives that can help us understand dynamic changes to distributions of understudied or vulnerable data-deficient species.
+
+
+<details><summary style = "color: #E06E53;">Expand for session info</summary>
+
+```{r, echo = FALSE}
+library(sessioninfo)
+# save the session info as an object
+pkg_sesh <- session_info(pkgs = "attached")
+# print it out
+pkg_sesh
+```
+
+</details>

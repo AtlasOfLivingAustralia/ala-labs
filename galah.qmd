@@ -1,0 +1,54 @@
+---
+title: ""
+description: |
+format: 
+  html: 
+    css: theme.css
+freeze: true
+---
+
+```{css, echo = FALSE}
+d-title {
+    display: none;
+  }
+```
+
+<br>
+<br>
+
+:::{.column-page}
+
+::: {.grid}
+
+::: {.g-col-6}
+
+
+```{r out.width='300px', out.extra='style="float:left; margin-left:15px; margin-right:60px;"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/hex/galah_logo.png")
+```
+
+:::
+
+::: {.g-col-6}
+
+# galah
+
+`galah` is an R interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It enables users to locate and download species occurrence records (observations, specimens, eDNA records, etc.), taxonomic information, or associated media such as images or sounds, and to restrict their queries to particular taxa or locations.
+
+Visit the **[`galah` R package website](https://atlasoflivingaustralia.github.io/galah/index.html)** to learn more about how to use `galah`
+
+If you have any questions, comments, or spot any bugs, [email us](mailto:support@ala.org.au) or [report an issue](https://github.com/AtlasOfLivingAustralia/galah) on our GitHub page
+:::
+
+:::
+
+### Get started
+
+Install from CRAN
+
+```{r, eval = FALSE}
+install.packages("galah")
+```
+
+
+:::

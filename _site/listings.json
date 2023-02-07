@@ -1,0 +1,15 @@
+[
+  {
+    "listing": "/posts.html",
+    "items": [
+      "/posts/2023-01-12_counting-points-in-shapefiles/counting-points.html",
+      "/posts/2022-10-12_alpha-hulls/spatial-polygons.html",
+      "/posts/2022-07-22_sample-bias/sample-bias.html",
+      "/posts/2022-05-23-ggnewscale/ggnewscale.html",
+      "/posts/2022-05-17_3d-map/3d-map.html",
+      "/posts/2022-02-17_sunburst-plots-for-taxonomic-data/sunburst-plots.html",
+      "/posts/2021-04-14_hex-maps-for-species-occurrence-data/hex-maps.html",
+      "/posts/2021-03-20_creating-a-color-palette-from-an-image/index.html"
+    ]
+  }
+]
