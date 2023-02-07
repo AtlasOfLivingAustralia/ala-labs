@@ -94,16 +94,17 @@ a.nav-link {
 .navbar-title {
   display: inline-block;
   padding: 0;
-  content: url("./images/logos/labs-logo_transparent.png");
+  content: url("./images/logos/ala-labs-logo-white.png");
   padding-left: 5px;
   padding-top: 0px;
   padding-bottom: 0px;
+  width: 100px;
   margin: auto;
 }
 
 .navbar-title:hover {
   opacity:50;
-  content: url("./images/logos/labs-logo_coloured_transparent.png");
+  content: url("./images/logos/ala-labs-logo-orange.png");
 }
 
 .navbar-dark .navbar-nav .show>.nav-link,
