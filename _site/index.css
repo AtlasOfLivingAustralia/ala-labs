@@ -80,17 +80,17 @@
   /*--    --*/
   .hero-container {
     max-height: 75vh;
-    height: 72vh;
+    height: 66vh;
     display: flex;
   }
   .hero-image {
+    position: relative;
     background-attachment: scroll;
     display: block;
     padding: none;
-    margin: auto;
-    margin-right: 5px;
     align-content: center;
     object-fit: cover;
+    padding: 3vh 0;
   }
 
 }
