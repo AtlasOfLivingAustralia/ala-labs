@@ -11,7 +11,7 @@
     "href": "galah.html",
     "title": "ALA Labs",
     "section": "",
-    "text": "galah\ngalah is an R interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It enables users to locate and download species occurrence records (observations, specimens, eDNA records, etc.), taxonomic information, or associated media such as images or sounds, and to restrict their queries to particular taxa or locations.\nVisit the galah R package website to learn more about how to use galah\nIf you have any questions, comments, or spot any bugs, email us or report an issue on our GitHub page\n\n\n\nGet started\nInstall from CRAN\n\ninstall.packages(\"galah\")"
+    "text": "galah\n{galah} is an R interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It enables users to locate and download species occurrence records (observations, specimens, eDNA records, etc.), taxonomic information, or associated media such as images or sounds, and to restrict their queries to particular taxa or locations.  Visit the {galah} R package website to learn more about how to use galah If you have any questions, comments, or spot any bugs, email us or report an issue on our GitHub page\n\n\n\n\nGet started\nInstall from CRAN\n\ninstall.packages(\"galah\")"
   },
   {
     "objectID": "index.html",

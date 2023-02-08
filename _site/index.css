@@ -22,7 +22,7 @@
   justify-content: center;
   align-items: center;
   background-repeat: no-repeat;
-  padding: 20vh 0;
+  padding: 21vh 0;
 }
 
 .ALA-top {
@@ -94,11 +94,12 @@
   .hero-image {
     position: relative;
     background-attachment: scroll;
+    background-position: 95% center;
     display: block;
     padding: none;
     align-content: center;
     object-fit: cover;
-    padding: 3vh 0;
+    padding: 6vh 0;
   }
 
 }
