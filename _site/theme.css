@@ -107,6 +107,14 @@ a.nav-link {
   content: url("./images/logos/ala-labs-logo-orange.png");
 }
 
+@media screen and (max-width: 952px){
+  /*--    --*/
+  .navbar-title {
+    content: url("./images/logos/ala-labs-logo-orange.png");
+  }
+
+}
+
 .navbar-dark .navbar-nav .show>.nav-link,
 .navbar-dark .navbar-nav .active>.nav-link,
 .navbar-dark .navbar-nav .nav-link.active,

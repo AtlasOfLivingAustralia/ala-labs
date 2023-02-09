@@ -25,7 +25,7 @@ source("R/functions.R")
 
 # Welcome to ALA Labs
 
-This site is a resource for coding projects that use data sourced from the ALA. We hope that users will find interesting content, whether their focus is ecological modelling, data visualisation, or simply investigating the natural world through a digital lens. Enjoy!
+This site is a resource for coding projects that use data sourced from [the ALA](https://ala.org.au/). We hope that users will find interesting content, whether their focus is ecological modelling, data visualisation, or simply investigating the natural world through a digital lens. Enjoy!
 
 
 ---

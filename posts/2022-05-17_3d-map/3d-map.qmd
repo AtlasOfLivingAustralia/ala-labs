@@ -260,9 +260,9 @@ plot_gg(hex_map,
 
 ```{r}
 #| echo: false
-#| column: screen
+#| column: page
 #| fig-align: center
-#| fig-height: 12in
+#| fig-height: 10
 knitr::include_graphics(here::here("images", "dataviz", "plants_hex-map.png"))
 ```
 
