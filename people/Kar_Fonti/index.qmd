@@ -10,9 +10,15 @@ source(here("R", "functions.R"))
 
 ### {{< fa circle-user >}} Bio 
 
-::: {.grid}
-::: {.g-col-6}
+:::{.bio-column-right}
 
+```{r out.width='275px', out.extra='style="float:left; clip-path: circle();"'}
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/fonti.jpg")
+```
+:::
+
+:::{.bio-column-left}
 Fonti is an evolutionary biologist wearing R developer shoes. Her interests include biostatistics, reproducible science, learning about the latest coding practices and teaching others to enjoy using R. Her work at ALA as a Data Analyst involves streamlining data cleaning workflows. 
 
 ```{r}
@@ -34,16 +40,11 @@ create_button(
 )
 )
 ```
-:::
-::: {.g-col-6}
-```{r out.width='275px', out.extra='style="float: right; margin-left:15px; margin-right:15px; clip-path: circle();"'}
-#| echo: false
-
-knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/fonti.jpg")
-```
-:::
+<br>
 :::
 
 ### {{< fa newspaper >}} Posts 
 
-<a href='https://labs.ala.org.au/posts/2022-10-12_alpha-hulls/'>Convex and alpha hulls for conservation mapping</a><br><em>Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions when a species has very few existing observations. Here, we will show you how to create these spatial polygons using data from the ALA.</em><br><br>
+[Convex and alpha hulls for conservation mapping](https://labs.ala.org.au/posts/2022-10-12_alpha-hulls/post.html)<br>
+*Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions when a species has very few existing observations. Here, we will show you how to create these spatial polygons using data from the ALA.*
+

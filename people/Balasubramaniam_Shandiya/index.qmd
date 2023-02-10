@@ -10,8 +10,15 @@ source(here("R", "functions.R"))
 
 ### {{< fa circle-user >}} Bio 
 
-::: {.grid}
-::: {.g-col-6}
+:::{.bio-column-right}
+
+```{r out.width='275px', out.extra='style="float:left; clip-path: circle();"'}
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/shandiya.png")
+```
+:::
+
+:::{.bio-column-left}
 Shandiya is an evolutionary ecologist with interests in conservation genetics and wildlife disease. Her work as a data analyst at the ALA focuses on streamlining reproducible pathways for researchers to access and analyse open data. 
 
 ```{r}
@@ -33,16 +40,14 @@ create_button(
 )
 )
 ```
+<br>
 :::
-::: {.g-col-6}
-```{r out.width='275px', out.extra='style="float:right; margin-left:15px; margin-right:15px; clip-path: circle();"'}
-#| echo: false
-knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/shandiya.png")
-```
-:::
-:::
+
+
 
 ### {{< fa newspaper >}} Posts 
 
-<a href='https://labs.ala.org.au/posts/2022-05-23-ggnewscale/'>Multiple colour scales in choropleth maps with {ggnewscale}</a><br><em>Using multiple colour scales can be a great way to visually differentiate between geographic categories on a map. Here, we demonstrate this by creating a choropleth map to represent the density of plant records from the ALA across bioregions in Australia, and add multiple colour scales to differentiate marine and terrestrial records</em><br><br>
+[Multiple colour scales in choropleth maps with {ggnewscale}](https://labs.ala.org.au/posts/2022-05-23-ggnewscale/post.html)<br>
+*Using multiple colour scales can be a great way to visually differentiate between geographic categories on a map. Here, we demonstrate this by creating a choropleth map to represent the density of plant records from the ALA across bioregions in Australia, and add multiple colour scales to differentiate marine and terrestrial records*
+
 

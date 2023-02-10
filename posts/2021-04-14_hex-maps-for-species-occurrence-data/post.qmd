@@ -1,0 +1,271 @@
+---
+title: "Hex maps for species occurrence data"
+description: |
+  There are hundreds of color palettes in the R ecosystem, but sometimes we
+  might want to use colors from a specific image. Here I show how to 
+  use the `paletter` package to create a color palette for the 2020 Eucalypt of 
+  the Year: the Western Australian Gimlet.
+author: 
+  - name: "Matilda Stevenson"
+  - name: "Dax Kellie"
+  - name: "Martin Westgate"
+date: "March 2021"
+title-block-banner: "#B8573E"
+toc: true
+toc-location: left
+toc-depth: 3
+categories:
+  - Maps
+  - Eukaryota
+  - Animalia
+  - Chordata
+  - Aves
+image: magpie-hex-map.png
+freeze: true
+---
+
+```{r}
+#| include: false
+library(htmltools)
+```
+<!-- remove metadata section -->
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Author card -->
+
+:::{.author-card}
+:::{.author-card-text}
+
+#### Author
+Matilda Stevenson  
+[Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)  
+[Martin Westgate](https://labs.ala.org.au/people/Westgate_Martin/index.html)  
+
+#### Date
+March 2021
+
+:::
+
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/matilda.jpg")
+```
+:::
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg")
+```
+:::
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/martin.jpg")
+```
+:::
+
+:::
+
+<!------------------------ Post starts here ------------------------>
+
+:::{.callout-note}
+Article updated 6 February, 2023. Updates streamline code, and provide more examples of output after each step. More in-text detail has also been added about what is happening at each step.
+:::
+
+The Atlas of Living Australia (ALA) holds records of magpie sightings from a number data providers like iNaturalist, eBird and BirdLife Australia. Let's make a visualisation of [Australian Bird of the Year 2018 winner](https://www.abc.net.au/news/2017-12-11/bird-of-the-year-magpie-defeats-teambinchicken/9245242), Magpies, using records held in the ALA.
+
+
+# Getting species occurrences
+As with any R project, a good first step is to load the required packages
+
+```{r}
+#| message: false
+#| warning: false
+# packages
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(ozmaps)
+library(sf)
+library(hexbin)
+```
+
+We will use the [{galah} package](http://galah.ala.org.au/) to download records.
+
+To download species occurrence records, the {galah} package requires you to add an email registered with the ALA to `galah_config()`. If running this code yourself, you will need to add an email using the code below, substituting your email with `myemail@email.com`. This email address should be registered with the ALA, which you can do [here](https://auth.ala.org.au/userdetails/registration/createAccount)
+
+```{r}
+#| eval: false
+library(galah)
+galah_config(email = "myemail@email.com")
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(galah)
+galah_config(email = "dax.kellie@csiro.au", verbose = FALSE)
+```
+
+Now we can download magpie occurrence records by using `atlas_occurrences()`. Note that we also set our data 'profile' to 'ALA'; this means we only download records that meet some basic data quality standards enforced by the atlas. This is optional, but tends to improve the quality of the data returned. 
+(If you wish to see the data quality filters applied in the ALA profile, use `search_all(profiles, "ALA") |> show_values()`)
+
+```{r}
+#| results: hide
+magpie_occ <- galah_call() %>%
+  galah_identify("Cracticus tibicen") %>%
+  galah_apply_profile(ALA) %>%
+  atlas_occurrences()
+```
+
+Let's have a look at the first few rows of the data we've just downloaded:
+
+```{r}
+magpie_occ %>% head()
+```
+
+
+For the purpose of this exercise, we're going to filter records not on the mainland or Tasmania.
+
+```{r}
+filtered_occ <- magpie_occ %>% filter(decimalLongitude < 155,
+                                      decimalLongitude > 110,
+                                      decimalLatitude > -45,
+                                      decimalLatitude < -10)
+```
+
+# Plotting binned data
+
+The easiest way to create a hex map is using the `hexbin` package. However, because there are some areas that have *many* more observations than other areas, without standardising our data the result is not very useful.
+
+```{r}
+#| warning: false
+ggplot() +
+  geom_hex(data = filtered_occ,
+           mapping = aes(x = decimalLongitude, 
+                         y = decimalLatitude), 
+           bins = 47, 
+           colour = "white") +
+  coord_sf(ylim = c(-45, -10), 
+           xlim = c(110, 155)) +
+  scale_fill_gradientn(colours = c("#EEECEA", "#E06E53")) +
+  theme_void()
+```
+
+To make a more informative hex map, in this case it might be useful to try to create our hexagons manually. We can do this by manually creating a grid of hexagons, filtering the grid to the outline of Australia, and adding our data of magpie counts to set the `fill` color of those hexagons. To achieve this, we first convert the map of Australia provided by `ozmaps` to the same coordinate system as ALA data:
+
+
+```{r}
+aus <- st_transform(ozmaps::ozmap_country, 4326)
+```
+
+Next we'll create a grid of hexagons.
+
+```{r}
+grid_all <- st_make_grid(aus, 
+                         cellsize = 1, 
+                         what = "polygons", 
+                         square = FALSE,
+                         flat_topped = TRUE)
+
+ggplot() +
+  geom_sf(data = grid_all)
+```
+
+Now we can extract all the hexagons in our full grid that intersect our map of Australia, and filter our grid to only include those hexagons by only keeping the hexagon rows that are returned after running `st_intersects()`.
+
+```{r}
+# extract rows that are within AUS land
+keep_hexes <- st_intersects(grid_all, aus) %>%
+  as.data.frame(.) %>%
+  pull(row.id)
+
+# filter full grid to only hexagon IDs in AUS
+oz_grid <- grid_all[keep_hexes]
+
+ggplot() + geom_sf(data = oz_grid)
+```
+
+Now to figure out how many magpie observations are within each hexagon. To do this, first we'll convert our magpie observation points to an `sf` spatial object and make sure the point projection is the same as our map of Australia. Then we can use `st_intersects()` again to return a list, where each `data.frame` within the list shows which hexagon ID each point is within.
+
+```{r}
+magpie_points_sf <- filtered_occ %>% 
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
+  crs = st_crs(4326))
+```
+
+```{r}
+intersect <- st_intersects(magpie_points_sf, oz_grid)
+
+intersect[5:10]
+```
+
+With all points in their own separate `data.frame`, we can use the wicked-fast `table()` function from `base` R to count how many points match each hexagon ID, giving us our point counts! A little renaming and wrangling helps to get our counts in the right format.
+
+```{r}
+#| warning: false
+#| message: false
+# condense counts into tibble
+counts <- as_tibble(table(unlist(intersect)), 
+          .name_repair = "unique") %>%
+  rename("hex_id" = 1,
+         "count" = 2) %>%
+  mutate(hex_id = as.integer(hex_id)) %>%
+  replace_na(list(count = 0))
+```
+
+Finally, we'll add our `count` column from `complete_counts` to our `oz_grid`. To this, we'll add a column containing the row number in `oz_grid` to act as a reference column to join with `complete_counts`. We will also be sure that `oz_grid` is an `sf` object for plotting.
+
+```{r}
+oz_grid <- oz_grid %>%
+  as_tibble() %>%
+  mutate(id = row_number()) %>%
+  full_join(counts,
+            by = join_by(id == hex_id)) %>%
+  st_as_sf()
+
+oz_grid |> head()
+```
+
+Finally, build our map! We'll use `scale_fill_gradientn()` to add a nice legend, and standardise our data using a log-transformation so that the colours on our map are scaled to be more informative.
+
+```{r}
+#| message: false
+#| warning: false
+#| column: page
+#| fig-align: center
+#| fig-height: 10
+#| fig-width: 10
+ggplot() +
+  geom_sf(data = oz_grid, aes(fill = count), size = .01) +
+  scale_fill_gradientn(colours = c("#EEECEA", "#E06E53"), 
+                       na.value = "white", 
+                       trans = "log10",
+                       labels = scales::comma_format(),
+                       n.breaks = 6,
+                       guide = guide_colourbar(title = "Observations")) +
+  coord_sf(ylim = c(-45, -10), 
+           xlim = c(110, 155)) +
+  theme_void()
+```
+
+That's it! All the extra work does make a difference in this case, providing a better representation of the spread of Mapgies across Australia. Manually constructing hex maps can be useful in other circumstances, too. For example, if we wanted to compare the number of magpies to contextual information within each polygon (such as rainfall or human population data), then manually constructing our own hexagons could help us to combine data from different sources.
+
+A final point is that we could have achieved the same result by creating polygons first, then querying the ALA for the number of magpie records in each polygon using `galah_geolocate()`. That's a bit more challenging, and not worthwhile in this case; but it can be an efficient solution where you require information on more species than there are polygons, for example. You can learn how to do this in [this ALA Labs article, if you are interested to learn how!](https://labs.ala.org.au/posts/2022-05-17_3d-map/)
+
+<details><summary style = "color: #E06E53;">Expand for session info</summary>
+
+```{r, echo = FALSE}
+library(sessioninfo)
+# save the session info as an object
+pkg_sesh <- session_info(pkgs = "attached")
+# print it out
+pkg_sesh
+```
+
+</details>

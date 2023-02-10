@@ -7,8 +7,6 @@ format:
     css: [theme.css, index.css]
 ---
 
-<a class = "navbar-brand navbar-brand-logo" href = "ala.org.au/"></a>
-
 ```{r}
 #| include: false
 # To change the hero-image:

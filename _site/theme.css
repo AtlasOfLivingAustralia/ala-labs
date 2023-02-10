@@ -37,8 +37,6 @@ html {
 :root {
   --primary-orange: #E06E53;
   --secondary-orange: #B8573E;
-  --accent-brown: #CC9364;
-  --accent-green: #273B2D;
   --main-font: 'Roboto', sans-serif;
   --subheader-font: 'Roboto', sans-serif;
   --mono-font: 'Fira Mono', monospace;
@@ -54,7 +52,10 @@ html {
   /*--    --*/
   .navbar-brand.navbar-brand-logo {
     background-attachment: scroll;
-    display: none;
+    content: url("./images/logos/ALA_Logo_Mark-only.png");
+    height: 50px;
+    margin-top: -13px;
+    margin-right: -5px;
   }
 
 }
@@ -321,6 +322,36 @@ a:hover {
   background-color: #E06E53;
 }
 
+.bio-column-right {
+  float: right;
+  width: 50%;
+  padding: 0 0px;
+  flex-direction: column
+  margin-left: 25px;
+}
+
+.bio-column-left {
+  float: right;
+  width: 50%;
+  padding: 0 0px;
+  flex-direction: column
+}
+
+
+/* Display the columns below each other instead of side by side on small screens */
+
+@media screen and (max-width: 952px) {
+  .bio-column-right {
+    width: 100%;
+    display: block;
+  }
+  .bio-column-left {
+    width: 100%;
+    display: block;
+    padding-top:20px;
+    padding-bottom:20px;
+  }
+}
 
 /* ----------------------------------*
 
