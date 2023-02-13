@@ -13,7 +13,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
-@import url(https://use.fontawesome.com/releases/v6.1.1/css/all.css);
+/* @import url('_extensions/quarto-ext/fontawesome/assets/all.css'); */
 
 html {
   /*-- Main font sizes --*/
