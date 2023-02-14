@@ -12,7 +12,7 @@ source(here("R", "functions.R"))
 
 :::{.bio-column-right}
 
-```{r out.width='275px', out.extra='style="float:left; clip-path: circle();"'}
+```{r out.width='275px', out.extra='style="display:block; margin-left:auto; margin-right:auto; clip-path: circle();"'}
 #| echo: false
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/margot.jpg")
 ```

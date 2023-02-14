@@ -6,7 +6,7 @@ website:
   description: "Demo projects, experiments, debugging data and so on from the [Atlas of Living Australia (ALA)](https://ala.org.au/)"
   open-graph: true
   twitter-card:
-    image: "/images/twitter-card-preview_frog.png"
+    image: "/images/twitter-card-preview_frog-small.png"
   site-url: https://labs.ala.org.au/
   google-analytics: "UA-4355440-1"
   favicon: images/favicon.ico
