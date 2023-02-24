@@ -71,9 +71,9 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 <!------------------------ Post starts here ------------------------>
 
-**Species distribution models** (SDMs) are used to predict the habitat range of different organisms. They offer some of the most informative ways to show how changing environmental conditions affect where species occur in an area, which is vital for managing ecosystems, conserving species and predicting expected effects of climate change. 
+**Species distribution models** (SDMs) are used to predict the habitat range of different organisms. They offer some of the most informative ways to show how shifting environmental conditions affect where species occur in an area, knowledge that is key to managing ecosystems, conserving species and predicting effects of global warming. 
 
-Species rarely stay in the same spot for long periods of time. Just like us, they react to changes in their environment and interactions with other species and with other individuals of their own species. As a result, it can be more useful to see how a distribution of a species changes *over time*. Particularly in marine environments where [seemingly small changes in temperature, light or chemical composition can result in large changes in species distributions]().
+Species rarely stay in the same spot for long periods of time. Just like us, they react to changes in their environment, interactions with other species, and interactions with other individuals. As a result, it can be more useful to see how a distribution of a species changes *over time*. Particularly in marine environments where [seemingly small changes in temperature, light or chemical composition can result in large changes in species distributions]().
 
 Here we will use a conservative SDM to predict the distribution of Nudibranchs around Australia, mapping monthly to look at seasonal changes. 
 This post is inspired by Liam Bailey's cool (and hilarious) Bigfoot distribution map and code which can be found [here](https://github.com/LiamDBailey/TidyTuesday/blob/93cbe1143757c97ddaf36c564ac03a2b8088cb56/R/2022/Week37_2022.qmd)
