@@ -93,7 +93,7 @@ create_team_card(
   person_page = "people/Seers_Juliet/index.html",
   img_src = "images/people/juliet.jpg",
   name = "Juliet Seers",
-  text = "Training & Outreach Officer"
+  text = "Training & Outreach Coordinator"
 )
 
 )
