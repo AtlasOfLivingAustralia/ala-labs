@@ -16,7 +16,7 @@ categories:
   - Animalia
   - Mollusca
   - Maps
-image: choropleth_ggnewscale.png
+image: SDM.gif
 freeze: true
 draft: true
 ---
@@ -71,26 +71,14 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 <!------------------------ Post starts here ------------------------>
 
-**Species distribution models** (SDMs) are used to predict the habitat range of different organisms. They offer some of the most informative ways to show how shifting environmental conditions affect where species occur in an area.
+Each species has a habitat range where it normally lives and can expect to be found over its lifetime. However, individuals of a species rarely stay in the same spot for long periods of time. Just like us, they react to changes in their environment, interactions with other species, and interactions with other individuals. 
 
-Yet species rarely stay in the same spot for long periods of time. Just like us, they react to changes in their environment, interactions with other species, and interactions with other individuals. As a result, it can be very useful to see how a distribution of a species changes in space *and* over time. In marine environments, for example, seemingly small changes in [temperature](https://theconversation.com/marine-life-in-a-south-african-bay-is-full-of-chemical-pollutants-182791), [chemicals](https://theconversation.com/marine-life-in-a-south-african-bay-is-full-of-chemical-pollutants-182791) and [light](https://theconversation.com/the-moon-and-stars-are-a-compass-for-nocturnal-animals-but-light-pollution-is-leading-them-astray-142301) can result in large changes to a species' distribution.
+As a result, it can be very useful to see how a distribution of a species changes in space *and* over time. In marine environments, for example, seemingly small changes in [temperature](https://theconversation.com/marine-life-in-a-south-african-bay-is-full-of-chemical-pollutants-182791), [chemicals](https://theconversation.com/marine-life-in-a-south-african-bay-is-full-of-chemical-pollutants-182791) and [light](https://theconversation.com/the-moon-and-stars-are-a-compass-for-nocturnal-animals-but-light-pollution-is-leading-them-astray-142301) can result in large changes to a species' distribution.
 
-Here we will use a series of SDMs to predict the distribution of *Nudibranchia* around Australia each month to create an animated map that shows how nudibranch distributions change over the year. 
+Here we will map the distribution of *Nudibranchia* around Australia each month as an animated map to see how nudibranch distributions change over the year. 
 
 This post is inspired by [Liam Bailey's](https://twitter.com/ldbailey255) cool (and hilarious) [Bigfoot distribution map](https://twitter.com/ldbailey255/status/1575541015951593472). You can find his code  [here](https://github.com/LiamDBailey/TidyTuesday/blob/93cbe1143757c97ddaf36c564ac03a2b8088cb56/R/2022/Week37_2022.qmd).
 
-## A brief intro to species distribution models
-
-At their simplest, SDMs are statistical models that use information of where a species has occurred to predict where it occurs over a broader area, even in places it hasn't been seen yet! 
-
-SDMs are particularly informative because they can use information about the environment, added as *predictor variables*, to help calculate where a species is most likely might live. Common environmental predictor variables include temperature, rainfall, chemical concentrations and even locations of other organisms. 
-
-This means that SDMs are usually given 2 main inputs: 
-
-  1. Occurrence data 
-  2. Environmental variables
-
-Using these inputs, our species distribution model can infer the *probability* of where a species occurs by combining information about where and under what environmental conditions a species is observed (or not observed) in our data. 
 
 # Download data
 
@@ -206,22 +194,18 @@ plot(aus_env)
 
 To construct our animated GIF, we can make each "frame" of our animation a species distribution map of each month - that means 12 maps, January to December. 
 
-In order to do this, we'll create a set of custom functions that can:
+In order to do this, we'll create a set of custom functions that:
 
-  1. Filter our nudibranch observations into a smaller `data.frame` containing observations for a specific month, 
-  2. Run an SDMs on data in our smaller `data.frame`
-  3. Plot the SDM results onto a map
-  4. Save the map with a nice name
+  1. Filter observations to only those of a specific month, 
+  2. Run a species distribution model on those observations
+  3. Plot the results onto a map
+  4. Save the maps
 
-By making custom functions for these tasks, we'll be able to run each function in a loop so we can do each thing 12 times for each of our 12 months.
+By making custom functions for these tasks, we'll be able to run each function in a loop, letting us do each thing 12 times for each of our 12 months.
  
 At the end, we'll stitch our 12 maps together and, *Voila*! We'll officially be animators (Pixar here we come!).
 
-First we'll need to make a few data wrangling steps to clean and organise our data:
-
-  * filter out `NA` values and duplicates (which might cause our model to error)
-  * extract month of observation into its own column with the `month()` function
-  * select month, latitude, longitude columns of each observation
+First we'll filter out `NA` values and duplicates (which might cause our model to error) and extract the month of observation into its own column.
 
 ```{r}
 #| message: false
@@ -232,16 +216,12 @@ occurrences_clean <-
   filter(!is.na(decimalLatitude) & !is.na(decimalLongitude)) |>
   filter(!duplicated(decimalLatitude) & !duplicated(decimalLongitude)) |>
   mutate(month = month(eventDate)) |>
-  select(month, 
-         latitude = decimalLatitude, 
-         longitude = decimalLongitude) 
+  select(month, decimalLatitude, decimalLongitude) 
 
 head(occurrences_clean)
 ```
 
-From here, let's create 12 separate `data.frame`s containing observations for each month. 
-
-To help, we'll make our own function `make_months_df()` that filters our observations in `occurrences_clean` to our chosen month and selects the `latitude` and `longitude` columns: 
+From here, we'll make our own function `make_months_df()` that filters our overall observations to only those of our chosen month. 
 
 ```{r}
 #| message: false
@@ -250,13 +230,11 @@ To help, we'll make our own function `make_months_df()` that filters our observa
 make_months_df <- function(chosen_month) {
   monthly_data <- occurrences_clean %>% 
     filter(month == {{chosen_month}}) %>%
-    select(latitude, longitude)
+    select(decimalLatitude, decimalLongitude)
 }
 ```
 
-Because each month is assigned as a number, with the help of `purrr::map()` we can run a loop over our `make_months_df()` function by specifying which month number we want data for.
-
-Let's create a vector containing numbers 1-12 (`n_months`) which we'll loop over our function to return our 12 `data.frame`s as a `list` (`month_list`).
+With the help of `purrr::map()` we can run a loop over our `make_months_df()` function to return our 12 `data.frame`s in one `list`.
 
 ```{r}
 n_months <- c(1:12)
@@ -269,68 +247,55 @@ month_list[[1]] # See output of month 1
 
 # Species Distribution Model
 
-Now that `month_list` contains our 12 `data.frame`s, we're ready to make our SDM. 
+Now that `month_list` contains our 12 `data.frame`s, we can run some models with them to calculate a distribution surface. 
 
-To build our overall SDM we will run 3 different statistical models. Each model type makes different assumptions about the data and its variation, and without getting bogged down in statistics, this just means that each model will calculate slightly different probabilities of where nudibranchs occur because of these different assumptions. 
+To build our overall SDM we've chosen to use [the method used by Liam Bailey in his Bigfooot map](https://github.com/LiamDBailey/TidyTuesday/blob/93cbe1143757c97ddaf36c564ac03a2b8088cb56/R/2022/Week37_2022.qmd). It's a fairly flexible model that suits our purposes to quickly see where nudibranchs are observed around Australia.
 
-We'll then merge the 3 probabilities into one final value using [Fisher's combined probability](https://en.wikipedia.org/wiki/Fisher%27s_method). Merging multiple model results will help to balance our final value between our 3 model's results so that it is less skewed by our model choice, hopefully giving us a more conservative final estimate. 
+We'll build another custom function to run these models called `run_sdm_model()` for each chosen month.
 
-We'll build another custom function to run these models for each `data.frame` in `month_list`. We'll call this function `run_sdm_model`, and all it does is run the exact same SDM as we did earlier, but uses the chosen month for occurrences rather than the entire data set. 
-
-:::{.callout-warning}
-We've chosen to use [the model used by Liam Bailey in his Bigfooot map](https://github.com/LiamDBailey/TidyTuesday/blob/93cbe1143757c97ddaf36c564ac03a2b8088cb56/R/2022/Week37_2022.qmd). It's a fairly flexible model that suits our purposes to quickly see where nudibranchs are observed around Australia. But it is by no means the most robust SDM (and would not hold up through a more rigourous peer-review process). If you are trying to make a more informative species distribution model, you should consider another method!
+:::{.callout-note}
+This SDM method merges the results from several models into one final value using [Fisher's combined probability](https://en.wikipedia.org/wiki/Fisher%27s_method). It's is by no means the most robust SDM. If you are trying to make a more informative species distribution model, it might be worth considering [other methods](https://www.frontiersin.org/articles/10.3389/fmars.2017.00421/full)!
 :::
 
 ```{r}
 #| message: false
 #| warning: false
 
-# Create a function that calculates the chi squared value 
-Chi_sq <- function(x){     
-  1 - pchisq(q = x, df = 6)
-}
-
 # Species distribution model function
 run_sdm_model <- function(chosen_month) {
- 
     SDM_GLM <- modelling("GLM",
                      Occurrences = (chosen_month),
                      Env = aus_env,
-                     Xcol = 'longitude', 
-                     Ycol = 'latitude', 
+                     Xcol = 'decimalLongitude', 
+                     Ycol = 'decimalLatitude', 
                      verbose = FALSE) 
-  
      SDM_MARS <- modelling("MARS",
                       Occurrences = (chosen_month),
                       Env = aus_env,
-                      Xcol = 'longitude', 
-                      Ycol = 'latitude', 
+                      Xcol = 'decimalLongitude', 
+                      Ycol = 'decimalLatitude', 
                       verbose = FALSE)
-
      SDM_CTA <- modelling("CTA",
                      Occurrences = (chosen_month),
                      Env = aus_env,
-                     Xcol = 'longitude', 
-                     Ycol = 'latitude', 
+                     Xcol = 'decimalLongitude', 
+                     Ycol = 'decimalLatitude', 
                      verbose = FALSE)
 
-# Combine these to one value using Fisher's combined probability
+# Calculate single value using Fisher's combined probability
 combined <- -2 * (log(SDM_MARS@projection) + log(SDM_GLM@projection) + log(SDM_CTA@projection))
-
-# Apply the function to our data
+Chi_sq <- function(x){1 - pchisq(q = x, df = 6)}
 combined_pval <- raster::calc(combined, fun = Chi_sq) 
 
-# Convert to stars as it is easier to use with ggplot
+# Convert to spatial object
 species_distribution <- stars::st_as_stars(combined_pval) 
-
 return(species_distribution)
-
 }
 ```
 
 Now we can use `purrr::map()` to run another loop to return results of our 12 SDMs.
 
-```{r}
+```{r run-models}
 #| message: false
 #| warning: false
 # Run & save models
@@ -346,18 +311,15 @@ To help orient ourselves, let's download point data of the main cities in Austra
 ```{r}
 #| message: false
 #| warning: false
+city_names <- c("Sydney", "Melbourne", "Brisbane", "Cairns", 
+                "Canberra", "Adelaide", "Melbourne", "Perth", "Darwin")
 
-# Download all cities in Australia
-world_cities <- world.cities[world.cities$country.etc == "Australia",]
-
-# Filter to the specific cities for the east and west coast
-cities <- world_cities %>% 
-  filter(name == "Sydney" | name == "Melbourne" | name == "Perth" | 
-           name == "Brisbane" | name == "Cairns" | name == "Canberra" |
-           name == "Adelaide" | name == "Melbourne")
+cities <- world.cities |>
+  filter(country.etc == "Australia") |>
+  filter(name %in% city_names)
 ```
 
-Let's also choose a colour palette for our map. To make our map easier to interpret, we've elected to make lower values a dark blue shade (so they look like the ocean) and higher values a brighter yellow:
+Let's also make a nice colour palette for our map:
 
 ```{r}
 #| message: false
@@ -372,13 +334,7 @@ feathers::print_pal(colour_palette)
 
 Now we are ready to make maps of our results! 
 
-We'll once again make a custom function `make_the_map()` to construct each map. This function contains a few things to suit our needs:
-
-  * Plots our SDM results with `geom_stars()`
-  * Adds each month's 3-letter abbreviation `month_label` to the top of each map
-  * Limits the map to the east coast (there appears to more nudibranchs there, and zooming in will help us see the detail)
-  * Adds our nice colour palette with `scale_fill_gradientn()` & a formats a custom legend with `guide_colourbar()` 
-  * Adds cities to our map
+Let's zoom in on just the east coast so we can see the details. We'll once again make a custom function `make_the_map()` to construct each map. Other than making a nice plot, this adds each month's 3-letter abbreviation `month_label` to the top of each map for our eventual animation.
 
 Let's make some month labels: 
 
@@ -401,129 +357,103 @@ make_the_map <- function(model_data, month_label) {
   
   ggplot() +
     geom_stars(data = model_data) +
-    geom_sf(
-      data = ozmaps::ozmap_states, 
-      colour = "#A9A793", 
-      fill = "#C8C6AF") +
-    scale_fill_gradientn(
-      colours = c(colour_palette),
-      limits = c(0, 1),
-      guide = guide_colourbar(
-        title = "Occurrence\nprobability",
-        title.theme = element_text(
-          family = "Times New Roman",
-          colour = "#3D4040",
-          size = 10,
-          face = "bold"
-        ),
-        label.theme = element_text(
-          colour = "#3D4040",
-          size = 8
-        ),
-        ticks = FALSE,
-        frame.colour = "#3D4040",
-        title.position = "top",
-        title.vjust = 2,
-        label.position = "left"
-      ),
-      breaks = c(0, 0.5, 1),
-      labels = c("0%", "50%", "100%")
-      ) +
+    geom_sf(data = ozmaps::ozmap_states, 
+            colour = "#A9A793", 
+            fill = "#C8C6AF") +
+    coord_sf(crs = "WGS84",
+             xlim = c(112, 154), 
+             ylim = c(-43, -11)) + 
+    scale_fill_gradientn(colours = c(colour_palette),
+                         limits = c(0, 1),
+                         guide = guide_colourbar(
+                           title = "Occurrence\nprobability",
+                           title.theme = element_text(
+                             family = "Times New Roman",
+                             colour = "#3D4040",
+                             size = 10,
+                             face = "bold"),
+                           label.theme = element_text(
+                             colour = "#3D4040",
+                             size = 8),
+                           ticks = FALSE,
+                           frame.colour = "#3D4040",
+                           title.position = "top",
+                           title.vjust = 2,
+                           label.position = "left"),
+                         breaks = c(0, 0.5, 1),
+                         labels = c("0%", "50%", "100%")) +
     # Title map with month
-    labs(
-      title = glue("{month_label}")) + 
+    labs(title = glue("{month_label}")) + 
     theme_void() +
     theme(
       legend.position = c(1.2, 0.2), # reposition legend
+      plot.title = element_text(size = 26),
       legend.direction = "vertical",
       plot.background = element_rect(fill = "#FFFFFF", colour = NA),
       plot.margin = unit(c(0.01, 2.5, 0.1, 0.1), "cm")) +
-    # Zoom into East Coast
-    coord_sf(
-      crs = "WGS84",
-      xlim = c(135, 159),
-      ylim = c(-42.9, -11.5)
-      ) +
     # Add city points
-    geom_point(
-      data = cities, 
-      aes(x = long, y = lat), 
-      colour = "#3D4040") +
+    geom_point(data = cities, 
+               aes(x = long, y = lat), 
+               size = 2,
+               colour = "#782717",
+               fill = "white",
+               shape = 21) +
     # Add city labels
-    geom_text(
-      data = cities, 
-      aes(x = long, y = lat, label = name), 
-      colour = "#3D4040",
-      nudge_x = -1.8, 
-      nudge_y = 0.6, 
-      family = "Times New Roman")
-
+    ggrepel::geom_text_repel(data = cities, 
+              aes(x = long, y = lat, label = name), 
+              colour = "white",
+              nudge_x = .12, nudge_y = .1, 
+              hjust = "inward",
+              vjust = "inward",
+              fontface = "bold",
+              size = 6.8,
+              family = "Times New Roman")
 }
 ```
 
-We'll also create custom save function that makes sure our maps are all saved as the same dimensions, gives them a file name we can use to order our maps correctly later, and saves them as a png in a new folder called `maps`.
-
-To figure out the best aspect ratio, we'll use the `get_asp_ratio()` function from the {tmaptools} package, and use that ratio to calculate the width of our map.
-
-```{r}
-#| message: false
-#| warning: false
-#| results: false
-
-# Build a ratio based off of our distribution results
-plot_ratio <- get_asp_ratio(model_list[[1]])
-
-# Define letter to save map as (lets us import them in correct order for gif)
-letter_id <- as.list(letters[1:12])
-
-# Map-saving function
-save_the_map <- function(chosen_map, id_label) {
-  map_label <- {{id_label}}
-  ggsave(chosen_map,
-         width = plot_ratio*4, height = 5,
-         file = glue("maps/map_{map_label}.png"), 
-         device = "png")
-}
-```
 
 Now we can use `map2()` to run our custom functions in a loop:
 
-```{r}
+```{r map}
 #| message: false
 #| warning: false
 #| results: false
 
-# Make SDM maps and save each map
-model_list %>%
-  purrr::map2(
+# generate maps
+all_maps <- model_list %>%
+  map2(
     .x = .,
     .y = month_label,
     .f = make_the_map
-  ) %>%
-  purrr::map2(
-    .x = .,
-    .y = letter_id,
-    .f = save_the_map
   )
+```
+
+Now we can save our maps. We'll assign our plots a letter so they are ordered alphabetically and saved in order in a new folder called `maps`.
+
+To figure out the best aspect ratio to save our maps, we'll use the `get_asp_ratio()` function from the {tmaptools} package, and use it calculate the width of our plots. Finally, we can use `purrr::walk2()` to loop through `ggsave()` and save our maps.
+
+```{r save}
+# set names of plots to save
+letter_id <- as.list(letters[1:12]) # saves in correct order for gif
+plotnames <- purrr::map(letter_id, ~glue("maps/map_{.x}.png")) 
+
+# save plots
+plot_ratio <- get_asp_ratio(model_list[[1]]) # aspect ratio
+
+walk2(plotnames, all_maps, ~ggsave(filename = .x, 
+                                   plot = .y, 
+                                   height = 9, 
+                                   width = plot_ratio*10))
 
 ```
 
 We should now have 12 species distribution maps saved, and we can see them by returning all the files in our `maps` folder!
 
 ```{r}
-list.files(path = "maps/")
+map_files <- list.files(path = "maps/")
+map_files
 ```
 
-Let's save our file names in an object so we can use them to make our GIF. We just have to use `glue()` to put the folder name on the front.
-
-```{r}
-#| message: false
-#| warning: false
-#| results: false
-# Save file names
-png_files <- list.files(path = "maps/")
-map_paths <- glue("maps/{png_files}")
-```
 
 # Make GIF
 
@@ -540,31 +470,25 @@ For context before we see our animation, let's first look at the distribution of
 SDM_GLM <- modelling("GLM",
                      Occurrences = occurrences_clean,
                      Env = aus_env,
-                     Xcol = 'longitude', 
-                     Ycol = 'latitude', 
+                     Xcol = 'decimalLongitude', 
+                     Ycol = 'decimalLatitude', 
                      verbose = FALSE) 
-
 SDM_MARS <- modelling("MARS",
                       Occurrences = occurrences_clean,
                       Env = aus_env,
-                      Xcol = 'longitude', 
-                      Ycol = 'latitude', 
+                      Xcol = 'decimalLongitude', 
+                      Ycol = 'decimalLatitude', 
                       verbose = FALSE)
-
 SDM_CTA <- modelling("CTA",
                      Occurrences = occurrences_clean,
                      Env = aus_env,
-                     Xcol = 'longitude', 
-                     Ycol = 'latitude', 
+                     Xcol = 'decimalLongitude', 
+                     Ycol = 'decimalLatitude', 
                      verbose = FALSE)
 
-# Combine these to one value using Fisher's combined probability
 combined <- -2 * (log(SDM_MARS@projection) + log(SDM_GLM@projection) + log(SDM_CTA@projection))
-
-# Apply the function to our data
+Chi_sq <- function(x){1 - pchisq(q = x, df = 6)}
 combined_pval <- raster::calc(combined, fun = Chi_sq) 
-
-# Convert to stars as it is easier to use with ggplot
 species_distribution <- stars::st_as_stars(combined_pval) 
 
 
@@ -587,16 +511,13 @@ ggplot() +
         family = "Times New Roman", 
         colour = "#B3B6B6",
         face = "bold",
-        size = 12
-      ),
+        size = 12),
       label.theme = element_text( # style legend text
         colour = "#B3B6B6", 
-        size = 10
-      ),
+        size = 10),
       ticks = FALSE,
       frame.colour = "#B3B6B6",
-      title.position = "top"
-    ),
+      title.position = "top"),
     breaks = c(0, 0.5, 1),
     labels = c("0%", "50%", "100%")
   ) + 
@@ -606,24 +527,23 @@ ggplot() +
     legend.direction = "horizontal",
     legend.key.size = unit(5, "mm"),
     plot.background = element_rect(fill = "#F7F7F3", color = "#F16704"),
-    panel.border = element_rect(
-      color = "#FFFFFF",
-      fill = NA,
-      size = 2)
+    panel.border = element_rect(color = "#FFFFFF", fill = NA, size = 2)
     )
 ```
 
-Our map shows that there are nudibranchs along pretty much the entire coastline of Australia! Their distribution appears to spread slightly further from the coast in the northern half of Australia.
+It looks like there are nudibranchs along pretty much the entire coastline of Australia!
 
 Now let's finish our animation by sticking our 12 monthly maps together with the [{gifski} package](https://github.com/r-rust/gifski)! 
 
-```{r}
+```{r make-gif}
 #| message: false
 #| warning: false
 #| results: false
+#| eval: false
 
 # Create animation
-gifski(map_paths, gif_file = "SDM.gif", delay = 0.5)
+gifski(glue("maps/{map_files}"), gif_file = "SDM.gif", delay = 0.5, 
+       width = ((plot_ratio*10)*96)*.8, height = (9*96)*.8) # correct ratios
 ```
 
 
@@ -631,7 +551,7 @@ gifski(map_paths, gif_file = "SDM.gif", delay = 0.5)
 #| message: false
 #| warning: false
 #| column: page
-#| fig-height: 12
+#| fig-height: 9
 #| fig-align: center
 
 knitr::include_graphics("SDM.gif")
@@ -641,10 +561,9 @@ We now have our animated GIF!
 
 Our animation shows that nudibranchs can be observed all year long, though there are some months where you are more likely to observe nudibranchs in more places than others.
 
-However, our animation also seems to have a few limitations: 
+However, when data are broken down into smaller and smaller groups (which often happens over the course of an entire analysis), we increase the chance of *uncertainty* in our results.
 
-  * **It's hard to tell what time of the year nudibranchs are more likely to occur**  
-  Distributions predicted using more observations are less influenced by outliers. This is because our model has more information in these months to help make its predictions, which makes their results more robust. However, whether one month had more observations than another isn't something you can easily tell from our animation (a distribution doesn't necessarily get bigger when there are more observations, and smaller when there are fewer). The truth is, there are more observations of nudibranchs from October-January, and fewer from May-August. Without already knowing, we probably couldn't tell this from our map, and so our map can be misleading for someone interpreting its results. 
+Distributions predicted using fewer observations are more strongly influenced by outliers. In our case, some months have more observations than others - there are more observations of nudibranchs from October-January, and fewer from May-August - but it's not easy to tell which months those are in our animation! It's very possible this had an effect on the patterns we see in our final GIF.
 
 :::{.column-margin}
 ```{r}
@@ -672,13 +591,11 @@ ggplot(data = counts,
 ```
 :::
 
-  * **Some distributions are blurry**  
-  Blurriness happens when our model is less able to make specific predictions of where nudibranchs are (i.e. greater model *uncertainty*). Uncertainty can grow either because there is less data or because data are more varied in a given month. Again, just from looking at our animation, it's difficult to tell whether some months nudibranchs are distributed more widely, or whether there just wasn't much data for that month.
-  
-In the end, our animation is a nice demonstration of how model uncertainty can make it hard to interpret results. When data are broken down into smaller and smaller groups (which often happens over the course of an entire analysis), we increase the chance of model uncertainty because there are fewer data points for our models to use. It's good to be wary of this phenomenon so you can be careful and avoid over-interpretting your results (and can be wary if you see other people doing it elsewhere)!
+# Final thoughts
 
-Nonetheless, we hope you've felt the thrill of constructing your own stop-motion animation with {ggplot2} and {gifski}!
+We hope you've felt the thrill of constructing your own stop-motion animation with {ggplot2} and {gifski}!
 
+If you are interested in making animations of other types of plots, check out the [{gganimate} package](https://gganimate.com/articles/gganimate.html) or the [{plotly} package](https://plotly.com/ggplot2/animations/), too!
 
 <details><summary style = "color: #E06E53;">Expand for session info</summary>
 

@@ -1,0 +1,115 @@
+---
+title: "Highlighted time series with `geom_rect()`"
+description: |
+  Time series comparisons can be handy for seeing trends in data. Here, we explore how to look at some stuff about ducks   
+author:
+  - name: "Thai Rushbrook"
+  - name: "Olivia Torresan"
+  - name: "Dax Kellie"
+date: "2022-03-07"
+title-block-banner: "#B8573E"
+toc: true
+toc-location: left
+toc-depth: 3
+categories:
+  - Eukaryota
+  - Animalia
+  - Aves
+  - Summaries
+image: choropleth_ggnewscale.png
+freeze: true
+draft: true
+---
+
+```{r}
+#| include: false
+library(htmltools)
+```
+
+<!-- remove metadata section -->
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Author card -->
+
+:::{.author-card}
+:::{.author-card-text}
+
+#### Author
+Thai Rushbrook  
+[Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/index.html)  
+[Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)  
+
+#### Date
+7 March 2023
+
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/thai.jpg")
+```
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/olivia.jpg")
+```
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg")
+```
+:::
+
+:::
+
+<!------------------------ Post starts here ------------------------>
+
+Many species observations in the Atlas of Living Australia are collected opportunistically, where people record them incidentally rather than through a recurring monitoring program. Most of these observations are thanks to citizen scientists, and they account for more than 75% of the total records in the ALA. 
+
+Because opportunistic observations are incidental, their collection can fluctuate for reasons unrelated to the species itself. It might be rainy, it might be too hot, the area might be inaccessible or people's phone batteries might be low. All of these factors can affect whether people record a species observation or not.
+
+The COVID-19 pandemic is one of the most influential global events in the last century. It not only had a major impact on people's health, but their behaviour and travel as well. Lockdowns placed regulations on when and where people could move and the activities they chose to do. 
+
+In Australia, Melbourne experienced [the longest continuous lockdown in the world]() along with several shorter lockdowns over 2020-2021. It's very likely this had a big influence on the data collected over that time, particularly of species usually recorded in local areas when people are on walks or having outdoor gatherings. However, to what extent COVID-19 might have affected the collection of species observations is not totally clear.
+
+Here, we'll investigate whether the number of ducks recorded in Melbourne significantly different in the COVID-19 lockdown periods of 2020-21 compared to previous years.
+
+# Get data
+
+First, let's load the needed packages: 
+
+```{r}
+#| message: false
+#| warning: false
+#| error: false
+# Load packages
+library(galah)
+library(tidyverse)
+library(lubridate)
+library(grid)
+library(ggplot2)
+library(pilot) # remotes::install_github("olihawkins/pilot")
+library(showtext)
+```
+
+To do this, we break our data down into weekly occurrence records as this provides a fine level of detail without the extra noise of daily variation in the final product.
+
+
+<details><summary style = "color: #E06E53;">Expand for session info</summary>
+
+```{r, echo = FALSE}
+library(sessioninfo)
+# save the session info as an object
+pkg_sesh <- session_info(pkgs = "attached")
+# print it out
+pkg_sesh
+```
+
+</details>
