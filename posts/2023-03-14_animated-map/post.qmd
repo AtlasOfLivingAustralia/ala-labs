@@ -308,7 +308,7 @@ model_list <- purrr::map(month_list, run_sdm_model)
 
 We now have the results of our 12 SDMs in `model_list`. We can use these results to make 12 maps.
 
-To help orient ourselves, let's download point data of the main cities in Australia from the {maps} package to add to our maps.
+To help orient ourselves, let's download point data of the main cities in Australia from the {maps} package.
 
 ```{r}
 #| message: false
@@ -321,7 +321,7 @@ cities <- world.cities |>
   filter(name %in% city_names)
 ```
 
-Let's also make a nice colour palette for our map:
+Let's also make a nice colour palette:
 
 ```{r}
 #| message: false
@@ -336,9 +336,9 @@ feathers::print_pal(colour_palette)
 
 Now we are ready to make maps of our results! 
 
-Let's zoom in on just the east coast so we can see the details. We'll once again make a custom function `make_the_map()` to construct each map. Other than making a nice plot, this adds each month's 3-letter abbreviation `month_label` to the top of each map for our eventual animation.
+We'll once again make a custom function `make_the_map()` to construct each map. This function not only constructs our maps, but adds each month's 3-letter abbreviation `month_label` to the top of each map for our eventual animation.
 
-Let's make some month labels: 
+For this, let's make some month labels: 
 
 ```{r}
 # Get label for each month
@@ -414,7 +414,7 @@ make_the_map <- function(model_data, month_label) {
 ```
 
 
-Now we can use `map2()` to run our custom functions in a loop:
+We can use `map2()` to run our custom functions in a loop:
 
 ```{r map}
 #| message: false
@@ -533,9 +533,9 @@ ggplot() +
     )
 ```
 
-It looks like there are nudibranchs along pretty much the entire coastline of Australia!
+Looks like there are nudibranchs along pretty much the entire coastline of Australia!
 
-Now let's finish our animation by sticking our 12 monthly maps together with the [{gifski} package](https://github.com/r-rust/gifski)! 
+To finish our animation, let's stick our 12 monthly maps together with the [{gifski} package](https://github.com/r-rust/gifski):
 
 ```{r make-gif}
 #| message: false
@@ -559,13 +559,11 @@ gifski(glue("maps/{map_files}"), gif_file = "SDM.gif", delay = 0.5,
 knitr::include_graphics("SDM.gif")
 ```
 
-We now have our animated GIF! 
-
-Our animation shows that nudibranchs can be observed all year long, though there are some months where you are more likely to observe nudibranchs in more places than others.
+We now have our animated GIF! Our animation shows that nudibranchs can be observed all year long, though there are some months where you are more likely to observe nudibranchs in more places than others.
 
 However, when data are broken down into smaller and smaller groups (which often happens over the course of an entire analysis), we increase the chance of *uncertainty* in our results.
 
-Uncertainty can grow when we use fewer observations to predict our distributions because the results are more strongly swayed by outliers. In our case, there are more observations of nudibranchs from October-January and fewer from May-August. Although it's very possible uncertainty had an effect on the patterns we see in our final animation, you can't tell from seeing our animation on its own!
+Uncertainty can grow when we use fewer observations to predict our distributions because with less information, our predictions are more strongly swayed by outliers. In our case, there are more observations of nudibranchs from October-January and fewer from May-August. Although it's very possible uncertainty had an effect on the patterns we see in our final animation, you can't tell from seeing our animation on its own!
 
 :::{.column-margin}
 ```{r}
