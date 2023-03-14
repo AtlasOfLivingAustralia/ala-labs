@@ -1,5 +1,5 @@
 ---
-title: "Highlighted time series with `geom_rect()`"
+title: "Make a highlighted time series"
 description: |
   Time series comparisons can be handy for seeing trends in data. Here, we explore how to look at some stuff about ducks   
 author:
@@ -71,19 +71,34 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 <!------------------------ Post starts here ------------------------>
 
-Many species observations in the Atlas of Living Australia are collected opportunistically, where people record them incidentally rather than through a recurring monitoring program. Most of these observations are thanks to citizen scientists, and they account for more than 75% of the total records in the ALA. 
+Thanks to huge efforts by citizen scientists, a majority of species observations in the Atlas of Living Australia are collected opportunistically, where people record observations incidentally rather than through a recurring monitoring program.
 
-Because opportunistic observations are incidental, their collection can fluctuate for reasons unrelated to the species itself. It might be rainy, it might be too hot, the area might be inaccessible or people's phone batteries might be low. All of these factors can affect whether people record a species observation or not.
+However, these observations are susceptible to things unrelated to the species itself. It might be rainy, it might be too hot, an area might be inaccessible; all of these factors can affect whether people record an observation or not.
 
-The COVID-19 pandemic is one of the most influential global events in the last century. It not only had a major impact on people's health, but their behaviour and travel as well. Lockdowns placed regulations on when and where people could move and the activities they chose to do. 
+The COVID-19 pandemic had a major impact on people's health, behaviour and travel. In Australia, several lockdowns over 2020-2021 imposed restrictions on people's movements, limited people to either stay at home or choose activities (mainly exercise) that they could do in their local area. Melbourne in particular experienced [the longest continuous lockdown in the world](). 
 
-In Australia, Melbourne experienced [the longest continuous lockdown in the world]() along with several shorter lockdowns over 2020-2021. It's very likely this had a big influence on the data collected over that time, particularly of species usually recorded in local areas when people are on walks or having outdoor gatherings. However, to what extent COVID-19 might have affected the collection of species observations is not totally clear.
+To what extent did COVID-19 affect the number of species observations people made over that time? 
 
-Here, we'll investigate whether the number of ducks recorded in Melbourne significantly different in the COVID-19 lockdown periods of 2020-21 compared to previous years.
+Here, we'll use a highlighted time-series plot to investigate how lockdowns affected the data collection of *Anatidae* observations (ducks, geese and swans), a group frequently recorded on walks and outdoor gatherings, in Melbourne compared to previous years.
 
 # Get data
 
-First, let's load the needed packages: 
+We'll start by downloading *Anatidae* records.
+
+:::{layout-ncol=3 style="width=120px;"}
+
+<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/5/9/2/0/cd4a660e-358c-4863-81b8-08cfd7280295/original"></img>
+
+<img class = "clipped"src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/c/4/2/b133aa0c-ba9f-4f19-8f2f-938f34b724c7/original"></img>
+
+<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/1/c/9/e/f35fbe9d-1116-4eb2-82d4-03d8e032e9c1/original"></img>
+
+:::
+::: {.figure-caption}
+Left: [*Tadorna (Casarca) tadornoides* (Tracey Hinton CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/31f020c4-1050-40e7-b499-8cf89afa84fe) Middle: [*Cygnus (Chenopis) atratus* (jpshahady CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/2af3958b-1a06-45a7-8ee2-315c63c2f0c6) Right: [*Spatula rhynchotis* (Annette Green CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/546765db-4567-479d-b78f-77433493fae6)
+:::
+
+First, let's load some packages: 
 
 ```{r}
 #| message: false
@@ -99,7 +114,161 @@ library(pilot) # remotes::install_github("olihawkins/pilot")
 library(showtext)
 ```
 
-To do this, we break our data down into weekly occurrence records as this provides a fine level of detail without the extra noise of daily variation in the final product.
+Let's use the [{galah} package]() to download duck records in Melbourne from 2017-2021 to get records from years just before and during COVID-19 lockdowns. 
+
+Searching with `galah::search_fields()` shows us that {galah} contains Greater Capital City Statistical Areas, which we can use to filter our query. 
+
+```{r}
+search_all(fields, "city")
+search_all(fields, "city") |> search_values("melbourne")
+```
+
+
+Let's build our query to return *Anatidae* records from `GREATER MELBOURNE` from 2017 to 2021. We'll use `galah_select()` to return only the `eventDate` column.
+
+You will need to first provide a [registered email with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount) using `galah_config()` before retrieving records.
+
+```{r}
+#| eval: false
+# Add registered email (register at ala.org.au)
+galah_config(email = "your-email@email.com")
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+galah_config(email = "dax.kellie@csiro.au", verbose = FALSE)
+```
+
+```{r}
+#| message: false
+ducks <-
+  galah_call() |>
+  galah_identify("Anatidae") |>
+  galah_filter(
+    cl10929 == "GREATER MELBOURNE",
+    # year >= 2017,
+    # year <= 2021,
+    eventDate >= "2017-01-01T00:00:00Z",
+    eventDate <= "2021-12-31T23:59:00Z",
+    basisOfRecord == "HUMAN_OBSERVATION"
+  ) |>
+  galah_select(eventDate) |>
+  atlas_occurrences()
+
+ducks |> head(6L)
+```
+
+We'll pull out some week and year of each date and count the total occurrence records for each week.
+
+```{r}
+ducks_weekly <- ducks |> 
+  mutate(date = as_date(eventDate),
+         year = year(eventDate),
+         week = week(eventDate)) |>
+  group_by(year, week) |>
+  summarise(week_count = n())
+
+ducks_weekly 
+```
+
+We are intending to compare record counts in 2020-2021 to previous years. However, because record numbers added to the ALA have grown each year, it's likely that comparing raw numbers will show a biased view that there were more records than previous years.
+
+To avoid this, let's *scale* our record counts by the total number of *Anatidae* records each year so that we compare proportions rather than raw numbers. 
+
+First let's download the total *Anatidae* records for each year. 
+
+```{r}
+ducks_yearly <- 
+  galah_call() |>    
+  galah_identify("Anatidae") |> 
+  galah_filter(cl10929 == "GREATER MELBOURNE", 
+               year >= 2017, year <= 2021) |> 
+  galah_group_by(year) |>
+  atlas_counts() |>
+  rename(year_total = count) |>
+  mutate(year = as.numeric(year)) |>
+  arrange(-desc(year))
+  
+ducks_yearly
+```
+
+Now we'll split `ducks_weekly` into 5 `data.frame`s for each year and divide the record count by the total for each year. At the end we'll bind the separate `data.frame`s into one again.
+
+```{r}
+ducks_scaled <- ducks_weekly %>%
+  split(.$year) %>%
+  map2(.x = .,
+       .y = ducks_yearly$year_total, 
+       ~ .x %>%
+         mutate(prop = .x$week_count / .y * 100) %>%
+         select(-week_count)
+  ) %>%
+  bind_rows()
+
+ducks_scaled
+```
+
+Finally, we'll place our weekly proportions in separate columns with `pivot_wider()`. 
+
+In our final plot we want to compare the "normal" number of records collected to those in 2020 and 2021, and it would be nice to represent the "normal" number as one line representing the average in "normal" years. With that goal in mind, we'll also calculate the mean proportion of records each week from 2017-2019.
+
+```{r}
+ducks_scaled <- ducks_scaled %>%
+  pivot_wider(names_from = year, 
+              values_from = prop, 
+              names_sort = TRUE,
+              names_glue = "year_{year}") |>
+  rowwise() |>
+  mutate(mean_2017_19 = mean(c_across(year_2017:year_2019))) |>
+  select(-year_2017, -year_2018, -year_2019)
+
+ducks_scaled
+```
+
+Now we have our dataset, it needs a bit of reorganising to make it suitable for plotting. Counts are grouped by week of the year, meaning we have 2 sets of weeks 1-52 (one for 2020, one for 2021). To plot these in order along an axis we need to convert this to 1-53 for 2020 (a leap year, extra week), then 54-106 for 2021.
+
+```{r}
+# 2021 record count proportions
+ducks_scaled_2021 <- ducks_scaled |>
+  rename(prop = year_2021) |>
+  mutate(week = 53 + week)
+
+ducks_scaled_2021
+
+# 2020 + 2021 record count proportions
+ducks_final <- ducks_scaled |>
+  rename(prop = year_2020) |>
+  bind_rows(ducks_scaled_2021)
+
+ducks_final
+```
+
+
+# Lockdowns
+
+During the height of the pandemic, Melbourne had 6 distinct lockdowns. Let's add their start and end dates to a table.
+
+```{r}
+#| message: false
+n_lockdown <- c(1:6)
+start_date <- c("2020-03-31", "2020-07-09",
+                "2021-02-13", "2021-05-28",
+                "2021-07-16", "2021-08-05")
+end_date <- c("2020-05-12", "2020-10-27",
+              "2021-02-17", "2021-06-10",
+              "2021-07-27", "2021-10-21")
+
+lockdowns <- tibble(n_lockdown, start_date, end_date) |>
+  mutate(
+    n_days = as_date(ymd(end_date)) - as_date(ymd(start_date)),
+    weekstart = week(start_date),
+    weekend = week(end_date))
+
+lockdowns 
+```
+
 
 
 <details><summary style = "color: #E06E53;">Expand for session info</summary>
