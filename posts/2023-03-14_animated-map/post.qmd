@@ -16,6 +16,7 @@ categories:
   - Animalia
   - Mollusca
   - Maps
+  - Intern-post
 image: SDM.gif
 freeze: true
 ---
@@ -70,9 +71,15 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 <!------------------------ Post starts here ------------------------>
 
+:::{.callout-tip}
+
+## Intern Post
+
+:::
+
 Each species has a habitat range where it normally lives and can expect to be found over its lifetime. However, individuals of a species rarely stay in the same spot for long periods of time. Just like us, they react to changes in their environment, interactions with other species, and interactions with other individuals. 
 
-As a result, it can be very useful to see how a distribution of a species changes in space *and* over time. In marine environments, for example, seemingly small changes in [temperature](https://theconversation.com/marine-life-in-a-south-african-bay-is-full-of-chemical-pollutants-182791), [chemicals](https://theconversation.com/marine-life-in-a-south-african-bay-is-full-of-chemical-pollutants-182791) and [light](https://theconversation.com/the-moon-and-stars-are-a-compass-for-nocturnal-animals-but-light-pollution-is-leading-them-astray-142301) can result in large changes to a species' distribution.
+As a result, it can be useful to see how a distribution of a species changes in space *and* over time. In marine environments, for example, seemingly small changes in [temperature](https://theconversation.com/the-mediterranean-has-experienced-record-sea-temperatures-this-summer-this-could-devastate-marine-life-188995), [chemicals](https://theconversation.com/marine-life-in-a-south-african-bay-is-full-of-chemical-pollutants-182791) and [light](https://theconversation.com/the-moon-and-stars-are-a-compass-for-nocturnal-animals-but-light-pollution-is-leading-them-astray-142301) can result in large changes to a species' distribution.
 
 Here we will map the distribution of *Nudibranchia* around Australia each month as an animated map to see how nudibranch distributions change over the year. 
 
@@ -145,7 +152,7 @@ nudibranch_occurrences <-
   atlas_occurrences() 
 ```
 
-## Environmental Variables 
+## Environmental variables 
 
 Now we will download our environmental variables for our model.
 
