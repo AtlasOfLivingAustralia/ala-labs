@@ -255,7 +255,7 @@ month_list[[1]] # See output of month 1
 
 Now that `month_list` contains our 12 `data.frame`s, we can run some models with them to calculate a distribution surface. 
 
-To build our overall SDM we've chosen to use [the method used by Liam Bailey in his Bigfooot map](https://github.com/LiamDBailey/TidyTuesday/blob/93cbe1143757c97ddaf36c564ac03a2b8088cb56/R/2022/Week37_2022.qmd). It's a fairly flexible model that suits our purposes to quickly see where nudibranchs are observed around Australia.
+To build our overall Species Distribution Model (SDM) we've chosen to use [the method used by Liam Bailey in his Bigfoot map](https://github.com/LiamDBailey/TidyTuesday/blob/93cbe1143757c97ddaf36c564ac03a2b8088cb56/R/2022/Week37_2022.qmd). It's a fairly flexible model that suits our purposes to quickly see where nudibranchs are observed around Australia.
 
 We'll build another custom function to run these models called `run_sdm_model()` for each chosen month.
 
@@ -421,7 +421,7 @@ make_the_map <- function(model_data, month_label) {
 ```
 
 
-We can use `map2()` to run our custom functions in a loop:
+We can use `map2()` to make all of our maps:
 
 ```{r map}
 #| message: false
@@ -437,7 +437,7 @@ all_maps <- model_list %>%
   )
 ```
 
-Now we can save our maps. We'll assign our plots a letter so they are ordered alphabetically and saved in order in a new folder called `maps`.
+Now to save our maps. We'll assign our plots a letter so they are ordered alphabetically and saved in order in a new folder called `maps`.
 
 To figure out the best aspect ratio to save our maps, we'll use the `get_asp_ratio()` function from the {tmaptools} package, and use it calculate the width of our plots. Finally, we can use `purrr::walk2()` to loop through `ggsave()` and save our maps.
 
@@ -456,7 +456,7 @@ walk2(plotnames, all_maps, ~ggsave(filename = .x,
 
 ```
 
-We should now have 12 species distribution maps saved, and we can see them by returning all the files in our `maps` folder!
+We should now have 12 species distribution maps saved, and we can see them by returning all the files in our `maps` folder.
 
 ```{r}
 map_files <- list.files(path = "maps/")

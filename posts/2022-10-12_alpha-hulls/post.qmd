@@ -528,6 +528,15 @@ combinedtree_rat_ahull_p
 While sophisticated tools for modelling species distribution exist, they require a lot of data to make reliable estimates. **Convex polygons** and **alpha hulls** are flexible alternatives that can help us understand dynamic changes to distributions of understudied or vulnerable data-deficient species.
 
 
+::: {.callout-note icon=false}
+
+
+## Acknowledgement:
+
+The work in this post is part of project titled: Curated biodiversity data for rapid assessment of bushfire impact. This project is funded by the [Australian Research Data Commons (ARDC) bushfire data challenges program](https://ardc.edu.au/program/bushfire-data-challenges/).
+
+:::
+
 <details><summary style = "color: #E06E53;">Expand for session info</summary>
 
 ```{r, echo = FALSE}
