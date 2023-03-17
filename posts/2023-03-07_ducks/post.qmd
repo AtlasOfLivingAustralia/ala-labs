@@ -1,7 +1,7 @@
 ---
-title: "Make a highlighted time series"
+title: "Make a highlighted time series plot"
 description: |
-  Time series comparisons can be handy for seeing trends in data. Here, we explore how to look at some stuff about ducks   
+  Time series analyses can be handy for seeing trends over time, and exploring how trends might relate to major events. Here, we show how to create an exploratory time series plot comparing observations of waterbirds prior to and during COVID-19.
 author:
   - name: "Thai Rushbrook"
   - name: "Olivia Torresan"
@@ -72,7 +72,13 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 <!------------------------ Post starts here ------------------------>
 
-Thanks to huge efforts by citizen scientists, a majority of species observations in the Atlas of Living Australia are collected opportunistically, where people record observations incidentally rather than through a recurring monitoring program.
+:::{.callout-tip}
+
+## Intern Post
+
+:::
+
+A majority of species observations in the Atlas of Living Australia are collected opportunistically, where people record observations incidentally rather than through a recurring monitoring program.
 
 However, whether an observation is recorded or not doesn't just depend on the species. It might be rainy, it might be too hot, an area might be inaccessible; all of these factors can affect whether people make an observation.
 
@@ -106,15 +112,13 @@ First, let's load some packages:
 # Load packages
 library(galah)
 library(tidyverse)
-library(lubridate)
 library(grid)
-library(ggplot2)
 library(pilot) # remotes::install_github("olihawkins/pilot")
 library(ggtext)
 library(showtext)
 ```
 
-Let's use the [{galah} package]() to download duck records in Melbourne from 2017-2021 to get records from years just before and during COVID-19 lockdowns. 
+Let's use the [{galah} package]() to download duck records in Melbourne from 2017-2021 to get records from years before and during COVID-19 lockdowns. 
 
 Searching with `galah::search_fields()` shows us that {galah} contains Greater Capital City Statistical Areas, which we can use to filter our query. 
 
@@ -124,7 +128,7 @@ search_all(fields, "city") |> search_values("melbourne")
 ```
 
 
-Let's build our query to return *Anatidae* records from `GREATER MELBOURNE` from 2017 to 2021. We'll use `galah_select()` to return only the `eventDate` column.
+Let's build our query to return *Anatidae* records from `GREATER MELBOURNE` and use `galah_select()` to return only the `eventDate` column.
 
 You will need to first provide a [registered email with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount) using `galah_config()` before retrieving records.
 
@@ -148,10 +152,8 @@ ducks <-
   galah_identify("Anatidae") |>
   galah_filter(
     cl10929 == "GREATER MELBOURNE",
-    # year >= 2017,
-    # year <= 2021,
-    eventDate >= "2017-01-01T00:00:00Z",
-    eventDate <= "2021-12-31T23:59:00Z",
+    year >= 2017,
+    year <= 2021,
     basisOfRecord == "HUMAN_OBSERVATION"
   ) |>
   galah_select(eventDate) |>
@@ -169,13 +171,14 @@ ducks_weekly <- ducks |>
   mutate(date = as_date(eventDate),
          year = year(eventDate),
          week = week(eventDate)) |>
+  filter(year > 2016) |> # remove stray 2016 records
   group_by(year, week) |>
   summarise(week_count = n())
 
 ducks_weekly 
 ```
 
-We are intending to compare record counts in 2020-2021 to previous years. However, because record numbers added to the ALA have grown each year, it's likely that comparing raw numbers will show a biased view that there were more records than previous years.
+We want to compare record counts in 2020-2021 to previous years, but because records added the ALA have increased each year, comparing raw numbers will be an unequal comparison and bias our results.
 
 To avoid this, let's *scale* our record counts by the total number of *Anatidae* records each year so that we compare proportions rather than raw numbers. 
 
@@ -189,20 +192,20 @@ ducks_yearly <-
                year >= 2017, year <= 2021) |> 
   galah_group_by(year) |>
   atlas_counts() |>
-  rename(year_total = count) |>
+  rename(year_records = count) |>
   mutate(year = as.numeric(year)) |>
   arrange(-desc(year))
   
 ducks_yearly
 ```
 
-Now we'll split `ducks_weekly` into 5 `data.frame`s for each year and divide the record count by the total for each year with `map2()`. At the end we'll bind the separate `data.frame`s into one again with `bind_rows()`.
+Now we'll split `ducks_weekly` into 5 `data.frame`s for each year and recursively divide each weekly record count by the total records for that year with `map2()`. At the end we'll bind the separate `data.frame`s into one again with `bind_rows()`.
 
 ```{r}
 ducks_scaled <- ducks_weekly %>%
   split(.$year) %>%
   map2(.x = .,
-       .y = ducks_yearly$year_total, 
+       .y = ducks_yearly$year_records, 
        ~ .x %>%
          mutate(prop = .x$week_count / .y) %>%
          select(-week_count)
@@ -212,9 +215,11 @@ ducks_scaled <- ducks_weekly %>%
 ducks_scaled
 ```
 
-In our final plot we want to compare the "normal" number of records collected prior to COVID-19 to the number collected in 2020 and 2021. It would be nice to show the average "normal" number as one line. With that goal in mind, let's calculate the mean proportion of records each week from 2017-2019.
+To compare the "normal" number of records collected prior to COVID-19 to the numbers collected throughout 2020 and 2021, it would be nice to simplify these numbers into 2 lines: one with the the average weekly "normal" count, and one with the weekly count over 2020 and 2021. 
 
-To do this, we'll place our weekly proportions in separate columns with `pivot_wider()` and calculate the mean proportion of observations over 2017-2019.
+To create the average weekly "normal" line, let's calculate the mean proportion of records each week from 2017-2019.
+
+To do this, we'll place our weekly proportions in separate columns using `pivot_wider()` and calculate the mean proportion of observations each week across `year_2017`, `year_2018` and `year_2019` columns.
 
 ```{r}
 ducks_scaled <- ducks_scaled %>%
@@ -231,16 +236,20 @@ ducks_scaled <- ducks_scaled %>%
 ducks_scaled
 ```
 
-Now that we have our dataset, it needs a bit of reorganising to make it suitable for plotting. Counts are grouped by week of the year, meaning we have 2 sets of weeks 1-52 (one for 2020, one for 2021). To plot these in order along an axis we need to convert this to 1-53 for 2020 (a leap year, extra week), then 54-106 for 2021.
+We have all the numbers we need for plotting, but just need to reorganise them so they plot correctly. 
+
+We have two separate columns containing 2020 and 2021 proportional counts, weeks 1-53 (because 2021 didn't start exactly when the week ended). To plot these counts as one continuous line from Jan 2020 to Dec 2021 (106 weeks total), we'll need to place our 2021 counts under our 2020 counts in the same column and convert the week numbers for 2021 to 54-106.
 
 ```{r}
 # 2021 record count proportions
 ducks_scaled_2021 <- ducks_scaled |>
+  select(-year_2020) |>
   rename(prop = year_2021) |>
   mutate(week = 53 + week)
 
 # 2020 + 2021 record count proportions
 ducks_final <- ducks_scaled |>
+  select(-year_2021) |>
   rename(prop = year_2020) |>
   bind_rows(ducks_scaled_2021)
 
@@ -252,7 +261,7 @@ ducks_final
 
 During the height of the pandemic, Melbourne had 6 distinct lockdowns. Let's add their start and end dates to a `tibble`.
 
-Because we want to plot 2020 and 2021 on the same plot, we'll use `ifelse()` to add 54 to weeks in 202 so that our week numbers extend from the beginning of 2020 to the end of 2021.
+Because we want to plot 2020 and 2021 on the same plot, we'll use `ifelse()` to make sure our week numbers in 2021 match our week numbers in `ducks_final`.
 
 ```{r}
 #| message: false
@@ -268,9 +277,9 @@ lockdowns <- tibble(n_lockdown, start_date, end_date) |>
   mutate(
     n_days = as_date(ymd(end_date)) - as_date(ymd(start_date)),
     week_start = ifelse(year(start_date) == 2020, 
-                        week(start_date), week(start_date) + 54),
+                        week(start_date), week(start_date) + 53),
     week_end = ifelse(year(end_date) == 2020, 
-                      week(end_date), week(end_date) + 54),
+                      week(end_date), week(end_date) + 53),
     )
 lockdowns 
 ```
@@ -278,13 +287,11 @@ lockdowns
 
 # Make plot
 
-## Step 3: Plot!
+To help us see the components of our final plot more clearly, let's construct our visualisation step-by-step.
 
-To help us see the components of our final plot more clealy, let's construct our visualisation step-by-step.
+First, we'll add our lockdown dates as highlighted rectangular blocks. To do this we can use `geom_rect()`, setting the `xmin` and `xmax` values to our `week_start` and `week_end` columns in `lockdowns`. We'll make the rectangle spread across the entire plot by setting `ymax = Inf` and `ymin = 0`.
 
-First, add our lockdown dates as highlighted rectangular blocks. To do this we can use `geom_rect()` and set `xmin` and `xmax` values to our `week_start` and `week_end` columns in `lockdowns`. We'll make the rectangle spread across the entire plot by setting `ymax = Inf` and `ymin = 0`.
-
-Setting our `fill` inside of `aes()` and defining its value within `scale_fill_manual()` allows us to add the yellow highlighted colour to its own legend, which will be useful later. 
+We'll also set our `fill` inside of `aes()` and define its value within `scale_fill_manual()` which will allow us to add the lockdown colour and label to its own legend. 
 
 ```{r}
 #| column: body-outset
@@ -302,9 +309,7 @@ p1 <- ggplot() +
 p1
 ```
 
-Next we'll add our species observation counts as lines. We'll also define their colours and edit the legend and axis labels. 
-
-The plot created after these steps is enough to see everything we need to see about our data. You *could* stop here if you wished, especially if you were only making this plot for yourself.
+Next we'll add our proportional species observation counts as lines. We can define their colours and edit the legend and axis labels, too. 
 
 ```{r}
 #| warning: false
@@ -340,9 +345,7 @@ p2 <- p1 +
 p2
 ```
 
-Here's a more refined visualisation with nice fonts, axis scales, axis labels and titles:
-
-(feel free to use this code for your own plots!)
+The plot above is enough to see everything we need to see from our data. You *could* stop here if you wished, but we've made a more refined visualisation with nice fonts, axis scales, axis labels and titles:
 
 ```{r}
 #| column: page
@@ -389,21 +392,21 @@ p2 +
 
 Now that we have our final plot, we can see a few interesting trends: 
 
-  1. Species observations were *lower* than the 2017-2019 average during the first lockdown (soon after COVID-19 arrived in Australia). 
-  2. Species observations were *higher* than the 2017-2019 average during the 2 longer lockdowns.
-  3. Observations increased in the last half of all lockdowns except the first lockdown.
+  1. In the first lockdown (soon after COVID-19 arrived in Australia), species observations were *lower* than the 2017-2019 average.
+  2. In the 2 longest lockdowns, species observations were *higher* than the 2017-2019 average.
+  3. In the last half of all lockdowns except the first lockdown, observations increased.
   
 Are these trends that you expected to see? 
 
 It's impossible to make any claims of *why* these trends emerged from our data visualisation alone, but we can speculate (for fun). 
 
-Were people making fewer observations in the first lockdown because they were preoccupied with other priorities as they settled into new working-from-home routines? Did people make more observations at the tail end of lockdowns because they were spending more time by natural ponds and lakes, seeking anxiety relief as they grew weary spending time at home? 
+Were people making fewer observations in the first lockdown because they were preoccupied with all the other priorities of settling into new working-from-home routines? Did people make more observations at the tail end of lockdowns because they were seeking relief from being inside by spending more time by natural ponds and lakes? 
 
 Some evidence from the US found [more people were using natural spaces during COVID-19](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0243344), and [time in these spaces lowered depression and anxiety](https://www.sciencedirect.com/science/article/pii/S1353829222000740). A New Zealand study [found similar results](https://www.mdpi.com/2071-1050/14/12/7308).
 
 # Final thoughts
 
-This post has detailed you can use ALA data to explore relationships between record counts and events. Although we can't make any causal claims from what we see in our plot, it's a nice way to do some exploratory analysis of a lot of data!
+This post has detailed how you can use ALA data to explore relationships between record counts and events. Although we can't make any causal claims from what we see in our plot, it's a nice way to do some exploratory analysis on a lot of data!
 
 
 <details><summary style = "color: #E06E53;">Expand for session info</summary>
