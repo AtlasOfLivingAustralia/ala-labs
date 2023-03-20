@@ -1,7 +1,7 @@
 ---
 title: "Make a highlighted time series plot"
 description: |
-  Time series analyses can be handy for seeing trends over time, and exploring how trends might relate to major events. Here, we show how to create an exploratory time series plot comparing observations of waterbirds prior to and during COVID-19.
+  Time series analyses can be handy for seeing trends over time, and exploring how trends relate to major events. Here, we show how to create an exploratory time series plot comparing observations of waterbirds prior to and during the COVID-19 pandemic.
 author:
   - name: "Thai Rushbrook"
   - name: "Olivia Torresan"
@@ -78,13 +78,13 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 :::
 
-A majority of species observations in the Atlas of Living Australia are collected opportunistically, where people record observations incidentally rather than through a recurring monitoring program.
+A majority of species observations in the Atlas of Living Australia are collected opportunistically, where people record observations incidentally rather than through an ongoing monitoring program.
 
 However, whether an observation is recorded or not doesn't just depend on the species. It might be rainy, it might be too hot, an area might be inaccessible; all of these factors can affect whether people make an observation.
 
-The COVID-19 pandemic had a major impact on people's health, behaviour and travel. In Australia, several lockdowns over 2020-2021 imposed restrictions on people's movements, limiting them to either stay at home or choose activities (mainly exercise) that they could do in their local area. Melbourne experienced [the longest continuous lockdown in the world](https://www.9news.com.au/national/coronavirus-update-victoria-monday-october-4-melbournes-lockdown-longest-world/e159d5b5-2d0f-452a-adb3-979150f9793f). 
+The COVID-19 pandemic had a major impact on people's health, behaviour and travel. In Australia, several lockdowns over 2020-2021 imposed restrictions on people's movements, limiting them to certain activities near their homes. Melbourne experienced [the longest continuous lockdown in the world](https://www.9news.com.au/national/coronavirus-update-victoria-monday-october-4-melbournes-lockdown-longest-world/e159d5b5-2d0f-452a-adb3-979150f9793f). 
 
-To what extent did COVID-19 and lockdowns affect the number of species observations people made over that time? Here, we'll use a highlighted time-series plot to investigate how lockdowns affected the data collection of *Anatidae* observations (ducks, geese and swans), a group frequently recorded on walks and outdoor gatherings, in Melbourne compared to previous years.
+To what extent did COVID-19 and lockdowns affect the number of species observations people made over that time? Here, we'll use a highlighted time-series plot to investigate how lockdowns in  Melbourne affected the observations of *Anatidae* (ducks, geese and swans), a taxonomic group frequently seen on walks and outdoor gatherings compared to previous years.
 
 # Get data
 
@@ -162,7 +162,7 @@ ducks <-
 ducks |> head(6L)
 ```
 
-We'll pull out some week and year of each date and count the total occurrence records for each week.
+We'll pull out the week and year of each date and count the total occurrence records for each week.
 
 ```{r}
 #| message: false
