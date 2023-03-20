@@ -17,7 +17,7 @@ categories:
   - Aves
   - Summaries
   - Intern-post
-image: choropleth_ggnewscale.png
+image: ducks.png
 freeze: true
 draft: true
 ---
@@ -84,7 +84,7 @@ However, whether an observation is recorded or not doesn't just depend on the sp
 
 The COVID-19 pandemic had a major impact on people's health, behaviour and travel. In Australia, several lockdowns over 2020-2021 imposed restrictions on people's movements, limiting them to certain activities near their homes. Melbourne experienced [the longest continuous lockdown in the world](https://www.9news.com.au/national/coronavirus-update-victoria-monday-october-4-melbournes-lockdown-longest-world/e159d5b5-2d0f-452a-adb3-979150f9793f). 
 
-To what extent did COVID-19 and lockdowns affect the number of species observations people made over that time? Here, we'll use a highlighted time-series plot to investigate how lockdowns in  Melbourne affected the observations of *Anatidae* (ducks, geese and swans), a taxonomic group frequently seen on walks and outdoor gatherings compared to previous years.
+To what extent did COVID-19 and lockdowns affect the number of species observations people made over that time? Here, we'll use a highlighted time-series plot to investigate how lockdowns in  Melbourne affected the observations of *Anatidae* (ducks, geese and swans), a taxonomic group frequently seen on walks and outdoor gatherings, compared to previous years.
 
 # Get data
 
@@ -159,10 +159,10 @@ ducks <-
   galah_select(eventDate) |>
   atlas_occurrences()
 
-ducks |> head(6L)
+ducks |> slice_sample(n = 10)
 ```
 
-We'll pull out the week and year of each date and count the total occurrence records for each week.
+We'll pull out the week and year of each date and count the total observations for each week.
 
 ```{r}
 #| message: false
@@ -173,14 +173,14 @@ ducks_weekly <- ducks |>
          week = week(eventDate)) |>
   filter(year > 2016) |> # remove stray 2016 records
   group_by(year, week) |>
-  summarise(week_count = n())
+  summarise(week_obs = n())
 
 ducks_weekly 
 ```
 
-We want to compare record counts in 2020-2021 to previous years, but because records added the ALA have increased each year, comparing raw numbers will be an unequal comparison and bias our results.
+We want to compare observations recorded in 2020-2021 to previous years, but because records added the ALA have increased each year, comparing raw numbers will be an unequal comparison and bias our results.
 
-To avoid this, let's *scale* our record counts by the total number of *Anatidae* records each year so that we compare proportions rather than raw numbers. 
+To avoid this, let's *scale* our record counts by the total number of *Anatidae* observations each year so that we compare proportions rather than raw numbers. 
 
 First let's download the total *Anatidae* records for each year. 
 
@@ -192,69 +192,105 @@ ducks_yearly <-
                year >= 2017, year <= 2021) |> 
   galah_group_by(year) |>
   atlas_counts() |>
-  rename(year_records = count) |>
+  rename(year_obs = count) |>
   mutate(year = as.numeric(year)) |>
   arrange(-desc(year))
   
 ducks_yearly
 ```
 
-Now we'll split `ducks_weekly` into 5 `data.frame`s for each year and recursively divide each weekly record count by the total records for that year with `map2()`. At the end we'll bind the separate `data.frame`s into one again with `bind_rows()`.
+Now we'll split `ducks_weekly` into 5 `data.frame`s for each year and recursively divide each weekly record count by the total records for that year with `map2_dfr()` (which sticks them back together again).
 
 ```{r}
 ducks_scaled <- ducks_weekly %>%
   split(.$year) %>%
-  map2(.x = .,
-       .y = ducks_yearly$year_records, 
-       ~ .x %>%
-         mutate(prop = .x$week_count / .y) %>%
-         select(-week_count)
-  ) %>%
-  bind_rows()
+  map2_dfr(.x = .,
+           .y = ducks_yearly$year_obs, 
+           ~ .x %>%
+             mutate(prop = .x$week_obs / .y) %>%
+             select(-week_obs)
+  )
 
 ducks_scaled
 ```
 
-To compare the "normal" number of records collected prior to COVID-19 to the numbers collected throughout 2020 and 2021, it would be nice to simplify these numbers into 2 lines: one with the the average weekly "normal" count, and one with the weekly count over 2020 and 2021. 
+To compare observations in years prior to COVID-19 to observations over 2020 and 2021, we want to plot 2 lines: 
 
-To create the average weekly "normal" line, let's calculate the mean proportion of records each week from 2017-2019.
+  1. A baseline of average observation counts in 2017 to 2019 
+  2. A line with weekly observation counts over 2020 and 2021
 
-To do this, we'll place our weekly proportions in separate columns using `pivot_wider()` and calculate the mean proportion of observations each week across `year_2017`, `year_2018` and `year_2019` columns.
+To create the average 2017-2019 baseline, let's calculate the mean proportion of records each week from 2017-2019.
+
+To do this, we'll place our weekly proportions in separate columns using `pivot_wider()`.
 
 ```{r}
 ducks_scaled <- ducks_scaled %>%
   pivot_wider(names_from = year, 
               values_from = prop, 
               names_sort = TRUE,
-              names_glue = "year_{year}") |>
-  rowwise() |>
-  mutate(
-    mean_2017_19 = mean(c_across(year_2017:year_2019))
-    ) |>
-  select(-year_2017, -year_2018, -year_2019)
+              names_glue = "year_{year}")
 
 ducks_scaled
 ```
 
-We have all the numbers we need for plotting, but just need to reorganise them so they plot correctly. 
+Then we'll calculate the mean proportion of observations each week across `year_2017`, `year_2018` and `year_2019` columns.
 
-We have two separate columns containing 2020 and 2021 proportional counts, weeks 1-53 (because 2021 didn't start exactly when the week ended). To plot these counts as one continuous line from Jan 2020 to Dec 2021 (106 weeks total), we'll need to place our 2021 counts under our 2020 counts in the same column and convert the week numbers for 2021 to 54-106.
+```{r}
+ducks_scaled <- ducks_scaled |>
+  rowwise() |>
+  mutate(
+    mean_2017_19 = mean(c_across(year_2017:year_2019)),
+    .keep = "unused"
+    ) |>
+  ungroup()
+
+ducks_scaled
+```
+
+Now we have all the numbers we need for plotting. We just need to reorganise them so that they plot correctly! 
+
+We have two separate columns in `ducks_scaled` containing proportional counts (`year_2020` and `year_2021`). Although there are 52 weeks in a year, our counts extend from weeks 1-53 because 2020 didn't start or end *exactly* at the end of the week — 2020 ended on a Thursday and 2021 ended on a Friday. 
+
+```{r}
+#| message: false
+wday(ymd("2020-12-31"), label = TRUE)
+wday(ymd("2021-12-31"), label = TRUE)
+```
+
+This means that the proportional counts in week 53 of 2020 and week 1 of 2021 are in the same week! We can combine them to better represent the full week's observations and save the combined count in week 1 of 2021.
+
+```{r}
+#| message: false
+#| warning: false
+ducks_scaled <- ducks_scaled |>
+  rows_update(tibble(week = 1, year_2021 = sum(ducks_scaled$year_2020[53] + ducks_scaled$year_2021[1]))) |>
+  rows_update(tibble(week = 53, year_2020 = NA)) # remove 2020's week 53 count
+
+ducks_scaled |> slice_head(n = 3)
+ducks_scaled |> slice_tail(n = 3)
+```
+
+To allow us to plot proportional counts from Jan 2020 to Dec 2021 (105 weeks total) as one line, we'll separate our 2021 proportional counts, revise 2021 week counts to be from 53-105, and stick them under our 2020 proportions. That'll let us plot from week 1 to week 105!
 
 ```{r}
 # 2021 record count proportions
 ducks_scaled_2021 <- ducks_scaled |>
   select(-year_2020) |>
   rename(prop = year_2021) |>
-  mutate(week = 53 + week)
+  mutate(week = 52 + week)
+
+glimpse(ducks_scaled_2021)
 
 # 2020 + 2021 record count proportions
 ducks_final <- ducks_scaled |>
   select(-year_2021) |>
+  drop_na() |>
   rename(prop = year_2020) |>
-  bind_rows(ducks_scaled_2021)
+  bind_rows(ducks_scaled_2021) # attach 2021 to the bottom
 
-ducks_final
+glimpse(ducks_final)
 ```
+
 
 
 # Lockdowns
@@ -277,9 +313,9 @@ lockdowns <- tibble(n_lockdown, start_date, end_date) |>
   mutate(
     n_days = as_date(ymd(end_date)) - as_date(ymd(start_date)),
     week_start = ifelse(year(start_date) == 2020, 
-                        week(start_date), week(start_date) + 53),
+                        week(start_date), week(start_date) + 52),
     week_end = ifelse(year(end_date) == 2020, 
-                      week(end_date), week(end_date) + 53),
+                      week(end_date), week(end_date) + 52),
     )
 lockdowns 
 ```
@@ -345,7 +381,7 @@ p2 <- p1 +
 p2
 ```
 
-The plot above is enough to see everything we need to see from our data. You *could* stop here if you wished, but we've made a more refined visualisation with nice fonts, axis scales, axis labels and titles:
+The plot above is enough to see everything we need to see from our data. You *could* stop here if you wished, but we've gone ahead and made a more refined visualisation with nice fonts, axis scales, axis labels and titles!
 
 ```{r}
 #| column: page
@@ -365,14 +401,14 @@ p2 +
                      limits = c(0, 0.035),
                      labels = scales::percent_format()) +
   scale_x_continuous(expand = c(0, 0),
-                     limits = c(1, 106),
-                     breaks = c(1, 14, 27, 40, 53, 66, 79, 92),
+                     limits = c(1, 105),
+                     breaks = c(1, 14, 27, 40, 52, 65, 78, 91),
                      labels = c("Jan", "Apr", "Jul", "Oct", "Jan", "Apr", "Jul", "Oct")) +
   # add year x axis labels
   coord_cartesian(clip = "off") +
   annotate_pilot(label = "2020", x = 27, y = 0, 
                  alpha = 0.7, vjust = 3.8,size = 10) +
-  annotate_pilot(label = "2021", x = 79, y = 0, 
+  annotate_pilot(label = "2021", x = 78, y = 0, 
                  alpha = 0.7, vjust = 3.8, size = 10) +
   labs(title = "Duck, geese & swan observations in Melbourne (2020-21 vs. 2017-19)") +
   theme_pilot(grid = "",
@@ -406,7 +442,7 @@ Some evidence from the US found [more people were using natural spaces during CO
 
 # Final thoughts
 
-This post has detailed how you can use ALA data to explore relationships between record counts and events. Although we can't make any causal claims from what we see in our plot, it's a nice way to do some exploratory analysis on a lot of data!
+This post has detailed how you can use ALA data to explore relationships between record counts and events. Although we can't make any causal claims from what we see in our plot, making a time series is a nice way to do some exploratory analysis on a lot of data!
 
 
 <details><summary style = "color: #E06E53;">Expand for session info</summary>
