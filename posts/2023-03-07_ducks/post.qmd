@@ -120,7 +120,7 @@ library(showtext)
 
 Let's use the [{galah} package]() to download duck records in Melbourne from 2017-2021 to get records from years before and during COVID-19 lockdowns. 
 
-Searching with `galah::search_fields()` shows us that {galah} contains Greater Capital City Statistical Areas, which we can use to filter our query. 
+Searching with `search_all(fields)` shows us that {galah} contains Greater Capital City Statistical Areas, which we can use to filter our query. 
 
 ```{r}
 search_all(fields, "city")
