@@ -1,20 +1,11 @@
 
-/* base variables */
+/* Custom theme*/
 
-/* Edit the CSS properties in this file to create a custom
-   Distill theme. Only edit values in the right column
-   for each row; values shown are the CSS defaults.
-   To return any property to the default,
-   you may set its value to: unset
-   All rows must end with a semi-colon.                      */
-
-/* Optional: embed custom fonts here with `@import`          */
 /* This must remain at the top of this file.                 */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
 @import url('_extensions/quarto-ext/fontawesome/assets/css/all.css');
-
 
 
 :root {
@@ -26,8 +17,6 @@
   --header-font: 'Lato' sans-serif;
 }
 
-/*-- Additional custom styles --*/
-/* Add any additional CSS rules below                      */
 
 /* navbar */
 
