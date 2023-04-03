@@ -1,0 +1,14 @@
+{
+  "hash": "724a859992fa8f1e7958c9bf17683943",
+  "result": {
+    "markdown": "---\ntitle: \"Shandiya Balasubramaniam\"\ninclude-after-body: _footer.html\n---\n\n\n\n\n### {{< fa circle-user >}} Bio \n\n:::{.bio-column-right}\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/shandiya.png){width=275px style=\"display:block; margin-left:auto; margin-right:auto; clip-path: circle();\"}\n:::\n:::\n\n:::\n\n:::{.bio-column-left}\nShandiya is an evolutionary ecologist with interests in conservation genetics and wildlife disease. Her work as a data analyst at the ALA focuses on streamlining reproducible pathways for researchers to access and analyse open data. \n\n\n::: {.cell}\n::: {.cell-output-display}\n```{=html}\n<div class=\"row\" style=\"display: flex;\">\n<div class=\"button-column\">\n<a href=\"http://github.com/shandiya\" style=\"border-bottom: none\">\n<button class=\"button-2\">\n<i class=\"fab fa-github fa-xl\"></i>\n</button>\n</a>\n</div>\n<div class=\"button-column\">\n<a href=\"https://shandiya.netlify.app/\" style=\"border-bottom: none\">\n<button class=\"button-2\">\n<i class=\"fas fa-globe fa-xl\"></i>\n</button>\n</a>\n</div>\n<div class=\"button-column\">\n<a href=\"http://twitter.com/ShandiyaB\" style=\"border-bottom: none\">\n<button class=\"button-2\">\n<i class=\"fab fa-twitter fa-xl\"></i>\n</button>\n</a>\n</div>\n</div>\n```\n:::\n:::\n\n<br>\n:::\n\n\n\n### {{< fa newspaper >}} Posts \n\n[Multiple colour scales in choropleth maps with {ggnewscale}](https://labs.ala.org.au/posts/2022-05-23-ggnewscale/post.html)<br>\n*Using multiple colour scales can be a great way to visually differentiate between geographic categories on a map. Here, we demonstrate this by creating a choropleth map to represent the density of plant records from the ALA across bioregions in Australia, and add multiple colour scales to differentiate marine and terrestrial records*\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

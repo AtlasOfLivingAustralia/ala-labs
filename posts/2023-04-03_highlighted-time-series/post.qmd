@@ -84,7 +84,7 @@ However, whether an observation is recorded or not doesn't just depend on the sp
 
 The COVID-19 pandemic had a major impact on people's health, behaviour and travel. In Australia, several lockdowns over 2020-2021 imposed restrictions on people's movements, limiting them to certain activities near their homes. Melbourne experienced [the longest continuous lockdown in the world](https://www.9news.com.au/national/coronavirus-update-victoria-monday-october-4-melbournes-lockdown-longest-world/e159d5b5-2d0f-452a-adb3-979150f9793f). 
 
-To what extent did COVID-19 and lockdowns affect the number of species observations people made over that time? Here, we'll use a highlighted time-series plot to investigate how lockdowns in  Melbourne affected the observations of *Anatidae* (ducks, geese and swans), a taxonomic group frequently seen on walks and outdoor gatherings, compared to previous years.
+To what extent did COVID-19 and lockdowns affect the number of species observations people made over that time? Here, we'll use a highlighted time-series plot to investigate how lockdowns in Melbourne affected the observations of *Anatidae* (ducks, geese and swans), a taxonomic group frequently seen on walks and outdoor gatherings, compared to previous years.
 
 # Get data
 
@@ -118,9 +118,9 @@ library(ggtext)
 library(showtext)
 ```
 
-Let's use the [{galah} package]() to download duck records in Melbourne from 2017-2021 to get records from years before and during COVID-19 lockdowns. 
+Let's use the [{galah} package](http://galah.ala.org.au/) to download *Anatidae* records in Melbourne from years before and during COVID-19. 
 
-Searching with `search_all(fields)` shows us that {galah} contains Greater Capital City Statistical Areas, which we can use to filter our query. 
+Searching with `search_all(fields)` shows us that {galah} contains [Greater Capital City Statistical Areas](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/main-structure-and-greater-capital-city-statistical-areas/greater-capital-city-statistical-areas), which we can use to filter our query. 
 
 ```{r}
 search_all(fields, "city")
@@ -162,7 +162,7 @@ birds <-
 birds |> slice_sample(n = 10)
 ```
 
-We'll pull out the week and year of each date and count the total observations for each week.
+We'll then extract the week and year of each date and count the total observations for each week.
 
 ```{r}
 #| message: false
@@ -178,9 +178,9 @@ birds_weekly <- birds |>
 birds_weekly 
 ```
 
-We want to compare observations recorded in 2020-2021 to previous years, but because records added the ALA have increased each year, comparing raw numbers will be an unequal comparison and bias our results.
+We want to compare observations recorded in 2020-2021 to previous years, but because we know that contributions to the ALA have increased each year, comparing raw numbers will be an unequal comparison and bias our results.
 
-To avoid this, let's *scale* our record counts by the total number of *Anatidae* observations each year. Doing this let's us compare proportions rather than raw numbers. 
+To avoid this, let's *scale* our weekly record counts by the total number of *Anatidae* observations each year. Doing this let's us compare proportions rather than raw numbers. 
 
 First let's download the total *Anatidae* records for each year. 
 
@@ -214,9 +214,9 @@ birds_prop <- birds_weekly |>
 birds_prop
 ```
 
-To compare observations in years prior to COVID-19 to observations in 2020 and 2021, we'll want to plot 2 lines: 
+To compare observations in years prior to and during COVID-19, we'll want to plot two lines: 
 
-  1. A baseline of average observation counts in 2017-2019 
+  1. A baseline of average weekly observation counts in 2017-2019 
   2. A line with weekly observation counts over 2020 and 2021
 
 To create the average 2017-2019 baseline, let's calculate the mean proportion of records each week from 2017-2019.
@@ -249,7 +249,7 @@ birds_mean_prop
 
 Now we have all the numbers we need for plotting! We just need to reorganise them so that they plot correctly. 
 
-We have two separate columns in `birds_mean_prop` containing proportional counts (`year_2020` and `year_2021`). Although there are 52 weeks in a year, our counts extend from weeks 1-53 because 2020 didn't start or end *exactly* at the end of the week — 2020 ended on a Thursday and 2021 ended on a Friday. 
+Two columns in `birds_mean_prop` contain proportional counts for 2020 and 2021. Although there are 52 weeks in a year, both years extend from weeks 1-53 because neither year started or ended *exactly* at the end of the week — 2020 ended on a Thursday and 2021 ended on a Friday. 
 
 ```{r}
 #| message: false
@@ -270,14 +270,14 @@ birds_mean_prop |> slice_head(n = 3)
 birds_mean_prop |> slice_tail(n = 3)
 ```
 
-To allow us to plot proportional counts from Jan 2020 to Dec 2021 (105 weeks total) as one line, we'll separate our 2021 proportional counts, revise 2021 week counts to be from 53-105, and stick them under our 2020 proportions. That'll let us plot from week 1 to week 105!
+To allow us to plot proportional counts from Jan 2020 to Dec 2021 as one line (105 weeks total), we'll separate our 2021 proportional counts, revise 2021 week numbers to start from 53, and place them under our 2020 proportions. That'll let us plot from week 1 to week 105!
 
 ```{r}
 # 2021 record count proportions
 birds_2021 <- birds_mean_prop |>
   select(-year_2020) |>
   rename(prop = year_2021) |>
-  mutate(week = 52 + week)
+  mutate(week = week + 52)
 
 glimpse(birds_2021)
 
@@ -375,8 +375,8 @@ p2 <- p1 +
          color = guide_legend(title = "Year")) +
   labs(y = "Proportion of year's total observations",
        x = "Month",
-       title = "*Anatidae* observations in Melbourne prior to & during COVID-19",
-       subtitle = "Proportion of total records each year (2017-19 vs. 2020-21)")
+       title = "Anatidae observations in Melbourne prior to & during COVID-19",
+       subtitle = "Proportion of each year's total observations")
 p2
 ```
 
@@ -409,7 +409,7 @@ p2 +
                  alpha = 0.7, vjust = 3.8,size = 10) +
   annotate_pilot(label = "2021", x = 78, y = 0, 
                  alpha = 0.7, vjust = 3.8, size = 10) +
-  labs(subtitle = "Proportion of total *Anatidae* records each year (2017-19 vs. 2020-21)") +
+  labs(title = "*Anatidae* observations in Melbourne prior to & during COVID-19") +
   theme_pilot(grid = "",
               axes = "bl") +
   theme(axis.title.x = element_text(size = 23, vjust = -1.3),

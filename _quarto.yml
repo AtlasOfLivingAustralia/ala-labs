@@ -45,5 +45,8 @@ format:
     code-overflow: scroll
     linkcolor: "#B8573E"
 
+execute:
+  freeze: true
+
 
 

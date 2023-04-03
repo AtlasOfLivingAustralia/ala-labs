@@ -1,0 +1,102 @@
+---
+title: "An exploration of dingo observations in the ALA"
+description: |
+  Time-series analyses can be handy for seeing trends over time, and exploring how trends relate to major events. Here, we show how to create an exploratory time-series plot comparing observations of waterbirds prior to and during the COVID-19 pandemic.
+author:
+  - name: "Amos Smith"
+  - name: "Dax Kellie"
+date: "2023-04-04"
+title-block-banner: "#B8573E"
+include-after-body: _footer.html
+toc: true
+toc-location: left
+toc-depth: 3
+categories:
+  - Eukaryota
+  - Animalia
+  - Mammalia
+  - Summaries
+  - Maps
+  - Intern-post
+image: ducks.png
+freeze: true
+draft: true
+---
+
+```{r}
+#| include: false
+library(htmltools)
+```
+
+<!-- remove metadata section -->
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Author card -->
+
+:::{.author-card}
+:::{.author-card-text}
+
+#### Author
+Amos Smith 
+[Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/index.html)  
+[Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)  
+
+#### Date
+4 April 2023
+
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/thai.jpg")
+```
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/olivia.jpg")
+```
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg")
+```
+:::
+
+:::
+
+<!------------------------ Post starts here ------------------------>
+
+:::{.callout-tip}
+
+## Intern Post
+
+:::
+
+The dingo is one of Australia's most well-recognised species internationally. However, debate continues in Australia on whether dingoes are considered pests or a protected native species.
+
+Dingoes have major negative impacts on livestock producers, especially sheep farmers. To reduce this impact, landowners and government, spend an estimated [\~$30 million annually across Australia](https://www.publish.csiro.au/wr/pdf/WR19030) to control wild dog and dingo populations. Populations are often controlled using traps, baits and shooting. Australia also possesses the Dingo Fence, a wire fence made to protect from the loss of sheep for the sheep industry; it is the longest fence in the world (5,614 km). 
+
+Since its construction 80 years ago, the Dingo Fence has perhaps unintentionally [shaped the landscape of Australia and showed the importance of apex predators like dingoes in ecosystems](https://www.abc.net.au/news/2023-02-09/dingo-fence-map-ecology-farming-predator-sheep-extinction/101711608). The dingo fence has acted as a natural experiment: On the side where dingoes remain present there is [more vegetation, likely because there is less grazing pressure from herbivores](https://link.springer.com/article/10.1007/s10980-021-01206-w) and [fewer invasive species like foxes, benefitting native biodiversity ](https://www.publish.csiro.au/am/AM21036). The difference between sides of the fence is so distinct that [you can even see it from space](https://youtu.be/ivmQk5EsScw)!
+
+Despite this evidence, historical and current control programs along with habitat loss have impacted dingo populations, currently listed as [vulnerable to extinction under the IUNC's Red List of Threatened Species](https://www.iucnredlist.org/species/41585/10484199). 
+
+In an exploratory analysis, in this article we'll use data in the Atlas of Living Australia (ALA) to investigate how historical and ongoing differences in attitudes towards dingo conservation affect where and how often dingo observations are recorded.
+
+<details><summary style = "color: #E06E53;">Expand for session info</summary>
+
+```{r, echo = FALSE}
+library(sessioninfo)
+# save the session info as an object
+pkg_sesh <- session_info(pkgs = "attached")
+# print it out
+pkg_sesh
+```
+
+</details>
