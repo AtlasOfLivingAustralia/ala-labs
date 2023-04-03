@@ -10,7 +10,9 @@ author:
   - name: "Dax Kellie"
   - name: "Martin Westgate"
 date: "March 2021"
+date-modified: "6 February 2023"
 title-block-banner: "#B8573E"
+include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3

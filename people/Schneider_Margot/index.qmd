@@ -1,5 +1,6 @@
 ---
 title: "Margot Schneider"
+include-after-body: _footer.html
 ---
 
 ```{r, include=FALSE}

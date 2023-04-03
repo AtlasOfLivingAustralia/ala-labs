@@ -10,6 +10,7 @@ author:
   - name: "Fonti Kar"
 date: "2022-10-20"
 title-block-banner: "#B8573E"
+include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3

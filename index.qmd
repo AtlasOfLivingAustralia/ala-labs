@@ -3,6 +3,7 @@ toc: false
 format: 
   html: 
     include-in-header: hero-image.html
+    include-after-body: _footer.html
     sidebar: false
     css: [theme.css, index.css]
 ---

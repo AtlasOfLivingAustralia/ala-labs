@@ -2,6 +2,7 @@
 title: "About"
 format: 
   html: 
+    include-after-body: _footer.html
     css: theme.css
 ---
 

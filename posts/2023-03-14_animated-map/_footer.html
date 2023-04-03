@@ -1,0 +1,311 @@
+<!-- ALA Template Footer -->
+
+<style>
+
+/*-- Copyright --*/
+
+.copyright-container {
+  display: flex!important;
+  width: 100%;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.copyright-row {
+  width: 100%;
+
+  position: relative;
+
+  background-color: #c44d34;
+  background-position: bottom;
+  background-size: cover;
+  display: flex;
+}
+
+.copyright-width {
+  display: flex;
+  width: 100%;
+  max-width: 1140px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 0px;
+  margin: auto;
+}
+
+.copyright-column-left {
+  float: left;
+  width: 50%;
+  max-width: 50%;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  display: flex!important;
+  flex-direction:column;
+  display:inline-block;
+}
+
+.copyright-column-right {
+  float: right;
+  text-align: right;
+  width: 50%;
+  max-width: 50%;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  display: flex!important;
+  flex-direction: column;
+  display:inline-block;
+}
+
+.copyright-text {
+  color: white;
+  font-size: 12px;
+  padding-top: 10px}
+
+.copyright-text a:hover {
+  color: #222322;
+}
+
+
+/*-- Logos and acknowledgement --*/
+
+.footer-container {
+  display: flex!important;
+  width: 100%;
+  max-width: 1140px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  margin: auto;
+}
+
+.distill-site-footer {
+  padding-top: 0px;
+  padding-bottom: 10px;
+  text-align: left;
+}
+
+.row-footer { /* Do not change the name of this column - it causes issues */
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.column-footer { /* Do not change the name of this column - it causes issues */
+  float: left;
+  width: 50%;
+  max-width: 50%;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  display: flex;
+  flex-direction:column;
+  display:inline-block;
+}
+
+
+.footer-logo {
+  text-align: left;
+  margin:5px;
+}
+
+.footer-text {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  color: #565656;
+  text-align: left;
+}
+
+.footer-text-small {
+  font-family: Roboto,sans-serif;
+  font-size: .82rem;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  color: #565656;
+  text-align: left;
+  margin-top: 10px;
+}
+
+/*-- Back to ALA button --*/
+
+.link-container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: block;
+  width: 30em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.link-button {
+  border: none;
+  color: #E06E53;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin: 4px 2px;
+  transition-duration: 0.3s;
+  cursor: pointer;
+  background-color: white;
+  border: 2px solid #E06E53;
+  border-radius: 10px;
+}
+
+.link-button:hover {
+  background-color: #222322;
+  border: 2px solid #222322;
+  color: #E06E53;
+}
+
+.ala-icon {
+    height: 20px;
+    width: auto;
+    /* Other styles here */
+}
+
+@media screen and (max-width: 952px) {
+  .link-container {
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .footer-container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .column-footer {
+    float:left;
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    margin-top: 20px;
+  }
+  .link-container {
+    display: block;
+    width: 20em;
+    margin: auto;
+  }
+
+  .copyright-column-left {
+    width: 50%;
+  }
+
+  .copyright-column-right {
+    width: 50%;
+  }
+
+  .copyright-row {
+    height: 100px;
+    margin-bottom: -3.75vw;
+  }
+}
+
+.logo-ncris {
+  width: auto;
+  height: 109px;
+  margin-right: 15px;
+  margin-top: 20px;
+}
+
+.logo-csiro {
+  width: auto;
+  height: 109px;
+  margin-right: 15px;
+  margin-top: 20px;
+}
+
+.logo-gbif {
+  width: auto;
+  height: 109px;
+}
+
+@media (min-width: 992px) {}
+body .page-columns{
+  grid-column: screen-start/screen-end;
+  z-index: 998;
+  transform: translate3d(0, 0, 0);
+}
+}
+
+</style>
+
+<hr style="padding-top: 1px">
+
+<div class = "footer-container column-screen">
+
+  <!--<div class = "row-footer">-->
+    <div class = "column-footer">
+      <p class = "footer-text">The ALA is made possible by contributions from its partners, is supported
+      by
+      <a href = "https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris" class = "footer-link">NCRIS</a>, is hosted by
+             <a href = "https://csiro.au/" class = "footer-link">CSIRO</a>, and is the Australian node of
+             <a href = "https://www.gbif.org/en/" id = "d-article" class = "footer-link">GBIF</a>.
+      </p>
+      <a href = "https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris">
+        <img
+          src = "images/logos/NCRIS_logo.png"
+          class = "logo-ncris"
+          alt="NCRIS logo">
+        </img>
+        </a>
+      <a href = "https://csiro.au/">
+        <img
+          src = "images/logos/CSIRO_logo.png"
+          class = "logo-csiro"
+          alt="CSIRO logo">
+        </img>
+        </a>
+      <a href = "https://www.gbif.org/en/">
+        <img
+          src = "images/logos/GBIF_109px.png"
+          class = "logo-gbif"
+          alt="GBIF logo">
+        </img>
+        </a>
+    </div>
+    <div class = "column-footer" id = "footer-logo">
+      <p class = "footer-text"><strong>Acknowledgement of Traditional Owners and Country</strong></p>
+      <p class = "footer-text-small">The Atlas of Living Australia acknowledges Australia's Traditional Owners
+      and pays respect to the past and present Elders of the nation's Aboriginal
+      and Torres Strait Islander communities. We honour and celebrate the
+      spiritual, cultural and customary connections of Traditional Owners to
+      country and the biodiversity that forms part of that country.<br></br></p>
+    </div>
+<!--  </div>-->
+</div>
+
+<div class="copright-container column-screen">
+  <div class="copyright-row">
+     <div class="copyright-width">
+  		<div class="copyright-column-left">
+  				<p class="copyright-text">
+  					This work is licensed under a <a style = "color:#fff!important;" href="https://creativecommons.org/licenses/by/3.0/au/">Creative Commons Attribution 3.0 Australia License</a>
+  					<a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/"><img alt="Creative Commons License" style="border-width:0" src="images/logos/cc-by.png"></img></a>
+  				</p>
+			</div><!--col end -->
+    	<div class="copyright-column-right">
+         <p class="copyright-text">
+           <a style = "color:#fff!important;" href="https://www.ala.org.au/terms-of-use#cy">Copyright</a>
+           &nbsp;&nbsp;
+           <a style = "color:#fff!important;" href="https://www.ala.org.au/terms-of-use">Terms of Use</a>
+           &nbsp;&nbsp;
+           <a style = "color:#fff!important;" href="https://status.ala.org.au/">System Status</a>
+         </p>
+      </div>
+    </div>
+	</div><!-- row end -->
+</div>
