@@ -85,9 +85,132 @@ Dingoes have major negative impacts on livestock producers, especially sheep far
 
 Since its construction 80 years ago, the Dingo Fence has perhaps unintentionally [shaped the landscape of Australia and showed the importance of apex predators like dingoes in ecosystems](https://www.abc.net.au/news/2023-02-09/dingo-fence-map-ecology-farming-predator-sheep-extinction/101711608). The dingo fence has acted as a natural experiment: On the side where dingoes remain present there is [more vegetation, likely because there is less grazing pressure from herbivores](https://link.springer.com/article/10.1007/s10980-021-01206-w) and [fewer invasive species like foxes, benefitting native biodiversity ](https://www.publish.csiro.au/am/AM21036). The difference between sides of the fence is so distinct that [you can even see it from space](https://youtu.be/ivmQk5EsScw)!
 
-Despite this evidence, historical and current control programs along with habitat loss have impacted dingo populations, currently listed as [vulnerable to extinction under the IUNC's Red List of Threatened Species](https://www.iucnredlist.org/species/41585/10484199). 
+Despite evidence that [dingoes can even be allies for livestock producers](https://theconversation.com/killing-dingoes-is-the-only-way-to-protect-livestock-right-nope-200905), historical and current control programs along with habitat loss have impacted dingo populations negatively, currently listed as [vulnerable to extinction under the IUNC's Red List of Threatened Species](https://www.iucnredlist.org/species/41585/10484199). 
 
-In an exploratory analysis, in this article we'll use data in the Atlas of Living Australia (ALA) to investigate how historical and ongoing differences in attitudes towards dingo conservation affect where and how often dingo observations are recorded.
+In an exploratory analysis, here we'll use data in the Atlas of Living Australia (ALA) to investigate how historical and ongoing differences in attitudes towards dingo conservation affect where and how often dingo observations are recorded.
+
+
+
+## Download data
+
+Let's see how many observations of dingoes are in the ALA and where they are.
+
+[dingo photos]
+
+First let's install the required packages.
+
+```{r}
+#| warning: false
+#| message: false
+library(galah)
+library(tidyverse)
+library(ozmaps)
+library(sf)
+library(patchwork)
+library(here)
+library(rmapshaper)
+library(ggpointdensity)
+library(glue)
+library(ggtext)
+```
+
+## Which states have the highest counts of dingoes?
+
+First let's find how many dingo observations there are in the ALA.
+
+```{r}
+galah_call() |>
+  galah_identify("canis familiaris") |>
+  galah_filter(raw_vernacularName == "Dingo") |>
+  galah_apply_profile(ALA) |>
+  atlas_counts()
+```
+
+Next, let's get the number of observations by each state. 
+
+Because **Canis familiaris** is the taxonomic name of both dingoes and dogs, we have to filter records that were only recorded with the name "Dingo". This taxonomic name issue also suggests that there might be more observations of dingoes, but data collectors might not always specify the name "Dingo" when they collect their data. **We'll also add an ALA "profile", a set of data quality filters by the ALA to remove unreliable observations.**
+
+```{r}
+#| echo: false
+
+# Use a ALA-registered email (register at ala.org.au)
+galah_config(email = "SMI9E9@csiro.au", verbose = FALSE)
+```
+
+```{r, echo = FALSE}
+#| eval: false
+
+# Use a ALA-registered email (register at ala.org.au)
+galah_config(email = "your-email-here")
+```
+
+```{r}
+dingo_counts <- galah_call() |>
+  galah_identify("canis familiaris") |>
+  galah_filter(raw_vernacularName == "Dingo") |>
+  galah_group_by(cl22) |>
+  galah_apply_profile(ALA) |> # set of data quality filters
+  atlas_counts()
+```
+
+We'll arrange the counts in descending order.
+
+```{r}
+dingo_counts |>
+  arrange(desc(count))
+```
+
+Here we can see the Northern Territory and South Australia hold the highest number of observations where in some states have very limited observations.
+
+Let's see this visually on a choropleth map.
+
+We'll start by getting our base map of Australia.
+
+```{r}
+aus <- ozmap_data(data = "states")
+```
+
+Join the counts by state to our base map.
+
+```{r}
+state_counts <- aus %>%
+  full_join(dingo_counts, by = c("NAME" = "cl22"))
+```
+
+Here we log-transform which standardises the data when there very low numbers and very high numbers (and not much in-between), that you want to analyse or visualise
+
+```{r}
+logged_counts <- state_counts |>
+  mutate(log = log10(count))|>
+  replace_na(list(log = 0))
+```
+
+We can plot our choropleth map.
+
+```{r}
+choropleth_map <- ggplot() +
+  geom_sf(data = logged_counts,
+          mapping = aes(fill = log,)) +
+   scale_fill_distiller(palette = "OrRd",
+                        direction = 1,
+                        labels = c("10", "100", "1000"),
+                        guide = guide_colorsteps(direction = "horizontal",
+                        title = "No. of Dingo Observations",
+                        title.position = "top")) +
+  theme_bw() +
+  theme(axis.text.x=element_text(angle = -90, hjust = 0), 
+        panel.background = element_rect(fill = "white", size = 2), 
+        panel.grid.major = element_line(colour = NA),
+        plot.title = element_text(face = "bold", size = 16, hjust = 0.5, line = 1),
+        axis.ticks = element_line(colour = "grey70", size = 0.2),
+        axis.title.y = element_text(size = 12, vjust = 3),
+        axis.title.x = element_text(size = 12, vjust = -1)) +
+   theme(legend.position = "bottom", legend.key.width = unit(12, 'mm')) +
+    labs(x = "Longitude", y = "Latitude")
+
+choropleth_map
+```
+
 
 <details><summary style = "color: #E06E53;">Expand for session info</summary>
 

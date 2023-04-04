@@ -375,8 +375,7 @@ p2 <- p1 +
          color = guide_legend(title = "Year")) +
   labs(y = "Proportion of year's total observations",
        x = "Month",
-       title = "Anatidae observations in Melbourne prior to & during COVID-19",
-       subtitle = "Proportion of each year's total observations")
+       title = "Anatidae observations in Melbourne prior to & during COVID-19")
 p2
 ```
 
@@ -386,7 +385,7 @@ The plot above is enough to see everything we need to see from our data. You *co
 #| column: page
 #| fig-align: center
 #| fig-width: 10
-#| fig-height: 7
+#| fig-height: 6
 #| code-fold: true
 
 # add fonts
