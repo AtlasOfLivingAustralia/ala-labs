@@ -1,5 +1,6 @@
 ---
 title: "Martin Westgate"
+include-after-body: _footer.html
 ---
 
 ```{r, include=FALSE}

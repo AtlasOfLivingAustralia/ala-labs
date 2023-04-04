@@ -1,5 +1,6 @@
 ---
 title: "Fonti Kar"
+include-after-body: _footer.html
 ---
 
 ```{r, include=FALSE}

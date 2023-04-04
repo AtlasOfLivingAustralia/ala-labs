@@ -6,6 +6,7 @@ author:
   - name: "Dax Kellie"
 date: "2022-08-08"
 title-block-banner: "#B8573E"
+include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3

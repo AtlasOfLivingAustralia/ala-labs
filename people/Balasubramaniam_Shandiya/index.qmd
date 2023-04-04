@@ -1,5 +1,6 @@
 ---
 title: "Shandiya Balasubramaniam"
+include-after-body: _footer.html
 ---
 
 ```{r, include=FALSE}

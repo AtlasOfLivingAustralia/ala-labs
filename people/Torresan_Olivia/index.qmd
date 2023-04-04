@@ -1,5 +1,6 @@
 ---
 title: "Olivia Torresan"
+include-after-body: _footer.html
 ---
 
 ```{r, include=FALSE}

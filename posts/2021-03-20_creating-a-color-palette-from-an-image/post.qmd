@@ -8,6 +8,7 @@ description: |
 author: "Martin Westgate"
 date: "01/03/2021"
 title-block-banner: "#B8573E"
+include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3

@@ -8,6 +8,7 @@ author:
   - name: "Dax Kellie"
 date: "2023-03-14"
 title-block-banner: "#B8573E"
+include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3
