@@ -93,7 +93,7 @@ In an exploratory analysis, here we'll use data in the Atlas of Living Australia
 
 ## Download data
 
-Let's see how many observations of dingoes are in the ALA and where they are.
+Let's start by seeing how many and where observations of dingoes are in the ALA.
 
 [dingo photos]
 
@@ -116,19 +116,182 @@ library(ggtext)
 
 ## Which states have the highest counts of dingoes?
 
-First let's find how many dingo observations there are in the ALA.
+Let's find how many dingo observations there are in the ALA for each state/territory using the [{galah} package]().
+
+Because **Canis familiaris** is the taxonomic name of both dingoes and dogs, if we only search using the scientific name, we'll likely return more than just dingo records. To fix this, let's filter our records to those specified by the data provider with the name common name "Dingo". 
+
+Data collectors might not *always* specify the name "Dingo" when they collect their data, so this issue might suggest that there are more observations of dingoes that were never specified by data providers. It's hard to know for certain
+
+Let's use `search_fields()` to help us find which fields we can use to filter the taxonomic name. There are a few options, but the `raw_vernacularName` field seems to hold original common names specified by data providers.
 
 ```{r}
-galah_call() |>
+search_fields("common name")
+search_fields("raw_vernacularName") |> search_values("dingo")
+```
+Let's also find the field that contains states & territories.
+```{r}
+search_fields("australian states")
+search_fields("cl22") |> show_values()
+```
+
+Now we can use download record counts by state with `atlas_counts()`. **We'll also add an ALA "profile", a set of data quality filters by the ALA to remove unreliable observations.**
+
+```{r}
+dingo_counts <- galah_call() |>
   galah_identify("canis familiaris") |>
   galah_filter(raw_vernacularName == "Dingo") |>
-  galah_apply_profile(ALA) |>
+  galah_group_by(cl22) |>
+  galah_apply_profile(ALA) |> # set of data quality filters
   atlas_counts()
 ```
 
-Next, let's get the number of observations by each state. 
+We'll arrange the counts in descending order. Northern Territory and South Australia hold the highest number of observations. Other states have very limited observations.
 
-Because **Canis familiaris** is the taxonomic name of both dingoes and dogs, we have to filter records that were only recorded with the name "Dingo". This taxonomic name issue also suggests that there might be more observations of dingoes, but data collectors might not always specify the name "Dingo" when they collect their data. **We'll also add an ALA "profile", a set of data quality filters by the ALA to remove unreliable observations.**
+```{r}
+dingo_counts |>
+  arrange(desc(count))
+```
+
+```{r}
+#| code-fold: true
+#| message: false
+#| warning: false
+# Add map of australia
+aus <- ozmap_data(data = "states")
+
+# Join state counts to our map
+state_counts <- aus %>%
+  full_join(dingo_counts, by = c("NAME" = "cl22"))
+
+# log-transform data to scale counts for nicer plotting
+logged_counts <- state_counts |>
+  mutate(log = log10(count))|>
+  replace_na(list(log = 0))
+
+# plot
+ggplot() +
+  geom_sf(data = logged_counts,
+          mapping = aes(fill = log)) +
+  geom_sf_text(data = logged_counts,
+               aes(label = count),
+               colour = "white",
+               size = 8,
+               fun.geometry = sf::st_centroid) +
+  scale_fill_distiller(palette = "OrRd", direction = 1) +
+  labs(x = "Longitude", y = "Latitude") +
+  theme_void() + 
+  theme(legend.position = "none")
+```
+
+## Data providers?
+
+Next let's find out who the main data providers are of dingo observations in the ALA.
+
+Why are dingo observations mainly in two states? Let's find out who the main data providers are to see who currently records these observations.
+
+To view only the main data providers, we'll filter to only providers that have provided more than 5 observations of dingoes
+
+```{r}
+data_providers <- galah_call() |>
+  galah_identify("canis familiaris") |>
+  galah_filter(raw_vernacularName == "Dingo") |>
+  galah_group_by(dataResourceName)|>
+  galah_apply_profile(ALA) |>
+  atlas_counts()
+
+counts_filtered <- data_providers |>
+  filter(count > 5)
+```
+
+Now we'll filter our `data.frame` with occurrences so that only the observations from each data provider with greater than 5 observations (saved in `counts_filtered`) are returned.
+
+```{r}
+dingo_obs <- galah_call()|>
+  galah_identify("canis familiaris") |>
+  galah_filter(raw_vernacularName == "Dingo") |>
+  galah_apply_profile(ALA) |>
+  atlas_occurrences()
+
+points_filtered <- dingoocc_dataproviders |>
+  filter(dataResourceName %in% counts_fitered$dataResourceName)
+```
+
+Now we can plot
+
+Here, we find that it is state organisations recording dingo data, with 0 public/citizen recordings from popular apps like iNaturalist. With mainly government monitoring programs providing dingo observations, our knowledge of dingo's true distribution depends a lot on differences between state organisations and their willingness to survey for dingoes.
+
+*Incidental dingo observations from citizen scientists can improve our overall knowledge of dingo distributions across Australia. In areas where there are few observations of dingoes, citizen science can then be valuable to fill gaps where state organisations do not record data.*
+
+There are only 4 data providers all state organisations that account for 98.5% of records and two of them are within the Northern Territory. The Northern Territory accounts for 56% of all dingo records. In contrast, Western Australia, Victoria, Australian Capital Territory and Queensland combined account for only 5% of records.
+
+It's possible that varying attitudes towards dingoes and their conservation status between states/territories affect the amount of data recorded of dingo observations. For example, the Northern Territory is the only state in Australia that recognizes dingoes as a protected species which also has the highest amount of observations. In other states such as Western Australia, New South Wales, Queensland and South Australia inside the dog fence dingoes are declared a pest species. Outside the Dog Fence they are managed as unprotected native animals under the National Parks and Wildlife Act 1972. These differences in legislation between states might help to explain why the highest numbers of observations are in areas that recognize dingoes as protected.
+
+```{r}
+#| code-fold: true
+#| column: page
+#| fig-align: center
+#| fig-height: 7
+#| fig-width: 12
+
+data_providers <- ggplot() +
+  geom_sf(data = aus, fill = "beige") +
+  geom_point(data = points_fitered,
+             mapping = aes(x = decimalLongitude,
+                           y = decimalLatitude,
+                           colour = dataResourceName),
+             alpha = 0.25) +
+  scale_color_manual(values = c(
+    "Museums Victoria provider for OZCAM" = "#A838FF", 
+    "Victorian Biodiversity Atlas" = "#6095FF", 
+    "Australian National Wildlife Collection provider for OZCAM" = "#FE7D49", 
+    "NSW BioNet Atlas" = "#FF38DE", 
+    "SA Fauna (BDBSA)" = "#58D68D", 
+    "Australian Museum provider for OZCAM" = "#FFC300", 
+    "Fauna Atlas N.T." = "#566573")) +
+  theme_bw() +
+  theme(axis.text.x=element_text(angle = -90, hjust = 0), 
+        panel.background = element_rect(fill = "white", size = 2), 
+        panel.grid.major = element_line(colour = NA),
+        plot.title = element_text(face = "bold", size = 16, hjust = 0.5, line = 3),
+        axis.ticks = element_line(colour = "grey70", size = 0.2),
+        axis.title.y = element_text(size = 12, vjust = 3),
+        axis.title.x = element_text(size = 12, vjust = -3),
+        legend.position = "none") +
+  guides(color = guide_legend(title = "Data Providers", alpha = "none")) +
+  labs(x = "Longitude",
+       y = "Latitude")
+
+
+bar_plot <-  counts_fitered %>%
+  ggplot(aes(x = reorder(str_wrap(dataResourceName, 25), - count), 
+             y = count, fill = dataResourceName)) +
+    geom_bar(stat="identity", width=.8) +
+    scale_fill_manual(values = c(
+    "Museums Victoria provider for OZCAM" = "#A838FF", 
+    "Victorian Biodiversity Atlas" = "#6095FF", 
+    "Australian National Wildlife Collection provider for OZCAM" = "#FE7D49", 
+    "NSW BioNet Atlas" = "#FF38DE", 
+    "SA Fauna (BDBSA)" = "#58D68D", 
+    "Australian Museum provider for OZCAM" = "#FFC300", 
+    "Fauna Atlas N.T." = "#566573")) +
+    coord_flip() +
+    xlab("") +
+    theme_bw() + 
+  theme(legend.position = "none",
+        axis.text = element_text(size = 12))
+
+
+# Plot bar plot and map
+bar_plot + data_providers + 
+  plot_annotation(
+    title = "Data Providers for Dingo Occurrences"
+  ) + 
+  plot_layout(widths = c(1, 2),
+              heights = c(2, 1))
+```
+
+
+
 
 ```{r}
 #| echo: false
@@ -144,72 +307,6 @@ galah_config(email = "SMI9E9@csiro.au", verbose = FALSE)
 galah_config(email = "your-email-here")
 ```
 
-```{r}
-dingo_counts <- galah_call() |>
-  galah_identify("canis familiaris") |>
-  galah_filter(raw_vernacularName == "Dingo") |>
-  galah_group_by(cl22) |>
-  galah_apply_profile(ALA) |> # set of data quality filters
-  atlas_counts()
-```
-
-We'll arrange the counts in descending order.
-
-```{r}
-dingo_counts |>
-  arrange(desc(count))
-```
-
-Here we can see the Northern Territory and South Australia hold the highest number of observations where in some states have very limited observations.
-
-Let's see this visually on a choropleth map.
-
-We'll start by getting our base map of Australia.
-
-```{r}
-aus <- ozmap_data(data = "states")
-```
-
-Join the counts by state to our base map.
-
-```{r}
-state_counts <- aus %>%
-  full_join(dingo_counts, by = c("NAME" = "cl22"))
-```
-
-Here we log-transform which standardises the data when there very low numbers and very high numbers (and not much in-between), that you want to analyse or visualise
-
-```{r}
-logged_counts <- state_counts |>
-  mutate(log = log10(count))|>
-  replace_na(list(log = 0))
-```
-
-We can plot our choropleth map.
-
-```{r}
-choropleth_map <- ggplot() +
-  geom_sf(data = logged_counts,
-          mapping = aes(fill = log,)) +
-   scale_fill_distiller(palette = "OrRd",
-                        direction = 1,
-                        labels = c("10", "100", "1000"),
-                        guide = guide_colorsteps(direction = "horizontal",
-                        title = "No. of Dingo Observations",
-                        title.position = "top")) +
-  theme_bw() +
-  theme(axis.text.x=element_text(angle = -90, hjust = 0), 
-        panel.background = element_rect(fill = "white", size = 2), 
-        panel.grid.major = element_line(colour = NA),
-        plot.title = element_text(face = "bold", size = 16, hjust = 0.5, line = 1),
-        axis.ticks = element_line(colour = "grey70", size = 0.2),
-        axis.title.y = element_text(size = 12, vjust = 3),
-        axis.title.x = element_text(size = 12, vjust = -1)) +
-   theme(legend.position = "bottom", legend.key.width = unit(12, 'mm')) +
-    labs(x = "Longitude", y = "Latitude")
-
-choropleth_map
-```
 
 
 <details><summary style = "color: #E06E53;">Expand for session info</summary>
