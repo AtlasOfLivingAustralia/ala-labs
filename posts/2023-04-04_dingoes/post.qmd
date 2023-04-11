@@ -55,7 +55,7 @@ Amos Smith
 
 :::{.author-card-image}
 ```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
-knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/thai.jpg")
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/amos.jpg")
 ```
 :::
 
@@ -95,9 +95,19 @@ In an exploratory analysis, here we'll use data in the Atlas of Living Australia
 
 # Summarise observations
 
-Let's start by seeing how many observations of dingoes are in the ALA and where they are.
+Let's start by finding how many observations of dingoes are in the ALA and where they are.
 
-[dingo photos]
+::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/5/5/b/b/19578b8d-f8a3-4ae8-a139-60f9d4d6bb55/original" class="rounded"/></img>
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/c/8/a/5/2716b0eb-0d0f-41cd-9c33-d517f45e5a8c/original" class="rounded"/></img>
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/3/2/4/a/5f426a63-4b4f-4def-b6ed-14316b40a423/original" class="rounded"/></img>
+:::
+
+::: figure-caption
+Left: [*Canis familiaris* (Michael Hains CC-BY-NC 3.0 (Au)](https://biocache.ala.org.au/occurrences/4d4a1b5d-f70f-4286-9282-3c325cdf2646), Middle: [*Canis familiaris* (GibberGavin CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/24b77a44-2a8d-4d16-a4e3-41823d1fc8ca), Right: [*Canis familiaris* (Danial Moore CC-BY-NC 3.0 (Au))](https://biocache.ala.org.au/occurrences/64cc4167-9f4f-495c-b4be-b0a5e2ca57de)
+:::
 
 
 ```{r}
@@ -117,12 +127,12 @@ library(glue)
 library(ggtext)
 ```
 
-### Find which fields to use
+### Find fields to filter data
 
-We'll use the [{galah} package]() to download our data. Because **Canis familiaris** is the taxonomic name of both dingoes and dogs, if we only search using the scientific name, we'll likely return more than just dingo records. To fix this, let's filter our records to those specified by the data provider with the name common name "Dingo". 
+We'll use the [{galah} package](http://galah.ala.org.au/) to download our data. Because **Canis familiaris** is the taxonomic name of both dingoes *and* dogs, if we only search using the scientific name, we'll likely return more than just dingo records. To fix this, let's filter our records to those specified by the data provider with the name common name "Dingo". 
 
-:::(.aside)
-One can imagine that sometimes data might be collected without specifying the name "Dingo" (either due to uncertainty or a lack of specificity in the survey), which, if true, suggests there might be observations of dingoes that were observed but never recorded in the data (though it's hard to know for sure)
+:::{.aside}
+One can imagine that sometimes data might be collected without specifying the name "Dingo" (either due to uncertainty or a lack of specificity in the survey). If true, there might be observations of dingoes that we'll never know because they weren't specified (though it's hard to know for sure)!
 :::
 
 Let's use `search_fields()` to help us find which fields we can use to filter the taxonomic name. There are a few options, but the `raw_vernacularName` field seems to hold original common names specified by data providers.
@@ -140,6 +150,7 @@ We can use the same method to find a field that contains states & territories.
 search_fields("australian states")
 search_fields("cl22") |> show_values()
 ```
+
 
 ### State observations
 

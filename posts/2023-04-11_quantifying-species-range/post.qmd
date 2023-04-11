@@ -453,9 +453,7 @@ top3 <- bees_overlap |>
 top3
 ```
 
-<!-- Dax, can you please help us crop this first bee please so the circles are alike? Thanks!!! -->
-
-::: {layout-ncol="3" style="margin-left: auto; martin-right: auto;"}
+::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/a/6/8/0/30410bf3-d717-45c4-bdb7-8cde5c6b086a/original" class="rounded"/></img>
 
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/6/3/7/a0e69e32-1d1a-4598-b113-8c42ee76736e/original" class="rounded"/></img>
@@ -626,7 +624,7 @@ We repeated the same workflow with the vascular plant dataset and created a map 
 
 Commonly known as bitterpeas, *Daviesia* comprises plants pollinated by [reed bees (*Exoneura*)](https://fennerschool.anu.edu.au/files/Rubus%20berry%20pollinator%20infosheet.pdf), which are featured in the bee map above.
 
-::: {layout-ncol="3" style="margin-left: auto; martin-right: auto;"}
+::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/7/0/b/0a95413d-25aa-4889-9c7d-39dd898eb077/original" class="rounded"/></img>
 
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/d/c/7/a/d8c159a6-1aa6-45f7-9f3d-b60da4eaa7cd/original" class="rounded"/></img>
