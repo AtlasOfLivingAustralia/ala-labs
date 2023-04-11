@@ -35,13 +35,16 @@ library(htmltools)
 library(gt)
 ```
 
+
 <!-- remove metadata section -->
+
 
 ```{css, echo = FALSE}
 #title-block-header.quarto-title-block.default .quarto-title-meta {
     display: none;
 }
 ```
+
 
 <!-- Author card -->
 
@@ -58,15 +61,19 @@ library(gt)
 :::
 
 ::: author-card-image
+
 ```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/fonti.jpg")
 ```
+
 :::
 
 ::: author-card-image
+
 ```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/margot.jpg")
 ```
+
 :::
 :::
 
@@ -90,16 +97,19 @@ Here, we show you how to compute a new form of spatial polygon --- a [*concave h
 
 First we will load the R packages we need:
 
+
 ```{r, loadpkg}
 # install.packages("pacman")
 pacman::p_load(tidyverse, here, rmapshaper, sf, ggpointdensity, viridis, ozmaps, concaveman, cowplot, patchwork)
 ```
+
 
 Next, we will go to the [Data Access Portal](https://data.csiro.au/collection/csiro:56679) to download the invertebrate and vascular plant datasets.
 
 Click on the **Files** tab (under the main title), then the **Download** button (in the top right corner), and select **Download all files as Zip archive**. Save this zip file in a local folder inside your current [R project](https://r4ds.had.co.nz/workflow-projects.html) and be sure to unzip it.
 
 Now we can read the curated datasets into R:
+
 
 ```{r loaddata}
 #| eval: false
@@ -123,11 +133,13 @@ vplants <- read_csv(here("posts", "data","Curated_Plant_and_Invertebrate_Data_fo
 ```
 
 
+
 # Overview of data
 
 Both datasets are based on studies that investigated the impact of the Black Summer bushfires and are designed to support future modelling and impact assessments. The [invertebrate dataset](https://doi.org/10.1111/geb.13550) spans across Australia, whereas the [vascular plant dataset](https://doi.org/10.1038/s41467-021-21266-5) is restricted to South-Eastern Australia and contains only species where more than 50% of their range was affected by the 2019/2020 fires.
 
 <br> **Summary of Invertebrate and Vascular Plant Data**
+
 
 ```{r}
 #| echo: false
@@ -154,7 +166,9 @@ table_df |>
   tab_options(table.width = pct(90))
 ```
 
+
 A total of 44,146 invertebrate species and 896 species of vascular plants are represented in these datasets. Below, we've attempted to show the geographic range of these data. So much data makes it challenging to visualise all data points and concave hulls at once. As such, we created the concave hull maps (left) below by randomly selecting one invertebrate species from each *class* and one plant species from each *family*.
+
 
 ```{r}
 #| code-fold: true
@@ -297,6 +311,7 @@ plants_points_map <- ggplot() +
 plant_concave + plants_points_map + plot_annotation(title = "Vascular Plant Dataset")
 ```
 
+
 # Pre-cleaning
 
 Let's use these datasets to calculate concave hulls and range overlaps with burned regions. One benefit of using these curated datasets is that *they do not contain any duplicates or missing values*. This makes data cleaning an easier job! 
@@ -306,6 +321,7 @@ However, there are still a few steps we need to do before computing concave hull
 ### Remove data-deficient species
 
 First, we need to filter out any *data-deficient species* with fewer than 4 data points because concave hulls are best estimated with at least 4 data points. To do this, we'll calculate the number of observations for each species, then identify which ones have more than 4 records. Using this list of species, we can extract their data.
+
 
 ```{r}
 more_than_4_obs <- inverts |> 
@@ -320,9 +336,11 @@ inverts_subset <- inverts |>
   filter(scientific_name %in% more_than_4_obs)
 ```
 
+
 ### Restrict data to mainland Australia and Tasmania
 
 The invertebrate dataset includes records on offshore islands which can drastically skew the shape of a species' concave hull. For the purpose of this post, we will filter these out and only use records that occur on mainland Australia and Tasmania.
+
 
 ```{r}
 subset_mainland <- inverts_subset |> 
@@ -331,11 +349,13 @@ subset_mainland <- inverts_subset |>
   select(scientific_name:family, longitude, latitude)
 ```
 
+
 ### List columns and nesting occurrence data
 
 For the majority of calculations in this post, we will be making use of [**list columns**](https://jennybc.github.io/purrr-tutorial/ls13_list-columns.html), a very useful data structure for iterative analyses. You can think of a list column as mini data frames nested within a column by a grouping variable.
 
 In this case we are nesting the coordinate data by species, which will make operations at the species level more efficient.
+
 
 ```{r}
 inverts_nest <- subset_mainland |> 
@@ -345,13 +365,16 @@ inverts_nest |>
   print(n = 6)
 ```
 
+
 You can inspect elements in the list column like this:
+
 
 ```{r}
 inverts_nest |> 
   pluck("coords", 1) |>  # 1 refers to the first element of the list column
   print(n = 6)
 ```
+
 
 The biggest change with working with list columns is that you have to iterate across each element. To do this, we will use various functions from the `{purrr}` package for the next calculation steps.
 
@@ -365,6 +388,7 @@ Shapefiles for the 2019-2020 fire season are available through the [National Ind
 Click on **Download Data** (near the top of the page), then click on **NIAFED_v20200623.zip** to download the zip file. Save the zip file in your project folder and unzip to retrieve the shapefiles.
 
 Now we can read the shapefile into R and set the projection to EPSG:4326. To speed up the computation of concave hulls and overlaps, we will remove elevation values and simplify the edges of the fire `POLYGON`.
+
 
 ```{r firelayer}
 #| eval: false
@@ -383,9 +407,11 @@ fire <- st_read(here("posts", "data", "NIAFED_v20200623", "NIAFED_20190701_20200
   ms_simplify() # Simplify edges of the fire layer
 ```
 
+
 ### Choose taxonomic group
 
 While it is possible to calculate range overlap with burned areas for all species in the dataset, it can take a lot of memory and processing time. Instead, we will demonstrate our workflow with --- **the bee family (Apidae)** --- as a working example.
+
 
 ```{r}
 # Filter invertebrate data to Apidae
@@ -393,11 +419,13 @@ bees <- inverts_nest |>
   filter(family == "Apidae") 
 ```
 
+
 ### Compute concave hull
 
 In the next steps, we will work through the coordinate data for each species iteratively using `map`.
 
 We will transform each species' coordinates into an `sf` object using `st_as_sf()`, then compute the concave hulls with the `concaveman()` function. You can adjust the tightness of the hull boundary around a set of points using the `concavity` argument - the smaller the value, the tighter the hull. We've wrapped `mutate()` around these steps so the output will become variables in our `tibble`.
+
 
 ```{r}
 bees_concave <- bees |>
@@ -413,18 +441,22 @@ bees_concave <- bees |>
 bees_concave |> print(n = 6)
 ```
 
+
 ### Compute range overlap and descriptive statistics
 
 To compute range overlaps, we need to set our geometry calculations to assume the Earth is flat and not spherical by setting `sf_use_s2(FALSE)`. This may be a limitation of the method but it still gives us a good approximation.
+
 
 ```{r}
 # Disable spherical geometry
 sf_use_s2(FALSE) 
 ```
 
+
 Using `st_intersection()`, we can identify the overlap between each species' concave hull with fire-burned areas. We can then use `st_area()` to calculate the area (m^2^) of overlap and convert it into a percentage of each species' original range so that all species are comparable.
 
 Using `possibly()` with our `map()` functions allows the calculations to return `NA` for species that did not overlap with burned areas. Once calculations are complete, we will un-nest the variables: `overlap_area` and `percent_overlap`, so they appear as regular columns in our `tibble`.
+
 
 ```{r}
 # Calculate range overlap
@@ -442,9 +474,11 @@ bees_overlap <- bees_concave |>
 bees_overlap |> print(n = 6)
 ```
 
+
 ### Rank species by fire impact
 
 Next, we will take the top 3 species with the highest percentage range overlap with fire-burned areas (`percent_overlap`) for our data visualisation. The top 3 species include a stingless bee, a reed bee, and a carpenter bee.
+
 
 ```{r}
 top3 <- bees_overlap |> 
@@ -453,6 +487,7 @@ top3 <- bees_overlap |>
 
 top3
 ```
+
 
 <!-- Dax, can you please help us crop this first bee please so the circles are alike? Thanks!!! -->
 
@@ -472,6 +507,7 @@ Left: [*Austroplebeia* (Geoffbyrne CC-BY-NC 4.0)](https://images.ala.org.au/imag
 
 We will now select the variables we need and un-nest the relevant ones (`points_sf`, `concave_sf`, `overlap_sf`) for plotting - this gives us everything we need to create our maps!
 
+
 ```{r}
 bee_map_data <- top3 |> 
   select(scientific_name, points_sf, concave_sf, overlap_sf) |> 
@@ -480,31 +516,34 @@ bee_map_data <- top3 |>
 bee_map_data |> print(n = 6)
 ```
 
+
 ### Create the base map
 
 Let's create our base map with the outline of Australia and the fire-burned area. You can see a majority of burnt areas are located in Northern Australia and the South-East coast.
 
-```{r}
-# Retrieve Australia polygon
-aus <- st_transform(ozmap_country, 4326)
 
+```{r}
 base_map <- ggplot() + 
   geom_sf(data = aus, colour = "black", fill = "white") +
   geom_sf(data = fire, fill = "#FEC3A6", colour = "#FEC3A6") + 
   theme_void()
 ```
 
+
 <aside>
+
 
 ```{r, echo = FALSE}
 base_map
 ```
+
 
 </aside>
 
 ### Add species range overlap
 
 Now we can add the range overlap of our three bee species. We use `geometry` within `aes` to specify which variable from `bee_map_data` we want to plot.
+
 
 ```{r}
 #| echo: false
@@ -531,7 +570,9 @@ main_map <- base_map +
 
 ```
 
+
 <aside>
+
 
 ```{r}
 #| echo: false
@@ -539,11 +580,13 @@ main_map <- base_map +
 main_map + theme(legend.position = "none")
 ```
 
+
 </aside>
 
 ### Create inset map
 
 The navy blue hull in the top right corner of Australia is very small (*Austroplebeia cassiae*), so we will make an enlarged inset map so we can see it clearer.
+
 
 ```{r}
 #| echo: true
@@ -560,7 +603,9 @@ inset <- main_map +
 
 ```
 
+
 <aside>
+
 
 ```{r}
 #| echo: false
@@ -568,9 +613,11 @@ inset <- main_map +
 inset 
 ```
 
+
 </aside>
 
 We'll also draw a box around the area of interest in the enlarged map.
+
 
 ```{r}
 #| echo: true
@@ -584,7 +631,9 @@ main_bbox <- main_map +
 
 ```
 
+
 <aside>
+
 
 ```{r}
 #| echo: false
@@ -603,6 +652,7 @@ main_bbox <- main_map +
   theme(legend.position = "none")
 ```
 
+
 </aside>
 
 ### Arrange map components
@@ -610,6 +660,7 @@ main_bbox <- main_map +
 Finally, we can arrange our base map and inset together for our final map! 
 
 This map shows the three bee species with the highest percentage overlap with fire-burned areas. Two of these bee species are located in Northern Australia and one is located in South-Eastern Australia.
+
 
 ```{r}
 #| fig-height: 7
@@ -620,6 +671,7 @@ combined_map <- ggdraw(main_bbox) +
 
 combined_map
 ```
+
 
 # Bonus: Vascular plants 
 
@@ -638,6 +690,7 @@ Commonly known as bitterpeas, *Daviesia* comprises plants pollinated by [reed be
 ::: figure-caption
 Left: [*Daviesa buxifolia* (Betty and Don Wood CC BY 3.0)](https://images.ala.org.au/image/viewer?imageId=0a95413d-25aa-4889-9c7d-39dd898eb077), Middle: [*Daviesa nova-anglica* (Janeteveh CC BY-NC 4.0))](https://images.ala.org.au/image/viewer?imageId=d8c159a6-1aa6-45f7-9f3d-b60da4eaa7cd), Right: [*Daviesa suaveolens* (Crisp, M.D. CC BY 3.0))](https://images.ala.org.au/image/viewer?imageId=a5ad9e21-5ce5-450b-baf7-d52ea3a6ffed)
 :::
+
 
 ```{r, echo=TRUE}
 #| echo: true
@@ -739,6 +792,7 @@ daviesia_combined <- ggdraw(daviesia_bbox) +
 daviesia_combined
 ```
 
+
 # Final thoughts
 
 In natural catastrophes, decision makers have limited time to act. They need ready-to-go data and workflows to assess and manage the ramifications. Here, we used [curated datasets](https://data.csiro.au/collection/csiro:56679) of Australian invertebrates and vascular plants to illustrate how concave hulls can represent estimate species range and estimate range overlap with natural disasters. We hope our work can aid future assessments of vulnerable species and help prioritise conservation efforts.
@@ -757,6 +811,7 @@ Expand for session info
 
 </summary>
 
+
 ```{r, echo = FALSE}
 library(sessioninfo)
 # save the session info as an object
@@ -765,4 +820,6 @@ pkg_sesh <- session_info(pkgs = "attached")
 pkg_sesh
 ```
 
+
 </details>
+
