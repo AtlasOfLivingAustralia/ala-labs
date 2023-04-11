@@ -392,13 +392,6 @@ a:hover {
   }
 }
 
-@media (min-width: 992px){
-  .circle-image {
-    width: auto;
-    height: 220px;
-  }
-}
-
 img.rounded {
   object-fit: cover;
   border-radius: 50% !important;
