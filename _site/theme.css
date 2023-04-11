@@ -392,6 +392,20 @@ a:hover {
   }
 }
 
+@media (min-width: 992px){
+  .circle-image {
+    width: auto;
+    height: 220px;
+  }
+}
+
+img.rounded {
+  object-fit: cover;
+  border-radius: 50% !important;
+  height: 195px;
+  width: 195px;
+}
+
 /*@media screen and (max-width: 952px) {
   .l-body img {
     margin-right: 15px;
