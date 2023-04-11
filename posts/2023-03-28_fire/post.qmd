@@ -17,7 +17,7 @@ categories:
   - Plantae
   - Summaries
   - Maps
-image: pea_fire.png
+image: images/bee_fire.png
 freeze: true
 draft: true
 editor_options: 
@@ -74,7 +74,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 The 2019/2020 Australian bushfires had a devastating impact on the natural landscape, threatening our native biodiversity. More than ever, decision makers need curated, open access biodiversity data to help respond effectively to future bushfires.
 
-Our team at the Atlas of Living Australia (ALA) has been working with experts to collate biodiversity datasets that can be used for off-the-shelf bushfire assessments. The two datasets contain data on Australian taxonomic groups that are often overlooked and severely affected during bushfires: **invertebrates** ([insects](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/17c9fd64-3c07-4df5-a33d-eda1e065e99f), [molluscs](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/4fb59020-e4a8-4973-adca-a4f662c4645c), [spiders](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/00a0a9ea-1ff1-4da7-8a52-1568791c5b1e)) and [**vascular plants**](https://bie.ala.org.au/species/NZOR-6-33408).
+Our team at the Atlas of Living Australia (ALA) has been working with [Invertebrates Australia](https://invertebratesaustralia.org/) and [CSIRO National Research Collections](https://www.csiro.au/en/about/facilities-collections/collections) team to collate biodiversity datasets that can be used for off-the-shelf bushfire assessments. The two datasets contain data on Australian taxonomic groups that are often overlooked and severely affected during bushfires: **invertebrates** ([insects](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/17c9fd64-3c07-4df5-a33d-eda1e065e99f), [molluscs](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/4fb59020-e4a8-4973-adca-a4f662c4645c), [spiders](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/00a0a9ea-1ff1-4da7-8a52-1568791c5b1e)) and [**vascular plants**](https://bie.ala.org.au/species/NZOR-6-33408).
 
 
 :::{.announce style="background-color: #FFEAC2; text-align: center;"}
