@@ -738,7 +738,7 @@ daviesia_combined
 
 # Final thoughts
 
-In natural catastrophes, decision makers have limited time to act. They need ready-to-go data and workflows to assess and manage the ramifications. Here, we used [curated datasets](https://data.csiro.au/collection/csiro:56679) of Australian invertebrates and vascular plants to illustrate how concave hulls can represent estimate species range and estimate range overlap with natural disasters. We hope our work can aid future assessments of vulnerable species and help prioritise conservation efforts.
+In natural catastrophes, decision makers have limited time to act. They need ready-to-go data and workflows to assess and manage possible consequences of the catastrophe and any proposed ways to mitigate it. Here, we used [curated datasets](https://data.csiro.au/collection/csiro:56679) of Australian invertebrates and vascular plants to illustrate how concave hulls can represent estimate species range and estimate range overlap with natural disasters. We hope our work can aid future assessments of vulnerable species and help prioritise conservation efforts.
 
 ::: {.callout-note icon="false"}
 # Acknowledgement:
