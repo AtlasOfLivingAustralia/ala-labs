@@ -82,7 +82,7 @@ Our team at the Atlas of Living Australia (ALA) has been working with [Invertebr
 
 This post expands on our [last post about using convex and alpha hulls to visualise distributions of data-deficient species](https://labs.ala.org.au/posts/2022-10-12_alpha-hulls/post.html).
 
-Here, we show you how to compute a new form of spatial polygon --- a [*concave hull*](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.676.6258&rep=rep1&type=pdf) --- and use it to represent a specie's range and to calculate the overlap with fire-burned areas (range overlap). Unlike convex hulls, concave hulls have the added flexibility to adjust their tightness to the data (or *concavity*). This flexibility allows more accurate estimation of species ranges, making it a useful approach to rapidly assess how natural disasters like bush fires affected biodiversity.
+Here, we show you how to compute a new form of spatial polygon --- a [*concave hull*](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.676.6258&rep=rep1&type=pdf) --- and use it to represent a species' range and to calculate the overlap with fire-burned areas (range overlap). Unlike convex hulls, concave hulls have the added flexibility to adjust their tightness to the data (or *concavity*). This flexibility allows more accurate estimation of species ranges, making it a useful approach to rapidly assess how natural disasters like bush fires affected biodiversity.
 
 
 # Download data
