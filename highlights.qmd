@@ -1,14 +1,13 @@
 ---
-title: "Highlights"
-subtitle: "Research building on the ALA"
+title: "Research highlights"
+subtitle: "Scientific papers that draw on the ALA"
 listing:
-  contents: 
-    - higlights
+  contents: highlights
   sort-ui: true
   sort: 
     - "date desc"
     - "title desc"
-  type: default
+  type: grid
   date-format: medium
   categories: true
   page-size: 9
@@ -25,4 +24,3 @@ format:
       body-width: 1000px
       margin-width: 200px
 ---
-
