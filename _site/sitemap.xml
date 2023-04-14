@@ -2,15 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://labs.ala.org.au/about.html</loc>
-    <lastmod>2023-04-13T01:44:37.679Z</lastmod>
+    <lastmod>2023-04-14T02:15:33.364Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/galah.html</loc>
-    <lastmod>2023-04-13T01:44:38.442Z</lastmod>
+    <lastmod>2023-04-14T02:09:48.559Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/index.html</loc>
-    <lastmod>2023-04-13T01:44:39.327Z</lastmod>
+    <lastmod>2023-04-14T06:12:08.167Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/people/Balasubramaniam_Shandiya/index.html</loc>
@@ -86,10 +86,30 @@
   </url>
   <url>
     <loc>https://labs.ala.org.au/posts/2023-04-11_quantifying-species-range/post.html</loc>
-    <lastmod>2023-04-13T01:46:20.231Z</lastmod>
+    <lastmod>2023-04-14T05:15:20.119Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/posts.html</loc>
-    <lastmod>2023-04-13T01:46:22.153Z</lastmod>
+    <lastmod>2023-04-14T05:43:29.139Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/highlights.html</loc>
+    <lastmod>2023-04-14T06:59:12.891Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/highlights/2023-03-21/paper.html</loc>
+    <lastmod>2023-04-14T02:04:55.297Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/software.html</loc>
+    <lastmod>2023-04-14T02:13:59.606Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/highlights/2023-03-21_peanuts/paper.html</loc>
+    <lastmod>2023-04-14T06:59:12.202Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/citations.html</loc>
+    <lastmod>2023-04-14T06:06:27.817Z</lastmod>
   </url>
 </urlset>
