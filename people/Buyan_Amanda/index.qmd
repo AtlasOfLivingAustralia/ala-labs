@@ -38,3 +38,6 @@ create_button(
 
 
 ### {{< fa newspaper >}} Posts 
+
+[Plotting invasive species distributions with alpha shapes and choropleth maps in Python](https://labs.ala.org.au/posts/2023-04-28_plotting-invasive-species/post.html)<br>
+*Invasive and introduced species can expand quickly into new habitats, altering ecosystems. In this post we use {galah}, {alphashape} and {geopandas} in Python to visualise the growing distribution of Rhinella marina (cane toads) and the expanding range of Pittisporum undulatum in Australia.*

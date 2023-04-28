@@ -17,8 +17,8 @@ create_team_about = function(text){
     tags$div(
       class = "arrow bounce",
       tags$a(
-        class = "arrow-link fa fa-arrow-down fa-2x", 
-        href = "#team-photo-grid", 
+        class = "arrow-link fa fa-arrow-down fa-2x",
+        href = "#team-photo-grid",
         style = "will-change:scroll-position; text-decoration:none;"
       )
     )
@@ -32,7 +32,7 @@ create_values_box1 = function(value, icon, text){
     class = "col-lg-4 px-0",
     tags$div(
       class = "value-block value-feature-1",
-      h3(class = "value-text", 
+      h3(class = "value-text",
          tags$i(class = icon), value),
       p(text)
     )
@@ -44,7 +44,7 @@ create_values_box2 = function(value, icon, text){
     class = "col-lg-4 px-0",
     tags$div(
       class = "value-block value-feature-2",
-      h3(class = "value-text", 
+      h3(class = "value-text",
          tags$i(class = icon), value),
       p(text)
     )
@@ -56,7 +56,7 @@ create_values_box3 = function(value, icon, text){
     class = "col-lg-4 px-0",
     tags$div(
       class = "value-block value-feature-3",
-      h3(class = "value-text", 
+      h3(class = "value-text",
          tags$i(class = icon), value),
       p(text)
     )
@@ -74,7 +74,7 @@ create_team_card <- function(person_page, img_src, name, alt, text, url_web, url
       tags$img(class ="team-image", src = img_src, alt = name, style = "width:100%")),
       tags$div(
         class = "container",
-        a(href = person_page, 
+        a(href = person_page,
           h4(class = "name", name)),
         p(class = "job-title", text)
       )))
@@ -93,11 +93,12 @@ create_button <- function(icon, url) {
         class = "button-2",
         tags$i(
           class = icon
-        ))))
+        )))
+    )
 }
 
 create_category_button <- function(silhouette_image, url, color) {
-  tags$div( 
+  tags$div(
     class = "category-column",
     tags$button(
       class = "category-button",
