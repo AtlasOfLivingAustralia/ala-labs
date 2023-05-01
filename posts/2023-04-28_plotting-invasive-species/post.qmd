@@ -381,16 +381,16 @@ Let's create a choropleth map to visualise the to visualise the bioregions where
 First, let's download a shapefile of Australia's bioregions. The [IBRA7 bioregions](https://data.gov.au/dataset/ds-dga-d44dd392-ebea-4f1a-b30e-4a2da154aae4/details?q=ibra) classify areas within Australia that are geographically and ecologically distinct. Download the zip folder, save it in your project directory and unzip it. We can again use the {GeoPandas} package to read in and handle these data.
 
 ```{python}
-#| echo: false
-#| message: false
-#| warning: false
-bioregions = geopandas.read_file("../data/IBRA7_regions/ibra7_regions.shp")
+#| eval: false
+bioregions = geopandas.read_file("IBRA7_regions/ibra7_regions.shp")
 bioregions.plot(edgecolor = "#5A5A5A", linewidth = 0.25, facecolor = "white")
 ```
 
 ```{python}
-#| eval: false
-bioregions = geopandas.read_file("path-to-folder/IBRA7_regions/ibra7_regions.shp")
+#| echo: false
+#| message: false
+#| warning: false
+bioregions = geopandas.read_file("../data/IBRA7_regions/ibra7_regions.shp")
 bioregions.plot(edgecolor = "#5A5A5A", linewidth = 0.25, facecolor = "white")
 ```
 
