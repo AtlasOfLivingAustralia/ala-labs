@@ -1,7 +1,7 @@
 ---
 title: "Plotting invasive species distributions with alpha shapes and choropleth maps in Python"
 description: |
-  Invasive and introduced species can expand quickly into new habitats, altering ecosystems. In this post we use {galah}, {alphashape} and {geopandas} in Python to visualise the growing distribution of *Rhinella marina* (cane toads) and the expanding range of *Pittisporum undulatum* in Australia.
+  Invasive and introduced species can expand quickly into new habitats, altering ecosystems. In this post we use Python's {galah}, {alphashape} and {GeoPandas} packages to visualise the growing distribution of *Rhinella marina* (cane toads) and the expanding range of *Pittisporum undulatum* in Australia.
 author:
   - name: "Caitlin Ramsay"
   - name: "Amanda Buyan"
@@ -84,10 +84,13 @@ In this post, we will use Python and the [{galah} package](https://galah.ala.org
 
 ### Download data
 
-To start, we will use the infamous example of the cane toad to illustrate how far an invasive species' distribution can spread.
+To start, we will use the infamous example of the cane toad to illustrate how far an invasive species' distribution can spread each decade.
 
 :::{layout="[-1, 1, -1]"}
 <img class="rounded" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/f/b/2/0dd84abb-041e-4868-93fb-7b120ab92bfe/original"></img>
+:::
+::: {.figure-caption}
+[Rhinella marina (Isaac Clarey CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/722881a9-aff8-40f9-af5d-fe6bea58743d)
 :::
 
 First load the required Python packages.
@@ -131,13 +134,13 @@ cane_toads.head(5)
 
 ### Clean data
 
-Now, we need to clean our data to ensure that there are no null or missing values in the spatial and date fields we will use in our visualisation (`eventDate`, `decimalLatitude`, and `decimalLongitude`). Because `galah.atlas_occurrences()` returns a Pandas dataframe, we have plenty of functions we can use to clean our data.
+We'll clean our data to ensure that there are no null or missing values in our coordinates and date fields. Because `galah.atlas_occurrences()` returns a Pandas dataframe, we have plenty of functions we can use to clean our data.
 
 ```{python}
 cane_toads = cane_toads.dropna(subset=["eventDate", "decimalLatitude", "decimalLongitude"])
 ```
 
-We will be mapping cane toad distribution for each decade; however, the `eventDate` value for each record is a string value in the format `yyyy-mm-dd Thh:mm:ssZ`. We have written our own function titled `convert_date_to_decade()` to take a date represented as a `string` as input and return its corresponding decade. It does this by extracting the year from the date string and then rounding it down to the nearest decade.
+We want to map cane toad's distribution each decade in our final visualisation. However, the `eventDate` value for each record is formaatted as a string value `yyyy-mm-dd Thh:mm:ssZ`. Let's write our own function `convert_date_to_decade()` that extract the year from a date `string` and return its corresponding decade by rounding down to the nearest decade.
 
 ```{python}
 def convert_date_to_decade(value):
@@ -154,9 +157,16 @@ cane_toads["decade"] = cane_toads["eventDate"].map(convert_date_to_decade)
 
 ### Make Australia map
 
-Next, we need to download a shapefile of Australia with state boundaries to be able to plot species distributions onto. The Australian Bureau of Statistics provides [digital boundary files](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files) from which you can explore many other Australian shapefiles. Download the [States and Territories - 2021 - Shapefile](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files/STE_2021_AUST_SHP_GDA2020.zip) a zip folder. Save it inside your working folder and then unzip it to access the `.shp` file inside.
+Next, let's download a shapefile of Australia with state boundaries. The Australian Bureau of Statistics provides [digital boundary files](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files) from which you can explore many other Australian shapefiles. Download the [States and Territories - 2021 - Shapefile](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files/STE_2021_AUST_SHP_GDA2020.zip) a zip folder. Save the zip folder inside your working folder and then unzip it to access the `.shp` file inside.
 
 {`GeoPandas`} is a package that handles geospatial data in Python and can be used to load in shapefiles as `GeoPandas` dataframes. Let's test this out by plotting our Australian state boundary shapefile.
+
+```{python}
+#| eval: false
+mpl.rcParams['figure.dpi'] = 1200 # generate a high resolution image
+states = geopandas.read_file("Australia_state_boundaries/STE_2021_AUST_GDA2020.shp")
+states.plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white")
+```
 
 ```{python}
 #| warning: false
@@ -167,12 +177,6 @@ states = geopandas.read_file("../data/Australia_state_boundaries/STE_2021_AUST_G
 states.plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white")
 ```
 
-```{python}
-#| eval: false
-mpl.rcParams['figure.dpi'] = 1200 # generate a high resolution image
-states = geopandas.read_file("Australia_state_boundaries/STE_2021_AUST_GDA2020.shp")
-states.plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white")
-```
 
 ### Generate alpha shapes
 
@@ -360,12 +364,13 @@ plt.show()
 
 When people think of invasive species, they generally think of species that have been introduced to Australia from other countries. However, even Australia's native species can become pests when introduced to a new ecosystem. 
 
-One good example of native pests are *Pittosporum undulatum* trees. These trees have been introduced as ornamental plants in gardens across Australia because of their sweet-scented flowers and bright berries. Although *P. undulatum*'s native range extends from southern Queensland to eastern Victoria, it is now considered an environmental weed in many regions where it has been introduced.
+One good example of native pests are the trees *Pittosporum undulatum* (sometimes called Sweet Pittosporum). These trees have been introduced as ornamental plants in gardens across Australia because of their sweet-scented flowers and bright berries. Although *Pittosporum undulatum*'s native range extends from southern Queensland to eastern Victoria, it is now considered an environmental weed in many regions where it has been introduced.
 
 :::{layout="[-1, 1, -1]"}
-
 <img class="rounded" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/9/9/e/b/3765267a-f11a-474f-9bc9-215a5394be99/original"></img>
-
+:::
+::: {.figure-caption}
+[Pittosporum undulatum (Chris Clarke CC-BY)](https://biocache.ala.org.au/occurrences/30b0b6dc-1d77-4a1f-ae15-18ef5ef67e28)
 :::
 
 Let's create a choropleth map to visualise the to visualise the bioregions where *Pittosporum undulatum* is native and introduced.
@@ -476,9 +481,9 @@ plt.show()
 
 # Final thoughts
 
-Human activity—from constructing buildings to travelling overseas to gardening—plays part in shaping modern ecosystems. Our maps showed how quickly well-known invasive species have established themselves across Australia, and how widely even native Australian plants can spread when introduced to non-native regions.
+Human activity—from constructing buildings to travelling overseas to gardening—plays a part in shaping modern ecosystems. Our maps showed how quickly well-known invasive species have established themselves across Australia, and how widely even native Australian plants can spread when introduced to non-native regions.
 
-Humans are just one of many drivers of introducing species to new areas. Changes to the environment, for example, can shrink available resources and living space in a habitat. Introduced invasive species that are more flexible to environmental changes (and many well-known ones are) often outcompete native species for these available resources. [Large weather events, extreme temperatures and habitat degradation](https://theconversation.com/research-reveals-fire-is-pushing-88-of-australias-threatened-land-mammals-closer-to-extinction-185965) can give invasives a big leg-up on the native competition as [species inevitably enter and alter ecosystems](https://soe.dcceew.gov.au/overview/pressures/invasive-species-and-range-shifts#range-shifts-and-extensions). 
+Humans are just one of many drivers of introducing species to new areas. Changes to the environment, for example, can shrink available resources and living space in a habitat, giving introduced species a chance to outcompete native species for what resources and space are left. [As species inevitably enter and alter ecosystems](https://soe.dcceew.gov.au/overview/pressures/invasive-species-and-range-shifts#range-shifts-and-extensions), large weather events, extreme temperatures and habitat degradation [can give invasives a big leg-up on the native competition, too](https://theconversation.com/research-reveals-fire-is-pushing-88-of-australias-threatened-land-mammals-closer-to-extinction-185965). 
 
 Nonetheless, there is still hope. Research finds [native species can still adapt to changing environments](https://www.ecolsoc.org.au/news/native-plants-are-taking-back-their-homes/) and simple tasks like [pulling weeds](https://theconversation.com/pulling-out-weeds-is-the-best-thing-you-can-do-to-help-nature-recover-from-the-fires-130296) can help native species survive after events like fires.
 

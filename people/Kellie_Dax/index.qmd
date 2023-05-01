@@ -50,7 +50,7 @@ create_button(
 ### {{< fa newspaper >}} Posts 
 
 [Plotting invasive species distributions with alpha shapes and choropleth maps in Python](https://labs.ala.org.au/posts/2023-04-28_plotting-invasive-species/post.html)<br>
-*Invasive and introduced species can expand quickly into new habitats, altering ecosystems. In this post we use {galah}, {alphashape} and {geopandas} in Python to visualise the growing distribution of Rhinella marina (cane toads) and the expanding range of Pittisporum undulatum in Australia.*
+*Invasive and introduced species can expand quickly into new habitats, altering ecosystems. In this post we use Python's {galah}, {alphashape} and {GeoPandas} packages to visualise the growing distribution of Rhinella marina (cane toads) and the expanding range of Pittisporum undulatum in Australia.*
 
 [Make a highlighted time-series plot](https://labs.ala.org.au/posts/2023-04-03_highlighted-time-series/post.html)<br>
 *Time-series analyses can be handy for seeing trends over time, and exploring how trends relate to major events. Here, we show how to create an exploratory time-series plot comparing observations of waterbirds prior to and during the COVID-19 pandemic.*
