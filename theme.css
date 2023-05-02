@@ -294,6 +294,10 @@ a:hover {
   background-color: #E06E53;
 }
 
+.bio-row {
+  flex-direction: column
+}
+
 .bio-column-right {
   float: right;
   width: 50%;

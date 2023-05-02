@@ -11,6 +11,7 @@ source(here("R", "functions.R"))
 
 ### {{< fa circle-user >}} Bio 
 
+:::{.bio-row}
 :::{.bio-column-right}
 
 ```{r out.width='275px', out.extra='style="display:block; margin-left:auto; margin-right:auto; clip-path: circle();"'}
@@ -21,7 +22,10 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 :::{.bio-column-left}
 Amanda is a data analyst for EcoCommons, and is based at the Atlas of Living Australia. She completed her PhD in Structural Biology, and uses her extensive Python skills to manage the integration of data within EcoCommons. She also works to optimize the available scientific workflows within the platform.
+:::
+:::
 
+:::{.column-body style="margin-top:-20px;"}
 ```{r}
 #| echo: false
 
@@ -33,7 +37,6 @@ create_button(
 )
 )
 ```
-<br>
 :::
 
 

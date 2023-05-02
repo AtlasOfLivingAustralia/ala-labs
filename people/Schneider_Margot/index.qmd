@@ -11,6 +11,7 @@ source(here("R", "functions.R"))
 
 ### {{< fa circle-user >}} Bio 
 
+:::{.bio-row}
 :::{.bio-column-right}
 
 ```{r out.width='275px', out.extra='style="display:block; margin-left:auto; margin-right:auto; clip-path: circle();"'}
@@ -21,14 +22,16 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 :::{.bio-column-left}
 Margot is a graduate of the Australian National University (ANU) with a Bachelor of Science (Honours) on bushfire chemical ecology. She works to improve data quality in the ALA. Margot is a strong advocate for diversity and inclusion in the STEMM fields.
+:::
+:::
 
+:::{.column-body style="margin-top:-20px;"}
 ```{r}
 #| echo: false
 
 tags$div(class = "row", style = "display: flex;"
 )
 ```
-<br>
 :::
 
 

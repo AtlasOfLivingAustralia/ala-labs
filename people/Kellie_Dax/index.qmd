@@ -11,6 +11,7 @@ source(here("R", "functions.R"))
 
 ### {{< fa circle-user >}} Bio 
 
+:::{.bio-row}
 :::{.bio-column-right}
 
 ```{r out.width='275px', out.extra='style="display:block; margin-left:auto; margin-right:auto; clip-path: circle();"'}
@@ -22,6 +23,11 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 :::{.bio-column-left}
 Dax is an evolutionary biologist, with a PhD in biological sciences and social psychology. As a data analyst at the ALA, he tries to make data in the ALA accessible for scientists and citizen scientists to use in ways that are scientifically robust and transparent. <br><br>
 Dax is the primary editor of ALA Labs.
+
+:::
+:::
+
+:::{.column-body style="margin-top:-20px;"}
 
 ```{r}
 #| echo: false
@@ -43,9 +49,7 @@ create_button(
 )
 ```
 
-<br>
 :::
-
 
 ### {{< fa newspaper >}} Posts 
 
