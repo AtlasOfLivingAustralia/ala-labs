@@ -1,5 +1,8 @@
 ---
 title: "About"
+subtitle: "The Science and Decisions Support Team"
+title-block-banner: "#E06E53"
+title-block-banner-color: body
 format: 
   html: 
     include-after-body: _footer.html
