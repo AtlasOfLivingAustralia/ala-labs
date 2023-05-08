@@ -306,5 +306,26 @@
     "title": "Changing farming climates – the future of growing peanuts",
     "section": "",
     "text": "Daviesa buxifolia (Betty and Don Wood CC BY 3.0)\n\n\nCitation\n\n\nH Haerani, A Apan, T Nguyen-Huy & B Basnet (2023) Modelling future spatial distribution of peanut crops in Australia under climate change scenarios. Geospatial Information Science https:://doi.org/10.1080/10095020.2022.2155255\n\n\n\nPage info\nPrepared by {@author}\n\n\n\n\nPeanuts are one of the richest sources of dietary protein - topping meat, dairy, eggs, and fish. They are also importantly non-perishable, able to be used by global aid industries in the fight against famine and crisis food shortages. Consequently, ensuring we have ready supply of an important plant-based protein such as peanut is important. Both agriculturalists and top export regions are likely to bear the brunt of holding a steady supply.\nThere are a range of factors that influence the possible geographic boundary of agricultural crops, such as soil nutrients, structure, elevation and climate. They define the crops growth rate and overall quality, outlining where it is both physically and economically viable to produce them.\nPeanuts in particular prefer dryland cropping and are sensitive to increased levels of rainfall. Currently - Africa, South America and Australasia are the regions with the best peanut growing conditions globally.\nIn Australia (and South America) peanut cropping is already impacted by naturally variable climate (stints of drought and increased rainfall) due to El Nino Southern Oscillation. Changing temperatures and increased stochastic events are likely to further impact the growth of peanuts in their already established cropping regions.\nUsing nearly two-thousand geographical occurrence data points from the Atlas of Living Australia (ALA) and the Global Biodiversity Information Facility (GBIF) alongside modelled climate change scenarios, Haerani et al. (2023) infer a global distribution of peanut crops under a changing climate.\nThey find that in the next century, suitable peanut growing regions are set to restrict substantially along the east and west coast, with northern New South Wales and south-east Queensland at the greatest loss by the year 2100."
+  },
+  {
+    "objectID": "research/highlights/2023-03-21_peanuts/paper.html",
+    "href": "research/highlights/2023-03-21_peanuts/paper.html",
+    "title": "Changing farming climates: The future of growing peanuts",
+    "section": "",
+    "text": "Daviesa buxifolia (Betty and Don Wood CC BY 3.0)\n\n\nCitation\n\n\nH Haerani, A Apan, T Nguyen-Huy & B Basnet (2023) Modelling future spatial distribution of peanut crops in Australia under climate change scenarios. Geospatial Information Science https:://doi.org/10.1080/10095020.2022.2155255\n\n\n\nPage info\nPrepared by {@author}\n\n\n\n\nPeanuts are one of the richest sources of dietary protein - topping meat, dairy, eggs, and fish. They are also non-perishable, able to be used by global aid industries in the fight against famine and crisis food shortages. Ensuring we have a ready supply of plant-based protein like peanuts is important. Both agriculturalists and top export regions are likely to bear the brunt of holding a steady supply.\nUsing nearly two-thousand geographical occurrence data points from the Atlas of Living Australia (ALA) and the Global Biodiversity Information Facility (GBIF) alongside modelled climate change scenarios, Haerani et al. (2023) infer a global distribution of peanut crops under a changing climate.\nThey find that in the next century, suitable peanut growing regions are set to shrink substantially along the east and west coast, with northern New South Wales and south-east Queensland at the greatest loss by the year 2100."
+  },
+  {
+    "objectID": "research/highlights.html",
+    "href": "research/highlights.html",
+    "title": "Research highlights",
+    "section": "",
+    "text": "No matching items"
+  },
+  {
+    "objectID": "software/software.html",
+    "href": "software/software.html",
+    "title": "Software",
+    "section": "",
+    "text": "galah\n{galah} is an R interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It enables users to locate and download species occurrence records (observations, specimens, eDNA records, etc.), taxonomic information, or associated media such as images or sounds, and to restrict their queries to particular taxa or locations.  Visit the {galah} R package website to learn more about how to use galah If you have any questions, comments, or spot any bugs, email us or report an issue on our GitHub page\n\n\n\n\nGet started\nInstall from CRAN\n\ninstall.packages(\"galah\")"
   }
 ]

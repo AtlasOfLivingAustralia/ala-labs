@@ -1,5 +1,0 @@
-freeze: true
-
-format:
-  html:
-    embed-resources: true

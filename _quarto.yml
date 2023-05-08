@@ -27,11 +27,11 @@ website:
         text: "Posts"
       - text: "Research"
         menu:
-        - href: highlights.qmd
+        - href: research/highlights.qmd
           text: "Highlights"
-        - href: citations.qmd
+        - href: research/citations.qmd
           text: "All citations"
-      - href: software.qmd
+      - href: software/software.qmd
         text: "Software"
       - href: https://www.ala.org.au
         icon: ala

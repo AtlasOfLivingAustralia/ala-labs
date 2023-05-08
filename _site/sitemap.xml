@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://labs.ala.org.au/about.html</loc>
-    <lastmod>2023-04-14T02:15:33.364Z</lastmod>
+    <lastmod>2023-05-05T04:32:28.426Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/galah.html</loc>
@@ -14,35 +14,35 @@
   </url>
   <url>
     <loc>https://labs.ala.org.au/people/Balasubramaniam_Shandiya/index.html</loc>
-    <lastmod>2023-04-13T01:44:40.096Z</lastmod>
+    <lastmod>2023-05-05T04:31:06.294Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/people/Buyan_Amanda/index.html</loc>
-    <lastmod>2023-04-13T01:44:40.749Z</lastmod>
+    <lastmod>2023-05-05T04:31:06.820Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/people/Kar_Fonti/index.html</loc>
-    <lastmod>2023-04-13T01:44:41.371Z</lastmod>
+    <lastmod>2023-05-05T04:31:07.388Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/people/Kellie_Dax/index.html</loc>
-    <lastmod>2023-04-13T01:44:42.028Z</lastmod>
+    <lastmod>2023-05-05T04:31:07.937Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/people/Schneider_Margot/index.html</loc>
-    <lastmod>2023-04-13T01:44:42.592Z</lastmod>
+    <lastmod>2023-05-05T04:31:08.471Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/people/Seers_Juliet/index.html</loc>
-    <lastmod>2023-04-13T01:44:43.185Z</lastmod>
+    <lastmod>2023-05-05T04:31:08.995Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/people/Torresan_Olivia/index.html</loc>
-    <lastmod>2023-04-13T01:44:43.786Z</lastmod>
+    <lastmod>2023-05-05T04:31:09.526Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/people/Westgate_Martin/index.html</loc>
-    <lastmod>2023-04-13T01:44:44.387Z</lastmod>
+    <lastmod>2023-05-05T04:31:10.063Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/posts/2021-03-20_creating-a-color-palette-from-an-image/post.html</loc>
@@ -90,11 +90,11 @@
   </url>
   <url>
     <loc>https://labs.ala.org.au/posts.html</loc>
-    <lastmod>2023-04-14T05:43:29.139Z</lastmod>
+    <lastmod>2023-05-08T02:06:45.047Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/highlights.html</loc>
-    <lastmod>2023-04-14T06:59:12.891Z</lastmod>
+    <lastmod>2023-05-05T04:33:28.892Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/highlights/2023-03-21/paper.html</loc>
@@ -102,14 +102,30 @@
   </url>
   <url>
     <loc>https://labs.ala.org.au/software.html</loc>
-    <lastmod>2023-04-14T02:13:59.606Z</lastmod>
+    <lastmod>2023-05-05T04:32:10.424Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/highlights/2023-03-21_peanuts/paper.html</loc>
-    <lastmod>2023-04-14T06:59:12.202Z</lastmod>
+    <lastmod>2023-05-05T04:33:22.821Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/citations.html</loc>
-    <lastmod>2023-04-14T06:06:27.817Z</lastmod>
+    <lastmod>2023-05-05T04:30:56.313Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/research/highlights/2023-03-21_peanuts/paper.html</loc>
+    <lastmod>2023-05-08T06:27:45.250Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/research/citations.html</loc>
+    <lastmod>2023-05-05T04:51:26.058Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/research/highlights.html</loc>
+    <lastmod>2023-05-08T06:27:35.359Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/software/software.html</loc>
+    <lastmod>2023-05-05T04:51:30.738Z</lastmod>
   </url>
 </urlset>

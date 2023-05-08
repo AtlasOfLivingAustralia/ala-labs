@@ -1,0 +1,82 @@
+---
+title: "Changing farming climates: The future of growing peanuts"
+author: "Olivia Torresan"
+date: "2022-03-07"
+title-block-banner: "#B7CD96"
+title-block-banner-color: "#754C06"
+toc: true
+toc-location: left
+toc-depth: 3
+categories:
+  - Agriculture
+  - Climate change
+image: thumbnail.png
+freeze: true
+params:
+  authors: "H Haerani, A Apan, T Nguyen-Huy & B Basnet"
+  year: 2023
+  title: "Modelling future spatial distribution of peanut crops in Australia under climate change scenarios"
+  publication: "Geospatial Information Science"
+  doi: https:://doi.org/10.1080/10095020.2022.2155255
+  image_url: https://images.ala.org.au/
+  alt_text: An image
+  color_1: #000000
+  color_2: #ffffff
+---
+
+```{r}
+#| include: false
+library(htmltools)
+```
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+<!-- Author card -->
+
+:::{.column-page}
+
+:::{.paper-side-column}
+
+<center>
+:::{layout-ncol=1 style="margin-left: auto; margin-right: auto; width:50%;"}
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/7/0/b/0a95413d-25aa-4889-9c7d-39dd898eb077/original" class="rounded"/></img>
+:::
+</center>
+
+::: figure-caption
+[*Daviesa buxifolia* (Betty and Don Wood CC BY 3.0)](https://images.ala.org.au/image/viewer?imageId=0a95413d-25aa-4889-9c7d-39dd898eb077)
+:::
+
+### Citation
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+
+#### Page info
+Prepared by {@author}
+
+
+:::
+
+
+
+::: {.paper-main-column}
+Peanuts are one of the richest sources of dietary protein - topping meat, dairy, eggs, and fish. They are also non-perishable, able to be used by global aid industries in the fight against famine and crisis food shortages. Ensuring we have a ready supply of plant-based protein like peanuts is important. Both agriculturalists and top export regions are likely to bear the brunt of holding a steady supply.
+
+Using nearly two-thousand geographical occurrence data points from the Atlas of Living Australia (ALA) and the Global Biodiversity Information Facility (GBIF) alongside modelled climate change scenarios, Haerani et al. (2023) infer a global distribution of peanut crops under a changing climate. 
+ 
+They find that in the next century, suitable peanut growing regions are set to shrink substantially along the east and west coast, with northern New South Wales and south-east Queensland at the greatest loss by the year 2100. 
+:::
+
+:::
+
