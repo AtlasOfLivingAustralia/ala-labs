@@ -1,7 +1,7 @@
 ---
 title: "An exploration of dingo observations in the ALA"
 description: |
-  Time-series analyses can be handy for seeing trends over time, and exploring how trends relate to major events. Here, we show how to create an exploratory time-series plot comparing observations of waterbirds prior to and during the COVID-19 pandemic.
+  Dingoes are the subject of ongoing debate about whether they should be considered a protected species or a pest species. Here we explore dingo observations in the ALA to understand how differing attitudes affect dingo data, plotting spatial and temporal trends using {ggplot2}.
 author:
   - name: "Amos Smith"
   - name: "Dax Kellie"
@@ -82,11 +82,13 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 :::
 
-The dingo is among Australia's most recognisable species internationally. However, debate continues about whether dingoes are considered invasive or native species.
+The dingo (*Canis familiaris*) is among Australia's most recognisable species internationally. However, debate continues about whether dingoes are considered invasive or native species.
 
-Dingoes arrived in Australia [around 3,000–5,000 years ago](https://www.nature.com/articles/s41598-018-28324-x), and their rapid dispersal was likely [facilitated by humans](https://www.nature.com/articles/s41598-018-28324-x#:~:text=Some%20idea%20of,already%20acquired%20dogs.). In the present day, dingoes negatively impact livestock producers, especially sheep farmers. To reduce these impacts, landowners and government agencies spend an estimated [\~$30 million annually across Australia](https://www.publish.csiro.au/wr/pdf/WR19030) to control wild dog and dingo populations. Control methods include using traps, baits and shooting, along with constructing a physical barrier to limit their movement: the Dog Fence (also known as the Dingo Fence).
+Dingoes arrived in Australia [around 3,000–5,000 years ago](https://www.nature.com/articles/s41598-018-28324-x), and their rapid dispersal was likely [facilitated by humans](https://www.nature.com/articles/s41598-018-28324-x#:~:text=Some%20idea%20of,already%20acquired%20dogs.). Dingoes [hold great significance](https://environment.des.qld.gov.au/wildlife/animals/living-with/dingoes) to many Aboriginal and Torres Strait Islander communities, embedded in folklore, song and art. In some communities, women and children often [took dingoes with them](https://www.americanscientist.org/article/the-elusive-dingo) to hunt small game or collect food, regarded as protection from danger. 
 
-The Dog Fence is a wire fence made to protect from the loss of sheep and livestock; it is the longest fence in the world (5,614 km). Since its construction 80 years ago, the Dog Fence has shaped the landscape of Australia. However, perhaps unintentionally, the Dog fence has acted as a natural experiment. On the side where dingoes remain present there is [more vegetation](https://link.springer.com/article/10.1007/s10980-021-01206-w) and [fewer invasive species like foxes](https://www.publish.csiro.au/am/AM21036) than on the side where dingoes are absent. The difference between sides of the fence is so distinct that [you can even see it from space](https://youtu.be/ivmQk5EsScw)! Nearly a century later, the Dog fence has [shown the importance of apex predators like dingoes in ecosystems](https://www.abc.net.au/news/2023-02-09/dingo-fence-map-ecology-farming-predator-sheep-extinction/101711608) and their benefit to native biodiversity[^1]. 
+In the present day, dingoes negatively impact livestock producers, especially sheep farmers. To reduce these impacts, landowners and government agencies spend an estimated [\~$30 million annually across Australia](https://www.publish.csiro.au/wr/pdf/WR19030) to control wild dog and dingo populations. Control methods include using traps, baits and shooting, along with constructing a physical barrier to limit their movement: the Dog Fence (also known as the Dingo Fence).
+
+The Dog Fence is a wire fence made to protect from the loss of sheep and livestock; currently, it is the longest fence in the world (5,614 km). Since its construction 80 years ago, the Dog Fence has shaped the landscape of Australia. However, perhaps unintentionally, the Dog fence has acted as a natural experiment. On the side where dingoes remain present there is [more vegetation](https://link.springer.com/article/10.1007/s10980-021-01206-w) and [fewer invasive species like foxes](https://www.publish.csiro.au/am/AM21036) than on the side where dingoes are absent. The difference between sides of the fence is so distinct that [you can even see it from space](https://youtu.be/ivmQk5EsScw)! Nearly a century later, the Dog fence has [shown the importance of apex predators like dingoes in ecosystems](https://www.abc.net.au/news/2023-02-09/dingo-fence-map-ecology-farming-predator-sheep-extinction/101711608) and their benefit to native biodiversity[^1]. 
 
 To understand the debate about the dingo's role in Australia's ecosystems, it's useful to know the species' current distribution. Here, we'll explore where and how often dingo observations are recorded in the Atlas of Living Australia (ALA) to understand how historical and ongoing differences in attitudes towards dingo conservation affect data collection.
 
@@ -131,12 +133,9 @@ library(viridis)
 
 ### Find fields to filter data
 
-We'll use the [{galah} package](http://galah.ala.org.au/) to download our data. Because *Canis familiaris* is the taxonomic name of both dingoes *and* dogs, if we only search using the scientific name, we'll likely return more than just dingo records. To fix this, let's filter our records to those specified by the data provider with the name common name "Dingo". 
+We'll use the [{galah} package](http://galah.ala.org.au/) to download our data. 
 
-:::{.aside}
-One can imagine that sometimes data might be collected without specifying the name "Dingo" (either due to uncertainty or a lack of specificity in the survey). <br>
-If true, this means there are observations of dingoes that we'll never know because they weren't specified (though it's hard to know for sure)![*A possible footnote - necessary?*]
-:::
+The taxonomic name for dingoes—*Canis familiaris*—is broadly the name for all wild dogs, though recent genomic research has found pure dingoes are [genomically distinct from wild dogs](https://www.abc.net.au/news/rural/2022-04-23/dingo-or-feral-dog-science-advances-genetic-sequence/101010896)[^2]. This means that if we search using the scientific name *Canis familiaris*, we'll likely return more than just dingo records. To fix this, let's filter our records to those specified by the data provider with the name common name "Dingo". 
 
 Let's use `search_fields()` to help us find which fields we can use to filter the taxonomic name. There are a few options, but the `raw_vernacularName` field seems to hold original common names specified by data providers.
 
@@ -172,13 +171,9 @@ dingo_counts <- galah_call() |>
 dingo_counts |> gt::gt()
 ```
 
-*note: Amos made this choropleth map in the sidebar, but I don't think it's necessary. Does it look nice in the sidebar or is it better to delete?*
-
-**SB response:** I think it duplicates the data in the table and it is probably not necessary to show it
-
-:::{.aside}
 
 ```{r}
+#| eval: false
 #| echo: false
 #| message: false
 #| warning: false
@@ -217,7 +212,7 @@ ggplot() +
   theme(legend.position = "bottom")
 ```
 
-:::
+
 
 ## Data providers
 
@@ -445,7 +440,7 @@ In the Northern Territory and South Australia, dingoes are protected within nati
 
 ## Northern Territory
 
-### Get shapefiles
+### Download CAPAD shapefile
 
 We'll first need the CAPAD shapefile. We can get it by downloading the CAPAD2020_terrestrial.zip folder [from their website](https://www.environment.gov.au/fed/catalog/search/resource/downloadData.page?uuid=%7B4448CACD-9DA8-43D1-A48F-48149FD5FCFD%7D). Download and save this folder in your R Project or working directory and unzip it. 
 
@@ -479,7 +474,7 @@ Now we can download dingo observations in the Northern Territory (and remove any
 ```{r}
 #| results: hide
 # download dingo observations in NT
-dingo_obs_NT <- galah_call() |>
+dingo_obs_nt <- galah_call() |>
   galah_identify("canis familiaris") |>
   galah_filter(raw_vernacularName == c("Dingo", "dingo"),
                cl22 == "Northern Territory") |>
@@ -489,7 +484,7 @@ dingo_obs_NT <- galah_call() |>
 
 ```{r}
 #| echo: false
-dingo_obs_NT
+dingo_obs_nt
 ```
 
 ### Make map
@@ -498,12 +493,12 @@ We'll make our map of the Northern Territory by plotting each of our components 
 
 ```{r}
 # make map
-NT_plot <- ggplot() +
+nt_plot <- ggplot() +
   geom_sf(data = ozmap_states |> filter(NAME == "Northern Territory"), 
           fill = "#F8FBEF", 
           colour = "grey60", 
           linewidth = 0.3) +
-  geom_pointdensity(data = dingo_obs_NT,
+  geom_pointdensity(data = dingo_obs_nt,
                     mapping = aes(x = decimalLongitude,
                                   y = decimalLatitude),
                     size = 2.4, 
@@ -540,7 +535,7 @@ Finally, we can avoid adding more than one legend by using colour in our title t
 dingo_palette <- list("protected" = "#1F901F",
                       "obs" = "#404788")
 
-NT_plot +
+nt_plot +
   ggnewscale::new_scale_color() +
   scale_colour_manual(values = dingo_palette) +
   labs(
@@ -555,27 +550,27 @@ NT_plot +
 
 ### Calculate proportion inside protected areas
 
-By counting the number of points that intersect with CAPAD areas, we find that more than half of all dingo observations are recorded inside of protected areas.
+By comparing the number of records in CAPAD areas to the total observations in Northern Territory, we find that more than half of all dingo observations are recorded inside of protected areas.
 
 :::{.callout-tip}
-To find the number of points that intersect with CAPAD polygons, we used a method described in a [previous article on counting points in polygons](https://labs.ala.org.au/posts/2023-01-12_counting-points-in-shapefiles/post.html#count-points-in-each-polygon).
+If we search in {galah}, we'll find that {galah} has the CAPAD 2020 layer available for us to use to filter our data (field ID `cl11022`). We can return counts of dingo observations only in CAPAD areas by adding `galah_group_by()` to our query, then add them together to find the total records in CAPAD areas.
 :::
 
 ```{r}
-# Count number of points that intersect with CAPAD areas
-dingo_points_sf <- dingo_obs_NT |> 
-  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
-  crs = st_crs("WGS84"))
+# search_all(fields, "capad") # 
 
-nt_counts <- capad_nt |> 
-  mutate(dingo_count = pmap_dbl(.l = list(x = capad_nt$geometry),
-                           .f = function(x) {
-                             lengths(st_intersects(x, dingo_points_sf))
-                             }))
+# Download dingo record counts inside CAPAD areas
+dingo_capad_nt <- galah_call() |>
+  galah_identify("canis familiaris") |>
+  galah_filter(raw_vernacularName == c("Dingo", "dingo"),
+               cl22 == "Northern Territory") |>
+  galah_group_by(cl11033) |> # capad
+  atlas_counts() |>
+  drop_na() # filter any NA values out
 
-# proportion inside vs outside of protected areas
-in_protected <- nt_counts |> pull(dingo_count) |> sum()
-out_of_protected <- nrow(dingo_obs_NT)
+# Proportion inside vs outside of protected areas
+in_protected <- dingo_capad_nt|> summarise(total = sum(count))
+out_of_protected <- nrow(dingo_obs_nt)
 
 paste(round(in_protected / out_of_protected * 100, 2), "%", sep = "")
 ```
@@ -678,41 +673,44 @@ sa_plot +
         plot.subtitle = element_markdown(hjust = 0.5, size = 15))
 ```
 
-By counting the number of points that intersect with CAPAD areas, we find that around 4 in 10 dingo observations are recorded inside of protected areas.
+By comparing the number of records in CAPAD areas to the total observations in South Australia, we find that around 4 in 10 dingo observations are recorded inside of protected areas.
 
 ```{r}
 #| code-fold: true
-# Count number of points that intersect with CAPAD areas
-dingo_points_sa <- dingo_obs_sa |> 
-  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
-  crs = st_crs("WGS84"))
+# Download dingo record counts inside CAPAD areas
+dingo_capad_sa <- galah_call() |>
+  galah_identify("canis familiaris") |>
+  galah_filter(raw_vernacularName == c("Dingo", "dingo"),
+               cl22 == "South Australia") |>
+  galah_group_by(cl11033) |>
+  atlas_counts() |>
+  drop_na() # filter any NA values out
 
-sa_counts <- capad_sa |> 
-  mutate(dingo_count = pmap_dbl(.l = list(x = capad_sa$geometry),
-                           .f = function(x) {
-                             lengths(st_intersects(x, dingo_points_sa))
-                             }))
-
-# proportion inside vs outside of protected areas
-in_protected <- sa_counts |> pull(dingo_count) |> sum()
+# Proportion inside vs outside of protected areas
+in_protected <- dingo_capad_sa |> summarise(total = sum(count))
 out_of_protected <- nrow(dingo_obs_sa)
 
 paste(round(in_protected / out_of_protected * 100, 2), "%", sep = "")
 ```
 
-Overall, in Northern Territory and South Australia, the number of dingo observations is fairly comparable between between those made inside and outside of nationally protected areas. We also saw how few observations are on the southern side of the Dingo Fence in South Australia.
+Overall, in the Northern Territory and South Australia, the number of dingo observations is fairly comparable between between those made inside and outside of nationally protected areas. We also saw how few observations are on the southern side of the Dingo Fence in South Australia.
 
-# Final Thoughts
+# Final thoughts
 
 Our small investigation on the ALA's dingo data has shown that observations are mainly recorded by government monitoring programs, with the large majority made in Northern Territory and South Australia. But why do two-thirds of all dingo records come from only two out of the seven states or territories where they occur?
 
 One possible explanation could be due to differences in legislation between states. The Northern Territory is one of only two states/territories that [recognises dingoes as a protected species](https://nt.gov.au/environment/animals/feral-animals/wild-dog#:~:text=Dingoes%20are%20protected%20in%20the,take%20or%20interfere%20with%20wildlife.) (the other is [Victoria](https://www.wildlife.vic.gov.au/our-wildlife/dingoes)). In these states, there are likely surveys or programs in place to collect data to maintain their distribution for conservation.
 
-However, South Australia is one of several states with a mixed wild dog control policy, where wild dogs and dingoes are [controlled in some areas and protected in others](https://pir.sa.gov.au/biosecurity/introduced-pest-feral-animals/find_a_pest_animal/wild_dogs_and_dingoes)[^2]. Similar mixed policy strategies exist in [New South Wales](https://www.environment.nsw.gov.au/topics/parks-reserves-and-protected-areas/park-policies/wild-dogs) and [Queensland](https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/animals/invasive/wild-dogs/law), while in Western Australia dingoes are [classified as a pest species](https://www.agric.wa.gov.au/state-barrier-fence/wild-dogs) and required to be controlled. In these states, there is a risk that control methods sometimes take precedence over data collection, despite monitoring programs being in place. Still, there are lots of dingo observations recorded in South Australia, suggesting that legislation explains some but not all of the trends we see in the data.
+However, South Australia is one of several states with a mixed wild dog control policy, where wild dogs and dingoes are [controlled in some areas and protected in others](https://pir.sa.gov.au/biosecurity/introduced-pest-feral-animals/find_a_pest_animal/wild_dogs_and_dingoes)[^3]. Similar mixed policy strategies exist in [New South Wales](https://www.environment.nsw.gov.au/topics/parks-reserves-and-protected-areas/park-policies/wild-dogs) and [Queensland](https://www.business.qld.gov.au/industries/farms-fishing-forestry/agriculture/biosecurity/animals/invasive/wild-dogs/law), while in Western Australia dingoes are [classified as a pest species](https://www.agric.wa.gov.au/state-barrier-fence/wild-dogs) and required to be controlled. In these states, there is a risk that control methods sometimes take precedence over data collection, despite monitoring programs being in place. Still, there are lots of dingo observations recorded in South Australia, suggesting that legislation explains some but not all of the trends we see in the data.
 
 Ultimately, dingoes are currently listed as [vulnerable to extinction under the IUNC's Red List of Threatened Species](https://www.iucnredlist.org/species/41585/10484199). Those interested in estimating the dingo's current distribution may have to be mindful that the accuracy of estimates may depend on where data were collected.
 
+
+
+
 [^1]: Some research suggests dingoes might [not always benefit mammal species richness](https://www.sciencedirect.com/science/article/pii/S0006320720306960).
+
+[^1]: However, all wild dogs in Australia [possess some percentage of dingo genes](https://newsroom.unsw.edu.au/news/science-tech/dogs-not-gone-wild-dna-tests-show-most-wild-dogs-australia-are-pure-dingoes).
 
 [^2]: [In South Australia](https://pir.sa.gov.au/biosecurity/introduced-pest-feral-animals/find_a_pest_animal/wild_dogs_and_dingoes), inside the Dog Fence landholders have a legal responsibility to control wild dogs—including dingoes—on their properties, whereas outside of the Dog Fence dingoes are listed as unprotected native wildlife.
 
