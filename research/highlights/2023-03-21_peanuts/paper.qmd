@@ -4,14 +4,12 @@ author: "Olivia Torresan"
 date: "2022-03-07"
 title-block-banner: "#B7CD96"
 title-block-banner-color: "#754C06"
-toc: true
-toc-location: left
-toc-depth: 3
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png
 categories:
   - Agriculture
   - Climate change
-image: thumbnail.png
-freeze: true
 params:
   authors: "H Haerani, A Apan, T Nguyen-Huy & B Basnet"
   year: 2023
@@ -20,14 +18,7 @@ params:
   doi: https:://doi.org/10.1080/10095020.2022.2155255
   image_url: https://images.ala.org.au/
   alt_text: An image
-  color_1: #000000
-  color_2: #ffffff
 ---
-
-```{r}
-#| include: false
-library(htmltools)
-```
 
 <!-- remove metadata section -->
 
@@ -37,7 +28,8 @@ library(htmltools)
 }
 ```
 
-<!-- Author card -->
+
+<!-- Side panel -->
 
 :::{.column-page}
 
@@ -45,11 +37,13 @@ library(htmltools)
 
 <center>
 :::{layout-ncol=1 style="margin-left: auto; margin-right: auto; width:50%;"}
+<!-- add image url -->
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/7/0/b/0a95413d-25aa-4889-9c7d-39dd898eb077/original" class="rounded"/></img>
 :::
 </center>
 
 ::: figure-caption
+<!-- edit caption -->
 [*Daviesa buxifolia* (Betty and Don Wood CC BY 3.0)](https://images.ala.org.au/image/viewer?imageId=0a95413d-25aa-4889-9c7d-39dd898eb077)
 :::
 
@@ -65,10 +59,10 @@ htmltools::HTML(
 #### Page info
 Prepared by {@author}
 
-
 :::
 
 
+<!-- Main panel description -->
 
 ::: {.paper-main-column}
 Peanuts are one of the richest sources of dietary protein - topping meat, dairy, eggs, and fish. They are also non-perishable, able to be used by global aid industries in the fight against famine and crisis food shortages. Ensuring we have a ready supply of plant-based protein like peanuts is important. Both agriculturalists and top export regions are likely to bear the brunt of holding a steady supply.
