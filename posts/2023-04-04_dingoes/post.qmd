@@ -86,11 +86,11 @@ The dingo (*Canis familiaris*) is among Australia's most recognisable species in
 
 Dingoes arrived in Australia [around 3,000–5,000 years ago](https://www.nature.com/articles/s41598-018-28324-x), and their rapid dispersal was likely [facilitated by humans](https://www.nature.com/articles/s41598-018-28324-x#:~:text=Some%20idea%20of,already%20acquired%20dogs.). Dingoes [hold great significance](https://environment.des.qld.gov.au/wildlife/animals/living-with/dingoes) to many Aboriginal and Torres Strait Islander communities, embedded in folklore, song and art. In some communities, women and children often [took dingoes with them](https://www.americanscientist.org/article/the-elusive-dingo) to hunt small game or collect food, regarded as protection from danger. 
 
-In the present day, dingoes negatively impact livestock producers, especially sheep farmers. To reduce these impacts, landowners and government agencies spend an estimated [\~$30 million annually across Australia](https://www.publish.csiro.au/wr/pdf/WR19030) to control wild dog and dingo populations. Control methods include using traps, baits and shooting, along with constructing a physical barrier to limit their movement: the Dog Fence (also known as the Dingo Fence).
+In the present day, dingoes negatively impact livestock producers, especially sheep farmers. To reduce these impacts, landowners and government agencies spend an estimated [\~$30 million annually across Australia](https://www.publish.csiro.au/wr/pdf/WR19030) to control dingo populations. Control methods include using traps, baits and shooting, along with constructing a physical barrier to limit their movement: the Dog Fence (also known as the Dingo Fence).
 
-The Dog Fence is a wire fence made to protect from the loss of sheep and livestock; currently, it is the longest fence in the world (5,614 km). Since its construction 80 years ago, the Dog Fence has shaped the landscape of Australia. However, perhaps unintentionally, the Dog fence has acted as a natural experiment. On the side where dingoes remain present there is [more vegetation](https://link.springer.com/article/10.1007/s10980-021-01206-w) and [fewer invasive species like foxes](https://www.publish.csiro.au/am/AM21036) than on the side where dingoes are absent. The difference between sides of the fence is so distinct that [you can even see it from space](https://youtu.be/ivmQk5EsScw)! Nearly a century later, the Dog fence has [shown the importance of apex predators like dingoes in ecosystems](https://www.abc.net.au/news/2023-02-09/dingo-fence-map-ecology-farming-predator-sheep-extinction/101711608) and their benefit to native biodiversity[^1]. 
+The Dog Fence is a wire fence made to protect from the loss of sheep and livestock; currently, it is the longest fence in the world (5,614 km). Since its construction 80 years ago, the Dog Fence has shaped the landscape of Australia. However, perhaps unintentionally, the Dog Fence has acted as a natural experiment. On the side where dingoes remain present there is [more vegetation](https://link.springer.com/article/10.1007/s10980-021-01206-w) and [fewer invasive species like foxes](https://www.publish.csiro.au/am/AM21036) than on the side where dingoes are absent. The difference between sides of the fence is so distinct that [you can even see it from space](https://youtu.be/ivmQk5EsScw)! Nearly a century later, the Dog Fence has [shown the importance of apex predators like dingoes in ecosystems](https://www.abc.net.au/news/2023-02-09/dingo-fence-map-ecology-farming-predator-sheep-extinction/101711608) and their benefit to native biodiversity[^1]. 
 
-To understand the debate about the dingo's role in Australia's ecosystems, it's useful to know the species' current distribution. Here, we'll explore where and how often dingo observations are recorded in the Atlas of Living Australia (ALA) to understand how historical and ongoing differences in attitudes towards dingo conservation affect data collection.
+To understand the debate about the dingo's role in Australia's ecosystems, it's useful to know the species' current distribution. Here, we'll explore where and how often dingo observations are recorded in the Atlas of Living Australia (ALA) to understand how historical and ongoing differences in attitudes toward dingo conservation affect data collection.
 
 
 
@@ -316,6 +316,8 @@ counts_filtered |>
         axis.text = element_text(size = 12))
 
 # Map
+aus <- ozmap_data(data = "states")
+
 ggplot() +
   geom_sf(data = aus, fill = "#FBFBEF") +
   geom_point(
@@ -553,7 +555,7 @@ nt_plot +
 By comparing the number of records in CAPAD areas to the total observations in Northern Territory, we find that more than half of all dingo observations are recorded inside of protected areas.
 
 :::{.callout-tip}
-If we search in {galah}, we'll find that {galah} has the CAPAD 2020 layer available for us to use to filter our data (field ID `cl11022`). We can return counts of dingo observations only in CAPAD areas by adding `galah_group_by()` to our query, then add them together to find the total records in CAPAD areas.
+If we search {galah} for CAPAD (`search_all(fields, "capad")`), we'll find that {galah} has the CAPAD 2020 layer available for us to use to filter our data (field ID `cl11033`). We can return counts of dingo observations in CAPAD areas only using `galah_group_by()` in our query. Then by adding the record counts together we'll return the total number of observations in CAPAD areas.
 :::
 
 ```{r}
@@ -581,7 +583,7 @@ paste(round(in_protected / out_of_protected * 100, 2), "%", sep = "")
 
 Let's do the same as above to make a map of South Australia. 
 
-We'll also include a map of where the Dingo Fence is within South Australia to compare observations on either side of the fence. We obtained a shapefile of the Dingo Fence by contacting the [Department of Primary Industries and Regions](https://pir.sa.gov.au/biosecurity/introduced-pest-feral-animals/find_a_pest_animal/wild_dogs_and_dingoes/dog_fence).
+We'll also include a map of where the Dog Fence is within South Australia to compare observations on either side of the fence. We obtained a shapefile of the Dog Fence by contacting the [Department of Primary Industries and Regions](https://pir.sa.gov.au/biosecurity/introduced-pest-feral-animals/find_a_pest_animal/wild_dogs_and_dingoes/dog_fence).
 
 ```{r}
 dog_fence <- st_read(here("posts",
@@ -682,7 +684,7 @@ dingo_capad_sa <- galah_call() |>
   galah_identify("canis familiaris") |>
   galah_filter(raw_vernacularName == c("Dingo", "dingo"),
                cl22 == "South Australia") |>
-  galah_group_by(cl11033) |>
+  galah_group_by(cl11033) |> # capad
   atlas_counts() |>
   drop_na() # filter any NA values out
 
@@ -693,7 +695,7 @@ out_of_protected <- nrow(dingo_obs_sa)
 paste(round(in_protected / out_of_protected * 100, 2), "%", sep = "")
 ```
 
-Overall, in the Northern Territory and South Australia, the number of dingo observations is fairly comparable between between those made inside and outside of nationally protected areas. We also saw how few observations are on the southern side of the Dingo Fence in South Australia.
+Overall, in the Northern Territory and South Australia, the number of dingo observations is fairly comparable between between those made inside and outside of nationally protected areas. We also saw how few observations are on the southern side of the Dog Fence in South Australia.
 
 # Final thoughts
 
