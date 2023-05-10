@@ -2,8 +2,8 @@
 title: "Rapid loss of genetic diversity in Koalas from urbanisation"
 author: "Margot Schneider & Olivia Torresan"
 date: "2022-03-07"
-title-block-banner: "#B7CD96"
-title-block-banner-color: "#754C06"
+title-block-banner: "#667073"
+title-block-banner-color: "#6BDAD5"
 include-after-body: _footer.html
 freeze: true
 image: thumbnail.png
@@ -16,7 +16,7 @@ params:
   title: "Genetic erosion detected in a specialist mammal living in a fast-developing environment"
   publication: "Conservation Science and Practice"
   doi: https:://doi.org/10.1111/csp2.12738
-  image_url: https://images.ala.org.au/image/details?imageId=510ef86e-0fa3-41c3-a023-1b569398788d
+  image_url: https://ala-images.s3.ap-southeast-2.amazonaws.com/store/d/8/8/7/510ef86e-0fa3-41c3-a023-1b569398788d/original
   alt_text: An image of a Koala sitting in a tree
 ---
 
@@ -44,7 +44,7 @@ params:
 
 ::: figure-caption
 <!-- edit caption -->
-[*Daviesa buxifolia* (Betty and Don Wood CC BY 3.0)](https://images.ala.org.au/image/viewer?imageId=0a95413d-25aa-4889-9c7d-39dd898eb077)
+[*Phascolarctos cinereus* (Nathaniel Xggum CC BY NC 3.0)](https://ala-images.s3.ap-southeast-2.amazonaws.com/store/d/8/8/7/510ef86e-0fa3-41c3-a023-1b569398788d/original)
 :::
 
 ### Citation
