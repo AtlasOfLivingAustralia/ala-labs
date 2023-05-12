@@ -219,29 +219,29 @@
 
 
 .home-column-image {
-  width: 40%;
+  width: 30%;
   padding: 20px 20px;
   flex-direction: column;
 }
 
 .home-column-text {
-  width: 40%;
+  width: 30%;
   padding: 20px 20px;
   flex-direction: column;
 }
 
 .col-left {
   float: left;
-  margin-left: 10%;
+  margin-left: 20%;
 }
 
 .col-right {
   float:right;
-  margin-right: 10%;
+  margin-right: 20%;
 }
 
 img.home-img {
-  width: 85%;
+  width: 95%;
   border-style: none;
   height: auto;
   border-radius: 30px;
@@ -251,7 +251,7 @@ img.home-img {
 }
 
 img.home-img-transparent {
-  width: 80%;
+  width: 95%;
   margin-left: 10%;
   border-style: none;
   height: auto;
