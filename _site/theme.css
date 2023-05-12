@@ -121,6 +121,15 @@ a:hover {
   color: var(--primary-orange);
 }
 
+a.white {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #FFC557;
+}
+
 /* ALA navbar favicon color */
 
 .bi-ala {

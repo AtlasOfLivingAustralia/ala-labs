@@ -1,6 +1,6 @@
 ---
 title: "Software"
-subtitle: "Tools supported by the ALA"
+subtitle: "Tools supported by the Science & Decision Support Team"
 title-block-banner: "#E06E53"
 title-block-banner-color: body
 toc: false
@@ -26,20 +26,26 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 # galah
 
-{galah} is an R interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It enables users to locate and download species occurrence records (observations, specimens, eDNA records, etc.), taxonomic information, or associated media such as images or sounds, and to restrict their queries to particular taxa or locations.<br> <br>
-Visit the **[{galah} R package website](http://galah.ala.org.au/)** to learn more about how to use `galah`<br><br>
+{galah} is an R and Python interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It enables users to locate and download species occurrence records (observations, specimens, eDNA records, etc.), taxonomic information, or associated media such as images or sounds, and to restrict their queries to particular taxa or locations.<br> <br>
+Visit the **[{galah} website](http://galah.ala.org.au/)** to learn more about how to use {galah}<br><br>
 If you have any questions, comments, or spot any bugs, [email us](mailto:support@ala.org.au) or [report an issue](https://github.com/AtlasOfLivingAustralia/galah-R) on our GitHub page
 
 :::
 
+***
 
+:::{.column-page layout="[1,1]" style="float:right;"}
 
-### Get started
-
-Install from CRAN
-
-```{r, eval = FALSE}
-install.packages("galah")
+```{r out.width='79%', out.extra='style="float:left;"', echo=FALSE}
+#| fig-align: center
+knitr::include_graphics(here::here("images", "hex", "potions-logo.png"))
 ```
 
+# potions
+
+{potions} makes options management in R—usually edited using `base::options()` and related functions—as easy as possible. It uses a minimalist workflow to store and retrieve information with three core functions: `brew()`, `pour()` and `drain()`.<br> <br>
+Visit the **[{potions} website](https://potions.ala.org.au/)** to learn more about how to use {potions}<br><br>
+If you have any questions, comments, or spot any bugs, [email us](mailto:support@ala.org.au) or [report an issue](https://github.com/AtlasOfLivingAustralia/potions) on our GitHub page
+
+:::
 

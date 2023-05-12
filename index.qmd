@@ -5,6 +5,7 @@ format:
     include-in-header: hero-image.html
     include-after-body: _footer.html
     sidebar: false
+    anchor-sections: false
     css: [theme.css, index.css]
 ---
 
@@ -26,16 +27,25 @@ source("R/functions.R")
 
 This site is a resource for coding projects that use data sourced from [the ALA](https://ala.org.au/). We hope that users will find interesting content, whether their focus is ecological modelling, data visualisation, or simply investigating the natural world through a digital lens. Enjoy!
 
+<br>
 
----
+:::{.column-screen style="background-color:#EEECEA;"}
+:::{.column-screen-inset}
+:::{.home-column-image .col-left}
 
-:::{.column-page}
+<a href="https://labs.ala.org.au/posts.html">
 
+![](images/homepage/home_ala-plots.png){.home-img}
 
-<center> <h1>Data visualisation</h1> </center>
+</a>
 
-<center> <span style = "font-style: italic">Click to see related posts on each topic</span> </center>
+:::
 
+:::{.home-column-text .col-right}
+
+<center> <h1>Posts</h1>
+<span style = "font-style: italic">How-to articles for solving scientific problems</span> 
+</center>
 
 
 ```{r, echo = FALSE}
@@ -49,9 +59,8 @@ tags$div(class = "category-row",
         src = "images/vectors/barplot.svg",
         class = "category-image honey"
   )),
-  tags$p(
-    tags$h3(style = "text-align:center",
-      tags$a(href = "posts.html#category=Summaries", "Summaries")))),
+  tags$h3(style = "text-align:center;",
+      tags$a(href = "posts.html#category=Summaries", "Summaries"))),
   
   tags$div( 
     class = "category-column",
@@ -61,9 +70,8 @@ tags$div(class = "category-row",
         src = "images/vectors/Australia.svg",
         class = "category-image honey"
   )),
-  tags$p(
-    tags$h3(style = "text-align:center",
-      tags$a(href = "posts.html#category=Maps", "Maps")))),
+  tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category=Maps", "Maps"))),
   
   tags$div( 
     class = "category-column",
@@ -73,73 +81,140 @@ tags$div(class = "category-row",
         src = "images/vectors/tree.svg",
         class = "category-image honey"
   )),
-  tags$p(
-    tags$h3(style = "text-align:center",
-      tags$a(href = "posts.html#category=Trees", "Trees"))))
+  tags$h3(style = "text-align:center",
+      tags$a(href = "posts.html#category=Trees", "Trees")))
   
   )
 ```
 
 
 
+:::
+:::
+:::
 
-<center> <h1>Taxonomy</h1> </center>
+:::{.column-screen}
+:::{.column-screen-inset}
+:::{.home-column-image .col-right}
+<a href="https://labs.ala.org.au/highlights.html">
+![](images/homepage/home_ala-research.png){.home-img}
+</a>
 
-<center> <span style = "font-style: italic">Click to see related posts on each topic</span> </center>
+:::
+
+:::{.home-column-text .col-left}
+
+<center> <h1>Research</h1>
+
+<span style = "font-style: italic">Highlighting research supported by ALA data</span>
 
 
+</center>
 
 ```{r, echo = FALSE}
 tags$div(class = "category-row",
          
   tags$div( 
     class = "category-column",
-    tags$a(href = "posts.html#category=Plantae",
+    style = "width: 50%",
+    tags$a(href = "posts.html#category=Summaries",
       tags$img(
-        href = "posts.html#category=Plantae",
-        src = "images/vectors/eucalypt.svg",
-        class = "category-image sage"
+        href = "posts.html#category=Summaries",
+        src = "images/vectors/seedling-solid.svg",
+        class = "category-image honey"
   )),
-  tags$p(
-    tags$h3(style = "text-align:center",
-      tags$a(href = "posts.html#category=Plantae", "Plants")))),
+  tags$h3(style = "text-align:center;",
+      tags$a(href = "posts.html#category=Summaries", "Selected\nHighlights"))),
   
   tags$div( 
     class = "category-column",
-    tags$a(href = "posts.html#category=Aves",
+    style = "width: 50%",
+    tags$a(href = "posts.html#category=Maps",
       tags$img(
-        href = "posts.html#category=Aves",
-        src = "images/vectors/falco.svg",
-        class = "category-image sage",
-        style = "height: 140px; width: auto;"
+        href = "posts.html#category=Maps",
+        src = "images/vectors/table-list-solid.svg",
+        class = "category-image honey"
   )),
-  tags$p(
-    tags$h3(style = "text-align:center",
-      tags$a(href = "posts.html#category=Aves", "Birds")))),
+  tags$h3(style = "text-align:center;",
+      tags$a(href = "posts.html#category=Summaries", "Complete List"))
   
-  tags$div( 
-    class = "category-column",
-    tags$a(href = "posts.html#category=Mammalia",
-      tags$img(
-        href = "posts.html#category=Mammalia",
-        src = "images/vectors/bettong.png",
-        class = "category-image sage",
-        style = "height: 110px; width: auto; margin-top: 30px;"
-  )),
-  tags$p(
-    tags$h3(style = "text-align:center",
-      tags$a(href = "posts.html#category=Mammalia", "Mammals"))))
-  
-  )
+  ))
 ```
 
 
+:::
+:::
+:::
+
+
+:::{.column-screen style="background-color:#B8573E;"}
+:::{.column-screen-inset}
+:::{.home-column-image .col-left}
+
+<a href="https://labs.ala.org.au/software.html">
+
+![](images/homepage/home_ala-software-c.png){.home-img-transparent}
+
+</a>
+
+<!-- :::{.hexBadges} -->
+
+<!-- <a href="https://labs.ala.org.au/software.html"> -->
+<!-- <img src = "https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/science-impact-testing/images/hex/galah_logo.png" class = "r1 c0"></img> -->
+<!-- </a> -->
+
+<!-- <a href="https://labs.ala.org.au/software.html"> -->
+<!-- <img src = "https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/science-impact-testing/images/hex/potions-logo.png" class = "r2 c1" style = "width:265px;"></img> -->
+<!-- </a> -->
+<!-- ::: -->
+
+:::
+
+:::{.home-column-text .col-right}
+
+<center> <h1 style="color: #fff;">Software</h1>
+
+<span style = "font-style: italic; color: #fff;">Tools supported by the Science & Decision Support Team</span>
+
+</center>
+
+```{r, echo = FALSE}
+tags$div(class = "category-row",
+  
+  tags$div( 
+    class = "category-column",
+    style = "width: 100%",
+    tags$a(href = "posts.html#category=Maps",
+      tags$img(
+        href = "posts.html#category=Maps",
+        src = "images/vectors/hexagon-vector.svg",
+        style = "color:#fff !important;",
+        class = "category-image honey-white"
+  )),
+  tags$h3(style = "text-align:center;",
+      tags$a(
+        class = "white",
+        href = "posts.html#category=Summaries", "Packages"))
+  
+  ))
+```
+
+
+:::
+:::
+:::
+
+
+:::{.column-screen"}
+
+:::{.column-page}
 
 <center> <h1>{{< fa earth-oceania >}} We value</h1> </center>
 
 :::
 
 :::{.column-screen}
+
 
 ```{r, echo = FALSE}
 # find icons at https://fontawesome.com/v5.15/icons?d=gallery&p=2
@@ -168,3 +243,5 @@ create_values_box3(
 ```
 
 :::
+:::
+
