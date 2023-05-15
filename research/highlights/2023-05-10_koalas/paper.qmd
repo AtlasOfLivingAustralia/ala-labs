@@ -16,7 +16,7 @@ params:
   title: "Genetic erosion detected in a specialist mammal living in a fast-developing environment"
   publication: "Conservation Science and Practice"
   doi: https:://doi.org/10.1111/csp2.12738
-  image_url: https://ala-images.s3.ap-southeast-2.amazonaws.com/store/d/8/8/7/510ef86e-0fa3-41c3-a023-1b569398788d/original
+  image_url: https://images.ala.org.au/image/details?imageId=510ef86e-0fa3-41c3-a023-1b569398788d
   alt_text: An image of a Koala sitting in a tree
 ---
 
@@ -38,7 +38,7 @@ params:
 <center>
 :::{layout-ncol=1 style="margin-left: auto; margin-right: auto; width:50%;"}
 <!-- add image url -->
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/7/0/b/0a95413d-25aa-4889-9c7d-39dd898eb077/original" class="rounded"/></img>
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/d/8/8/7/510ef86e-0fa3-41c3-a023-1b569398788d/original" class="rounded"/></img>
 :::
 </center>
 
@@ -65,11 +65,11 @@ Prepared by {@author}
 <!-- Main panel description -->
 
 ::: {.paper-main-column}
-Habitat fragmentation is a major threat to species survival. As it creates small, isolated, or “patchy” populations; these patches can be difficult to access by the larger group, limiting their ability to be recolonised under natural disaster or disease. As such, fragmented populations are more likely to experience inbreeding. This reduces genetic diversity and further detriments the species resilience to disease and its’ ability to adapt to varied and changing climatic or environmental conditions. Without detection or management, fragmentation can create a negative spiral effect that heightens species extinction risk. 
+Habitat fragmentation is a major threat to species survival. It can create small, isolated or “patchy” populations difficult to access by the larger group; restricting the species capacity to recolonise after natural disaster or disease. As such, fragmented populations are more likely to experience inbreeding. This reduces genetic diversity (a process called “genetic erosion”), and further, the species resilience to disease and its’ ability to adapt to varied and changing climatic or environmental conditions. Without detection or management, fragmentation can cause a negative flow-on effect that heightens species extinction risk. 
 
-In particular, the fragmentation of Koala (Phascolarctos cinereus) habitat in Australia has increasingly received attention within the public eye following the devastating effects of the 2019-20 bushfires. Koalas are now listed as endangered federally (DCCEW, 2022). 
+  
 
-In this research, Hohwieler et al. (2022) assess genetic erosion in Queensland Koalas by assessing physical samples – two generations apart; the latter’s location informed by ALA data of koala sightings. The first-generation samples (y. 2006) were sourced from ear biopsies from wildlife hospitals, with the second-generation (y. 2018) from scats obtained by detection dogs. A comparison of the genetic diversity between these two generations of samples found a decline in diversity that appeared correlated substantially with accelerating anthropogenic fragmenting factors such as urbanisation, traffic increases and habitat loss. Currently, species and ecosystem guidelines are provided by the IUCN in assessing its status. The authors call for stronger genetic guidelines and requirements in these assessments, of which could also provide to be useful in the management and conservation of remaining populations.
+In a population informed by Atlas data, Hohwieler and others (2022) assess genetic erosion in Queensland koalas across two generations (2006 vs. 2018). A comparison of the genetic diversity between two generations of sourced physical samples (ear biopsy specimens and scats) found a decline in diversity that correlated substantially with accelerating anthropogenic factors such as urbanisation, traffic increases and habitat loss. Currently, categorising species and ecosystems' status are provided by the International Union for Conservation (IUCN), but they do not contain any genetic diversity guidelines. The authors call for stronger requirements in these assessments, which will also hold useful in the management and conservation of remaining populations.
 :::
 
 :::

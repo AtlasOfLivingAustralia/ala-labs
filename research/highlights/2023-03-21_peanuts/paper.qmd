@@ -1,5 +1,5 @@
 ---
-title: "Changing farming climates: The future of growing peanuts"
+title: "Changing farming climates: the future of growing peanuts"
 author: "Olivia Torresan"
 date: "2022-03-07"
 title-block-banner: "#B7CD96"
@@ -16,8 +16,8 @@ params:
   title: "Modelling future spatial distribution of peanut crops in Australia under climate change scenarios"
   publication: "Geospatial Information Science"
   doi: https:://doi.org/10.1080/10095020.2022.2155255
-  image_url: https://images.ala.org.au/
-  alt_text: An image
+  image_url: https://images.ala.org.au/image/details?imageId=91c8cc07-ef18-4b5d-af0f-6b3610f1ca0e
+  alt_text: Peanut plant flowering
 ---
 
 <!-- remove metadata section -->
@@ -38,13 +38,13 @@ params:
 <center>
 :::{layout-ncol=1 style="margin-left: auto; margin-right: auto; width:50%;"}
 <!-- add image url -->
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/7/0/b/0a95413d-25aa-4889-9c7d-39dd898eb077/original" class="rounded"/></img>
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/0/a/c/91c8cc07-ef18-4b5d-af0f-6b3610f1ca0e/original" class="rounded"/></img>
 :::
 </center>
 
 ::: figure-caption
 <!-- edit caption -->
-[*Daviesa buxifolia* (Betty and Don Wood CC BY 3.0)](https://images.ala.org.au/image/viewer?imageId=0a95413d-25aa-4889-9c7d-39dd898eb077)
+[*Arachis hypogaea L.* (Fagg, M. CC BY 3.0)](https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/0/a/c/91c8cc07-ef18-4b5d-af0f-6b3610f1ca0e/original)
 :::
 
 ### Citation
