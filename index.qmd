@@ -59,7 +59,7 @@ tags$div(class = "category-row",
         src = "images/vectors/barplot.svg",
         class = "category-image honey"
   )),
-  tags$h3(style = "text-align:center;",
+  tags$h4(style = "text-align:center;",
       tags$a(href = "posts.html#category=Summaries", "Summaries"))),
   
   tags$div( 
@@ -70,7 +70,7 @@ tags$div(class = "category-row",
         src = "images/vectors/Australia.svg",
         class = "category-image honey"
   )),
-  tags$h3(style = "text-align:center",
+  tags$h4(style = "text-align:center",
       tags$a(href = "posts.html#category=Maps", "Maps"))),
   
   tags$div( 
@@ -81,7 +81,7 @@ tags$div(class = "category-row",
         src = "images/vectors/tree.svg",
         class = "category-image honey"
   )),
-  tags$h3(style = "text-align:center",
+  tags$h4(style = "text-align:center",
       tags$a(href = "posts.html#category=Trees", "Trees")))
   
   )
@@ -123,8 +123,8 @@ tags$div(class = "category-row",
         src = "images/vectors/seedling-solid.svg",
         class = "category-image honey"
   )),
-  tags$h3(style = "text-align:center;",
-      tags$a(href = "posts.html#category=Summaries", "Selected\nHighlights"))),
+  tags$h4(style = "text-align:center;",
+      tags$a(href = "posts.html#category=Summaries", "Selected\nhighlights"))),
   
   tags$div( 
     class = "category-column",
@@ -135,8 +135,8 @@ tags$div(class = "category-row",
         src = "images/vectors/table-list-solid.svg",
         class = "category-image honey"
   )),
-  tags$h3(style = "text-align:center;",
-      tags$a(href = "posts.html#category=Summaries", "Complete List"))
+  tags$h4(style = "text-align:center;",
+      tags$a(href = "posts.html#category=Summaries", "Complete list"))
   
   ))
 ```
@@ -191,7 +191,7 @@ tags$div(class = "category-row",
         style = "color:#fff !important;",
         class = "category-image honey-white"
   )),
-  tags$h3(style = "text-align:center;",
+  tags$h4(style = "text-align:center;",
       tags$a(
         class = "white",
         href = "posts.html#category=Summaries", "Packages"))
@@ -205,7 +205,7 @@ tags$div(class = "category-row",
 :::
 
 
-:::{.column-screen"}
+:::{.column-screen style="background-color:#EEECEA;"}
 
 :::{.column-page}
 
@@ -230,13 +230,13 @@ create_values_box1(
 create_values_box2(
   value = "\    Scientific transparency",
   icon = "fas fa-dna",
-  text = "Transparency is necessary for reproducible science. We encourage that decisions, methods and deviations in our workflow are clear and transparent from the planning phase, to the retrieval and analysis of data, to the final output"
+  text = "Transparency is necessary for reproducible science. We encourage that decisions, methods and deviations are clear and transparent in a workflow from the planning phase, to the retrieval and analysis of data, to the final output"
 ),
 
 create_values_box3(
   value = "\    Robust methods",
   icon = "far fa-chart-bar",
-  text = "No method or analytic procedure is perfect. We value consideration for strengths and limitations of each method or analysis to help choose the methods that provide robust, reliable results"
+  text = "No method or analytic procedure is perfect. We value consideration for strengths and limitations of each method or analysis to help choose the method that provides robust, reliable results"
 )
 
 )
