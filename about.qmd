@@ -1,0 +1,94 @@
+---
+title: "About"
+subtitle: Role and membership of the ALA Science & Decision Support Team
+format: 
+  html: 
+    include-after-body: _footer.html
+    css: theme.css
+title-block-banner: "#E06E53"
+title-block-banner-color: body
+---
+
+```{r setup}
+#| include: false
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+#| include: false
+library(htmltools)
+source("R/functions.R")
+```
+
+
+### We are responsible for:  
+
+- Data analysis & reporting on key projects
+- R package development & maintenance
+- Outreach & engagement with the research community
+
+
+
+# Meet the team
+
+*Click on photos to view their articles and contributions*
+```{r}
+#| echo: false
+tags$div(class = "row",# Create a row for 3 team-member cards
+         
+create_team_card(
+  person_page = "people/Westgate_Martin/index.html",
+  img_src = "images/people/martin.jpg",
+  name = "Martin Westgate",
+  text = "Team Leader"
+),
+create_team_card(
+  person_page = "people/Balasubramaniam_Shandiya/index.html",
+  img_src = "images/people/shandiya.png",
+  name = "Shandiya Balasubramaniam",
+  text = "Data Analyst"
+),
+create_team_card(
+  person_page = "people/Buyan_Amanda/index.html",
+  img_src = "images/people/amanda.jpg",
+  name = "Amanda Buyan",
+  text = "Data Analyst"
+)
+)
+tags$div(class = "row", # Create a row for 3 team-member cards
+         
+create_team_card(
+  person_page = "people/Kellie_Dax/index.html",
+  img_src = "images/people/dax.jpg",
+  name = "Dax Kellie",
+  text = "Data Analyst"
+),
+create_team_card(
+  person_page = "people/Torresan_Olivia/index.html",
+  img_src = "images/people/olivia.jpg",
+  name = "Olivia Torresan",
+  text = "Support Officer"
+),
+create_team_card(
+  person_page = "people/Kar_Fonti/index.html",
+  img_src = "images/people/fonti.jpg",
+  name = "Fonti Kar",
+  text = "Data Analyst"
+)
+)
+tags$div(class = "row", # Create a row for 3 team-member cards
+create_team_card(
+  person_page = "people/Schneider_Margot/index.html",
+  img_src = "images/people/margot.jpg",
+  name = "Margot Schneider",
+  text = "Project Manager"
+),
+create_team_card(
+  person_page = "people/Seers_Juliet/index.html",
+  img_src = "images/people/juliet.jpg",
+  name = "Juliet Seers",
+  text = "Training & Outreach Coordinator"
+)
+)
+```
+

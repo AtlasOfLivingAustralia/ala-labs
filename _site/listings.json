@@ -2,6 +2,7 @@
   {
     "listing": "/posts.html",
     "items": [
+      "/posts/2023-05-16_dingoes/post.html",
       "/posts/2023-04-28_plotting-invasive-species/post.html",
       "/posts/2023-04-11_quantifying-species-range/post.html",
       "/posts/2023-04-03_highlighted-time-series/post.html",
@@ -17,15 +18,8 @@
     ]
   },
   {
-    "listing": "/highlights.html",
-    "items": [
-      "/highlights/2023-03-21_peanuts/paper.html"
-    ]
-  },
-  {
     "listing": "/research/highlights.html",
     "items": [
-      "/research/highlights/2023-05-26_jacarandas/paper.html",
       "/research/highlights/2023-05-15_JEV/paper.html",
       "/research/highlights/2023-05-15_microfossils/paper.html",
       "/research/highlights/2023-05-10_koalas/paper.html",

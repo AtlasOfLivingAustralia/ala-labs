@@ -70,11 +70,12 @@ Prepared by
 ::: {.paper-main-column}
 Pictures of species are a valuable way of documenting how traits and characteristics vary in different locations and over time.
 
-To understand how shifts in climate are influencing seasonal behaviour of Australia’s plants and animals, Garcia-Rojas, Keatley & Roslan (2023) used images of Jacaranda trees (*Jacaranda mimosifolia*) to understand how their flowering patterns might have changed across time. Using data from a decade-long citizen science program along with data published to the Atlas of Living Australia, the authors used 11,578 Jacaranda sightings to calculate the time-period and intensity of flowering from [xx year] to [xx year]. 
+To understand how shifts in climate are influencing seasonal behaviour of Australia’s plants, Garcia-Rojas, Keatley & Roslan (2023) used images of Jacaranda trees (*Jacaranda mimosifolia*) to investigate how their flowering patterns might have changed across time. Using data from a decade-long citizen science program published to the Atlas of Living Australia, the authors used 11,578 Jacaranda sightings to calculate the time period and intensity of flowering from 2009 to 2019.
 
-Jacaranda's peak flowering was found to occur in December in Melbourne but in October in Perth and Sydney. [why does this matter? Is this bad or unexpected?] 
+Jacaranda's peak flowering was found to occur in December in Melbourne but in October in Perth and Sydney. With climate predicted to become warmer and drier,  Jacaranda trees are likely to flower more intensely in Melbourne and Sydney as these climates become warmer, and may reduce in productivity in Perth.
 
-Flowering studies such as these can help us understand how a changing climate may impact important related factors such as the reproductive success of J. mimosifolia, and therefore its longevity.
+*Why does sydney differ to perth if they flower at the same time? Try to make clear how warmer and drier climate might affect Perth but not melbourne and sydney*
+*I don't think that the first sentence in the final section is the main finding of the paper. Try to broaden this to help set up the second sentence*
 :::
 
 :::

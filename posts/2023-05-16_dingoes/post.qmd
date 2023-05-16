@@ -18,9 +18,8 @@ categories:
   - Summaries
   - Maps
   - Intern-post
-image: ducks.png
+image: dingo-sa.png
 freeze: true
-draft: true
 editor_options: 
   chunk_output_type: console
 ---
