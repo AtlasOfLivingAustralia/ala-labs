@@ -15,5 +15,21 @@
       "/posts/2021-04-14_hex-maps-for-species-occurrence-data/post.html",
       "/posts/2021-03-20_creating-a-color-palette-from-an-image/post.html"
     ]
+  },
+  {
+    "listing": "/highlights.html",
+    "items": [
+      "/highlights/2023-03-21_peanuts/paper.html"
+    ]
+  },
+  {
+    "listing": "/research/highlights.html",
+    "items": [
+      "/research/highlights/2023-05-26_jacarandas/paper.html",
+      "/research/highlights/2023-05-15_JEV/paper.html",
+      "/research/highlights/2023-05-15_microfossils/paper.html",
+      "/research/highlights/2023-05-10_koalas/paper.html",
+      "/research/highlights/2023-03-21_peanuts/paper.html"
+    ]
   }
 ]

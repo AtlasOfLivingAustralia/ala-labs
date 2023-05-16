@@ -25,15 +25,17 @@ website:
         text: "About"
       - href: posts.qmd
         text: "Posts"
-      - text: "References"
+      - text: "Research"
         menu:
-        - href: galah.qmd
-          text: "galah"
-        - href: https://ala.org.au/contact-us/
-          text: "Contact Us"
+        - href: research/highlights.qmd
+          text: "Highlights"
+        - href: research/citations.qmd
+          text: "All citations"
+      - href: software/software.qmd
+        text: "Software"
       - href: https://www.ala.org.au
         icon: ala
-      - href: https://github.com/AtlasOfLivingAustralia/science
+      - href: https://github.com/AtlasOfLivingAustralia/ala-labs
         icon: github
 
 format:

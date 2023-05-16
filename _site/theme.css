@@ -121,6 +121,15 @@ a:hover {
   color: var(--primary-orange);
 }
 
+a.white {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #FFC557;
+}
+
 /* ALA navbar favicon color */
 
 .bi-ala {
@@ -409,10 +418,62 @@ img.rounded {
   width: 195px;
 }
 
+.column-rounded {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%
+}
+
 /*@media screen and (max-width: 952px) {
   .l-body img {
     margin-right: 15px;
     width: 60px;
   }
 }*/
+
+.paper-side-column {
+  float: left;
+  width: 35%;
+  padding: 20px 20px;
+  flex-direction: column;
+  background-color: #EEECEA;
+  font-size: .85rem;
+  border-radius: 30px;
+}
+
+.paper-main-column {
+  float: left;
+  width: 60%;
+  padding: 0 0px;
+  flex-direction: column;
+  margin-left: 50px;
+}
+
+.col-image {
+  width: 80%;
+}
+
+
+/* Display the columns below each other instead of side by side on small screens */
+
+@media screen and (max-width: 952px) {
+  .paper-side-column {
+    width: 100%;
+    display: block;
+    margin-top: -30px;
+  }
+  .paper-main-column {
+    width: 100%;
+    display: block;
+    padding-top:20px;
+    padding-bottom:20px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .col-image {
+    display: flex;
+    justify-content: center;
+  }
+}
 

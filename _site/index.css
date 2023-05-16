@@ -134,26 +134,23 @@
 }
 
 .value-feature-1 {
-    background: #B8573E;
-    color: white;
+  background: #EEECEA;
 }
 
 .value-feature-2 {
-    background: #E06E53;
-    color: white;
+  background: #DBD7D2;
 }
 
 .value-feature-3 {
-    background: #B8573E;
-    color: white;
+  background: #EEECEA;
 }
 
 .value-text {
-  color: white;
+  color: #222322;
 }
 
 .value-block {
-    color: #fff;
+    color: #222322;
     padding: 85px 65px;
     float: left;
     display: block;
@@ -164,7 +161,10 @@
 
 /*-- Categories of posts buttons --*/
 
-/* Three columns side by side */
+.category-row {
+  margin-top:10%;
+}
+
 .category-column {
   float: left;
   width: 33%;
@@ -172,24 +172,11 @@
   flex-direction: column
 }
 
-
-/* Display the columns below each other instead of side by side on small screens */
-
-@media screen and (max-width: 952px) {
-  .category-column {
-    width: 100%;
-    display: block;
-  }
-}
-
-/* Add some shadows to create a card effect */
-
-
 .category-image {
   display: block;
   margin: auto;
   width: auto;
-  height: 140px;
+  height: 110px;
   width:100%;
   text-align: center;
   backface-visibility: hidden;
@@ -197,12 +184,28 @@
   transition: all .1ms;
 }
 
+@media screen and (max-width: 952px) {
+  .category-image {
+    height: 75px;
+  }
+  .category-row {
+    margin-top: 0%;
+  }
+}
 
 .honey {
   filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
 }
 
 .honey:hover {
+  filter: invert(95%) sepia(43%) saturate(3246%) hue-rotate(313deg) brightness(100%) contrast(102%);
+}
+
+.honey-white {
+  filter: invert(100%) brightness(100%);
+}
+
+.honey-white:hover {
   filter: invert(95%) sepia(43%) saturate(3246%) hue-rotate(313deg) brightness(100%) contrast(102%);
 }
 
@@ -213,3 +216,127 @@
 .sage:hover {
   filter: invert(94%) sepia(12%) saturate(881%) hue-rotate(28deg) brightness(88%) contrast(81%);
 }
+
+
+.home-column-image {
+  width: 30%;
+  padding: 20px 20px;
+  flex-direction: column;
+}
+
+.home-column-text {
+  width: 30%;
+  padding: 20px 20px;
+  flex-direction: column;
+}
+
+.col-left {
+  float: left;
+  margin-left: 20%;
+}
+
+.col-right {
+  float:right;
+  margin-right: 20%;
+}
+
+img.home-img {
+  width: 95%;
+  border-style: none;
+  height: auto;
+  border-radius: 30px;
+  color: black;
+  background-color: white;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(184, 87, 62, 0.1) 0px 0px 8px;
+}
+
+img.home-img-transparent {
+  width: 95%;
+  margin-left: 10%;
+  border-style: none;
+  height: auto;
+}
+
+/* Display the columns below each other instead of side by side on small screens */
+
+@media screen and (max-width: 952px) {
+  .home-column-image {
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: -50px;
+  }
+  .home-column-text {
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .col-left {
+    display: block;
+    margin-left: auto;
+  }
+
+  .col-right {
+    display: block;
+    margin-right: auto;
+  }
+
+  img.home-img {
+  width: 100%;
+  margin-left: auto;
+  }
+
+  img.home-img-transparent {
+  width: 100%;
+  margin-left: auto;
+  }
+}
+
+/* possible hex badge code */
+.hexBadges img.r1.c0, .hexBadges img.r3.c0, .hexBadges img.r5.c0 {
+    left: 323px;
+}
+
+.hexBadges img.r0.c1, .hexBadges img.r2.c1, .hexBadges img.r4.c1 {
+    left: 438px;
+}
+
+/*.hexBadges img.r0.c2, .hexBadges img.r2.c2, .hexBadges img.r4.c2 {
+    left: 250px;
+}*/
+
+.hexBadges img.r1 {
+    top: 50px;
+}
+.hexBadges img.r2 {
+    top: 258px;
+}
+
+.hexBadges {
+    position: relative;
+    width: 500px;
+    margin-top: -130px;
+    height: 600px;
+}
+
+.hexBadges img {
+    width: 236px;
+    height: auto;
+    position: absolute;
+    -webkit-transition-property: opacity;
+    -moz-transition-property: opacity;
+    -o-transition-property: opacity;
+    transition-property: opacity;
+    -webkit-transition-duration: .25s;
+    -moz-transition-duration: .25s;
+    -o-transition-duration: .25s;
+    transition-duration: .25s;
+}
+img {
+    max-width: 100%;
+}
+
+@media screen and (max-width: 952px) {
