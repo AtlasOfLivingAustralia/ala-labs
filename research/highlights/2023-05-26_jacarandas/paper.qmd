@@ -6,10 +6,11 @@ title-block-banner: "#A191B2"
 title-block-banner-color: "#B7CD96"
 include-after-body: _footer.html
 freeze: true
+draft: true
 image: thumbnail.png
 categories:
   - Citizen science
-  - Biodiversity science
+  - Climate Change
 params:
   authors: "Garcia-Rojas, M. I., Keatley, M. R., & Roslan, N."
   year: 2023
@@ -44,7 +45,7 @@ params:
 
 ::: figure-caption
 <!-- edit caption -->
-[*Jacaranda mimosifolia* (2fgaj | questagame.com CC BY 3.0)](https://images.ala.org.au/image/details?imageId=2dd10017-9042-4e9c-8980-b4e578101f81)
+[*Jacaranda mimosifolia* (2fgaj | questagame.com CC BY NC 3.0)](https://images.ala.org.au/image/details?imageId=2dd10017-9042-4e9c-8980-b4e578101f81)
 :::
 
 ### Citation
@@ -58,7 +59,7 @@ htmltools::HTML(
 
 #### Page info
 Prepared by 
-[Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/), 
+[Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/)
 
 
 :::
@@ -67,12 +68,11 @@ Prepared by
 <!-- Main panel description -->
 
 ::: {.paper-main-column}
+Pictures of species are a valuable way of documenting how traits and characteristics vary in different locations and over time.
 
-What story can ten years of images tell?
+To understand how shifts in climate are influencing seasonal behaviour of Australia’s plants and animals, Garcia-Rojas, Keatley & Roslan (2023) used images of Jacaranda trees (*Jacaranda mimosifolia*) to understand how their flowering patterns might have changed across time. Using data from a decade-long citizen science program along with data published to the Atlas of Living Australia, the authors used 11,578 Jacaranda sightings to calculate the time-period and intensity of flowering from [xx year] to [xx year]. 
 
-Biodiversity data is more than just occurrence details (where and when a species is found), in that, often, it can include rich descriptions that are immensely useful in conducting analysis and research. Associated pictures of a species at a single point in time are one valuable way of understanding traits and characteristics of an organism and can be used in conjunction with a plethora of other provided information.
-
-Using a decade long citizen science program with data published to the Atlas of Living Australia aiming to understand how shifts in climate are influencing seasonal behaviour of Australia’s plants and animals, Garcia-Rojas, Keatley & Roslan (2022) use imagery of Jacaranda trees (Jacaranda mimosifolia) to understand how their flowering patterns might have changed across time.  This was the most recorded species in the project, with 11, 578 sightings. In their five most recorded areas, flowering intensity and period were calculated and plotted against local climate conditions. Peak flowering of Jacaranda’s was found to occur in December in Melbourne but in October in Perth and Sydney. 
+Jacaranda's peak flowering was found to occur in December in Melbourne but in October in Perth and Sydney. [why does this matter? Is this bad or unexpected?] 
 
 Flowering studies such as these can help us understand how a changing climate may impact important related factors such as the reproductive success of J. mimosifolia, and therefore its longevity.
 :::
