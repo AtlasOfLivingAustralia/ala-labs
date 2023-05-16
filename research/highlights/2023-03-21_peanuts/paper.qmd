@@ -36,7 +36,7 @@ params:
 :::{.paper-side-column}
 
 <center>
-:::{layout-ncol=1 style="margin-left: auto; margin-right: auto; width:50%;"}
+:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
 <!-- add image url -->
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/0/a/c/91c8cc07-ef18-4b5d-af0f-6b3610f1ca0e/original" class="rounded"/></img>
 :::
@@ -57,7 +57,9 @@ htmltools::HTML(
 
 
 #### Page info
-Prepared by {@author}
+Prepared by 
+[Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/), 
+[Margot Schneider](https://labs.ala.org.au/people/Schneider_Margot/)
 
 :::
 

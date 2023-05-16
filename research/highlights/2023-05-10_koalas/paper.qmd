@@ -3,7 +3,7 @@ title: "Rapid loss of genetic diversity in Koalas from urbanisation"
 author: "Margot Schneider & Olivia Torresan"
 date: "2022-03-07"
 title-block-banner: "#667073"
-title-block-banner-color: "#6BDAD5"
+title-block-banner-color: "#ADEBE8"
 include-after-body: _footer.html
 freeze: true
 image: thumbnail.png
@@ -36,7 +36,7 @@ params:
 :::{.paper-side-column}
 
 <center>
-:::{layout-ncol=1 style="margin-left: auto; margin-right: auto; width:50%;"}
+:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
 <!-- add image url -->
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/d/8/8/7/510ef86e-0fa3-41c3-a023-1b569398788d/original" class="rounded"/></img>
 :::
@@ -44,7 +44,7 @@ params:
 
 ::: figure-caption
 <!-- edit caption -->
-[*Phascolarctos cinereus* (Nathaniel Xggum CC BY NC 3.0)](https://ala-images.s3.ap-southeast-2.amazonaws.com/store/d/8/8/7/510ef86e-0fa3-41c3-a023-1b569398788d/original)
+[*Phascolarctos cinereus* (Nathaniel Xggum CC BY NC 3.0)](https://images.ala.org.au/image/details?imageId=510ef86e-0fa3-41c3-a023-1b569398788dl)
 :::
 
 ### Citation
@@ -57,19 +57,22 @@ htmltools::HTML(
 
 
 #### Page info
-Prepared by {@author}
-
+Prepared by 
+[Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/), 
+[Margot Schneider](https://labs.ala.org.au/people/Schneider_Margot/)
 :::
 
 
 <!-- Main panel description -->
 
 ::: {.paper-main-column}
-Habitat fragmentation is a major threat to species survival. It can create small, isolated or “patchy” populations difficult to access by the larger group; restricting the species capacity to recolonise after natural disaster or disease. As such, fragmented populations are more likely to experience inbreeding. This reduces genetic diversity (a process called “genetic erosion”), and further, the species resilience to disease and its’ ability to adapt to varied and changing climatic or environmental conditions. Without detection or management, fragmentation can cause a negative flow-on effect that heightens species extinction risk. 
+Habitat fragmentation—when a large habitat is divided into smaller isolated patches of habitat—is a major threat to species survival. Usually caused by habitat destruction, habitat fragmentation can separate populations from the larger group of individuals. 
 
-  
+Compared to larger populations, fragmented populations are more likely to inbreed, reducing their genetic diversity. Genetic diversity is important for species. It improves their resilience to disease and their ability to adapt to changing environmental conditions. Without detection or management, fragmentation heightens species extinction risk. 
 
-In a population informed by Atlas data, Hohwieler and others (2022) assess genetic erosion in Queensland koalas across two generations (2006 vs. 2018). A comparison of the genetic diversity between two generations of sourced physical samples (ear biopsy specimens and scats) found a decline in diversity that correlated substantially with accelerating anthropogenic factors such as urbanisation, traffic increases and habitat loss. Currently, categorising species and ecosystems' status are provided by the International Union for Conservation (IUCN), but they do not contain any genetic diversity guidelines. The authors call for stronger requirements in these assessments, which will also hold useful in the management and conservation of remaining populations.
+With the help of ALA data, Hohwieler and others (2022) assessed the genetic diversity of a Queensland koala population by comparing physical samples (ear biopsy specimens and scats) between two generations (2006 vs. 2018).
+
+The authors found a decline in diversity that correlated with accelerating urbanisation, traffic increases and habitat loss. Supported by this evidence, the authors call for stronger requirements of genetic diversity guidelines when determining species' and ecosystems' critical status by the International Union for Conservation (IUCN).
 :::
 
 :::

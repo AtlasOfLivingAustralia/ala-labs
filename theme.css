@@ -439,6 +439,10 @@ img.rounded {
   margin-left: 50px;
 }
 
+.col-image {
+  width: 80%;
+}
+
 
 /* Display the columns below each other instead of side by side on small screens */
 
@@ -456,6 +460,10 @@ img.rounded {
     margin-left: auto;
     margin-right: auto;
   }
-}
 
+  .col-image {
+    display: flex;
+    justify-content: center;
+  }
+}
 

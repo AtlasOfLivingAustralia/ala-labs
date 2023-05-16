@@ -1,9 +1,9 @@
 ---
-title: "Citizen scientists uncover environmental history through fossils"
+title: "Citizen scientists uncover environmental history with pollen & spore fossils"
 author: "Margot Schneider & Olivia Torresan"
 date: "2022-05-15"
 title-block-banner: "#FFC557"
-title-block-banner-color: "#B8573E"
+title-block-banner-color: "#6B3224"
 include-after-body: _footer.html
 freeze: true
 image: thumbnail.png
@@ -36,7 +36,7 @@ params:
 :::{.paper-side-column}
 
 <center>
-:::{layout-ncol=1 style="margin-left: auto; margin-right: auto; width:50%;"}
+:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
 <!-- add image url -->
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/2/4/5/9/d73f7636-1057-4ee5-a68a-e0f156b29542/original" class="rounded"/></img>
 :::
@@ -44,7 +44,7 @@ params:
 
 ::: figure-caption
 <!-- edit caption -->
-[*Araucaria bidwillii* (Michael Hains CC BY 3.0)](https://ala-images.s3.ap-southeast-2.amazonaws.com/store/2/4/5/9/d73f7636-1057-4ee5-a68a-e0f156b29542/original)
+[*Araucaria bidwillii* (Michael Hains CC BY 3.0)](https://images.ala.org.au/image/details?imageId=d73f7636-1057-4ee5-a68a-e0f156b29542)
 :::
 
 ### Citation
@@ -57,7 +57,9 @@ htmltools::HTML(
 
 
 #### Page info
-Prepared by {@author}
+Prepared by 
+[Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/), 
+[Margot Schneider](https://labs.ala.org.au/people/Schneider_Margot/)
 
 :::
 
@@ -66,11 +68,11 @@ Prepared by {@author}
 
 ::: {.paper-main-column}
 
-Microfossils are the smallest fossils (hence their name!). They occur when the microscopic components of an animal, fungi or plant are preserved in their base material rather than an entire organism. As their whole, they are just as valuable in determining the age and environmental characteristics of fossil sites. Since they are so small, however, the most common way to extract and analyse them is by using a compatible acid - dissolving rock and leaving the fossil intact.  
+Microfossils are the fossilized remains of bacteria, protists, fungi, animals and plants. The most common way to extract and analyse microfossils is by using a compatible acid to dissolve the rock they are preserved in while leaving the fossil intact. In some cases, though, this method does not work. If the rock matrix and the fossils are too compositionally similar, for instance, the choice of acid can degrade the fossil or reduce its quality. 
 
-In some cases, though, this method does not work. If the rock matrix and the fossils are too compositionally similar, for instance, the choice of acid is likely to degrade the fossil or reduce its quality. Djokic and others (2023) found themselves with this problem when analysing new microfossils from McGrath’s Flat near Gulgong in the Central Tablelands (NSW). The alternative method was to image and visually inspect the specimens. 
+Faced with this problem, Djokic and others (2023) used citizen science to analyse images of pollen and spore microfossils from McGrath’s Flat near Gulgong in the Central Tablelands (NSW). Analysing images of microfossils is an incredibly time and resource-consuming feat. A professional scientist usually needs around 6 hours to locate and image 50 microfossils (not including analysis or identification). 
 
-Analysing images of microfossils is an incredibly time and resource-consuming feat. A professional scientist usually needs around 6 hours to locate and image 50 microfossils, not including analysis or identification. 250 citizen scientists were able to use images hosted by Atlas of Living Australia’s online volunteering platform DigiVol to  analyse 25,000+ images at three times this pace!
+Using images hosted by Atlas of Living Australia’s online volunteering platform DigiVol, 250 citizen scientists analysed 25,000+ images at three times this pace (!), successfully identifying 300 pollen and spores from the Miocene age (11–20 million-years-ago). The authors hope to encourage other researchers to use the power of citizen science for fossil identification.
 
 :::
 

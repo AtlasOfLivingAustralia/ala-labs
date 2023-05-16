@@ -37,7 +37,7 @@ params:
 :::{.paper-side-column}
 
 <center>
-:::{layout-ncol=1 style="margin-left: auto; margin-right: auto; width:50%;"}
+:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
 <!-- add image url -->
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/b/c/3/3/20e67558-6fe7-49cc-964a-aaabca0933cb/original" class="rounded"/></img>
 :::
@@ -45,7 +45,7 @@ params:
 
 ::: figure-caption
 <!-- edit caption -->
-[*Culex (Culex) sitiens* (Nick Lambert CC BY NC SA 3.0)](https://ala-images.s3.ap-southeast-2.amazonaws.com/store/b/c/3/3/20e67558-6fe7-49cc-964a-aaabca0933cb/original)
+[*Culex (Culex) sitiens* (Nick Lambert CC BY NC SA 3.0)](https://images.ala.org.au/image/details?imageId=20e67558-6fe7-49cc-964a-aaabca0933cb)
 :::
 
 ### Citation
@@ -58,7 +58,9 @@ htmltools::HTML(
 
 
 #### Page info
-Prepared by {@author}
+Prepared by 
+[Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/), 
+[Margot Schneider](https://labs.ala.org.au/people/Schneider_Margot/)
 
 :::
 
@@ -66,16 +68,11 @@ Prepared by {@author}
 <!-- Main panel description -->
 
 ::: {.paper-main-column}
-Microfossils are the smallest fossils: hence their name. They occur when the microscopic components of an animal, fungi or plant are preserved in their base material rather than an entire organism. As their whole, they are just as valuable in determining the age and environmental characteristics of fossil sites. Since they are so small, however, the most common way to extract and analyse them is by using a compatible acid - dissolving rock and leaving the fossil intact.  
+Japanese encephalitis virus is a blood-borne virus spread via mosquitos. It is often considered a rural disease, present in an animal populations and able to infect humans that interact closely animal hosts of the virus (often pigs and waterbirds). Urbanisation and agricultural production increase the risk that humans contract the virus.
 
- 
+Until recently Japanese encephalitis was thought to be geographically restricted to Northern Australia, but in 2022, it was found across all the eastern states of Australia and declared nationally significant.
 
-In some cases, though, this method does not work. If the rock matrix and the fossils are compositionally similar, the choice of acid is likely to degrade the fossil or reduce its quality. Djokic and others (2023) found themselves with this problem when analysing new microfossils from McGrath’s Flat near Gulgong in the Central Tablelands (NSW).  
- 
-Analysing images of microfossils is an incredibly time & resource-consuming feat. A professional scientist usually needs around six hours to locate & image fifty microfossils (let alone analyse them). Citizen scientists were able to use images hosted by Atlas of Living Australia’s online volunteering platform DigiVol to analyse and process three times this amount per day. 
- 
-
-Over 250 citizen scientists helped view 25,000+ images resulting in the identification and aging of 300 pollen and spore specimens.  
+Furlong and others (2023) used ALA data to obtain occurrence records of both mosquitos and waterbirds. Using ecological niche models, they found the highest risk of human exposure to the virus in coastal Australia—sprawling across the Great Dividing Range and the Murray-Darling Basin. The authors predict that Japanese encephalitis will establish an endemic circulation in Australia, increasing risks to human health.
 :::
 
 :::
