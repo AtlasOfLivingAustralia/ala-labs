@@ -93,7 +93,8 @@ create_button <- function(icon, url) {
         class = "button-2",
         tags$i(
           class = icon
-        ))))
+        )))
+    )
 }
 
 create_category_button <- function(silhouette_image, url, color) {

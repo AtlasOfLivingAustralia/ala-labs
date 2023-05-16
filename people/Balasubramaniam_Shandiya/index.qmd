@@ -11,6 +11,7 @@ source(here("R", "functions.R"))
 
 ### {{< fa circle-user >}} Bio 
 
+:::{.bio-row}
 :::{.bio-column-right}
 
 ```{r out.width='275px', out.extra='style="display:block; margin-left:auto; margin-right:auto; clip-path: circle();"'}
@@ -21,7 +22,10 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 :::{.bio-column-left}
 Shandiya is an evolutionary ecologist with interests in conservation genetics and wildlife disease. Her work as a data analyst at the ALA focuses on streamlining reproducible pathways for researchers to access and analyse open data. 
+:::
+:::
 
+:::{.column-body style="margin-top:-20px;"}
 ```{r}
 #| echo: false
 
@@ -41,7 +45,6 @@ create_button(
 )
 )
 ```
-<br>
 :::
 
 

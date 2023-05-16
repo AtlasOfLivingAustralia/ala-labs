@@ -33,3 +33,5 @@ posts/data/
 posts/2023-01-12_counting-points-in-shapefiles/data
 
 /.quarto/
+
+/.luarc.json

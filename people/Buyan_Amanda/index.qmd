@@ -11,6 +11,7 @@ source(here("R", "functions.R"))
 
 ### {{< fa circle-user >}} Bio 
 
+:::{.bio-row}
 :::{.bio-column-right}
 
 ```{r out.width='275px', out.extra='style="display:block; margin-left:auto; margin-right:auto; clip-path: circle();"'}
@@ -21,7 +22,10 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 :::{.bio-column-left}
 Amanda is a data analyst for EcoCommons, and is based at the Atlas of Living Australia. She completed her PhD in Structural Biology, and uses her extensive Python skills to manage the integration of data within EcoCommons. She also works to optimize the available scientific workflows within the platform.
+:::
+:::
 
+:::{.column-body style="margin-top:-20px;"}
 ```{r}
 #| echo: false
 
@@ -33,8 +37,10 @@ create_button(
 )
 )
 ```
-<br>
 :::
 
 
 ### {{< fa newspaper >}} Posts 
+
+[Plotting invasive species distributions with alpha shapes and choropleth maps in Python](https://labs.ala.org.au/posts/2023-04-28_plotting-invasive-species/post.html)<br>
+*Invasive and introduced species can expand quickly into new habitats, altering ecosystems. In this post we use Python's {galah}, {alphashape} and {GeoPandas} packages to visualise the growing distribution of Rhinella marina (cane toads) and the expanding range of Pittisporum undulatum in Australia.*

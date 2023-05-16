@@ -11,6 +11,7 @@ source(here("R", "functions.R"))
 
 ### {{< fa circle-user >}} Bio 
 
+:::{.bio-row}
 :::{.bio-column-right}
 
 ```{r out.width='275px', out.extra='style="display:block; margin-left:auto; margin-right:auto; clip-path: circle();"'}
@@ -21,7 +22,10 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 :::{.bio-column-left}
 Olivia is a graduate from the Australian National University (ANU), acquiring an interdisciplinary double degree in philosophy and natural resource management. At the ALA, she works as a support officer with a primary focus on monitoring the research impact of the Atlas. She is passionate about accessibility, environmental justice and diversity in STEMM.
+:::
+:::
 
+:::{.column-body style="margin-top:-20px;"}
 ```{r}
 #| echo: false
 
@@ -33,7 +37,6 @@ create_button(
 )
 )
 ```
-<br>
 :::
 
 

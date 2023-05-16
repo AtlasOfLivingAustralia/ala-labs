@@ -303,6 +303,10 @@ a:hover {
   background-color: #E06E53;
 }
 
+.bio-row {
+  flex-direction: column
+}
+
 .bio-column-right {
   float: right;
   width: 50%;
@@ -395,10 +399,16 @@ a:hover {
     display: block;
     width: 50%;
     margin: auto;
-    margin-right: 5px;
+    margin-right: auto !important;
     align-content: center;
     object-fit: center;
   }
+}
+
+@media (max-width: 767.98px) {
+  .row-b .quarto-layout-row {
+    flex-direction: row !important;
+}
 }
 
 img.rounded {
