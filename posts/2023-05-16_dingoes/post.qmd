@@ -83,7 +83,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 The dingo (*Canis familiaris*) is among Australia's most recognisable species internationally. However, debate continues about whether dingoes are considered invasive or native species.
 
-Dingoes arrived in Australia [around 3,000–5,000 years ago](https://www.nature.com/articles/s41598-018-28324-x), and their rapid dispersal was likely [facilitated by humans](https://www.nature.com/articles/s41598-018-28324-x#:~:text=Some%20idea%20of,already%20acquired%20dogs.). Dingoes [hold great significance](https://environment.des.qld.gov.au/wildlife/animals/living-with/dingoes) to many Aboriginal and Torres Strait Islander communities, embedded in folklore, song and art. In some communities, women and children often [took dingoes with them](https://www.americanscientist.org/article/the-elusive-dingo) to hunt small game or collect food, regarded as protection from danger. 
+Dingoes arrived in Australia [around 3,000–5,000 years ago](https://www.nature.com/articles/s41598-018-28324-x), and their rapid dispersal was likely [facilitated by humans](https://www.nature.com/articles/s41598-018-28324-x#:~:text=Some%20idea%20of,already%20acquired%20dogs.). Dingoes [hold great significance](https://environment.des.qld.gov.au/wildlife/animals/living-with/dingoes) to many Aboriginal and Torres Strait Islander communities. In some communities, women and children often [took dingoes with them](https://www.americanscientist.org/article/the-elusive-dingo) to hunt small game or collect food, regarded as protection from danger. 
 
 In the present day, dingoes negatively impact livestock producers, especially sheep farmers. To reduce these impacts, landowners and government agencies spend an estimated [\~$30 million annually across Australia](https://www.publish.csiro.au/wr/pdf/WR19030) to control dingo populations. Control methods include using traps, baits and shooting, along with constructing a physical barrier to limit their movement: the Dog Fence (also known as the Dingo Fence).
 
@@ -554,12 +554,16 @@ nt_plot +
 By comparing the number of records in CAPAD areas to the total observations in Northern Territory, we find that more than half of all dingo observations are recorded inside of protected areas.
 
 :::{.callout-tip}
-If we search {galah} for CAPAD (`search_all(fields, "capad")`), we'll find that {galah} has the CAPAD 2020 layer available for us to use to filter our data (field ID `cl11033`). We can return counts of dingo observations in CAPAD areas only using `galah_group_by()` in our query. Then by adding the record counts together we'll return the total number of observations in CAPAD areas.
+Searching for CAPAD fields in {galah} shows us that {galah} has the CAPAD 2020 layer available for us to use in a query. 
+
+```{r}
+search_all(fields, "capad") |> print(n = 2)
+```
+
+We can return the number of dingo observations in *each* CAPAD area by using `galah_group_by(cl11033)` in our query. Adding the observation counts together will give us the total observations in CAPAD areas.
 :::
 
 ```{r}
-# search_all(fields, "capad") # 
-
 # Download dingo record counts inside CAPAD areas
 dingo_capad_nt <- galah_call() |>
   galah_identify("canis familiaris") |>

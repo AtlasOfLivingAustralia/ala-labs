@@ -44,7 +44,7 @@ params:
 
 ::: figure-caption
 <!-- edit caption -->
-[*Arachis hypogaea L.* (Fagg, M. CC BY 3.0)](https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/0/a/c/91c8cc07-ef18-4b5d-af0f-6b3610f1ca0e/original)
+[*Arachis hypogaea L.* (Fagg, M. CC BY 3.0)](https://images.ala.org.au/image/details?imageId=91c8cc07-ef18-4b5d-af0f-6b3610f1ca0e)
 :::
 
 ### Citation
@@ -69,7 +69,7 @@ Prepared by
 ::: {.paper-main-column}
 Peanuts are one of the richest sources of dietary protein - topping meat, dairy, eggs, and fish. They are also non-perishable, able to be used by global aid industries in the fight against famine and crisis food shortages. Ensuring we have a ready supply of plant-based protein like peanuts is important. Both agriculturalists and top export regions are likely to bear the brunt of holding a steady supply.
 
-Using nearly two-thousand geographical occurrence data points from the Atlas of Living Australia (ALA) and the Global Biodiversity Information Facility (GBIF) alongside modelled climate change scenarios, Haerani et al. (2023) infer a global distribution of peanut crops under a changing climate. 
+Using nearly 2,000 geographical occurrence data points from the Atlas of Living Australia (ALA) and the Global Biodiversity Information Facility (GBIF) alongside modelled climate change scenarios, Haerani et al. (2023) infer a global distribution of peanut crops under a changing climate. 
  
 They find that in the next century, suitable peanut growing regions are set to shrink substantially along the east and west coast, with northern New South Wales and south-east Queensland at the greatest loss by the year 2100. 
 :::
