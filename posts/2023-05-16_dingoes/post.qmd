@@ -134,7 +134,7 @@ library(viridis)
 
 We'll use the [{galah} package](http://galah.ala.org.au/) to download our data. 
 
-The taxonomic name for dingoes—*Canis familiaris*—is broadly the name for all wild dogs, though recent genomic research has found pure dingoes are [genomically distinct from wild dogs](https://www.abc.net.au/news/rural/2022-04-23/dingo-or-feral-dog-science-advances-genetic-sequence/101010896)[^2]. This means that if we search using the scientific name *Canis familiaris*, we'll likely return more than just dingo records. To fix this, let's filter our records to those specified by the data provider with the name common name "Dingo". 
+The taxonomic name for dingoes—*Canis familiaris*—is broadly the name for all wild dogs, though recent genomic research has found pure dingoes are [genomically distinct from wild dogs](https://www.abc.net.au/news/rural/2022-04-23/dingo-or-feral-dog-science-advances-genetic-sequence/101010896)[^2]. This means that if we search using the scientific name *Canis familiaris*, we'll likely return more than just dingo records. To fix this, let's filter our records to those specified by the data provider with the common name "Dingo". 
 
 Let's use `search_fields()` to help us find which fields we can use to filter the taxonomic name. There are a few options, but the `raw_vernacularName` field seems to hold original common names specified by data providers.
 
@@ -248,7 +248,7 @@ You will need to first provide a [registered email with the ALA](https://auth.al
 galah_config(email = "SMI9E9@csiro.au", verbose = FALSE)
 ```
 
-```{r, echo = FALSE}
+```{r}
 #| eval: false
 
 # Use a ALA-registered email (register at ala.org.au)
