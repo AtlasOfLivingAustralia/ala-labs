@@ -10,10 +10,10 @@ draft: true
 image: thumbnail.png
 categories:
   - Citizen science
-  - Climate Change
+  - Climate change
 params:
   authors: "Garcia-Rojas, M. I., Keatley, M. R., & Roslan, N."
-  year: 2023
+  year: 2022
   title: "Citizen science and expert opinion working together to understand the impacts of climate change"
   publication: "PLOS ONE"
   doi: https://doi.org/10.1371/journal.pone.0273822
@@ -60,8 +60,6 @@ htmltools::HTML(
 #### Page info
 Prepared by 
 [Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/)
-
-
 :::
 
 
@@ -70,12 +68,9 @@ Prepared by
 ::: {.paper-main-column}
 Pictures of species are a valuable way of documenting how traits and characteristics vary in different locations and over time.
 
-To understand how shifts in climate are influencing seasonal behaviour of Australia’s plants, Garcia-Rojas, Keatley & Roslan (2023) used images of Jacaranda trees (*Jacaranda mimosifolia*) to investigate how their flowering patterns might have changed across time. Using data from a decade-long citizen science program published to the Atlas of Living Australia, the authors used 11,578 Jacaranda sightings to calculate the time period and intensity of flowering from 2009 to 2019.
+To understand how shifts in climate influence seasonal behaviour of Australia’s plants, Garcia-Rojas, Keatley & Roslan (2023) used images of Jacaranda trees (*Jacaranda mimosifolia*) to investigate how their flowering patterns might have changed across time. These images were obtained from a decade-long citizen science program published to the Atlas of Living Australia. A total of 11,578 Jacaranda sightings were used to calculate the time period and intensity of flowering from 2009 – 2019.
 
-Jacaranda's peak flowering was found to occur in December in Melbourne but in October in Perth and Sydney. With climate predicted to become warmer and drier,  Jacaranda trees are likely to flower more intensely in Melbourne and Sydney as these climates become warmer, and may reduce in productivity in Perth.
-
-*Why does sydney differ to perth if they flower at the same time? Try to make clear how warmer and drier climate might affect Perth but not melbourne and sydney*
-*I don't think that the first sentence in the final section is the main finding of the paper. Try to broaden this to help set up the second sentence*
+Jacaranda’s were found to flower more intensely and for a longer amount of time in warm and dry conditions, but when too hot and dry this trend reversed. With the climate predicted to grow warmer and drier in the future, Jacarandas may find temporary success along Australia’s east coast, but find conditions increasingly difficult in regions like Perth that are already warm and dry.
 :::
 
 :::
