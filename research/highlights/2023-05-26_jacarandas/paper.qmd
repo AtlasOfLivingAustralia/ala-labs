@@ -3,7 +3,7 @@ title: "When do Jacaranda trees bloom?"
 author: "Olivia Torresan"
 date: "2022-05-16"
 title-block-banner: "#A191B2"
-title-block-banner-color: "#B7CD96"
+title-block-banner-color: "#D8E4C8"
 include-after-body: _footer.html
 freeze: true
 draft: true
