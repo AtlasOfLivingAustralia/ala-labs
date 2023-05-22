@@ -11,18 +11,17 @@ format:
 freeze: true
 ---
 
-```{css, echo = FALSE}
-d-title {
+<style>
+  d-title {
     display: none;
   }
-```
+</style>
 
-:::{.column-page layout="[1,1]" style="float:left;"}
+:::{.column-page layout="[1,1]" style="float:left;margin-left: auto;"}
 
-```{r out.width='70%', out.extra='style="float:left;"', echo=FALSE}
-#| fig-align: center
-knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/hex/galah_logo.png")
-```
+<a href="https://potions.ala.org.au/">
+![](images/hex/galah_logo.png){style="width:73%;"}
+</a>
 
 # galah
 
@@ -34,12 +33,15 @@ If you have any questions, comments, or spot any bugs, [email us](mailto:support
 
 ***
 
-:::{.column-page layout="[1,1]" style="float:right;"}
+:::{.column-page layout="[1,1]" style="float:left;"}
 
-```{r out.width='79%', out.extra='style="float:left;"', echo=FALSE}
-#| fig-align: center
-knitr::include_graphics(here::here("images", "hex", "potions-logo.png"))
-```
+
+
+<a href="https://potions.ala.org.au/">
+![](images/hex/potions-logo.png){style="width:79%;"}
+</a>
+
+
 
 # potions
 
