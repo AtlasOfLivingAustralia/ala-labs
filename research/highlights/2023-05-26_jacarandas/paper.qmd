@@ -6,7 +6,6 @@ title-block-banner: "#A191B2"
 title-block-banner-color: "#D8E4C8"
 include-after-body: _footer.html
 freeze: true
-draft: true
 image: thumbnail.png
 categories:
   - Citizen science
