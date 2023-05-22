@@ -68,7 +68,7 @@ Prepared by
 <!-- Main panel description -->
 
 ::: {.paper-main-column}
-Japanese encephalitis virus is a blood-borne virus spread via mosquitos. It is often considered a rural disease, present in an animal populations and able to infect humans that interact closely animal hosts of the virus (often pigs and waterbirds). Urbanisation and agricultural production increase the risk that humans contract the virus.
+Japanese encephalitis virus is a blood-borne virus spread via mosquitos. It is often considered a rural disease, present in animal populations (often pigs and waterbirds) and able to infect humans that interact closely with animal hosts. Urbanisation and agricultural production can increase the risk that humans contract the virus.
 
 Until recently Japanese encephalitis was thought to be geographically restricted to Northern Australia, but in 2022, it was found across all the eastern states of Australia and declared nationally significant.
 

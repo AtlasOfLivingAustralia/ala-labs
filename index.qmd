@@ -96,7 +96,7 @@ tags$div(class = "category-row",
 :::{.column-screen}
 :::{.column-screen-inset}
 :::{.home-column-image .col-right}
-<a href="https://labs.ala.org.au/highlights.html">
+<a href="https://labs.ala.org.au/research/highlights.html">
 ![](images/homepage/home_ala-research.png){.home-img}
 </a>
 
@@ -117,26 +117,26 @@ tags$div(class = "category-row",
   tags$div( 
     class = "category-column",
     style = "width: 50%",
-    tags$a(href = "posts.html#category=Summaries",
+    tags$a(href = "research/highlights.html",
       tags$img(
-        href = "posts.html#category=Summaries",
+        href = "research/highlights.html",
         src = "images/vectors/seedling-solid.svg",
         class = "category-image honey"
   )),
   tags$h4(style = "text-align:center;",
-      tags$a(href = "posts.html#category=Summaries", "Selected\nhighlights"))),
+      tags$a(href = "research/highlights.html", "Selected\nhighlights"))),
   
   tags$div( 
     class = "category-column",
     style = "width: 50%",
-    tags$a(href = "posts.html#category=Maps",
+    tags$a(href = "research/citations.html",
       tags$img(
-        href = "posts.html#category=Maps",
+        href = "research/citations.html",
         src = "images/vectors/table-list-solid.svg",
         class = "category-image honey"
   )),
   tags$h4(style = "text-align:center;",
-      tags$a(href = "posts.html#category=Summaries", "Complete list"))
+      tags$a(href = "research/citations.html", "Complete list"))
   
   ))
 ```
@@ -151,7 +151,7 @@ tags$div(class = "category-row",
 :::{.column-screen-inset}
 :::{.home-column-image .col-left}
 
-<a href="https://labs.ala.org.au/software.html">
+<a href="https://labs.ala.org.au/software/software.html">
 
 ![](images/homepage/home_ala-software-c.png){.home-img-transparent}
 
@@ -184,9 +184,9 @@ tags$div(class = "category-row",
   tags$div( 
     class = "category-column",
     style = "width: 100%",
-    tags$a(href = "posts.html#category=Maps",
+    tags$a(href = "software/software.html",
       tags$img(
-        href = "posts.html#category=Maps",
+        href = "software/software.html",
         src = "images/vectors/hexagon-vector.svg",
         style = "color:#fff !important;",
         class = "category-image honey-white"
@@ -194,7 +194,7 @@ tags$div(class = "category-row",
   tags$h4(style = "text-align:center;",
       tags$a(
         class = "white",
-        href = "posts.html#category=Summaries", "Packages"))
+        href = "software/software.html", "Packages"))
   
   ))
 ```

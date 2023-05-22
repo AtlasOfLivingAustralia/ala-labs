@@ -152,6 +152,11 @@
     display: block;
 }
 
+@media screen and (max-width: 952) {
+  .value-block {
+    padding: 20px 40px;
+  }
+}
 
 /*----------------------------------------------*/
 
@@ -203,14 +208,6 @@
 
 .honey-white:hover {
   filter: invert(95%) sepia(43%) saturate(3246%) hue-rotate(313deg) brightness(100%) contrast(102%);
-}
-
-.sage {
-  filter: invert(40%) sepia(35%) saturate(984%) hue-rotate(325deg) brightness(93%) contrast(87%);
-}
-
-.sage:hover {
-  filter: invert(94%) sepia(12%) saturate(881%) hue-rotate(28deg) brightness(88%) contrast(81%);
 }
 
 
@@ -354,4 +351,4 @@ img {
     max-width: 100%;
 }
 
-@media screen and (max-width: 952px) {
+
