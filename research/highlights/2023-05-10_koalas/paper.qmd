@@ -15,7 +15,7 @@ params:
   year: 2023
   title: "Genetic erosion detected in a specialist mammal living in a fast-developing environment"
   publication: "Conservation Science and Practice"
-  doi: https:://doi.org/10.1111/csp2.12738
+  doi: https://doi.org/10.1111/csp2.12738
   image_url: https://images.ala.org.au/image/details?imageId=510ef86e-0fa3-41c3-a023-1b569398788d
   alt_text: An image of a Koala sitting in a tree
 ---
