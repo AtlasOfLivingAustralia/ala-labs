@@ -1,0 +1,599 @@
+---
+title: "An exploration of dingo observations in the ALA"
+description: |
+  Time-series analyses can be handy for seeing trends over time, and exploring how trends relate to major events. Here, we show how to create an exploratory time-series plot comparing observations of waterbirds prior to and during the COVID-19 pandemic.
+author:
+  - name: "Amos Smith"
+  - name: "Dax Kellie"
+date: "2023-04-04"
+title-block-banner: "#B8573E"
+include-after-body: _footer.html
+toc: true
+toc-location: left
+toc-depth: 2
+categories:
+  - Eukaryota
+  - Animalia
+  - Mammalia
+  - Summaries
+  - Maps
+  - Intern-post
+image: ducks.png
+freeze: true
+draft: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| include: false
+library(htmltools)
+```
+
+<!-- remove metadata section -->
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Author card -->
+
+:::{.author-card}
+:::{.author-card-text}
+
+#### Author
+Amos Smith 
+[Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/index.html)  
+[Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)  
+
+#### Date
+4 April 2023
+
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/amos.jpg")
+```
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/olivia.jpg")
+```
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg")
+```
+:::
+
+:::
+
+<!------------------------ Post starts here ------------------------>
+
+:::{.callout-tip}
+
+## Intern Post
+
+:::
+
+The dingo is among Australia's most recognised species internationally. However, debate continues about whether dingoes are considered invasive or native species.
+
+Dingoes arrived in Australia [around 3,000–5,000 years ago](https://www.nature.com/articles/s41598-018-28324-x), and their rapid disperal was likely [facilitated by humans](https://www.nature.com/articles/s41598-018-28324-x#:~:text=Some%20idea%20of,already%20acquired%20dogs.). 
+
+In the present day, dingoes have major negative impacts on livestock producers, especially sheep farmers. To reduce these impacts, landowners and government spend an estimated [\~$30 million annually across Australia](https://www.publish.csiro.au/wr/pdf/WR19030) to control wild dog and dingo populations. Populations are controlled using traps, baits and shooting, along with a barrier to stop their movement into unwanted areas: the Dingo Fence.
+
+The Dingo Fence is a wire fence made to protect from the loss of sheep for the sheep industry; it is the longest fence in the world (5,614 km). Since its construction 80 years ago, the Dingo Fence has shaped the landscape of Australia. However, perhaps unintentionally, the dingo fence has acted as a natural experiment. On the side where dingoes remain present there is [more vegetation](https://link.springer.com/article/10.1007/s10980-021-01206-w) and [fewer invasive species like foxes](https://www.publish.csiro.au/am/AM21036) than on the side where dingoes are absent. The difference between sides of the fence is so distinct that [you can even see it from space](https://youtu.be/ivmQk5EsScw)! Nearly a century later, the dingo fence has [shown the importance of apex predators like dingoes in ecosystems](https://www.abc.net.au/news/2023-02-09/dingo-fence-map-ecology-farming-predator-sheep-extinction/101711608) and their benefit to native biodiversity. 
+
+To understand the debate about dingo's role in Australia's ecosystems, it's useful to know its distribution. Here, we'll explore how historical and ongoing differences in attitudes towards dingo conservation affect where and how often dingo observations are recorded in the Atlas of Living Australia (ALA).
+
+
+
+# Summarise observations
+
+Let's start by finding how many observations of dingoes are in the ALA and where they are.
+
+::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/5/5/b/b/19578b8d-f8a3-4ae8-a139-60f9d4d6bb55/original" class="rounded"/></img>
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/c/8/a/5/2716b0eb-0d0f-41cd-9c33-d517f45e5a8c/original" class="rounded"/></img>
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/3/2/4/a/5f426a63-4b4f-4def-b6ed-14316b40a423/original" class="rounded"/></img>
+:::
+
+::: figure-caption
+Left: [*Canis familiaris* (Michael Hains CC-BY-NC 3.0 (Au)](https://biocache.ala.org.au/occurrences/4d4a1b5d-f70f-4286-9282-3c325cdf2646), Middle: [*Canis familiaris* (GibberGavin CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/24b77a44-2a8d-4d16-a4e3-41823d1fc8ca), Right: [*Canis familiaris* (Danial Moore CC-BY-NC 3.0 (Au))](https://biocache.ala.org.au/occurrences/64cc4167-9f4f-495c-b4be-b0a5e2ca57de)
+:::
+
+
+```{r}
+#| warning: false
+#| message: false
+
+# packages
+library(galah)
+library(tidyverse)
+library(ozmaps)
+library(sf)
+library(patchwork)
+library(here)
+library(rmapshaper)
+library(ggpointdensity)
+library(glue)
+library(ggtext)
+library(viridis)
+```
+
+### Find fields to filter data
+
+We'll use the [{galah} package](http://galah.ala.org.au/) to download our data. Because **Canis familiaris** is the taxonomic name of both dingoes *and* dogs, if we only search using the scientific name, we'll likely return more than just dingo records. To fix this, let's filter our records to those specified by the data provider with the name common name "Dingo". 
+
+:::{.aside}
+One can imagine that sometimes data might be collected without specifying the name "Dingo" (either due to uncertainty or a lack of specificity in the survey). 
+
+If true, this means there are observations of dingoes that we'll never know because they weren't specified (though it's hard to know for sure)!
+:::
+
+Let's use `search_fields()` to help us find which fields we can use to filter the taxonomic name. There are a few options, but the `raw_vernacularName` field seems to hold original common names specified by data providers.
+
+```{r}
+#| message: false
+search_fields("common name")
+search_fields("raw_vernacularName") |> search_values("dingo")
+```
+
+We can use the same method to find a field that contains states & territories.
+
+```{r}
+#| message: false
+search_fields("australian states")
+search_fields("cl22") |> show_values()
+```
+
+
+### State observations
+
+We'll download the number of dingo observations in each state/territory with `atlas_counts()` and arrange the resulting counts in descending order. 
+
+Around 75% of dingo observations are recorded in the Northern Territory and South Australia.
+
+```{r}
+dingo_counts <- galah_call() |>
+  galah_identify("canis familiaris") |>
+  galah_filter(raw_vernacularName == c("Dingo", "dingo")) |>
+  galah_group_by(cl22) |>
+  # galah_apply_profile(ALA) |> # set of data quality filters
+  atlas_counts() |>
+  arrange(desc(count))
+```
+
+```{r}
+#| echo: false
+dingo_counts |> gt::gt()
+```
+
+:::{.aside}
+
+```{r}
+#| code-fold: true
+#| message: false
+#| warning: false
+# Add map of australia
+aus <- ozmap_data(data = "states")
+
+# Join state counts to our map
+state_counts <- aus |>
+  full_join(dingo_counts, by = c("NAME" = "cl22"))
+
+# log-transform data to scale counts for nicer plotting
+logged_counts <- state_counts |>
+  mutate(log = log10(count))|>
+  replace_na(list(log = 0))
+
+# plot
+ggplot() +
+  geom_sf(data = logged_counts,
+          mapping = aes(fill = log)) +
+  geom_sf_text(data = logged_counts |> drop_na(),
+               aes(label = count),
+               colour = "white",
+               size = 5.2,
+               fun.geometry = sf::st_centroid) +
+  scale_fill_distiller(palette = "OrRd", direction = 1,
+                       labels = c("10", "100", "1000"),
+                       guide = guide_colorsteps(
+                         direction = "horizontal",
+                         title = "No. of Observations",
+                         title.position = "top")) +
+  labs(x = "Longitude", y = "Latitude") +
+  coord_sf(
+    ylim = c(-45, -10),
+    xlim = c(110, 155)) +
+  theme_void() + 
+  theme(legend.position = "bottom")
+```
+
+:::
+
+### Data providers
+
+Next let's find out who the main data providers are of dingo observations to see whether observations come from citizen science programs or state monitoring programs. We'll filter to only display providers that have provided more than 5 observations of dingoes.
+
+```{r}
+data_providers <- galah_call() |>
+  galah_identify("canis familiaris") |>
+  galah_filter(raw_vernacularName == c("Dingo", "dingo")) |>
+  galah_group_by(dataResourceName)|>
+  galah_apply_profile(ALA) |>
+  atlas_counts()
+
+counts_filtered <- data_providers |>
+  filter(count > 5)
+```
+
+```{r}
+#| echo: false
+counts_filtered
+```
+
+
+We can also check to see where each data provider's observations are recorded. We'll download dingo observations using `atlas_occurrences()`. Then we'll filter our observations to only those supplied by providers in `counts_filtered`.
+
+You will need to first provide a [registered email with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount) using `galah_config()` before retrieving records.
+
+```{r}
+#| echo: false
+
+# Use a ALA-registered email (register at ala.org.au)
+galah_config(email = "SMI9E9@csiro.au", verbose = FALSE)
+```
+
+```{r, echo = FALSE}
+#| eval: false
+
+# Use a ALA-registered email (register at ala.org.au)
+galah_config(email = "your-email-here")
+```
+
+```{r}
+dingo_obs <- galah_call()|>
+  galah_identify("canis familiaris") |>
+  galah_filter(raw_vernacularName == c("Dingo", "dingo")) |>
+  galah_apply_profile(ALA) |>
+  atlas_occurrences()
+```
+
+```{r}
+points_filtered <- dingo_obs |>
+  filter(dataResourceName %in% counts_filtered$dataResourceName)
+```
+
+```{r}
+#| echo: false
+points_filtered
+```
+
+We'll create a bar plot and a map of observations to visualise our results. 
+
+Just five data providers account for ~98% of dingo records, with Fauna Atlas N. T. contributing ~40% of records. All major data providers are government monitoring programs, rather than citizen science providers like iNaturalist. 
+
+```{r}
+#| code-fold: true
+#| column: page
+#| fig-align: center
+#| layout-nrow: 1
+#| message: false
+#| warning: false
+
+custom_colours <- c(
+  "Museums Victoria provider for OZCAM" = "#604830",
+  "Victorian Biodiversity Atlas" = "#486030",
+  "Australian National Wildlife Collection provider for OZCAM" = "#6090d8",
+  "NSW BioNet Atlas" = "#604830",
+  "WildNet - Queensland Wildlife Data" = "#6fab3f",
+  "SA Fauna (BDBSA)" = "#d89060",
+  "Australian Museum provider for OZCAM" = "#FFC300",
+  "Fauna Atlas N.T." = "#a84830"
+)
+
+# Bar plot
+counts_filtered |>
+  ggplot(aes(
+    x = reorder(str_wrap(dataResourceName, 28), count),
+    y = count, fill = dataResourceName)) +
+  geom_bar(stat = "identity", width = .8) +
+  scale_fill_manual(values = custom_colours) +
+  scale_x_discrete(expand = c(0, 0)) +
+  scale_y_continuous(labels = scales::label_comma()) +
+  coord_flip() +
+  xlab("") +
+  pilot::theme_pilot(grid = "v",
+                     axes = "b") +
+  theme(legend.position = "none",
+        axis.text = element_text(size = 12))
+
+# Map
+ggplot() +
+  geom_sf(data = aus, fill = "#FBFBEF") +
+  geom_point(
+    data = points_filtered,
+    mapping = aes(
+      x = decimalLongitude,
+      y = decimalLatitude,
+      colour = dataResourceName),
+    alpha = 0.5) +
+  scale_color_manual(values = custom_colours) +
+  theme_void() +
+  coord_sf(
+    ylim = c(-45, -10),
+    xlim = c(110, 155)) +
+  theme(legend.position = "none")
+```
+
+
+
+### Times of observations
+
+Next, let's investigate what months of the year have more dingo records. We'll look specifically at observations in Northern Territory and South Australia because these states have the most data. 
+
+Viewing observations over time can show us patterns of when a species is most active. It can also reveal human biases in data collection. Given the huge temperature gradient between North and South Australia, we might expect there are differences between NT and SA in the timing of dingo observations.
+
+South Australia's dingo observations are mainly recorded during autumn months (April–June). Alternatively, Northern Territory's dingo observations are recorded mainly over winter months (June–August).
+
+```{r}
+#| code-fold: true
+#| column: page
+#| fig-align: center
+#| layout-nrow: 1
+#| message: false
+#| warning: false
+
+## Northern Territory
+
+# download data
+dingo_NT <- galah_call() |>
+  galah_identify("canis familiaris") |>
+  galah_filter(raw_vernacularName == c("Dingo", "dingo"),
+               cl22 == "Northern Territory") |>
+  galah_group_by(month) |>
+  atlas_counts()
+
+# format months for plotting
+month_NT <- dingo_NT |>
+  mutate(
+    month = month(as.numeric(month), label = TRUE) # format month
+    )
+
+# plot
+ggplot(data = month_NT, 
+                     aes(x = month, y = count)) +
+  geom_bar(stat = "identity", fill = "#a84830") +
+  labs(title = "Northern Territory", 
+       x = "Month", 
+       y = "No. of observations") +
+  scale_x_discrete(expand = c(0,0)) +
+  scale_y_continuous(limits = c(0, 1000),
+                     expand = c(0,0)) +
+  pilot::theme_pilot(grid = "h")
+
+
+## South Australia
+
+# download data
+dingo_SA <- galah_call() |>
+  galah_identify("canis familiaris") |>
+  galah_filter(raw_vernacularName == c("Dingo", "dingo"),
+               cl22 == "South Australia") |>
+  galah_group_by(month) |>
+  atlas_counts()
+
+# format months for plotting
+month_SA <- dingo_SA |>
+  mutate(
+    month = month(as.numeric(month), label = TRUE) # format month
+    )
+
+# plot
+ggplot(data = month_SA, 
+                     aes(x = month, y = count)) +
+  geom_bar(stat = "identity", fill = "#d89060") +
+  labs(title = "South Australia", 
+       x = "Month", 
+       y = "No. of observations") +
+  scale_x_discrete(expand = c(0,0)) +
+  scale_y_continuous(limits = c(0, 1000),
+                     expand = c(0,0)) +
+  pilot::theme_pilot(grid = "h")
+```
+
+
+Does this suggest dingoes are more active during winter, or are data collectors surveying during cooler times of the year? The answer might be both. One dingo tracking research study found that dingoes are far more active in winter: [dingoes spent 46% of their day stationary in winter compared to 91% in summer](https://movementecologyjournal.biomedcentral.com/articles/10.1186/s40462-021-00246-w). This finding suggests that cooler winter temperatures allow dingoes to be more active in winter, and it's easier for data collectors to survey during these times when the heat is less extreme.
+
+
+# Dingo observations in Protected Areas
+
+Dingoes are protected within National Parks. Are more dingo observations recorded within National Parks than outside of them, and by how much?
+
+To answer this, let's map locations of dingo observations over protected areas using the [Collaborative Australian Protected Areas Database (CAPAD)](https://www.environment.gov.au/fed/catalog/search/resource/details.page?uuid=%7B4448CACD-9DA8-43D1-A48F-48149FD5FCFD%7D). 
+
+### Get shapefiles
+
+To do so, we'll need the CAPAD shapefile layer. We can get this shapefile by downloading the CAPAD2020_terrestrial.zip folder [from their website](https://www.environment.gov.au/fed/catalog/search/resource/downloadData.page?uuid=%7B4448CACD-9DA8-43D1-A48F-48149FD5FCFD%7D). Save the folder in your R Project or working directory and unzip it. 
+
+Let's also map where the Dingo Fence is within South Australia to see compare observations on either side (including near it).
+
+Below is a point density map which shows the density of overlapping observations in the Northern Territory and South Australia. The Dingo Fence in South Australia is in blue.
+
+```{r create-nt-sa-maps}
+#| code-fold: true
+#| warning: false
+#| message: false
+
+# read in capad shapefile
+capad <- st_read(here("posts",
+                      "data",
+                      "CAPAD",
+                      "CAPAD2020_terrestrial.shp"),
+                 quiet = TRUE) |>
+  ms_simplify(keep = 0.1) |>
+  st_transform(crs = st_crs("WGS84")) |>
+  st_make_valid()
+
+# filter to NT
+capad_nt <- capad |>
+  filter(STATE == "NT")
+
+# download dingo observations in NT
+dingo_obs_NT <- galah_call() |>
+  galah_identify("canis familiaris") |>
+  galah_filter(raw_vernacularName == c("Dingo", "dingo"),
+               cl22 == "Northern Territory") |>
+  atlas_occurrences() |>
+  drop_na() # filter any NA values out
+
+# create palette for title
+dingo_palette <- list(
+                      "Protected" = "#00A600FF",
+                      "Areas" = "#00A600FF",
+                      "Dingo" = "#67136B",
+                      "observations" = "#FC6B00")
+
+NT_plot <- ggplot() +
+  geom_sf(data = ozmap_states |> filter(NAME == "Northern Territory"), 
+          fill = "white", 
+          colour = "black", 
+          linewidth = 0.3) +
+  geom_sf(data = capad_nt, 
+          fill = "#ADFFAD", 
+          colour = "black", 
+          linewidth = 0.25, 
+          alpha = 0.3, 
+          linetype = "dashed") +
+  geom_pointdensity(data = dingo_obs_NT,
+                    mapping = aes(x = decimalLongitude,
+                                  y = decimalLatitude),
+                    size = 2.4, 
+                    alpha = 0.6) +
+  scale_color_viridis(option = "B", 
+                      begin = 0.1,
+                      end = 0.8,
+                      guide_colorbar(title = ("Number of \nOverlapping\nobservations"), 
+                                     alpha = "none")) +
+  pilot::theme_pilot() +
+  theme(legend.position = "bottom") 
+
+NT_plot +
+  ggnewscale::new_scale_color() +
+  scale_colour_manual(values = dingo_palette) +
+  labs(
+    title = glue("Dingo observations in <br> Australian <span style='color:{dingo_palette$Protected}'>**Protected**</span> <span style='color:{dingo_palette$Areas}'>**Areas**</span> <br> in the Northern Territory <br>")
+    ) +
+  theme(plot.title = element_markdown(face = "bold", size = 16, hjust = 0.5)) +
+  annotate(geom = "line", colour = "blue", linewidth = 1) +        
+  annotate(geom = "text", label = "Dingo Fence", hjust = "left") +#couldnt get the annotation to work 
+  labs(y = "Latitude", x = "Longitude") 
+
+
+## SA 
+
+dog_fence <- st_read(here("posts",
+                      "data",                    
+                      "Dog Fence",
+                      "Dog_Fence.shp"),
+                 quiet = TRUE) |>
+  ms_simplify(keep = 0.1) |>
+  st_transform(crs = st_crs("WGS84")) |>
+  st_make_valid()
+
+
+
+SA_plot <- ggplot() +
+  geom_sf(data = ozmap_states, 
+          fill = "beige", colour = "black", linewidth = 0.3) +
+  geom_sf(data = capad, fill = "#00A600FF", colour = "black", linewidth = 0.25, alpha = 0.3, linetype = "dashed") +
+  geom_pointdensity(data = dingo_records, size = 0.7, alpha = 0.35,
+                    mapping = aes(x = decimalLongitude,
+                                  y = decimalLatitude)) +
+    viridis::scale_color_viridis(option = "B", 
+                               begin = 0.1,
+                               guide_colorbar(
+                                              title = ("Number of \nOverlapping observations"), 
+                                              alpha = "none")) +
+  geom_sf(data = Dog_Fence, color = "blue", linewidth = 1) +
+  coord_sf(xlim = c(128, 141), ylim = c(-26, -40)) + # filter to mainland australia+
+  theme_bw() +
+  theme(axis.text.x=element_text(angle = -90, hjust = 0), 
+        panel.background = element_rect(fill = "white", size = 2), 
+        panel.grid.major = element_line(colour = NA),
+        legend.position = "bottom",
+        axis.ticks = element_line(colour = "grey70", size = 0.2),
+        axis.title.y = element_text(size = 12),
+        axis.title.x = element_text(size = 12)) 
+
+SA_plot <- SA_plot +
+  ggnewscale::new_scale_color() +
+  scale_colour_manual(values = dingo_palette) +
+  labs(title = glue("Dingo observations in <br> Australian <span style='color:{dingo_palette$Protected}'>**Protected**</span> <span style='color:{dingo_palette$Areas}'>**Areas**</span> <br> in South Australia <br>")) +
+  theme(plot.title = element_markdown(face = "bold", size = 16, hjust = 0.5)) +
+  annotate(geom = "line", colour = "blue", linewidth = 1) +        
+  annotate(geom = "text", label = "Dingo Fence", hjust = "left") + #couldnt get the annotation to work 
+  labs(y = "Latitude", x = "Longitude")
+```
+
+*Hey Dax, I think It would be good if we could just make one color bar that is centred as well as one title that is just centred so we aren't repeating information in the graph. I tried giving this a crack but let me know what you rekon?* 
+
+**Dax: Yep that sounds good. This might be a bit fiddly so happy to figure this out later**
+
+```{r nt-sa-maps}
+#| echo: false
+#| column: screen-inset
+#| layout-ncol: 2
+#| fig-align: center
+#| fig-height: 11
+#| fig-width: 12
+#| warning: false
+#| message: false
+NT_plot 
+SA_plot
+```
+
+In the Northern Territory and South Australia, the majority of the observations fall within Nationally protected areas. The effect of the Dingo Fence in South Australia on dingo records is clear, with few observations recorded south of the fence where they remain declared as pest.
+
+
+
+# Differences in legislation
+
+Why are there so many records in only two states/territories? Is it possible that differences between states/territories attitudes towards dingoes affect dingo data? 
+
+For example, the Northern Territory is the only state in Australia that recognizes dingoes as a protected species. Other states like Western Australia, New South Wales, Queensland and South Australia consider dingoes an unprotected native animal outside of the Dingo Fence, and a pest species inside the Dingo Fence (under the [National Parks and Wildlife Act 1972](https://www.legislation.sa.gov.au/lz?path=%2FC%2FA%2FNATIONAL%20PARKS%20AND%20WILDLIFE%20ACT%201972)). 
+
+Differing state legislation might help to explain why the highest numbers of observations are in states/territories that recognise them as a protected species.
+
+
+
+# Final Thoughts
+
+Habitat loss combined with historical and current control programs have reduced total dingo numbers. Dingoes are currently listed as [vulnerable to extinction under the IUNC's Red List of Threatened Species](https://www.iucnredlist.org/species/41585/10484199). 
+
+Government monitoring programs provide regular and reliable data. However, [incidental observations from citizen scientists can fill gaps in species distribution data](https://ecoevorxiv.org/repository/view/3650/). 
+
+even despite evidence that [dingoes can be allies for livestock producers](https://theconversation.com/killing-dingoes-is-the-only-way-to-protect-livestock-right-nope-200905)
+
+Dingoes might [not always benefit mammal species richness](https://www.sciencedirect.com/science/article/pii/S0006320720306960)
+
+
+<details><summary style = "color: #E06E53;">Expand for session info</summary>
+
+```{r, echo = FALSE}
+library(sessioninfo)
+# save the session info as an object
+pkg_sesh <- session_info(pkgs = "attached")
+# print it out
+pkg_sesh
+```
+
+</details>

@@ -7,6 +7,13 @@
     "text": "We are responsible for:\n\nData analysis & reporting on key projects\nR package development & maintenance\nOutreach & engagement with the research community\n\n\n\nMeet the team\nClick on photos to view their articles and contributions\n\n\n\n\n\n\n\n\n\n\nMartin Westgate\n\nTeam Leader\n\n\n\n\n\n\n\n\n\n\nShandiya Balasubramaniam\n\nData Analyst\n\n\n\n\n\n\n\n\n\n\nAmanda Buyan\n\nData Analyst\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDax Kellie\n\nData Analyst\n\n\n\n\n\n\n\n\n\n\nOlivia Torresan\n\nSupport Officer\n\n\n\n\n\n\n\n\n\n\nFonti Kar\n\nData Analyst\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMargot Schneider\n\nProject Manager\n\n\n\n\n\n\n\n\n\n\nJuliet Seers\n\nTraining & Outreach Coordinator"
   },
   {
+    "objectID": "galah.html",
+    "href": "galah.html",
+    "title": "galah",
+    "section": "",
+    "text": "galah\n{galah} is an R interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It enables users to locate and download species occurrence records (observations, specimens, eDNA records, etc.), taxonomic information, or associated media such as images or sounds, and to restrict their queries to particular taxa or locations.  Visit the {galah} R package website to learn more about how to use galah If you have any questions, comments, or spot any bugs, email us or report an issue on our GitHub page\n\n\n\n\nGet started\nInstall from CRAN\n\ninstall.packages(\"galah\")"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Welcome to ALA Labs",
