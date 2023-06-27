@@ -66,11 +66,11 @@ Prepared by
 <!-- Main panel description -->
 
 ::: {.paper-main-column}
-Globally, *Pinus radiata* is one of the most frequently planted forestry trees due to its’ versatility: It grows quickly, it can survive in many conditions and climates, and it is used in many kinds of wood and non-wood products.  However, at the same time, *P. radiata* is threatened within its native range of California. 
+Globally, *Pinus radiata* is one of the most frequently planted forestry trees due to its versatility: It grows quickly, it can survive in many conditions and climates, and it is used in many kinds of wood and non-wood products.  However, at the same time, *P. radiata* is threatened within its native range of California. 
 
 Given *P. radiata*’s global popularity, the spread of pests and disease are both a high risk and a prominent concern for this tree. Insects that feed on the foliage or bore the live layer of growing wood and bark are able to stunt growth or even kill *P. radiata*.
 
-Brockerhoff et al. used data of insects known to feed on *P. radiata*, including data from the Atlas of Living Australia, to map each species invasion status and quantify their impact. They found the Americas to have the greatest number of high-impact invasive species, followed by Australia and Asia. Australasia also had the highest number of different native and non-native species to feed on *Pinus radiata* overall. It also had the highest number of migratory insect species to other countries. 
+Brockerhoff et al. used data of insects known to feed on *P. radiata*, including data from the Atlas of Living Australia, to map each species invasion status and quantify their impact. They found the Americas to have the greatest number of high-impact invasive species, followed by Australia and Asia. Australasia also had the highest number of different native and non-native species to feed on *P. radiata* overall and the highest number of migratory insect species to other countries. 
 
 Knowing where herbivorous insect pests are common and where they are migrating globally can help inform and improve current biosecurity protocols when importing and exporting pine products in the future. 
 :::
