@@ -1,10 +1,10 @@
 ---
 title: "Alternatives to box plots: Using beeswarm and raincloud plots to summarise ecological data"
 description: |
-  Box plots are a common way to summarise data in ecology and biology research, but box plots have their weaknesses. Here we'll show how easy it can be to make beeswarm and raincloud plots—two alternative plots with greater data transparency—using plant trait data from {austraits}.
+  Box plots are a common way to summarise data in ecology and biology research, but box plots have their weaknesses. Here we'll show how easy it can be to make beeswarm and raincloud plots—two alternatives with greater data transparency—using plant trait data from {austraits}.
 author:
   - name: "Dax Kellie"
-  - name: "Shandiya Balasubramanium"
+  - name: "Shandiya Balasubramaniam"
 date: "2023-08-23"
 title-block-banner: "#B8573E"
 include-after-body: _footer.html
@@ -66,19 +66,18 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 <!------------------------ Post starts here ------------------------>
 
-In ecology and biology research, box plots are a wonderfully simple and efficient way to summarise data from different groups (e.g., species, populations,  experimental conditions). However, this simplicity can also sometimes hide the underlying structure of data, unintentionally misleading readers.
+In ecology and biology research, box plots are a wonderfully simple and efficient way to summarise data from different groups (e.g., species, populations,  experimental conditions). However, this simplicity can sometimes hide the underlying structure of data, unintentionally misleading readers.
 
-Luckily, there are alternative ways to display data other than with box plots that have grown increasingly easy to make in R. This post will use an ecological lens to show more transparent ways to summarise data. 
+Luckily, there are alternatives to displaying data with box plots, and these options have grown increasingly easy to make in R. This post shows more transparent ways to summarise data, seen through an ecological lens. 
 
-In our example, we'll compare several species of plants using a leaf trait commonly used to predict a plant's performance: Leaf dry mass per area (or more simply, the size of a leaf given its surface area). We'll explain how best to add points to box plots, and how to create raincloud plots—one of the most transparent ways to display summary data. 
+In our example, we'll compare several species of plants using a leaf trait commonly used to predict a plant's performance: leaf dry mass per area (or more simply, the size of a leaf relative to its surface area). We'll explain how to summarise this trait across a set of species using box plots, and show two ways of also displaying the distribution of the data to be more transparent. 
 
-## Why not boxplots? 
+## Why not box plots? 
 
-Here is one example of how box plots on their own (like the one on the left) can mask differences in sample size and underlying data structure (shown on the right). This example is taken from [Cedric Scherer's blog post on the same topic](https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/) which I encourage you to check out.
+Box plots can mask differences in sample size and underlying data structure, which can make them prone to misinterpretation. One such example, shown below, is based on [Cedric Scherer's blog post on the same topic](https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/), which I encourage you to check out.
 
 ```{r}
 #| code-fold: true
-#| column: page
 #| fig-align: center
 #| layout-nrow: 1
 #| message: false
@@ -88,9 +87,62 @@ library(ggplot2)
 library(dplyr)
 library(glue)
 library(ggtext)
+library(gganimate)
 
 # generate sample data
 set.seed(2021)
+
+# data <- tibble(
+#   group = factor(c(rep("Group 1", 100), rep("Group 2", 250), rep("Group 3", 25))),
+#   value = c(seq(0, 20, length.out = 100),
+#             c(rep(0, 5), rnorm(30, 2, .1), rnorm(90, 5.4, .1), rnorm(90, 14.6, .1), rnorm(30, 18, .1), rep(20, 5)),
+#             rep(seq(0, 20, length.out = 5), 5))
+#   ) %>% 
+#   rowwise() |>
+#   mutate(value = if_else(group == "Group 2", value + rnorm(1, 0, .4), value))
+# 
+# ## Left box plot
+# boxplot <- 
+#   ggplot(data, aes(x = group, y = value)) +
+#   geom_boxplot(fill = "grey92") + 
+#   pilot::theme_pilot() + 
+#   theme(axis.title.y = element_blank(),
+#         axis.title.x = element_blank())
+# 
+# 
+# ## Right box plot
+# 
+# # find sample size and create x axis labels
+# sample_size <- data |>
+#   group_by(group) |>
+#   summarise(n = n())
+# 
+# sample_size_label <- glue("
+#                           {sample_size$group} <br> <br>
+#                           **N = {sample_size$n}**
+#                           ")
+# 
+# 
+# boxplot_with_data <-
+#   ggplot(data, aes(x = group, y = value)) +
+#   geom_boxplot(fill = "grey92") +
+#   geom_point(
+#     size = 2,
+#     alpha = .3,
+#     # add some jittering
+#     position = position_jitter(
+#       seed = 1, width = .2
+#     )) +
+#   pilot::theme_pilot() +
+#   #scale_x_discrete(labels = sample_size_label) +
+#   theme(axis.title.y = element_blank(),
+#         axis.title.x = element_blank(),
+#         axis.text.x = element_markdown())
+# 
+# boxplot
+# boxplot_with_data
+
+# my bits
 
 data <- tibble(
   group = factor(c(rep("Group 1", 100), rep("Group 2", 250), rep("Group 3", 25))),
@@ -99,70 +151,51 @@ data <- tibble(
             rep(seq(0, 20, length.out = 5), 5))
   ) %>% 
   rowwise() |>
-  mutate(value = if_else(group == "Group 2", value + rnorm(1, 0, .4), value))
+  mutate(value = if_else(group == "Group 2", value + rnorm(1, 0, .4), value)) |> 
+  group_by(group) |> 
+  mutate(sample_size = n())
 
-## Left box plot
-boxplot <- 
-  ggplot(data, aes(x = group, y = value)) +
-  geom_boxplot(fill = "grey92") + 
-  pilot::theme_pilot() + 
-  theme(axis.title.y = element_blank(),
-        axis.title.x = element_blank())
-
-
-## Right box plot
-
-# find sample size and create x axis labels
-sample_size <- data |>
-  group_by(group) |>
-  summarise(n = n())
-
-sample_size_label <- glue("
-                          {sample_size$group} <br>
-                          **N = {sample_size$n}**
-                          ")
-
-
-boxplot_with_data <- 
-  ggplot(data, aes(x = group, y = value)) +
-  geom_boxplot(fill = "grey92") +
-  geom_point(
-    size = 2,
-    alpha = .3,
-    # add some jittering
-    position = position_jitter(
-      seed = 1, width = .2
-    )) +
-  pilot::theme_pilot() + 
-  scale_x_discrete(labels = sample_size_label) +
+anim <- ggplot(data) +
+  geom_boxplot(aes(y = value), 
+               fill = "grey92") +
+   geom_point(aes(x = 0, y = value),
+              size = 2,
+              alpha = .3,
+              position = position_jitter(seed = 1, width = .2)) +
+  labs(title = "N = {closest_state}") +
+  pilot::theme_pilot() +
+  scale_x_discrete() +
   theme(axis.title.y = element_blank(),
         axis.title.x = element_blank(),
-        axis.text.x = element_markdown())
+        axis.text.x = element_markdown(),
+        plot.title = element_text(hjust = 0.5)) +
+  transition_states(sample_size,
+                    transition_length = 1,
+                    state_length = 2) +
+  ease_aes('cubic-in-out') +
+  enter_fly(x_loc = 0, y_loc = 15) +
+  exit_fly(x_loc = 0, y_loc = 10)
 
-boxplot
-boxplot_with_data
+anim
+
 ```
 
-
-To see how to summarise data more transparently, let's download some data and see how adding data points and distributions can help improve our visualisations.
-
-# Download data
-
-First let's download some packages we'll need.
+To understand how to summarise data more transparently, let's see how adding data points and distributions can help improve our visualisations.
 
 ```{r}
 #| warning: false
 #| message: false
+#| echo: false
 
-# packages
 library(tidyverse)
-library(purrr)
 library(here)
 ```
 
-To download data we will use the [{austraits} package]() to get data of Australian plant traits from [AusTraits](), an open-source database of nearly 500 traits across more than 30,000 taxa from field surveys, published papers, and taxonomic books. 
+# Download data
 
-We can download the entire austraits data set with the `load_austraits()` function.
+Let's start by downloading some data. We'll use the [{austraits} package]() to get data of Australian plant traits from [AusTraits](), an open-source database of nearly 500 traits across more than 30,000 taxa from field surveys, published papers, and taxonomic books. 
+
+We can download the entire austraits dataset with the `load_austraits()` function.
 
 :::callout-note
 To make analyses more reproducible, `load_austraits()` requires users to specify a version. You can see available versions using the `get_versions()` function.
@@ -171,6 +204,8 @@ To make analyses more reproducible, `load_austraits()` requires users to specify
 ```{r}
 #| eval: false
 #| echo: true
+library(tidyverse)
+library(here)
 library(austraits)
 
 austraits <- load_austraits(version = "4.1.0", 
@@ -192,6 +227,7 @@ austraits <- readRDS(here::here("posts",
 There's a huge range of available plant traits, and if you are interested in seeing what else there is, you should check out their [AusTraits Plant Dictionary](https://traitecoevo.github.io/APD/) for a complete list. For a brief breakdown of trait names and the data available for each, you can use `summarise_austraits("trait_name")`. Rather than showing the entire list, here's a random sample to give you an idea.
 
 ```{r}
+#| warning: false
 # show a sample of available traits
 austraits %>% 
   summarise_austraits("trait_name") |>
@@ -201,9 +237,7 @@ austraits %>%
 
 ## Leaf mass per area (LMA)
 
-The plant trait data we'll download is leaf dry mass per area (LMA), which measures how big and dense a leaf is compared to its surface area. 
-
-Here is a nice example from [Butrim & Royer (2020)](https://doi.org/10.1002/ajb2.1580). Notice that the small, dense leaf on the top has much higher leaf mass per area than the two large, light leaves on the bottom.
+The plant trait data we'll download is leaf dry mass per area (LMA), which measures how big and dense a leaf is compared to its surface area. This example from [Butrim & Royer (2020)](https://doi.org/10.1002/ajb2.1580) shows that the small, dense leaf on the top has much higher LMA than the two large, light leaves on the bottom.
 
 ![](images/fossil-leaves.jpg)
 
@@ -211,7 +245,7 @@ Here is a nice example from [Butrim & Royer (2020)](https://doi.org/10.1002/ajb2
 Leaves from 34-33 million years ago, taken from [a post by the Botanical Society of America](https://twitter.com/Botanical_/status/1336712702111191040/photo/1)
 :::
 
-Leaf mass per area is a nice indicator of each plant's strategy for survival, and can be thought of on a spectrum:
+Leaf mass per area is a morphological trait that can indicate a plant's survival strategy, and values of LMA can vary widely across species:  
 
 ::: {layout-ncol="3" style="margin-left: auto; margin-right: auto; text-align:center;"}
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/3/b/a/7/2d939fe2-60fc-4530-96e3-b9a8d09e7ab3/original" class="rounded clipped"/></img><br><span style="text-align:center;font-weight:bold;"> High-LMA</span>
@@ -225,15 +259,13 @@ Leaf mass per area is a nice indicator of each plant's strategy for survival, an
 Left: [*Dodonaea stenozyga* (Arthur Chapman CC-BY-NC-SA 4.0 (Int)](https://biocache.ala.org.au/occurrences/831aee25-3a82-4717-84f9-53d51edd225e), Middle: [*Melaleuca decora* (Greg Tasney CC-BY-SA 4.0 (Int))](https://biocache.ala.org.au/occurrences/f506528d-e804-4515-8f1b-c0d3717fde12), Right: [*Drymophila cyanocarpa* (Pete Woodall CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/d93dacd3-3d8e-489c-b7c4-bf2219d1fe65)
 :::
 
-On one side, plants with small, dense leaves (**High-LMA**) acquire resources (like nutrients and energy) gradually and grow slowly, aiming to conserve what resources they have. These plants tend to have an advantage in unproductive environments (where they can efficiently store whatever limited resources are available).
+On one end of the spectrum, plants with small, dense leaves (**High-LMA**) acquire resources (like nutrients and energy) gradually and grow slowly, aiming to conserve what resources they have. These plants tend to have an advantage in unproductive environments, where they can efficiently store whatever limited resources are available.
 
-On the other side, plants with big, light leaves (**Low-LMA**) acquire resources quickly and grow fast, aiming to out-compete others for the resources on offer. These plants tend to have an advantage in highly productive environments (where they can get lots of resources and use them quickly) ([Poorter et al. 2009](https://nph.onlinelibrary.wiley.com/doi/full/10.1111/j.1469-8137.2009.02830.x)). They contribute to these ecosystems' productivity, too, because they degrade faster and are preferred by herbivores, cycling nutrients into the ecosystem. <!-- worth including that last sentence? It's nice context but feels like too much info?-->
-
-This relationship between LMA and the environment type a plant is better suited for allows us to *infer* what kind of ecosystem each plant lives in depending on its LMA (which we'll try to do at the end).
+On the other end of the spectrum, plants with big, light leaves (**Low-LMA**) acquire resources quickly and grow fast, aiming to out-compete others for the resources on offer. These plants tend to have an advantage in highly productive environments (where they can get lots of resources and use them quickly) ([Poorter et al. 2009](https://nph.onlinelibrary.wiley.com/doi/full/10.1111/j.1469-8137.2009.02830.x)). 
 
 ## Extract trait data
 
-To download LMA trait data, we'll use `extract_trait()`. This downloads a `list` of data and metadata about authors, collection methods, locations, taxonomic information and data structure. To only grab the `data.frame` we want from our list, we'll use `purrr::pluck()`.
+To download LMA trait data, we'll use `extract_trait()`. This downloads a `list` of data and metadata about authors, collection methods, locations, taxonomic information, and data structure. We'll then use `purrr::pluck()` to grab the `data.frame` we want from our list.
 
 :::callout-tip
 You can use `lookup_trait()` to search for traits
@@ -266,14 +298,14 @@ filtered_names <- leaf_mass |>
 filtered_names |> head(10L)
 ```
 
-Next we'll filter our `leaf_mass` data to only those in `filtered_names`.
+Next we'll filter our `leaf_mass` data to include only those in `filtered_names`.
 
 ```{r}
 leaf_mass_filtered <- leaf_mass |>
   filter(taxon_name %in% filtered_names)
 ```
 
-Filtering out these taxa has removed more than 3,000 taxa from our dataset.
+This has removed more than 3,000 taxa from our dataset.
 
 ```{r}
 #| code-fold: true
@@ -306,7 +338,7 @@ leaf_mass_sample <- leaf_mass_filtered |>
 
 # Beeswarm plot
 
-The first plot we'll learn to make is a beeswarm plot using the [{ggbeeswarm} package](). Beeswarm plots are useful because they allow you to plot points next to each other that would normally overlap. These plots are especially nice because the points are plotted in a way that visualises density much like a [violin plot]() while still showing each individual point.
+The first plot we'll learn to make is a beeswarm plot using the [{ggbeeswarm} package](). Beeswarm plots are useful because they allow you to plot points next to each other that would normally overlap. These plots are especially nice because the points are plotted in a way that visualises density much like a [violin plot](https://en.wikipedia.org/wiki/Violin_plot) while still showing each individual point.
 
 Let's load {ggbeeswarm} and try plotting our plant species' trait values using `geom_quasirandom()`, which uses a sequencing algorithm to place points nicely next to each other.
 
@@ -327,7 +359,8 @@ Now let's take a few steps to clean this plot up. We'll use one of our favourite
 ```{r}
 #| warning: false
 #| message: false
-library(pilot) # remotes::install_github("olihawkins/pilot")
+# remotes::install_github("olihawkins/pilot")
+library(pilot) 
 library(stringr)
 
 ggplot(data = leaf_mass_sample, 
@@ -393,7 +426,7 @@ ggplot(data = leaf_mass_sample,
 
 # Raincloud plots
 
-[In 2019](https://wellcomeopenresearch.org/articles/4-63), Raincloud plots were proposed as one way to visualise data with "maximal statistical information while preserving the desired ‘inference at a glance’ nature of barplots and other similar visualization devices." By displaying points, densities and summary stats like median, mean and confidence intervals, raincloud plots are robust, informative, and (dare I say it) stunning.
+In 2019, [raincloud plots](https://wellcomeopenresearch.org/articles/4-63) were proposed as one way to visualise data with "maximal statistical information while preserving the desired ‘inference at a glance’ nature of barplots and other similar visualization devices." By displaying points, densities and summary stats like median, mean and confidence intervals, raincloud plots are robust, informative, and (dare I say it) stunning.
 
 Let's plot the same data of our 7 species above as a raincloud plot. We'll load the [{ggdist} package](https://mjskay.github.io/ggdist/index.html) and the [{gghalves} package](https://github.com/erocoar/gghalves) to allow us to plot different parts of our raincloud plot.
 
@@ -402,7 +435,7 @@ library(ggdist)
 library(gghalves)
 ```
 
-To begin, let's plot the distribution on one half of our raincloud plot using `stat_halfeye()`, and the points that make up that distribution on the other half of our plot with `geom_half_point()`. We'll also flip our plot on its side using `coord_flip()` to give our plot and labels more space (and to eventually help make our raincloud effect)^[Are plots with bars or boxes any easier to read when oriented up and down (ie. vertically) than side-to-side (ie. horizontally)? You might not have an immediate answer, and so it's slightly strange (when you think about it) how deep-set the trend of vertical barplots and boxplots is in science. Flipping your plot can make longer names easier to read, make group differences easier to spot when stacked in order, and give space to other elements in your plot!]. 
+To begin, let's plot the distribution on one half of our raincloud plot using `stat_halfeye()`, and the points that make up that distribution on the other half of our plot with `geom_half_point()`. We'll also flip our plot on its side using `coord_flip()` to give our plot and labels more space (and to eventually help make our raincloud effect)^[Are plots with bars or boxes any easier to read when oriented up and down (ie. vertically) than side-to-side (ie. horizontally)? You might not have an immediate answer, and so it's slightly strange (when you think about it) how deep-set the trend of vertical barplots and box plots is in science. Flipping your plot can make longer names easier to read, make group differences easier to spot when stacked in order, and give space to other elements in your plot!]. 
 
 ```{r}
 ggplot(data = leaf_mass_sample, 
@@ -423,7 +456,7 @@ ggplot(data = leaf_mass_sample,
 
 ```
 
-Now we can add our boxplot, using our `after_stat()` colorspace trick within `geom_boxplot()`, this time to darken the lines of each box. We'll also add use {pilot} to add some nice colours and styling to our plot.
+Now we can add our box plot, using our `after_stat()` colorspace trick within `geom_boxplot()`, this time to darken the lines of each box. We'll also use {pilot} to add some nice colours and styling to our plot.
 
 And just like that we can make it rain!^[Fun fact: "How to make it rain" is an actual subheading in the paper]
 
@@ -472,9 +505,7 @@ ggplot(data = leaf_mass_sample,
 
 # Bonus: Plant distribution
 
-A plant's leaf mass per area (LMA) can tell us a lot about the types of ecosystems that these plants live in. By mapping each plant's spatial distributions, we can get an idea of the broader range of these ecosystems across Australia.
-
-Let's see where our plant species that we summarised above live! 
+Let's briefly revisit leaf mass area before ending. The relationship between LMA and plant functioning means we can *infer* the type of ecosystem a plant lives in based on its LMA. So let's see where the 7 plant species that we summarised above live! 
 
 Remember, low-LMA species like *Cryptocarya rigida* have big, light leaves that thrive in wetter ecosystems with lots of nutrients. Alternatively,  high-LMA species like *Eucalyptus wandoo* have small, dense leaves that thrive in drier ecosystems with little nutrients.
 
@@ -545,11 +576,11 @@ ggplot() +
 
 Box plots are great because they are simple and can be interpreted quickly. These days, there are alternative options that are still simple but more robust and transparent. We hope you feel inspired to try out a beeswarm or raincloud plot yourself! (Maybe you even learned a little something about plants and their leaves as well)
 
-There might be other statistics you might like use to summarise your data. It's possible to add means and confidence intervals to rain cloud plots, too, though methods differ slightly to other visualisation tools[^Tip]. Experiment with what works best with your data.
+There might be other statistics you might like to use to summarise your data. It's possible to add means and confidence intervals to raincloud plots, too, though methods differ slightly to other visualisation tools[^Tip]. Experiment with what works best with your data.
 
 For other great resources on alternatives to box and bar plots in R, check out [this article by Cedric Scherer](https://z3tt.github.io/beyond-bar-and-box-plots/) which we found really helpful.
 
-[^Tip]: If you would like to add mean and confidence intervals (rather than median and quantile intervals) to your raincloud plot, you can use `stat_pointinterval()` to do this. However, {ggdist} calculates confidence intervals using a Bayesian method to find a point estimate and Higher Density Interval (HDI). This method calculates different estimates to Frequentist confidence intervals, so it's worth looking up the difference before using HDis. If you are plotting estimates after running a model, [the suggested way by the creator of {ggdist}](https://mjskay.github.io/ggdist/articles/freq-uncertainty-vis.html) is to pass this information using `dist_student_t()` and model parameters from `broom::tidy()` output. This [stack overflow thread](https://stackoverflow.com/questions/72987914/what-does-ggdists-stat-interval-levels-calculate-i-thought-it-was-confidence) is also helpful.
+[^Tip]: If you would like to add mean and confidence intervals (rather than median and quantile intervals) to your raincloud plot, you can use `stat_pointinterval()` to do this. However, {ggdist} calculates confidence intervals using a Bayesian method to find a point estimate and Higher Density Interval (HDI). This method calculates different estimates to frequentist confidence intervals, so it's worth looking up the difference before using HDIs. If you are plotting estimates after running a model, [the suggested way by the creator of {ggdist}](https://mjskay.github.io/ggdist/articles/freq-uncertainty-vis.html) is to pass this information using `dist_student_t()` and model parameters from `broom::tidy()` output. This [stack overflow thread](https://stackoverflow.com/questions/72987914/what-does-ggdists-stat-interval-levels-calculate-i-thought-it-was-confidence) is also helpful.
 
 
 
