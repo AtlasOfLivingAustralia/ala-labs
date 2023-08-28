@@ -134,20 +134,20 @@
 }
 
 .value-feature {
-  background: #B8573E;
+  background: #DBD7D2;
   margin-left: 40px;
   margin-right: 40px;
   margin-bottom:40px;
-  border-radius: 30px;
+  border-radius: 26px;
 }
 
 .value-text {
-  color: #fff;
+  color: #222322;
 }
 
 .value-block {
-    color: #fff;
-    padding: 50px 65px;
+    color: #222322;
+    padding: 50px 40px;
     float: left;
     display: block;
 }

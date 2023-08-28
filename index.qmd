@@ -245,7 +245,7 @@ create_values_box2(
 create_values_box3(
   value = "\    Robust methods",
   icon = "far fa-chart-bar",
-  text = "No method or analytic procedure is perfect. We value consideration for strengths and limitations of each method or analysis to help choose the method that provides robust, reliable results"
+  text = "No method or analytic procedure is perfect. We value consideration for strengths and limitations of each method or analysis. This attitude helps researchers choose methods that provide robust results for their specific question"
 )
 
 )
