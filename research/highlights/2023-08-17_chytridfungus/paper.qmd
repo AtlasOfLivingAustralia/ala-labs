@@ -1,5 +1,5 @@
 ---
-title: "Will frogs bounce back after chytrid?"
+title: "Will frogs bounce back after chytrid fungus?"
 author: "Olivia Torresan"
 date: "2023-08-07"
 title-block-banner: "#691C32"
@@ -71,9 +71,9 @@ Chytrid fungus (*Batrachochytrium dendrobatidis*) is an invasive fungus that cau
 
 Scheele et al. (2023) use frog data from the Atlas of Living Australia, GBIF and FrogID to compare niches of impacted and un-impacted frogs in Australia. Niches extend on a species current occurrence record and incorporate broader environmental, climatic, and dietary preferences of frogs, as well as their larger ecosystem role.
 
-The authors found that Chytrid fungus contracted frogs’ ecological niches, restricting many species to niches with conditions less favoured by Chytrid fungus. This finding shows how Chytrid fungus can shrink niches and fragment populations, limiting overall species genetic diversity—an important means for frogs to fight disease and repopulate. 
+The authors found that chytrid fungus contracted frogs’ ecological niches, restricting many species to niches with conditions less favoured by chytrid fungus. This finding shows how chytrid fungus can shrink niches and fragment populations, limiting overall species genetic diversity—an important means for frogs to fight disease and repopulate. 
 
-Scheele et al.’s (2023) research suggests that Chytrid fungus may have a lasting impact on the ecological niche of impacted frog species, limiting their suitability to live in areas where they were distributed previously.
+Scheele et al.’s (2023) research suggests that chytrid fungus may have a lasting impact on the ecological niche of impacted frog species, limiting their suitability to live in areas where they were distributed previously.
 :::
 
 :::
