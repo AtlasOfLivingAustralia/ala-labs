@@ -1,0 +1,42 @@
+---
+title: "Andrew Schwenke"
+include-after-body: _footer.html
+---
+
+```{r, include=FALSE}
+library(htmltools)
+library(here)
+source(here("R", "functions.R"))
+```
+
+### {{< fa circle-user >}} Bio 
+
+:::{.bio-row}
+:::{.bio-column-right}
+
+```{r out.width='275px', out.extra='style="display:block; margin-left:auto; margin-right:auto; clip-path: circle();"'}
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/andrew.jpg")
+```
+:::
+
+:::{.bio-column-left}
+Andrew is an R Programmer for the ALA.
+
+:::
+:::
+
+:::{.column-body style="margin-top:-20px;"}
+
+```{r}
+#| echo: false
+
+tags$div(class = "row", style = "display: flex;",
+
+)
+```
+
+:::
+
+### {{< fa newspaper >}} Posts 
+

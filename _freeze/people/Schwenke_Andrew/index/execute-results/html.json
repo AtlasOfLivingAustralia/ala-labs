@@ -1,0 +1,14 @@
+{
+  "hash": "28a3c8365b738b7697cf29995ae4a246",
+  "result": {
+    "markdown": "---\ntitle: \"Andrew Schwenke\"\ninclude-after-body: _footer.html\n---\n\n\n\n\n### {{< fa circle-user >}} Bio \n\n:::{.bio-row}\n:::{.bio-column-right}\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/andrew.jpg){width=275px style=\"display:block; margin-left:auto; margin-right:auto; clip-path: circle();\"}\n:::\n:::\n\n:::\n\n:::{.bio-column-left}\nAndrew is an R Programmer for the ALA.\n\n:::\n:::\n\n:::{.column-body style=\"margin-top:-20px;\"}\n\n\n::: {.cell}\n::: {.cell-output-display}\n```{=html}\n<div class=\"row\" style=\"display: flex;\"></div>\n```\n:::\n:::\n\n\n:::\n\n### {{< fa newspaper >}} Posts \n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

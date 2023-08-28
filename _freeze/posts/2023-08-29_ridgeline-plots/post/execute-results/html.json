@@ -1,0 +1,14 @@
+{
+  "hash": "01d8d956916abac51fae5b14479ab543",
+  "result": {
+    "markdown": "---\ntitle: \"Alternatives to box plots: Ridgeline plots\"\ndescription: |\n  cool intro\nauthor:\n  - name: \"Dax Kellie\"\n  - name: \"Shandiya Balasubramanium\"\ndate: \"2023-05-16\"\ntitle-block-banner: \"#B8573E\"\ninclude-after-body: _footer.html\ntoc: true\ntoc-location: left\ntoc-depth: 2\ncategories:\n  - Eukaryota\n  - Animalia\n  - Chordata\n  - Aves\n  - Summaries\nimage: tbd\ndraft: true\nfreeze: true\neditor_options: \n  chunk_output_type: console\n---\n\n\n\n\n<!-- remove metadata section -->\n<style>\n  #title-block-header.quarto-title-block.default .quarto-title-meta {\n      display: none;\n  }\n</style>\n\n\n\n<!-- Author card -->\n\n:::{.author-card}\n:::{.author-card-text}\n\n#### Author\n[Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)  \n[Shandiya Balasubramanium](https://labs.ala.org.au/people/Balasubramanium_Shandiya/index.html)  \n\n#### Date\n5 May 2023\n\n:::\n\n:::{.author-card-image}\n\n::: {.cell}\n::: {.cell-output-display}\n![](https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg){width=120px style=\"clip-path: circle();\"}\n:::\n:::\n\n:::\n\n:::{.author-card-image}\n\n::: {.cell}\n::: {.cell-output-display}\n![](https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/shandiya.jpg){width=120px style=\"clip-path: circle();\"}\n:::\n:::\n\n:::\n\n:::\n\n<!------------------------ Post starts here ------------------------>\n\n\n\n\n\n::: {.cell}\n\n:::\n\n\n\n\n<details><summary style = \"color: #E06E53;\">Expand for session info</summary>\n\n\n::: {.cell}\n::: {.cell-output .cell-output-stdout}\n```\n─ Session info ───────────────────────────────────────────────────────────────\n setting  value\n version  R version 4.3.1 (2023-06-16 ucrt)\n os       Windows 10 x64 (build 19045)\n system   x86_64, mingw32\n ui       RTerm\n language (EN)\n collate  English_Australia.utf8\n ctype    English_Australia.utf8\n tz       Australia/Sydney\n date     2023-08-28\n pandoc   3.1.1 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)\n\n─ Packages ───────────────────────────────────────────────────────────────────\n package     * version date (UTC) lib source\n htmltools   * 0.5.5   2023-03-23 [1] CRAN (R 4.2.3)\n sessioninfo * 1.2.2   2021-12-06 [1] CRAN (R 4.2.1)\n\n [1] C:/Users/KEL329/R-packages\n [2] C:/Users/KEL329/AppData/Local/Programs/R/R-4.3.1/library\n\n──────────────────────────────────────────────────────────────────────────────\n```\n:::\n:::\n\n\n</details>\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

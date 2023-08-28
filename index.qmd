@@ -29,7 +29,7 @@ This site is a resource for coding projects that use data sourced from [the ALA]
 
 <br>
 
-:::{.column-screen style="background-color:#EEECEA;"}
+:::{.column-screen style="background-color:#B8573E;"}
 :::{.column-screen-inset}
 :::{.home-column-image .col-left}
 
@@ -43,8 +43,8 @@ This site is a resource for coding projects that use data sourced from [the ALA]
 
 :::{.home-column-text .col-right}
 
-<center> <h1>Posts</h1>
-<span style = "font-style: italic">How-to articles for solving scientific problems</span> 
+<center> <h1 style="color: #fff;">Posts</h1>
+<span style = "color: #fff; font-style: italic">How-to articles for solving scientific problems</span> 
 </center>
 
 
@@ -57,10 +57,13 @@ tags$div(class = "category-row",
       tags$img(
         href = "posts.html#category=Summaries",
         src = "images/vectors/barplot.svg",
-        class = "category-image honey"
+        style = "color:#fff !important;",
+        class = "category-image honey-white"
   )),
   tags$h4(style = "text-align:center;",
-      tags$a(href = "posts.html#category=Summaries", "Summaries"))),
+      tags$a(
+        class = "white",
+        href = "posts.html#category=Summaries", "Summaries"))),
   
   tags$div( 
     class = "category-column",
@@ -68,10 +71,13 @@ tags$div(class = "category-row",
       tags$img(
         href = "posts.html#category=Maps",
         src = "images/vectors/Australia.svg",
-        class = "category-image honey"
+        style = "color:#fff !important;",
+        class = "category-image honey-white"
   )),
   tags$h4(style = "text-align:center",
-      tags$a(href = "posts.html#category=Maps", "Maps"))),
+      tags$a(
+        class = "white",
+        href = "posts.html#category=Maps", "Maps"))),
   
   tags$div( 
     class = "category-column",
@@ -79,10 +85,13 @@ tags$div(class = "category-row",
       tags$img(
         href = "posts.html#category=Trees",
         src = "images/vectors/tree.svg",
-        class = "category-image honey"
+        style = "color:#fff !important;",
+        class = "category-image honey-white"
   )),
   tags$h4(style = "text-align:center",
-      tags$a(href = "posts.html#category=Trees", "Trees")))
+      tags$a(
+        class = "white",
+        href = "posts.html#category=Trees", "Trees")))
   
   )
 ```
@@ -205,7 +214,7 @@ tags$div(class = "category-row",
 :::
 
 
-:::{.column-screen style="background-color:#EEECEA;"}
+:::{.column-screen style="background-color:#fff;"}
 
 :::{.column-page}
 

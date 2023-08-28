@@ -21,7 +21,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 :::
 
 :::{.bio-column-left}
-Shandiya is an evolutionary ecologist with interests in conservation genetics and wildlife disease. Her work as a data analyst at the ALA focuses on streamlining reproducible pathways for researchers to access and analyse open data. 
+Shandiya is an evolutionary ecologist with interests in conservation genetics and wildlife disease. She is the Decision Support Program Lead. Her work as a data analyst at the ALA focuses on streamlining reproducible pathways for researchers to access and analyse open data. 
 :::
 :::
 

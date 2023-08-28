@@ -17,6 +17,9 @@
   --header-font: 'Lato' sans-serif;
 }
 
+h4, .h4 {
+  font-size: 1.15rem !important;
+}
 
 /* navbar */
 

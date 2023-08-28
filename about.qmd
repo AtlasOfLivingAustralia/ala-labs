@@ -70,24 +70,24 @@ create_team_card(
   text = "Support Officer"
 ),
 create_team_card(
-  person_page = "people/Kar_Fonti/index.html",
-  img_src = "images/people/fonti.jpg",
-  name = "Fonti Kar",
-  text = "Data Analyst"
-)
-)
-tags$div(class = "row", # Create a row for 3 team-member cards
-create_team_card(
-  person_page = "people/Schneider_Margot/index.html",
-  img_src = "images/people/margot.jpg",
-  name = "Margot Schneider",
-  text = "Project Manager"
-),
-create_team_card(
   person_page = "people/Seers_Juliet/index.html",
   img_src = "images/people/juliet.jpg",
   name = "Juliet Seers",
   text = "Training & Outreach Coordinator"
+)
+)
+tags$div(class = "row", # Create a row for 3 team-member cards
+create_team_card(
+  person_page = "people/Waite_Callum/index.html",
+  img_src = "images/people/callum.jpg",
+  name = "Callum Waite",
+  text = "Data Analyst"
+),
+create_team_card(
+  person_page = "people/Schwenke_Andrew/index.html",
+  img_src = "images/people/andrew.jpg",
+  name = "Andrew Schwenke",
+  text = "R Programmer"
 )
 )
 ```

@@ -17,6 +17,9 @@
   --header-font: 'Lato' sans-serif;
 }
 
+h4, .h4 {
+  font-size: 1.15rem !important;
+}
 
 /* navbar */
 
@@ -480,4 +483,16 @@ img.rounded {
 .hex-image-column {
   float:left;
   width: 79%;
+}
+
+/* Page buttons highlight colour on Posts */
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: var(--primary-orange);
+    border-color: var(--secondary-orange);
+}
+
+.page-link {
+    color: var(--primary-orange);
 }
