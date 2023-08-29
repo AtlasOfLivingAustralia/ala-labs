@@ -37,7 +37,7 @@ library(htmltools)
 :::{.author-card-text}
 
 #### Author
-[Shandiya Balasubramanium](https://labs.ala.org.au/people/Balasubramanium_Shandiya/index.html)  
+[Shandiya Balasubramaniam](https://labs.ala.org.au/people/Balasubramaniam_Shandiya/index.html)  
 
 #### Date
 23 May 2022

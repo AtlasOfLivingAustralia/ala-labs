@@ -42,7 +42,7 @@ library(htmltools)
 
 #### Author
 [Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)  
-[Shandiya Balasubramanium](https://labs.ala.org.au/people/Balasubramanium_Shandiya/index.html)  
+[Shandiya Balasubramaniam](https://labs.ala.org.au/people/Balasubramaniam_Shandiya/index.html)  
 
 #### Date
 28 August 2023
