@@ -7,11 +7,11 @@
 
 #------------ Edit these parameters for highlighted paper ---------------------#
 
-title <- "Changing farming climates: The future of growing peanuts"
-authors <- "Haerani et al. 2023"
-main_colour <- "#B7CD96" # use an ALA colour as your main colour
-text_colour <- "#754C06" # choose your own matching text colour: https://coolors.co/
-line_colour <- "#CB8752" # choose your own matching line colour
+title <- "Gone fishing: Citizen scientists contribute to key recreational fishes population models"
+authors <- "Graba-Landry et al. 2023"
+main_colour <- "#003A70" # use an ALA colour as your main colour
+text_colour <- "#EEECEA" # choose your own matching text colour: https://coolors.co/
+line_colour <- "#6BDAD5" # choose your own matching line colour
 
 
 # ALA colours to use as main colour
