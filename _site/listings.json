@@ -2,6 +2,7 @@
   {
     "listing": "/posts.html",
     "items": [
+      "/posts/2023-11-14_hex_point_maps/post.html",
       "/posts/2023-08-28_alternatives-to-box-plots/post.html",
       "/posts/2023-05-16_dingoes/post.html",
       "/posts/2023-04-28_plotting-invasive-species/post.html",
@@ -21,6 +22,7 @@
   {
     "listing": "/research/highlights.html",
     "items": [
+      "/research/highlights/2023-7-11_snapperwhiting/paper.html",
       "/research/highlights/2023-08-17_chytridfungus/paper.html",
       "/research/highlights/2023-06-27_pinusradiata/paper.html",
       "/research/highlights/2023-05-26_jacarandas/paper.html",
