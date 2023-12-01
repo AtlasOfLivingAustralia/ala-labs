@@ -7,7 +7,7 @@
 
 #------------ Edit these parameters for highlighted paper ---------------------#
 
-title <- "Gone fishing: Citizen scientists contribute to key recreational fishes population models"
+title <- "Citizen science data improves key recreational fish population models"
 authors <- "Graba-Landry et al. 2023"
 main_colour <- "#003A70" # use an ALA colour as your main colour
 text_colour <- "#EEECEA" # choose your own matching text colour: https://coolors.co/

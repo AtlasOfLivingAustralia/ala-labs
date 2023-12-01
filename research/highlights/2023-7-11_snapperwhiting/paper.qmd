@@ -1,0 +1,78 @@
+---
+title: "Citizen science data improves key recreational fish population models"
+author: "Olivia Torresan"
+date: "2023-11-07"
+title-block-banner: "#003A70"
+title-block-banner-color: "#EEECEA"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png 
+categories:
+  - Conservation
+  - Biogeography
+  - Species distribution
+params:
+  authors: "Graba-Landry, A., Champion, C., Twiname, S., Wolfe, B., Haddy, J., Mossop, D., Pecl, G., & Tracey, S. R."
+  year: 2023
+  title: "Citizen science aids the quantification of the distribution and prediction of present and future temporal variation in habitat suitability at species’ range edges"
+  publication: "Frontiers of Biogeography"
+  doi: https://doi.org/10.21425/F5FBG58207
+  image_url: https://images.ala.org.au/image/details?imageId=844e4f4f-021d-4cde-94fe-04b73877e06a
+  alt_text: Juvenile Snapper swimming
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Side panel -->
+
+:::{.column-page}
+
+:::{.paper-side-column}
+
+<center>
+:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/a/6/0/e/844e4f4f-021d-4cde-94fe-04b73877e06a/original" class="rounded"/></img>
+:::
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+[*Chrysophrys auratus* (Erik Schlogl CC BY NC 4.0)](https://images.ala.org.au/image/details?imageId=844e4f4f-021d-4cde-94fe-04b73877e06a)
+:::
+
+### Citation
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+
+#### Page info
+Prepared by 
+[Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/)
+:::
+
+
+<!-- Main panel description -->
+
+::: {.paper-main-column}
+Species distribution models (or SDM’s) are well-known tools in ecology. They are used to predict where a species might be able to live. There are many different types of SDM, with each combining a variation of ecological factors. Some models are better suited to different kinds of species or regions. Key pieces of information required to model an SDM are factors like data on species current known range of occurrence and habitat, and more broadly, their climatic preferences. 
+
+These models are particularly useful for difficult to survey or cryptic species. They are able to help us understand where a species might occur outside of its already found range, which are valuable in making sure conservation decisions are well-informed and effective. Ensuring these models are as accurate as possible is essential. 
+
+Landry et al. (2023) draw species distribution models of Snapper and Whiting - two fish with prized recreational and market value in Australia. They find citizen science data on these fish increases their potential estimated ranges in SDM's substantially compared to models without: 277km for Snapper, and 437km for Whiting. Generally speaking, when more data is used in a species distribution model and is appropriately quality cleaned, species distribution models are likely to be more accurate. Citizen science data is then noted in this research as a hugely valuable contributor to improve our understandings of possible species habitats. If these fish are also truly expanding their range, it may become increasingly difficult to track where they may move in the future, especially with the accelerating and encroaching impacts of climate and habitat related effects. 
+
+In as short as the next thirty years both Snapper and Whiting are expected to substantially increase their distribution. While this might be at a glance positive for recreation and our fish export market, shifts in ecological dynamics can have nuanced implications in how they may cascade ecological impacts to other species and complicate an ecological equilibrium. "Wintering" or the hibernation process of fish that is induced under specific water temperatures is one example of this. When waters become warmer, Snapper and Whiting may no longer hibernate and as a result could consume more resources than usual. With the help of citizen science data, Landry et al.’s (2023) work contributes to a more holistic understanding of our Snapper and Whiting populations and how these may shift in the future – and how we might best prepare for it.
+:::
+
+:::
