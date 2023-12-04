@@ -1,0 +1,78 @@
+---
+title: "Citizen science data improves key recreational fish population models"
+author: "Olivia Torresan"
+date: "2023-12-04"
+title-block-banner: "#003A70"
+title-block-banner-color: "#EEECEA"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png 
+categories:
+  - Conservation
+  - Biogeography
+  - Species distribution
+params:
+  authors: "Graba-Landry, A., Champion, C., Twiname, S., Wolfe, B., Haddy, J., Mossop, D., Pecl, G., & Tracey, S. R."
+  year: 2023
+  title: "Citizen science aids the quantification of the distribution and prediction of present and future temporal variation in habitat suitability at species’ range edges"
+  publication: "Frontiers of Biogeography"
+  doi: https://doi.org/10.21425/F5FBG58207
+  image_url: https://images.ala.org.au/image/details?imageId=844e4f4f-021d-4cde-94fe-04b73877e06a
+  alt_text: Juvenile Snapper swimming
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Side panel -->
+
+:::{.column-page}
+
+:::{.paper-side-column}
+
+<center>
+:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/a/6/0/e/844e4f4f-021d-4cde-94fe-04b73877e06a/original" class="rounded"/></img>
+:::
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+[*Chrysophrys auratus* (Erik Schlogl CC BY NC 4.0)](https://images.ala.org.au/image/details?imageId=844e4f4f-021d-4cde-94fe-04b73877e06a)
+:::
+
+### Citation
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+
+#### Page info
+Prepared by 
+[Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/)
+:::
+
+
+<!-- Main panel description -->
+
+::: {.paper-main-column}
+Species distribution models are widely used in ecology to predict where a species might live. These models can be particularly useful to understand species that are difficult to observe or survey. However, when there is limited data on a species, models are prone to making poor predictions as well. 
+
+Citizen science data can help increase not only the number of observations, but also the breadth of surveillance of many different species. When the range of a species is known to be shifting or expanding, data collected by citizen scientists may be especially useful for gathering up-to-date information because the chance of incidentally observing a species increases. 
+
+Landry et al. (2023) compared species distribution models of Tasmanian species of Snapper and Whiting—two recreationally important fish with expanding habitat ranges—that included or excluded citizen science observations data with traditional data repository observations. They found models that include citizen science data predict a substantially larger habitat range for both species: an increase of 277km for Snapper, and 437km for Whiting. Adding citizen science data also increased the volume of data by 2.3% for Snapper and 52.7% for whiting. For species with expanding habitat ranges, citizen science data can be useful for capturing occurrences of species at their range edge. 
+
+Landry et al.’s (2023) work demonstrates how citizen science data can be an asset for predicting species distributions of marine species as habitat ranges shift as a result of warming temperatures. Although an expanding habitat range might appear positive for recreational fishing, shifts in habitat range can have negative down-stream effects on ecological dynamics. For example, as waters become warmer, Snapper and Whiting are expected to spawn and settle more successfully in new areas, consuming resources in areas they previously couldn't survive. 
+:::
+
+:::
