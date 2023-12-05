@@ -72,14 +72,20 @@ Visualisations of species distributions can be very simple yet effective ways of
 
 **DAX: link to labs posts that show these methods?**
 
-Representing more than one species' distribution in a single figure can be difficult, though, especially where there are areas of overlap. It may be  
-However, visualising more than one species' distribution is more difficult to perform on a single map, especially when those distributions overlap. Points and hulls will obscure each other even with a degree of transparency, while densities and shaded regions can only show one species at a time. Comparisons can be made by providing two single distribution figures side-by-side, but it can be inconvenient to observe range overlaps in this manner.
+Representing more than one species distribution in a single figure can be difficult, though, especially where there are areas of overlap. Points and hulls will obscure each other even with a degree of transparency, while densities and shaded regions can only show one species at a time. Comparisons can be made by providing two single distribution figures side-by-side, but it can be inconvenient to observe range overlaps in this manner.
 
-Here, we demonstrate a method to visualise distributions of multiple species with overlapping ranges on the same map, with only a small loss in resolution. The technique is a novel twist on the commonly used [hexbin map](https://r-graph-gallery.com/hexbin-map.html): instead of using a colour fill to represent presence/absence or counts within each hexagon, we use multiple coloured points within each hexagon to represent presence/absence of a species. 
+Here, we demonstrate a method to visualise distributions of multiple species with overlapping ranges on the same map, with only a small loss in resolution. The technique is a novel twist on the commonly used [hexbin map](https://r-graph-gallery.com/hexbin-map.html): instead of using a colour fill to represent presence/absence or counts within each hexagon, we use multiple coloured points within each hexagon to represent presence/absence of species, allowing users to get a broad overview of how multiple species are distributed across an area. 
 
-### Download Data
+### ADD A SECTION HERE EXPLAINING WHAT THE STEPS ARE GOING TO BE ------
 
-We begin by loading the necessary R packages.
+We'll do this by:
+- download records of species of interest
+- create a hex grid across area of interest
+- set up points within hexes and assign each point to a species
+- combine basemap, hex grid, points in hexes into a single figure
+
+Let's begin by loading the R packages we'll be using.
+**CALLUM: Not sure all these packages are being used...?**
 
 ```{r}
 #| output: FALSE
@@ -93,7 +99,9 @@ library(sf)
 library(tidyverse)
 ```
 
-We'll use the [{galah} package](https://galah.ala.org.au) to download occurrence records from the [Atlas of Living Australia (ALA)](https://www.ala.org.au). To do this, [register your email address with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount), then pass it to {galah} using `galah_config()`.     
+We'll use the [{galah} package](https://galah.ala.org.au) to download occurrence records from the [Atlas of Living Australia (ALA)](https://www.ala.org.au). To do this, you'll need to [register your email address with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount), then pass it to {galah} using `galah_config()`. 
+
+**CALLUM: would you prefer to use your work email address?**
 
 ```{r}
 #| include: FALSE
@@ -105,54 +113,29 @@ galah_config(email = "callumwaite2000@gmail.com")
 galah_config(email = "your-email@email.com")
 ```
 
-#### Download Shapefiles
 
-If we are going to visualise species' distributions then we need a relevant base map to plot those distributions on top of. In this case, we are going to begin with all land that falls under Australia's jurisdiction (including islands such as Christmas Island, Norfolk Island, Macquarie Island etc.). The base layer we will use for plotting will come from the {ozmaps} package which provides simple shapefiles of terrestrial Australia. We can save this object as `aus`.
+#### Download Occurrence Records
 
-```{r}
-# map of Australia
-# aus <- ozmap_data(data = "states")
-```
+Since our goal here is to map distributions of multiple species, we've chosen honeyeaters from the genus *Melithreptus*: this is a distinctive group of 7 small- to medium-sized, short-billed and square-tailed honeyeaters with overlapping distributions across Australia. 
 
-However, higher resolution shapefiles exist of Australian land, and one such resource is the [Interim Biogeographic Regionalisation of Australia (IBRA)](https://www.dcceew.gov.au/environment/land/nrs/science/ibra#ibra). The shapefile and related metadata can be downloaded from [this DCCEEW link](https://fed.dcceew.gov.au/datasets/erin::interim-biogeographic-regionalisation-for-australia-ibra-version-7-regions/about). Because of it's finer detail, the IBRA dataset is better suited for filtering records that occurred within Australia than the {ozmaps} layer, but does not contain state boundaries which are useful for plotting. We will use both maps of Australia throughout our workflow and visualisation.
-
-```{r}
-#| include: FALSE
-# ibra <- st_read(here::here("posts", "data", "IBRA7_regions", "ibra7_regions.shp")) |>
-#   st_make_valid() |>
-#   st_union()
-# 
-# crs <- st_crs(ibra)
-```
-
-Once you've downloaded and saved this shapefile in your working directory, we use the {sf} package to read the file into R. Any functions we use in the workflow that begin with the prefix `st_` are from {sf} and are used primarily for manipulation of spatial objects. We call `st_make_valid()` within the pipe to ensure that we have a set of valid polygons, and then `st_union()` to create a single spatial feature from all of the IBRA regions that does not contain any internal borders. This code block may take a little bit of time to run so be patient.
-
-```{r}
-#| eval: FALSE
-# ibra <- st_read("path/to/IBRA7_regions/ibra7_regions.shp") |>
-#   st_make_valid() |>
-#   st_union()
-# 
-# crs <- st_crs(ibra)
-```
-
-We also store the coordinate reference system (CRS) of the IBRA layer using `st_crs()`, which we will use later on to ensure all our `sf` objects follow the same CRS.
-
-#### Download Occurrence Data
-
-We next must choose a group of species to visualise. Our goal here is to map distributions of occurrences of more than one species, and here we are going to do it for 7. In this case we have chosen the black-headed honeyeaters, genus *Melithreptus*, which are abundant across Australia. We can verify that there are indeed 7 such species in the ALA using `atlas_species()`.
-
-```{r}
-# galah_call() |>
-#   galah_identify("Melithreptus") |>
-#   atlas_species()
-```
-
+We can get taxonomic information about this group using `atlas_species()`... 
 
 ```{r}
 melithreptus <- galah_call() |>
   galah_identify("Melithreptus") |>
   atlas_species()
+
+melithreptus
+```
+
+... and fill in any gaps THIS NEEDS MORE EXPLAINY TEXT
+We can create a simple dataframe, `species_data` as follows that contains the species names, common names, and a colour that we will assign to each species.
+
+```{r}
+# my rationale for this is that most of the information is already returned 
+# using atlas_species() above, and it seemed unintuitive to then type it out 
+# again here (as you've done in the chunk below), but also my solution
+# uses the most revolting regex so I'm not sure it's an improvement
 
 species_data <- melithreptus |> 
   select(species, vernacular_name) |>
@@ -169,9 +152,13 @@ species_data <- melithreptus |>
                "#D7271C",
                "#7CC545"))
 
-```
+# some other colour options (uncomment to see colours) 
+# from {viridis}
+# "#440154", "#443A83", "#31688E", "#21908C",  "#35B779", "#8FD744", "#FDE725"
 
-We can create a simple dataframe, `species_data` as follows that contains the species names, common names, and a colour that we will assign to each species.
+# from {pilot}    
+# "#204466", "#249db5", "#b84818", "#30c788", "#ffc517", "#9956db", "#f28100" 
+```
 
 ```{r}
 # species_data <- data.frame(
@@ -206,46 +193,41 @@ We can create a simple dataframe, `species_data` as follows that contains the sp
 #   2 3
 ```
 
-With a set of species names, we can now download occurrences of these species. As this is a bird genus, it should be no surprise that there are hundreds of thousands of records in the ALA (\>516,000). These would take a very long time to download so here we will just download occurrences from 2022, of which there are \~35,500.
+Now that we have the names of species we're interested in, we can use this information to download occurrence records using {galah}. We'll apply the general data quality profile to filter out low quality records, pass in the list of species we're interested in with `galah_identify()`, filter records to 2022 [^1], with spatial information, and falling within one of the [IBRA bioregions](https://www.dcceew.gov.au/environment/land/nrs/science/ibra) as a proxy for Australian records only. 
 
-Using {galah}, we can obtain all such occurrences and store them as `species_occ`. We filter to obtain only records from 2022 for taxa in the `species_data$species` column. We also provide additional filters on `occurrenceStatus`, location and date parameters to ensure we are only keeping complete occurrences of birds. The final filter applies to the IBRA regions contextual layer, `cl1048`, and removes any records that did not occur in an IBRA region.
+[^1]: There are over half a million records from this genus in the ALA, so restricting our download to records from 2022 significantly speeds things up!  
 
-For each occurrence, we also request additional information on top of the basis info, including `species`, `vernacularName`, and `cl1048` (IBRA Regions layer). We specifically request the `species` field with `galah_select()`, as the `scientificName` field often contains subgenera and subspecies names. We do not want this much detail - we simply want to match `species` names to our `species_data$species` column.
+**DAX: not sure what the convention is here - do we store downloaded data as RDS files and load them instead of downloading each time?**
 
 ```{r}
 species_occ <- galah_call() |>
   galah_apply_profile(ALA) |>
-  galah_filter(year == 2022) |>
-  galah_filter(occurrenceStatus == "PRESENT",
-               !is.na(decimalLatitude),
-               !is.na(decimalLongitude), 
-               #!is.na(eventDate),
-               !is.na(cl1048)) |>
   galah_identify(species_data$species) |>
-  galah_select(group = c("basic"), species, vernacularName) |> 
-               #cl1048) |>
+  galah_filter(year == 2022,
+               !is.na(cl1048),  # IBRA bioregions
+               !is.na(decimalLatitude),
+               !is.na(decimalLongitude)) |>
+  galah_select(decimalLatitude,
+               decimalLongitude,
+               species, 
+               vernacularName, 
+               scientificName) |> 
   atlas_occurrences()
 
 head(species_occ)
 ```
 
-### Introduce Spatial Features
-
-#### Occurrence Locations
-
-Our `species_occ` dataframe contains all records from 2022 of the genus *Melithreptus* that we can use to identify species distributions. The next step is to convert our data frame into an `sf` object with a `geometry` column representing the location of each occurrence. We use `st_as_sf()` to convert the `decimalLatitude` and `decimalLongitude` variables into a single column of spatial `POINT` objects. We use the stored IBRA CRS (`crs`) and rename the `geometry` column as `occ_sf` using `st_geometry()`. In this workflow, column names ending in `_sf` will denote those containing spatial objects.
+Since we're going to be performing quite a few spatial operations to get species in hexagons, we'll also convert the `species_occ` dataframe into a simple features object, with the latitude and longitude columns represented as points in a geometry column named `occ_geometry`.  
 
 ```{r}
 species_occ_sf <- species_occ |>
   st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
-           crs = 4326, remove = FALSE) |> 
-  st_set_geometry("occ_sf")
-#st_geometry(species_occ_sf) <- "occ_sf"
+           crs = 4326) |> 
+  st_set_geometry("occ_geometry")
+
 ```
 
-#### Hexagons
-
-With the species data downloaded, the next step is to set up the hex grid over the IBRA regions. We can use `st_make_grid()` from {sf} to easily perform this. Note the variety of arguments in this function that provide flexibility - varying `cellsize` controls the "diameter" of the hexagons, `flat_topped` controls the orientation of the hexagons, and `square` enables the creation of a square grid instead, which may be more suitable for certain numbers of species (4,5,8,9 etc). We also assign a unique ID number to each hexagon, and rename the spatial column `hex_sf`.
+#### Set up hex grid
 
 ```{r}
 # all_hex_grid <- st_make_grid(ibra,
@@ -258,20 +240,22 @@ With the species data downloaded, the next step is to set up the hex grid over t
 # st_geometry(all_hex_grid) <- "hex_sf"
 ```
 
+Next, we use `st_make_grid()` to set up a hexagonal grid across the bounding box for a shapefile of Australia. The function has arguments that let us specify the size, type, and orientation of the polygons in the grid. We use a spatial filter to exclude any polygons that do not intersect with the Australian landmass, calculate the position of the centroid of each hexagon (this will be useful later), and assign a unique identifier to each hexagon.   
+
 ```{r}
-hex_grid <- st_make_grid(ozmap_country, 
-                             cellsize = 2, 
-                             what = "polygons", 
-                             square = FALSE, 
-                             flat_topped = TRUE) |>  
+hex_grid <- st_make_grid(ozmap_country,
+                         cellsize = 2,
+                         what = "polygons",
+                         square = FALSE,
+                         flat_topped = TRUE) |>  
   st_as_sf() |>   
   st_filter(ozmap_country) |> 
-  st_set_geometry("hex_sf") |> 
-  mutate(hex_centre_sf = st_centroid(hex_sf))
+  st_set_geometry("hex_geometry") |> 
+  mutate(hex_centroid_geometry = st_centroid(hex_geometry)) |> 
+  st_transform(4326) |> 
+  rowid_to_column(var = "hex_id")
 ```
 
-
-As this creates a complete grid across the smallest rectangle containing all Australian IBRA regions, we next must restrict our hexagons to only those that actually contain Australian land. First, we use `st_intersects()` to extract the IDs of the hexagons that overlap with our `ibra` shapefile. We can then filter `all_hex_grid` to keep those hexagons. Because we'll need it later, we'll also take the opportunity in the pipe to add a column, `hex_centre_sf`, to our new dataframe `ibra_hex_grid` that contains the centre of each hexagon using `st_centroid()`.
 
 ```{r}
 # ibra_hex_ids <- st_intersects(all_hex_grid, ozmap_country) |> 
@@ -285,62 +269,119 @@ As this creates a complete grid across the smallest rectangle containing all Aus
 # head(ibra_hex_grid)
 ```
 
-Our map of hexagons now look like this,
+Our grid of hexagons (light blue) and centroids (green) now looks like this:
 
 ```{r}
-# ggplot() +
-#   geom_sf(data = aus, 
-#           col = "grey20", fill = NA, linewidth = 0.3) +
-#   geom_sf(data = ibra, 
-#           col = "grey20", fill = NA, linewidth = 0.3) + 
-#   geom_sf(data = ibra_hex_grid, aes(geometry = hex_sf),
-#           fill = NA, col = "grey60", linewidth = 0.5) +
-#   theme_void()
-
+#| eval: true
+#| echo: false
 ggplot() +
   geom_sf(data = ozmap_country, 
-          col = "black", fill = NA, linewidth = 0.3) +
-  geom_sf(data = hex_grid, aes(geometry = hex_sf),
-          fill = NA, col = "grey", linewidth = 0.5) +
-  geom_sf(data = hex_grid, aes(geometry = hex_centre_sf),
-          fill = NA, col = "navy", linewidth = 0.5) +
+          col = "darkgrey", fill = NA, linewidth = 0.3) +
+  geom_sf(data = hex_grid, aes(geometry = hex_geometry),
+          fill = NA, col = "skyblue", linewidth = 0.5) +
+  geom_sf(data = hex_grid, aes(geometry = hex_centroid_geometry),
+          fill = NA, col = "olivedrab", linewidth = 0.5) +
   theme_void()
 ```
 
-but it should be clear that some of these hexagons won't contain any occurrences of *Melithreptus*. We will want to remove those hexagons that don't contain any records to produce a cleaner map.
+Not every hexagon will contain an occurrence record, though, so let's remove empty hexagons with a spatial join. Here, `st_join()` returns the equivalent of `dplyr::left_join()` where both objects are simple features.... 
 
-### Species and Hexagon Combinations
-
-To do this we have to find all unique combinations of species and hexagons by identifying which hexagon each occurrence is located in. To do this we use a neat application of `mutate()` and `st_intersects()` as described in [this helpful GIS StackExchange answer](https://gis.stackexchange.com/a/343477). Taking our data-frame of species occurrences , we create a column `intersection` that returns the row index of `ibra_hex_grid` of the hexagon the record was located. In the same `mutate()` call, we then bring in the ID of that hexagon by calling the `hex_id` of that row index in `intersection`. We then only wish to retain unique combinations of species and hexagon IDs so we drop the spatial feature (`st_drop_geometry()` from the new data-frame and then perform the required operations
+**This section almost definitely needs a better explanation if we stick with this chunk of code but I am too braindead to write it now**
 
 ```{r}
-species_hex <- species_occ_sf |>
-  mutate(intersection = st_intersects(occ_sf, ibra_hex_grid) |> as.integer(),
-         hex_id = ibra_hex_grid$hex_id[intersection]) |>
-  st_drop_geometry() |>
-  select(species, hex_id) |>
-  distinct()
+# not sure if this is an unnecessarily complicated way to accomplish this...
 
-head(species_hex)
+hex_with_species <- species_occ_sf |> 
+  st_join(hex_grid, join = st_intersects) |> 
+  st_drop_geometry() |> 
+  left_join(hex_grid, by = join_by(hex_id, hex_centroid_geometry)) |> 
+  st_set_geometry("hex_geometry")
 ```
 
-With these unique combinations, we can bring the additional hexagon information into the `species_hex` data-frame with a left join.
+This leaves us with hexagons that have occurrence records for at least one honeyeater species. 
 
 ```{r}
-species_hex_combos <- species_hex |>
-  left_join(ibra_hex_grid, by = "hex_id") |>
-  st_as_sf()
+#| eval: true
+#| echo: false
+ggplot() +
+  geom_sf(data = ozmap_country, 
+          col = "darkgrey", fill = NA, linewidth = 0.3) +
+  geom_sf(data = hex_with_species, aes(geometry = hex_geometry),
+          fill = NA, col = "skyblue", linewidth = 0.5) +
+  theme_void()
+``` 
 
-head(species_hex_combos)
+```{r}
+# species_hex <- species_occ_sf |>
+#   mutate(intersection = st_intersects(occ_sf, hex_grid) |> as.integer(),
+#          hex_id = ibra_hex_grid$hex_id[intersection]) |>
+#   st_drop_geometry() |>
+#   select(species, hex_id) |>
+#   distinct()
+# 
+# head(species_hex)
 ```
 
-### Species Point Locations
+```{r}
+# species_hex_combos <- species_hex |>
+#   left_join(ibra_hex_grid, by = "hex_id") |>
+#   st_as_sf()
+# 
+# head(species_hex_combos)
+```
 
-We have now identified the species and hexagon combinations that we wish to visualise. Many hexagons will contain multiple species, and we need a way to show, at minimum, the presence/absence of each species in each hexagon. We will do this using coloured points in a fixed pattern within each hexagon (alternatively you may use differently shaped points).
+### Allocate species to positions
 
-Given we want to fit a maximum of seven uniquely located points within a hexagon, we can organise them as a smaller hexagon with one point inside each corner, plus a point in the centre \[SHOW AN EXAMPLE DESIGN ON THE SIDE/BELOW\]. We can then assign each species to one of these seven point locations. It's worth noting that with a bit of creativity, it is possible to fit any number of points from 2-9 into a hexagon (2-7) or square symmetrically.
+Since some hexagons will have occurrence records from more than one species, we need a way to display these overlaps. We'll do this by setting up 7 positions in each hexagon, 1 for each species, and assign each species a position and colour so they can be visually differentiated. For example:
 
-You will remember that earlier on, we stored the centre of each hexagon in the data-frame `ibra_hex_grid`. Each value in the `hex_centre_sf` column is an `sf` object of type `POINT`, as opposed to those in the `hex_sf` column with are of type `POLYGON`. With this centre point, we already have one of the seven locations we require for each hexagon. The other six points will be placed halfway between this centre and their vertex.
+```{r}
+#| eval: true
+#| echo: false
+
+# draw a hexagon with numbered and coloured points here
+
+```
+
+We already have the coordinates of the point in the centre, since we calculated the centroids of each hexagon earlier. Now we just need to get the coordinates of the other 6 points, which we can do by taking the midpoints of the centre and each of the 6 vertices. 
+
+<aside>
+
+It's worth noting that with a bit of creativity, it is possible to fit any number of points from 2-9 into a hexagon (2-7) or square symmetrically.
+
+</aside>
+
+Let's start by getting the coordinates of each hexagon's 6 vertices. `st_coordinates()` returns a matrix with a row for each vertex of each feature (hexagon): `X` and `Y` denote the coordinates of each vertex, `L1` contains details of interior and exterior boundaries, which we can ignore here, and `L2` references the row number of each feature (hexagon) from the original data. So in the example printed here, the first 7 rows [^2] contain information about the same hexagon (L2 = 1), and the next 3 rows contain information about a different hexagon (L2 = 2). 
+
+[^2]: Each hexagon is formed as a closed polygon, whereby the vertices are joined in the following order: 1-2-3-4-5-6-1. As a result, there are 7 rows of coordinates although there are only 6 vertices in each hexagon; the information in the first and seventh rows is duplicated. 
+
+```{r}
+hex_with_species |>
+  st_coordinates() |>
+  as_tibble() |> nrow()
+  head(n = 10)
+```
+  
+To simplify what we're trying to do, we'll convert everything to a simple features object again
+  
+```{r}  
+  
+hex_with_species |>
+  st_coordinates() |>
+  as_tibble() |>
+  st_as_sf(coords = c("X", "Y"), crs = 4326) |>
+  select(-L1) |> 
+  group_by(L2) -> x
+  mutate(hex_id = hex_with_species$hex_id[L2],
+         hex_vertex = row_number()) 
+  ungroup() |>
+  select(-L1, -L2) |>
+  rename(hex_vertex_sf = geometry) |>
+  as_tibble()
+
+head(hex_vertices, n = 8)
+
+```
+
 
 {sf} has a function that allows us to extract the vertices of each column. `st_coordinates()` takes the recognised spatial column in an `sf` data-frame (in our case `ibra_hex_grid$hex_sf`) and outputs a matrix with a row for each vertex of each feature in the spatial column. The output matrix has four columns - `X` and `Y` denote the two coordinates of each point, `L1` (which we can ignore), and `L2` which contains the row number from `ibra_hex_grid` that the vertex was taken from.
 
