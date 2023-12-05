@@ -7,11 +7,11 @@
 
 #------------ Edit these parameters for highlighted paper ---------------------#
 
-title <- "Citizen science data improves key recreational fish population models"
-authors <- "Graba-Landry et al. 2023"
-main_colour <- "#003A70" # use an ALA colour as your main colour
-text_colour <- "#EEECEA" # choose your own matching text colour: https://coolors.co/
-line_colour <- "#6BDAD5" # choose your own matching line colour
+title <- "Aligning citizen science objectives to foster research grade data"
+authors <- "O'Reilly et al. 2023"
+main_colour <- "#EEECEA" # use an ALA colour as your main colour
+text_colour <- "#E06E53" # choose your own matching text colour: https://coolors.co/
+line_colour <- "#9E9E9F" # choose your own matching line colour
 
 
 # ALA colours to use as main colour
