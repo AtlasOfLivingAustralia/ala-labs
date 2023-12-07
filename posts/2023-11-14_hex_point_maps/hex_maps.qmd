@@ -197,9 +197,18 @@ Now that we have the names of species we're interested in, we can use this infor
 
 [^1]: There are over half a million records from this genus in the ALA, so restricting our download to records from 2022 significantly speeds things up!  
 
-**DAX: not sure what the convention is here - do we store downloaded data as RDS files and load them instead of downloading each time?**
+**DAX: not sure what the convention is here - do we store downloaded data as RDS files and load them instead of downloading each time? Also I can't remember where they get saved**
 
 ```{r}
+#| eval: true
+#| echo: false
+species_occ <- readRDS("posts/2023-11-14_hex_point_maps/species_occ.RDS")
+```
+
+
+```{r}
+#| eval: false
+#| echo: true
 species_occ <- galah_call() |>
   galah_apply_profile(ALA) |>
   galah_identify(species_data$species) |>
@@ -280,17 +289,14 @@ ggplot() +
   geom_sf(data = hex_grid, aes(geometry = hex_geometry),
           fill = NA, col = "skyblue", linewidth = 0.5) +
   geom_sf(data = hex_grid, aes(geometry = hex_centroid_geometry),
-          fill = NA, col = "olivedrab", linewidth = 0.5) +
+          fill = NA, col = "olivedrab", size = 1) +
   theme_void()
 ```
 
+**TODO: this text needs to be updated**
 Not every hexagon will contain an occurrence record, though, so let's remove empty hexagons with a spatial join. Here, `st_join()` returns the equivalent of `dplyr::left_join()` where both objects are simple features.... 
 
-**This section almost definitely needs a better explanation if we stick with this chunk of code but I am too braindead to write it now**
-
 ```{r}
-# not sure if this is an unnecessarily complicated way to accomplish this...
-
 hex_with_species <- species_occ_sf |> 
   st_join(hex_grid, join = st_intersects) |> 
   st_drop_geometry() |> 
@@ -306,7 +312,8 @@ This leaves us with hexagons that have occurrence records for at least one honey
 ggplot() +
   geom_sf(data = ozmap_country, 
           col = "darkgrey", fill = NA, linewidth = 0.3) +
-  geom_sf(data = hex_with_species, aes(geometry = hex_geometry),
+  geom_sf(data = hex_with_species, 
+          aes(geometry = hex_geometry),
           fill = NA, col = "skyblue", linewidth = 0.5) +
   theme_void()
 ``` 
@@ -339,6 +346,27 @@ Since some hexagons will have occurrence records from more than one species, we 
 #| echo: false
 
 # draw a hexagon with numbered and coloured points here
+big_hex <- st_polygon(list(rbind(
+  c(-1, 0),
+  c(-0.5, sqrt(0.75)),
+  c(0.5, sqrt(0.75)),
+  c(1, 0),
+  c(0.5,-sqrt(0.75)),
+  c(-0.5,-sqrt(0.75)),
+  c(-1, 0))))
+
+small_hex <- st_buffer(big_hex, -0.3)
+
+small_hex_vertices <- small_hex |>
+  st_coordinates() |>
+  as_tibble() |>
+  st_as_sf(coords = c("X", "Y")) 
+
+ggplot() + 
+  geom_sf(data = big_hex, fill = NA) +
+  geom_sf(data = small_hex_vertices) +
+  geom_sf(data = st_centroid(small_hex)) +
+  theme_void()
 
 ```
 
