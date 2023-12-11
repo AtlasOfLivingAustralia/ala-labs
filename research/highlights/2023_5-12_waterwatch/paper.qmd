@@ -10,7 +10,7 @@ image: thumbnail.png
 categories:
   - Citizen science
 params:
-  authors: "O’Reilly, W., & Starrs, D."
+  authors: "O’Reilly, W. & Starrs, D."
   year: 2023
   title: "Science citizen: Shifting to a “science-first” approach and recognising the trade-offs between objectives in a long-term citizen science program"
   publication: "Frontiers in Environmental Science"
@@ -64,10 +64,16 @@ Prepared by [Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/)
 <!-- Main panel description -->
 
 ::: paper-main-column
-There are ongoing debates surrounding the reliability of citizen science data in ecology. These usually involve questioning the viability of consistent long-term data collection and the overall accuracy of citizen science data. Some believe that citizen science data isn’t as viable as professionally collected data for ecological research, while others note that citizen science data can be utilised as long as it is filtered for erroneous records or is methodologically collected. 
+Ongoing debates surround how reliable citizen science data is in ecology. These debates usually concern questions about the accuracy and viability of long-term data collection. One prevalent opinion is that citizen science data is unreliable compared to professionally collected data for ecological research. However, those in support of citizen science argue that citizen science data can be made reliable with proper methodological planning. 
 
-Reviewing an over thirty-year citizen science project on water quality and biodiversity that contributes data to the ALA (WaterWatch ACT), O’Reilly et al.’s (2023) paper finds that citizen science data can be led astray from research-grade qualities simply through diverging objectives from academic science. In other words, poor quality data in this project was primarily found to stem from out of sync objectives – not from a lack of expertise from contributing citizen scientists. For example, one citizen science objective is often having an increased sense of data ownership which can be empowered by volunteers being able to choose their sites and record data at any time. This may also be more convenient for volunteers, both promoting more data collection from citizen scientists. However, this objective was largely responsible for creating fragmented sample sizes along their sites of interest, versus congregated long-term sample sizes. Large and long-term data sizes at calculated sites allow a more fair and unbiased comparison of data across time and space. 
+In this paper, O’Reilly et al. (2023) review WaterWatch ACT, a thirty-year citizen science project on water quality and biodiversity, to understand its successes and failures. 
 
-Ultimately, this research is not to say that citizen science objectives are less important. They are valuable in promoting ecological data collection where professional collection may be lacking. Though, when amassing large quantities of data for research, data quality is integral. WaterWatch ACT were able to use this information to balance objectives and ultimately retain strong citizen science support and improve data quality at the same time. 
+The authors find that diverging objectives between keen citizen scientists and grant-funded researchers was one major difficulty to producing research-grade data during data collection for WaterWatch ACT. For example, citizen scientists value independence and data ownership; these objectives can empower volunteers to choose sites and times that work best for them to collect data. However, this freedom fragmented sample sizes and sites, reducing the accuracy of data compared to consistent, regularly collected, long-term samples. 
+
+Alternatively, *[a research incentive that doesn't jive well with citizen science? ie. Researchers are interested in x, but that's not can affect data collection because y]*. 
+
+The WaterWatch ACT project aimed to balance objectives and, ultimately, improved data quality while retaining strong citizen science support. 
+
+Citizen science has huge potential to allow for recurrent, regular data collection in ecology. Learning to adapt methods that manage the work and expertise provided by professional scientists and citizen scientists will improve the use and quality of citizen science data into the future.
 :::
 :::
