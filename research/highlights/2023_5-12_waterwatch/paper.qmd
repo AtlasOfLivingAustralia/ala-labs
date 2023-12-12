@@ -64,16 +64,12 @@ Prepared by [Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/)
 <!-- Main panel description -->
 
 ::: paper-main-column
-Ongoing debates surround how reliable citizen science data is in ecology. These debates usually concern questions about the accuracy and viability of long-term data collection. One prevalent opinion is that citizen science data is unreliable compared to professionally collected data for ecological research. However, those in support of citizen science argue that citizen science data can be made reliable with proper methodological planning. 
+Ongoing debates continue on how reliable citizen science data is within ecological research. These debates often concern the accuracy and viability of long-term data collection within citizen science. One prevalent opinion is that citizen science data is unreliable compared to professionally collected data for ecological research. However, those in support of citizen science argue that citizen science data can be made reliable with proper methodological planning. 
 
 In this paper, O’Reilly et al. (2023) review WaterWatch ACT, a thirty-year citizen science project on water quality and biodiversity, to understand its successes and failures. 
 
-The authors find that diverging objectives between keen citizen scientists and grant-funded researchers was one major difficulty to producing research-grade data during data collection for WaterWatch ACT. For example, citizen scientists value independence and data ownership; these objectives can empower volunteers to choose sites and times that work best for them to collect data. However, this freedom fragmented sample sizes and sites, reducing the accuracy of data compared to consistent, regularly collected, long-term samples. 
+The authors find that diverging objectives between keen citizen scientists and professional researchers was one major difficulty to producing research-grade data during data collection. For example, with citizen scientists valuing independence and data ownership; these objectives can be empowered (and data collection incentivised) by volunteers choosing sites and times that work best for them to collect data. However, this freedom also fragmented sample sizes and sites, reducing the accuracy and comparability of data against structurally consistent, regularly collected, long-term samples. With this said, while accuracy and precision are important to research, so is sample size. A divergence of objectives also notably works vice-versa within research; with professionally collected data often being limited in breadth and scope often due to short-term or finite resources - whether that be financial, labour or skill related. 
 
-Alternatively, *[a research incentive that doesn't jive well with citizen science? ie. Researchers are interested in x, but that's not can affect data collection because y]*. 
-
-The WaterWatch ACT project aimed to balance objectives and, ultimately, improved data quality while retaining strong citizen science support. 
-
-Citizen science has huge potential to allow for recurrent, regular data collection in ecology. Learning to adapt methods that manage the work and expertise provided by professional scientists and citizen scientists will improve the use and quality of citizen science data into the future.
+After identifying objective divergence as the root cause of poor data quality, WaterWatch ACT was able to balance their objectives and, ultimately, improve data quality while retaining strong citizen science support for their long term program. Citizen science has huge potential to allow for recurrent, regular data collection in ecology. Learning to adapt methods that manage the work and expertise provided by professional scientists and citizen scientists will improve the use, breadth and quality of ecological data into the future.
 :::
 :::
