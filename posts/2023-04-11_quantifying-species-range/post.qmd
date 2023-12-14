@@ -504,7 +504,7 @@ base_map
 Now we can add the range overlap of our three bee species. We use `geometry` within `aes` to specify which variable from `bee_map_data` we want to plot.
 
 ```{r}
-#| echo: false
+#| echo: true
 #| results: hide
 main_map <- base_map + 
   geom_sf(data = bee_map_data, 

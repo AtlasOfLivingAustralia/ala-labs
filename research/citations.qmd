@@ -17,7 +17,9 @@ freeze: true
 #| warning: false
 #| error: false
 
-df <- readr::read_csv("./data/ALA_cited_items_all.csv", show_col_types = FALSE) |>
+# data is all ALA used or ALA cited papers, exported from Zotero library
+
+df <- readr::read_csv("./data/ALA_cited_items_2023-12.csv", show_col_types = FALSE) |>
       janitor::clean_names() |>
       dplyr::filter(item_type == "journalArticle") |>
       dplyr::select(author, publication_year, title, publication_title, doi, date_added) |>
