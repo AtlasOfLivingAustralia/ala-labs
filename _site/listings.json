@@ -1,0 +1,35 @@
+[
+  {
+    "listing": "/posts.html",
+    "items": [
+      "/posts/2023-08-28_alternatives-to-box-plots/post.html",
+      "/posts/2023-05-16_dingoes/post.html",
+      "/posts/2023-04-28_plotting-invasive-species/post.html",
+      "/posts/2023-04-11_quantifying-species-range/post.html",
+      "/posts/2023-04-03_highlighted-time-series/post.html",
+      "/posts/2023-03-14_animated-map/post.html",
+      "/posts/2023-01-12_counting-points-in-shapefiles/post.html",
+      "/posts/2022-10-12_alpha-hulls/post.html",
+      "/posts/2022-07-22_sample-bias/post.html",
+      "/posts/2022-05-23-ggnewscale/post.html",
+      "/posts/2022-05-17_3d-map/post.html",
+      "/posts/2022-02-17_sunburst-plots-for-taxonomic-data/post.html",
+      "/posts/2021-04-14_hex-maps-for-species-occurrence-data/post.html",
+      "/posts/2021-03-20_creating-a-color-palette-from-an-image/post.html"
+    ]
+  },
+  {
+    "listing": "/research/highlights.html",
+    "items": [
+      "/research/highlights/2023-12-14_waterwatch/paper.html",
+      "/research/highlights/2023-12-04_snapperwhiting/paper.html",
+      "/research/highlights/2023-08-17_chytridfungus/paper.html",
+      "/research/highlights/2023-06-27_pinusradiata/paper.html",
+      "/research/highlights/2023-05-26_jacarandas/paper.html",
+      "/research/highlights/2023-05-15_JEV/paper.html",
+      "/research/highlights/2023-05-15_microfossils/paper.html",
+      "/research/highlights/2023-05-10_koalas/paper.html",
+      "/research/highlights/2023-03-21_peanuts/paper.html"
+    ]
+  }
+]
