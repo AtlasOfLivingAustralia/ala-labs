@@ -41,6 +41,7 @@ website:
 format:
   html:
     fontsize: 1.15rem
+    monofont: Fira Code
     highlight-style: arrow
     css: [theme.css, custom_theme.scss]
     toc: true

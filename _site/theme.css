@@ -150,7 +150,10 @@ a:hover {
   font-size: .8rem;
 }
 
-
+/* Add space between Posts title & description */
+#title-block-header.quarto-title-block.default .quarto-title .title {
+    margin-bottom: 10px;
+}
 
 
 /*----------------------------------------------*/
