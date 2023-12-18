@@ -1,5 +1,5 @@
 ---
-title: "Beginner's guide to making a quick map of species observations in Python and R"
+title: "Beginner's guide: Make a quick map of species observations in Python and R"
 description: |
   The ability to make a map quickly is an essential skill in ecology and conservation. This post shows how to make a quick, simple map of Peron's tree frog occurrences & set a custom font using either Python or R.
 author:
