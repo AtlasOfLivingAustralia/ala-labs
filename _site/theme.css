@@ -495,3 +495,24 @@ img.rounded {
 .page-link {
     color: var(--primary-orange);
 }
+
+/* Tab appearance in panel-tabset */
+
+.nav-pills .nav-link {
+    background: none;
+    border: 10px;
+    border-radius: 1.00rem;
+}
+
+.nav-link {
+  color: var(--secondary-orange);
+}
+
+.nav-pills .nav-link.active {
+    color: #fff;
+    background-color: var(--secondary-orange);
+}
+
+.nav-link:hover {
+  color: #FFC557;
+}

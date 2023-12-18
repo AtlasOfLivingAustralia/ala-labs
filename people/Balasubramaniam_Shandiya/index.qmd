@@ -51,6 +51,9 @@ create_button(
 
 ### {{< fa newspaper >}} Posts 
 
+[Alternatives to box plots: Using beeswarm and raincloud plots to summarise ecological data](https://labs.ala.org.au/posts/2023-08-28_alternatives-to-box-plots/post.html)<br>
+*Box plots are a common way to summarise data in ecology and biology research, but box plots have their weaknesses. Here we’ll show how easy it can be to make beeswarm and raincloud plots—two alternatives with greater data transparency—using plant trait data from {austraits}.*
+
 [Multiple colour scales in choropleth maps with {ggnewscale}](https://labs.ala.org.au/posts/2022-05-23-ggnewscale/post.html)<br>
 *Using multiple colour scales can be a great way to visually differentiate between geographic categories on a map. Here, we demonstrate this by creating a choropleth map to represent the density of plant records from the ALA across bioregions in Australia, and add multiple colour scales to differentiate marine and terrestrial records*
 
