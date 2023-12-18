@@ -22,16 +22,16 @@ species_occ <- readRDS("posts/2023-11-14_hex_point_maps/species_occ.RDS")
 #   galah_apply_profile(ALA) |>
 #   galah_identify(melithreptus$species) |>
 #   galah_filter(year == 2022,
-#                !is.na(cl1048),  
+#                !is.na(cl1048),
 #                !is.na(decimalLatitude),
 #                !is.na(decimalLongitude)) |>
 #   galah_select(decimalLatitude,
 #                decimalLongitude,
-#                species, 
-#                vernacularName, 
-#                scientificName) |> 
+#                species,
+#                vernacularName,
+#                scientificName) |>
 #   atlas_occurrences()
-#saveRDS(species_occ, "posts/2023-11-14_hex_point_maps/species_occ.RDS")
+# saveRDS(species_occ, "posts/2023-11-14_hex_point_maps/species_occ.RDS")
 
 species_occ_sf <- species_occ |>
   st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
@@ -72,6 +72,8 @@ unique_hex <- hex_with_species |>
 #### get into the code
 #### could just have a set of images in sequence, or could animate it
 #### to show changes
+library(patchwork)
+
 big_hex <- st_polygon(list(rbind(
   c(-1, 0),
   c(-0.5, sqrt(0.75)),
@@ -81,22 +83,60 @@ big_hex <- st_polygon(list(rbind(
   c(-0.5,-sqrt(0.75)),
   c(-1, 0))))
 
-plot(big_hex)
-
 small_hex <- st_buffer(big_hex, -0.3)
-
-plot(small_hex, add = TRUE)
 
 small_hex_vertices <- small_hex |>
   st_coordinates() |>
   as_tibble() |>
-  st_as_sf(coords = c("X", "Y")) 
+  st_as_sf(coords = c("X", "Y"), remove = FALSE) |> 
+  rowid_to_column() |> 
+  mutate(vertex_id = if_else(rowid %in% c(2:6), as.character(rowid), "1, 7"))
 
-ggplot() + 
-  geom_sf(data = big_hex, fill = NA) +
-  geom_sf(data = small_hex_vertices) +
-  geom_sf(data = st_centroid(small_hex)) +
-  theme_void()
+# 1. original hex
+p1 <- ggplot() +
+  geom_sf(data = big_hex, fill = NA, linewidth = 1.5, colour = "deepskyblue4") +
+  labs(subtitle = "Original hex") +
+  theme_void() +
+  theme(plot.subtitle = element_text(hjust = 0.5))
+
+# 2. smaller hex
+p2 <- ggplot() +
+  geom_sf(data = big_hex, fill = NA, linewidth = 1.5, colour = "deepskyblue4") +
+  geom_sf(data = small_hex, fill = NA, linewidth = 1, colour = "deepskyblue3") +
+  labs(subtitle = "Smaller hex") +
+  theme_void() +
+  theme(plot.subtitle = element_text(hjust = 0.5))
+
+# 3. vertices
+p3 <- ggplot() +
+  geom_sf(data = big_hex, fill = NA, linewidth = 1.5, colour = "deepskyblue4") +
+  geom_sf(data = small_hex_vertices, size = 3, colour = "deepskyblue3") +
+  labs(subtitle = "Smaller hex vertices") +
+  theme_void() +
+  theme(plot.subtitle = element_text(hjust = 0.5))
+
+# 4. vertex numbers
+p4 <- ggplot() +
+  geom_sf(data = big_hex, fill = NA, linewidth = 1.5, colour = "deepskyblue4") +
+  geom_sf(data = small_hex_vertices, size = 3, colour = "deepskyblue3") +
+  geom_text(data = small_hex_vertices, aes(X, Y, label = vertex_id), nudge_y = 0.12) +
+  labs(subtitle = "Numbered vertices") +
+  theme_void() +
+  theme(plot.subtitle = element_text(hjust = 0.5))
+
+# 5. with centroid
+p5 <- ggplot() +
+  geom_sf(data = big_hex, fill = NA, linewidth = 1.5, colour = "deepskyblue4") +
+  geom_sf(data = small_hex_vertices, size = 3, colour = "deepskyblue3") +
+  geom_sf(data = st_centroid(small_hex), size = 3, colour = "deepskyblue3") +
+  geom_text(data = small_hex_vertices[c(1:6),], aes(X, Y, label = rowid), nudge_y = 0.12) +
+  geom_sf_text(data = st_centroid(small_hex), aes(label = "7"), nudge_y = 0.12) +
+  labs(subtitle = "Numbered vertices and centroid") +
+  theme_void() +
+  theme(plot.subtitle = element_text(hjust = 0.5))
+
+p1 + p2 + p3 + p4 + p5 + plot_layout(ncol = 5)
+
 #### explainy visuals end here 
 
 # get 7 points
@@ -160,7 +200,7 @@ species_points <- hex_with_species |>
   st_as_sf(crs = 4326)
   
 ggplot() +
-  geom_sf(data = ozmap_country, fill = NA, colour = "#ababab", linewidth = 0.5) +
+  geom_sf(data = ozmap_states, fill = NA, colour = "#ababab", linewidth = 0.5) +
   geom_sf(data = unique_hex, fill = NA, colour = "#777777", linewidth = 0.5) +
   geom_sf(data = species_points, aes(colour = species)) +
   theme_void()
