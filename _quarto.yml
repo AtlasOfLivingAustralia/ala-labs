@@ -31,6 +31,8 @@ website:
           text: "Highlights"
         - href: research/citations.qmd
           text: "All citations"
+        - href: research/littrackerdashboard23.qmd
+          text: "Summary"
       - href: software/software.qmd
         text: "Software"
       - href: https://www.ala.org.au
