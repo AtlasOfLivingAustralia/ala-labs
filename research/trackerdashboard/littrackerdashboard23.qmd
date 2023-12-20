@@ -1,0 +1,313 @@
+---
+title: "Atlas of Living Australia: Research impact summary"
+format: 
+  dashboard:
+    orientation: rows
+---
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+library(here)
+library(tidyverse)
+library(janitor)
+library(lubridate)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+data <- read_csv(here("research", "data", "ALA_cited_items_2023-12.csv"))
+```
+
+```{r}
+#| message: false
+#| #| warning: false
+#| echo: false
+dataclean <- janitor ::clean_names(data) 
+```
+
+## Row {height= 10%}
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+totalpub <-
+  dataclean |>
+  count()
+totalpub 
+```
+
+```{r}
+#| content: valuebox
+#| title: "Total publications citing or using the Atlas"
+totalpub[[1]] |> scales::comma()
+
+list(
+  icon = "book-half",
+  color = "primary",
+  value = totalpub
+)
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+totalarticles <- dataclean |>
+  filter(item_type == "journalArticle") |>
+  count()
+totalarticles
+```
+
+```{r}
+#| content: valuebox
+#| title: "Total journal articles citing or using the Atlas"
+totalarticles[[1]] |> scales::comma()
+list(
+  icon = "book-half",
+  color = "info",
+  value = totalarticles
+)
+```
+
+```{r}
+articles23 <- dataclean |>
+  filter(item_type == "journalArticle", 
+         publication_year == 2023) |>
+  count()
+articles23
+```
+```{r}
+#| content: valuebox
+#| title: "Journal articles citing or using the Atlas (2023)"
+list(
+  icon = "book-half",
+  color = "success",
+  value = articles23
+)
+```
+
+## Row {height=90%}
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+dataclean2 <- dataclean |>
+  mutate(
+    date_added_clean = as_date(date_added),
+    date_added_month = month(date_added_clean),
+    date_added_year = year(date_added_clean)) |>
+   select(title, date, place, publication_year, publication_title, item_type, url, manual_tags, date_added, date_added_clean, date_added_month, date_added_year)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+dataclean3 <- dataclean2 |> 
+  filter(date_added_clean >= ymd("2023-01-01")) |>
+  filter(date_added_clean <= ymd("2023-12-31")) |>
+  filter(publication_year == c("2023")) 
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+remove <- c("1 - ", "2 - ", "3 - ", "4 - ", "5 - ", "6 - ") # list numbers you want removed
+
+dataclean4 <- dataclean3 %>% # remove numbers
+  mutate( # make new column called "tags"
+    tags = str_remove_all(dataclean3$manual_tags, # remove prefix
+                          paste(remove, collapse = "|")) 
+  )
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+## Filtering Tags
+
+# separate manual tags into separate rows (multiple entries for one paper if inc. many tags)
+ALA_tags <- dataclean4 %>%
+  mutate(tags = strsplit(as.character(tags), ";")) %>% # split names where there is a semicolon
+  unnest(tags) # make them occupy multiple rows
+
+# trim whitespace from tags
+ALA_tags <- ALA_tags %>% # remove numbers
+  mutate(
+    tags = str_trim(tags) # trim whitespace around string 
+  )
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#number of papers that cite the ALA
+ALA_cited <- ALA_tags |>
+  filter(tags == "ALA cited")
+```
+
+```{r}
+#| message: false
+#| echo: false
+#| warning: false
+# number of papers that use the ALA 
+usedjournals <- ALA_tags |>
+  filter(tags == "ALA used")
+```
+
+```{r}
+#| include: false
+#| message: false
+#| warning: false
+#| echo: false
+nrow(ALA_cited) + nrow(usedjournals)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+used <- ALA_tags |>
+  filter(tags == "ALA used" | tags %in% c("AGRICULTURE", "BIODIVERSITY SCIENCE", "BIOGEOGRAPHY", "CITIZEN SCIENCE", "CLIMATE CHANGE", "CONSERVATION", "DATA MANAGMENT", "DNA", "ECOLOGY", "ECOSYSTEM SERVICES", "EVOLUTION", "INVASIVE SPECIES", "MARINE", "PHYLOGENETICS", "SPECIES DISTRIBUTION", "TAXONOMY"))
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+tag_counts <- ALA_tags |>
+  group_by(tags) |>
+  summarise(count = n()) 
+
+  
+selected_tags <- c("AGRICULTURE", "BIODIVERSITY SCIENCE", "BIOGEOGRAPHY", "CITIZEN SCIENCE", "CLIMATE CHANGE", "CONSERVATION", "DATA MANAGMENT", "DNA", "ECOLOGY", "ECOSYSTEM SERVICES", "EVOLUTION", "INVASIVE SPECIES", "MARINE", "PHYLOGENETICS", "SPECIES DISTRIBUTION", "TAXONOMY")
+
+filtered_tags <- tag_counts %>%
+  filter(tags %in% selected_tags)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+total_tags <- sum(filtered_tags$count)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+percents <- filtered_tags %>%
+  mutate(perc = paste0(sprintf("%4.1f", count / total_tags * 100), "%"))
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+numeric_percentages <- as.numeric(sub("%", "", percents$perc))
+
+# Sum the numeric percentages
+total_sum <- sum(numeric_percentages)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+percents <- percents %>%
+  mutate(tags = reorder(tags, count))
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+top_10 <- percents %>%
+  top_n(10, wt = count)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+custom_palette <- c("#003A70", "#6CDE4B", "#DE4BC3", "#F26649", "#E0AA51", "#895C81", "#667073", "#691C32", "#6BDAD5", "#B7CD96")
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+library(pilot)
+litsum <- extrafont::loadfonts(device = "win", quiet = TRUE)
+theme_set(theme_minimal(base_family = "Roboto"))
+
+litsum <- ggplot(top_10, aes(x = count, y = tags)) +
+  geom_col(fill = custom_palette) +
+  geom_text(
+    aes(label = paste(tags, perc, sep = "\n")),
+    position = position_nudge(x = -0.5),
+    hjust = 1,
+    vjust = 0.5,  # Center the label vertically
+    color = "white", size = 2.5, fontface = "bold") +  # Adjust text color, size, and fontface for bold
+  theme_pilot(axes = "",
+              grid = "",
+              legend_position = "none") + # Set font family, text color, and bold
+  scale_fill_manual(values = custom_palette) + 
+  labs(caption = "*TOP JOURNAL RESEARCH CATEGORIES (2023)") +
+  theme(axis.text.x = element_blank(),  
+        axis.text.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank())  
+
+
+```
+
+
+
+```{r}
+#| title: Top journal research categories of 2023
+#| echo: false
+plot(litsum)
+```
+
+```{r}
+#| echo: false
+apublicationbyyear <- dataclean2 |>
+  filter(item_type == "journalArticle") |>
+  filter(publication_year < 2024) |>
+  group_by(publication_year) |>
+  count() 
+```
+
+
+```{r}
+#| title: Number of journal articles per year
+#| echo: false
+apublicationbyyear$publication_year <- as.character(apublicationbyyear$publication_year)
+
+# Create a horizontal bar plot
+# Create a horizontal bar plot
+ggplot(apublicationbyyear, aes(y = n, x = publication_year)) +
+  geom_bar(stat = "identity", fill = "#222322") +
+  labs(x = "", y ="Number of journal articles") +
+  theme(
+    panel.grid = element_blank(),
+    axis.line.y = element_blank(),
+    axis.ticks = element_blank(),
+  ) + pilot::theme_pilot(grid = "h") +
+  scale_y_continuous(expand = c(0, 0)) +
+  scale_x_discrete(breaks = c(2007, 2009, 2011, 2013, 2015, 2017, 2019, 2021, 2023))  + 
+  labs(caption = "*NO. OF JOURNAL ARTICLES BY YEAR")
+```
