@@ -38,7 +38,6 @@ dataclean <- janitor ::clean_names(data)
 totalpub <-
   dataclean |>
   count()
-totalpub 
 ```
 
 ```{r}
@@ -49,7 +48,8 @@ totalpub[[1]] |> scales::comma()
 list(
   icon = "book-half",
   color = "primary",
-  value = totalpub
+  value = totalpub[[1]] |>
+    scales:: comma()
 )
 ```
 
@@ -61,7 +61,6 @@ list(
 totalarticles <- dataclean |>
   filter(item_type == "journalArticle") |>
   count()
-totalarticles
 ```
 
 ```{r}
@@ -71,7 +70,8 @@ totalarticles[[1]] |> scales::comma()
 list(
   icon = "book-half",
   color = "info",
-  value = totalarticles
+  value = totalarticles[[1]] |>
+    scales:: comma()
 )
 ```
 
@@ -80,7 +80,6 @@ articles23 <- dataclean |>
   filter(item_type == "journalArticle", 
          publication_year == 2023) |>
   count()
-articles23
 ```
 ```{r}
 #| content: valuebox
@@ -88,7 +87,8 @@ articles23
 list(
   icon = "book-half",
   color = "success",
-  value = articles23
+  value = articles23[[1]] |>
+    scales:: comma()
 )
 ```
 
