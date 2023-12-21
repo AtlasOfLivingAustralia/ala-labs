@@ -76,27 +76,22 @@ Representing more than one species distribution in a single figure can be diffic
 
 Here, we demonstrate a method to visualise distributions of multiple species with overlapping ranges on the same map, with only a small loss in resolution. The technique is a novel twist on the commonly used [hexbin map](https://r-graph-gallery.com/hexbin-map.html): instead of using a colour fill to represent presence/absence or counts within each hexagon, we use multiple coloured points within each hexagon to represent presence/absence of species, allowing users to get a broad overview of how multiple species are distributed across an area.
 
-**ADD A SECTION HERE EXPLAINING WHAT THE STEPS ARE GOING TO BE**
-e.g. We'll do this by: 
-- download records for species of interest  
-- create a hex grid for the area of interest   
-- set up points within hexes, assign species to points  
-- combine basemap, hex grid, points into single figure 
+This method requires a number of key steps to build the elements of the entire figure. We begin by downloading occurrence records for our species of interest. A hex grid will be created over the area of interest for those species, and trimmed down to only include those hexes that contain occurrences. Within each hex we will set up and assign points to species. The basemap, hex grid and species points can then be combined into the final figure.
 
-Let's begin by loading the R packages we'll be using. 
+Let's begin by loading the R packages we'll be using.
 
 ```{r}
 #| output: FALSE
 library(galah)
+library(ggtext)
 library(ozmaps)
 library(sf)
-library(tidyverse)
+library(showtext)
 library(stringr)
+library(tidyverse)
 ```
 
 We'll use the [{galah} package](https://galah.ala.org.au) to download occurrence records from the [Atlas of Living Australia (ALA)](https://www.ala.org.au). To do this, you'll need to [register your email address with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount), then pass it to {galah} using `galah_config()`.
-
-**CALLUM: would you prefer to use your work email address?**
 
 ```{r}
 #| include: FALSE
@@ -112,6 +107,18 @@ galah_config(email = "your-email@email.com")
 
 Since our goal here is to map distributions of multiple species, we've chosen honeyeaters from the genus *Melithreptus*: this is a distinctive group of 7 small- to medium-sized, short-billed and square-tailed honeyeaters with overlapping distributions across Australia.
 
+::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/3/a/2/5/323bd0bc-545f-48fa-85aa-eb77dcd052a3/original" class = "rounded"/></img>
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/b/7/c/a/d96d11b4-4150-48c2-990a-20b70064ac7b/original" class="rounded"/></img>
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/6/1/5/2/03f17fd7-a256-44c8-a377-011784ef2516/original" class="rounded"/></img>
+:::
+
+::: figure-caption
+Left: [*Melithreptus gularis* - Black-chinned Honeyeater (Graham Winterflood CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/53209bab-d2c1-4aab-ace7-e2de155389ae), Middle: [*Melithreptus chloropsis* - Gilbert's Honeyeater (Wacrakey CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/a0792deb-18a9-4e59-9419-add4d7b5d0c9), Right: [*Melithreptus validirostris* - Strong-billed Honeyeater (Bird Explorers CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/26edb457-4c80-4073-a6a8-176e68cf431e)
+:::
+
 We can get taxonomic information about this group using `atlas_species()`...
 
 ```{r}
@@ -122,7 +129,7 @@ melithreptus <- galah_call() |>
 melithreptus
 ```
 
-... and then use this information to download occurrence records for the 7 species. We'll apply the general data quality profile to filter out low quality records, pass in the list of species we're interested in with `galah_identify()`, filter records to 2022 [^1] that also have spatial coordinates, and fall within one of the [IBRA bioregions](https://www.dcceew.gov.au/environment/land/nrs/science/ibra) as a proxy for Australian records only.
+... and then use this information to download occurrence records for the 7 species. We'll apply the general data quality profile to filter out low quality records, pass in the list of species we're interested in with `galah_identify()`, filter records to 2022[^1] that also have spatial coordinates, and fall within one of the [IBRA bioregions](https://www.dcceew.gov.au/environment/land/nrs/science/ibra) as a proxy for Australian records only.
 
 [^1]: There are over half a million records from this genus in the ALA, so restricting our download to records from 2022 significantly speeds things up!
 
@@ -159,7 +166,7 @@ head(species_occ)
 head(species_occ)
 ```
 
-Since we're going to be performing a few spatial operations to get species in hexagons, we'll also convert the `species_occ` dataframe into a simple features object, with the latitude and longitude columns represented as points in a geometry column named `occ_geometry`.
+Since we're going to be performing a few spatial operations to assign species to hexagons, we'll also convert the `species_occ` dataframe into a simple features object, with the latitude and longitude columns represented as points in a geometry column named `occ_geometry`.
 
 ```{r}
 species_occ_sf <- species_occ |>
@@ -169,9 +176,9 @@ species_occ_sf <- species_occ |>
 
 ```
 
-## Generate hex grid 
+## Generate hex grid
 
-Next, we'll set up a grid of hexagons across terrestrial Australia, which we'll use as bins for plotting summaries of species occurrence. `st_make_grid()` has arguments for specifying the size, type, and orientation of polygons in the grid, and this is initially created across the entire bounding box of the supplied shapefile (here the `ozmap_country` shapefile). We can then use a spatial filter to exclude any hexagons that do not intersect with the shapefile polygon boundary, and assign a unique identifier to each remaining hexagon.  
+Next, we'll set up a grid of hexagons across terrestrial Australia, which we'll use as bins for plotting summaries of species occurrence. `st_make_grid()` has arguments for specifying the size, type, and orientation of polygons in the grid, and this is initially created across the entire bounding box of the supplied shapefile (here the `ozmap_country` shapefile). We can then use a spatial filter to exclude any hexagons that do not intersect with the shapefile polygon boundary, and assign a unique identifier to each remaining hexagon.
 
 ```{r}
 hex_grid <- st_make_grid(ozmap_country,
@@ -205,7 +212,7 @@ ggplot() +
 
 ### Remove empty hexes
 
-Not every hexagon will contain an occurrence record, though, so let's remove empty hexagons with a spatial join (which behaves similarly to `dplyr::left_join()` for spatial objects). This returns an object with the same number of rows as our original download of occurrence records, with additional columns containing information on which polygon each species occurs in. 
+Not every hexagon will contain an occurrence record, though, so let's remove empty hexagons with a spatial join (which behaves similarly to `dplyr::left_join()` for spatial objects). This returns an object with the same number of rows as our original download of occurrence records, with additional columns containing information on which polygon each species occurs in.
 
 ```{r}
 hex_with_species <- st_join(x = hex_grid, 
@@ -235,18 +242,13 @@ ggplot() +
 
 ### Set up positions
 
-Since some hexagons will contain occurrence records for more than one species, we need a way to display these overlaps. We'll do this by setting up 7 positions in each hexagon, 1 for each species, and assign each species a position and colour so they can be visually differentiated. 
+Since some hexagons will contain occurrence records for more than one species, we need a way to display these overlaps. We'll do this by setting up 7 positions in each hexagon, 1 for each species, and assign each species a position and colour so they can be visually differentiated.
 
-The figure below summarises how we'll do this: for each hexagon remaining in the grid, we'll generate a smaller hexagon, then get the coordinates of each vertex and centroid of the smaller hexagon. 
-
-**Callum: My brain is not cooperating so I can't actually visualise this but I trust it's true**
-<aside>It's worth noting that with a bit of creativity, it is possible to fit any number of points from 2-9 into a hexagon (2-7) or square symmetrically.</aside>
+The figure below summarises how we'll do this: for each hexagon remaining in the grid, we'll generate a smaller hexagon, then get the coordinates of each vertex and centroid of the smaller hexagon.
 
 ```{r}
 #| eval: true
 #| echo: false
-#| column: screen
-
 library(patchwork)
 
 big_hex <- st_polygon(list(rbind(
@@ -294,7 +296,7 @@ p3 <- ggplot() +
 p4 <- ggplot() +
   geom_sf(data = big_hex, fill = NA, linewidth = 1.5, colour = "deepskyblue4") +
   geom_sf(data = small_hex_vertices, size = 3, colour = "deepskyblue3") +
-  geom_text(data = small_hex_vertices, aes(X, Y, label = vertex_id), nudge_y = 0.12) +
+  geom_text(data = small_hex_vertices, aes(X, Y, label = vertex_id), nudge_y = 0.16) +
   labs(subtitle = "Numbered vertices") +
   theme_void() +
   theme(plot.subtitle = element_text(hjust = 0.5))
@@ -304,21 +306,26 @@ p5 <- ggplot() +
   geom_sf(data = big_hex, fill = NA, linewidth = 1.5, colour = "deepskyblue4") +
   geom_sf(data = small_hex_vertices, size = 3, colour = "deepskyblue3") +
   geom_sf(data = st_centroid(small_hex), size = 3, colour = "deepskyblue3") +
-  geom_text(data = small_hex_vertices[c(1:6),], aes(X, Y, label = rowid), nudge_y = 0.12) +
-  geom_sf_text(data = st_centroid(small_hex), aes(label = "7"), nudge_y = 0.12) +
+  geom_text(data = small_hex_vertices[c(1:6),], aes(X, Y, label = rowid), nudge_y = 0.16) +
+  geom_sf_text(data = st_centroid(small_hex), aes(label = "7"), nudge_y = 0.16) +
   labs(subtitle = "Numbered vertices and centroid") +
   theme_void() +
   theme(plot.subtitle = element_text(hjust = 0.5))
-
-p1 + p2 + p3 + p4 + p5 + plot_layout(ncol = 5)
-
 ```
 
-Let's start by extracting the unique identifiers and spatial coordinates for every hexagon containing an occurrence record[^2]. 
+```{r}
+#| eval: true
+#| echo: false
+#| column: page
+#| fig-align: center
+#| fig-height: 2
+#| fig-width: 10
+p1 + p2 + p3 + p4 + p5 + plot_layout(ncol = 5)
+```
 
-[^2]: Using `distinct()` produces an identical result, but `count()` is much faster because checking for distinct values in the geometry column is computationally intensive. If your dataframe has fewer rows, you could also do this: `hex_with_species |> select(hex_id, hex_geometry) |> distinct()`.
+Let's start by extracting the unique identifiers and spatial coordinates for every hexagon containing an occurrence record[^2].
 
-**Callum/Dax: I was struggling to explain the unexpected choice of functions used here, and am not sure if the explanation actually clarifies anything**
+[^2]: Using `distinct()` produces an identical result to `count()` here, but is far slower because checking for distinct values in the geometry column is computationally intensive. If your dataframe has fewer rows, you could also do this: `hex_with_species |> select(hex_id, hex_geometry) |> distinct()`.
 
 ```{r}
 unique_hex <- hex_with_species |> 
@@ -326,13 +333,13 @@ unique_hex <- hex_with_species |>
   select(-`n`)
 ```
 
-We can then create a smaller hexagon within each original hexagon in the grid using `st_buffer()`, extract the coordinates of each vertex using `st_coordinates()`, and assign an integer to each vertex ranging from 1 to 7. Using `pmap()` here allows us to do this iteratively for every hexagon in the grid. 
+We can then create a smaller hexagon within each original hexagon in the grid using `st_buffer()`, extract the coordinates of it's vertices using `st_coordinates()`, and assign an integer to each vertex ranging from 1 to 7. Using `pmap()` here allows us to do this iteratively for every hexagon in the grid.
 
 <aside>Each hexagon is formed as a closed polygon, whereby the vertices are joined in the following order: 1-2-3-4-5-6-1. As a result, there are 7 rows of coordinates although there are only 6 vertices in each hexagon; the information in the first and seventh rows is duplicated.</aside>
 
-Some points to note: the size of the smaller hexagon is set using the `dist` argument in `st_buffer()`, and this is in turn dependent on the `cellsize` of the original hexagon we created (in the example above, we set `cellsize` = 2). Depending on the number of species you'd like to fit within each polygon and the shape of the polygon you've chosen, you may need to try out different values of `cellsize` and `dist` to find combinations that work best for your visualisation. 
+Some points to note: the size of the smaller hexagon is set using the `dist` argument in `st_buffer()`, and this is in turn dependent on the `cellsize` of the original hexagon we created (in the example above, we set `cellsize` = 2). Depending on the number of species you'd like to fit within each polygon and the shape of the polygon you've chosen, you may need to try out different values of `cellsize` and `dist` to find combinations that work best for your visualisation.
 
-The resulting dataframe has a `geometry` column with spatial coordinates for each of the 7 vertices associated with the smaller hexagons we generated. 
+The resulting dataframe has a `geometry` column with spatial coordinates for each of the 7 vertices associated with the smaller hexagons we generated.
 
 ```{r}
 vertex_coords <- unique_hex |> 
@@ -340,7 +347,7 @@ vertex_coords <- unique_hex |>
     .l = list(x = hex_geometry),
     .f = function(x) {
       x |>
-        st_buffer(dist = -0.3) |>
+        st_buffer(dist = -0.4) |>
         st_coordinates() |>
         as_tibble() |>
         st_as_sf(coords = c("X", "Y")) |>
@@ -352,7 +359,7 @@ vertex_coords <- unique_hex |>
 head(vertex_coords, n = 10)
 ```
 
-Since we need 7 positions in each hexagon (to fit a maximum of 7 species), and we conveniently have a duplicated row for every hexagon, we can mutate the repeated 7th vertex to hold the coordinates of the centroid of each hexagon. 
+Since we need 7 positions in each hexagon (to fit a maximum of 7 species), and we conveniently have a duplicated row for every hexagon, we can mutate the repeated 7th vertex to hold the coordinates of the centroid of each hexagon.
 
 ```{r}
 vertex_centroid_coords <- vertex_coords |> 
@@ -365,20 +372,21 @@ vertex_centroid_coords <- vertex_coords |>
 
 ### Assign species to positions
 
-All we have to do now is assign a position to each species... 
-**Callum:I ended up keeping the horrible regex because it makes it easier to join in the next step- feel free to add more text to make this clearer or change the code if you can think of something better**
+Following a bit of tidying of our `melithreptus` dataframe (created earlier using `atlas_species()`) to remove subgenera from species names and ensure all species have a vernacular name, all we have to do now is assign a numbered position to each species[^3]...
+
+[^3]: Here we assign the positions simply with `position = c(1:7)`, however you can reorder the dataframe or this position vector to have more control over which point in the hexagon each species is assigned. For instance, you might wish to do this to separate similar colours within the hexagon, or to assign the most widely distributed species to the centre point.
 
 ```{r}
 species_data <- melithreptus |>
   select(species, vernacular_name) |>
-  mutate(species = str_replace_all(species, "\\s*\\(.*?\\)\\s*", " "),
+  mutate(species = str_replace_all(species, "\\s*\\(.*?\\)", ""),
          vernacular_name = if_else(species == "Melithreptus chloropsis", 
                                    "Gilbert's Honeyeater",
                                    vernacular_name),
          position = c(1:7))
 ```
 
-... and join that to the dataframe telling us which species occur in which hexagon. 
+... and join that to the dataframe telling us which species occur in which hexagon.
 
 ```{r}
 species_points <- hex_with_species |>
@@ -394,17 +402,113 @@ species_points <- hex_with_species |>
 
 ## Map
 
+We can now plot our three separate spatial layers - the basemap, hexagons, and species points - together as simply as possible to check we've built them all correctly...
+
 ```{r}
-# This is colour-blind safe so using it as a placeholder for now
-# but it's not the nicest palette
-okabe <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ggplot() +
-  geom_sf(data = ozmap_states, fill = NA, colour = "#ababab", linewidth = 0.3) +
-  geom_sf(data = unique_hex, fill = "#efefef55", colour = "#777777", linewidth = 0.5) +
-  geom_sf(data = species_points, aes(colour = species)) +
-  scale_colour_manual(values = okabe) +
+  geom_sf(data = ozmap_states, fill = NA) +
+  geom_sf(data = unique_hex, fill = NA) +
+  geom_sf(data = species_points, aes(colour = vernacular_name)) +
   lims(x = c(112, 155), y = c(-46, -8)) +
   theme_void()
+```
+
+...and seeing that we have, we can now add some finishing touches to make our plot more aesthetically pleasing, as well as colour-blind friendly using a colour scheme by [Paul Tol](https://personal.sron.nl/~pault/).
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| fig-height: 7
+#| fig-width: 10
+#| column: page
+#| fig-align: center
+
+font_add_google("Montserrat")
+showtext_auto(enable = TRUE)
+
+tol_muted <- c("#88CCEE", "#CC6677", "#DDCC77", "#117733", "#332288", "#AA4499", "#44AA99")
+
+ggplot() +
+  geom_sf(data = ozmap_states, 
+          fill = NA, colour = "#ababab", linewidth = 0.3) +
+  geom_sf(data = unique_hex, 
+          fill = "#efefef55", colour = "#777777", linewidth = 0.5) +
+  geom_sf(data = species_points, aes(colour = vernacular_name), 
+          size = 2.3) +
+  scale_colour_manual(
+    values = tol_muted,
+    guide = guide_legend(title = "*Melithreptus* &#0020; species",
+                         override.aes = list(size = 4))
+  ) +
+  lims(x = c(112, 155), y = c(-46, -8)) +
+  theme_void() +
+  theme(legend.title = element_markdown(family = "Montserrat", size = 24),
+        legend.text = element_text(family = "Montserrat", size = 20),
+        legend.spacing.x = unit(0, "in"))
+```
+
+## Final Thoughts
+
+This visualisation is a novel way to show range overlaps and distributions of multiple species at once. A key strength is the consistency of the repeatable hex unit - the fixed positions and colours of the species points within hexagons make it easier to follow patterns within or between species.
+
+This is also a very flexible method - it is easily customisable with regards to 1) the size, shape (hexagons vs squares) and orientation of the polygons; 2) the colours and orientations of points within the hexagons; and 3) the spatial scale of the base map. 
+
+Consider also that you do not necessarily need to use exactly seven different species/taxa - with a bit of creativity, it is possible to fit any number of points from 2-9 into a hexagon (2-7) or square symmetrically...
+
+```{r}
+#| echo: FALSE
+#| fig-height: 1
+big_hex <- st_polygon(list(rbind(
+  c(-1, 0),
+  c(-0.5, sqrt(0.75)),
+  c(0.5, sqrt(0.75)),
+  c(1, 0),
+  c(0.5,-sqrt(0.75)),
+  c(-0.5,-sqrt(0.75)),
+  c(-1, 0))))
+
+small_hex <- st_buffer(big_hex, -0.4)
+
+small_hex_vertices <- small_hex |>
+  st_coordinates() |>
+  as_tibble() |>
+  rowid_to_column() |>
+  mutate(X = ifelse(rowid == 7, 0, X)) |>
+  st_as_sf(coords = c("X", "Y"), remove = FALSE) |> 
+  select(rowid)
+
+# 3. vertices
+h2 <- ggplot() +
+  geom_sf(data = big_hex, fill = NA, linewidth = 1.5, colour = "deepskyblue4") +
+  geom_sf(data = small_hex_vertices[c(2,5),], size = 5, colour = "deepskyblue3") +
+  theme_void()
+
+h3 <- ggplot() +
+  geom_sf(data = big_hex, fill = NA, linewidth = 1.5, colour = "deepskyblue4") +
+  geom_sf(data = small_hex_vertices[c(2,4,6),], size = 5, colour = "deepskyblue3") +
+  theme_void()
+
+h4 <- ggplot() +
+  geom_sf(data = big_hex, fill = NA, linewidth = 1.5, colour = "deepskyblue4") +
+  geom_sf(data = small_hex_vertices[c(2,4,6,7),], size = 5, colour = "deepskyblue3") +
+  theme_void()
+
+h5 <- ggplot() +
+  geom_sf(data = big_hex, fill = NA, linewidth = 1.5, colour = "deepskyblue4") +
+  geom_sf(data = small_hex_vertices[c(2,3,5,6,7),], size = 5, colour = "deepskyblue3") +
+  theme_void()
+
+h6 <- ggplot() +
+  geom_sf(data = big_hex, fill = NA, linewidth = 1.5, colour = "deepskyblue4") +
+  geom_sf(data = small_hex_vertices[1:6,], size = 5, colour = "deepskyblue3") +
+  theme_void()
+
+h7 <- ggplot() +
+  geom_sf(data = big_hex, fill = NA, linewidth = 1.5, colour = "deepskyblue4") +
+  geom_sf(data = small_hex_vertices, size = 5, colour = "deepskyblue3") +
+  theme_void()
+
+(h2 + h3 + h4 + h5 + h6 + h7) + plot_layout(ncol = 6)
 ```
 
 <details>
