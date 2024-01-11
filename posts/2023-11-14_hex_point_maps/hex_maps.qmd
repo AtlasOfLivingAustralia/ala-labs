@@ -1,5 +1,5 @@
 ---
-title: "Hex maps something something"
+title: "Map multiple species distributions on one map with hexagons & points"
 description: |
   Visualising multiple species distributions in a single figure can be difficult if there are areas where ranges overlap. In this post we introduce a method that allows users to get an overview of multiple species distributions in an area using a novel twist on the commonly used hexbin map.  
 author:
@@ -18,7 +18,7 @@ categories:
   - Aves
   - Summaries
   - Maps
-image: tbd
+image: map_hexbin-points.png
 draft: true
 freeze: true
 editor_options: 
@@ -61,22 +61,26 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 ::: author-card-image
 ```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
-knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/shandiya.jpg")
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/shandiya.png")
 ```
 :::
 :::
 
 <!------------------------ Post starts here ------------------------>
 
-Visualisations of species distributions can be very simple yet effective ways of conveying biological and ecological information, such as range, habitat, population size, fragmentation, and migration. This information can be represented as points, hulls, densities, and binned regions, to name but a few.
+Visualisations of species distributions can be very simple yet effective ways of conveying biological and ecological information, such as range, habitat and population size. 
 
-**DAX: we could link to labs posts that show these methods?**
-
-Representing more than one species distribution in a single figure can be difficult, though, especially where there are areas of overlap. Points and hulls will obscure each other even with a degree of transparency, while densities and shaded regions can only show one species at a time. Comparisons can be made by providing two single distribution figures side-by-side, but it can be inconvenient to observe range overlaps in this manner.
+Representing more than one species distribution in a single figure can be difficult, though, especially where there are areas of overlap. Points and colour-filled polygons will obscure each other even with a degree of transparency, while densities and shaded regions can only show one species at a time. <!--[suggest to cut for brevity] Comparisons can be made by providing two single distribution figures side-by-side, but it can be inconvenient to observe range overlaps in this manner. -->
 
 Here, we demonstrate a method to visualise distributions of multiple species with overlapping ranges on the same map, with only a small loss in resolution. The technique is a novel twist on the commonly used [hexbin map](https://r-graph-gallery.com/hexbin-map.html): instead of using a colour fill to represent presence/absence or counts within each hexagon, we use multiple coloured points within each hexagon to represent presence/absence of species, allowing users to get a broad overview of how multiple species are distributed across an area.
 
-This method requires a number of key steps to build the elements of the entire figure. We begin by downloading occurrence records for our species of interest. A hex grid will be created over the area of interest for those species, and trimmed down to only include those hexes that contain occurrences. Within each hex we will set up and assign points to species. The basemap, hex grid and species points can then be combined into the final figure.
+This method requires a number of key steps to build the elements of the entire figure:
+
+  *  Downloading occurrence records for our species of interest
+  *  Creating a hex grid over the area of interest for those species, and trimming it to only include those hexes that contain occurrences
+  *  Within each hex, arranging and assigning points to species
+
+After creating these components, the basemap, hex grid and species points can then be combined into the final figure.
 
 Let's begin by loading the R packages we'll be using.
 
@@ -134,6 +138,8 @@ melithreptus
 [^1]: There are over half a million records from this genus in the ALA, so restricting our download to records from 2022 significantly speeds things up!
 
 **DAX: not sure what the convention is here - do we store downloaded data as RDS files and load them instead of downloading each time? Also I can't remember where they get saved**
+
+**C & S: You can do either. If the data is large, it's probably best to load it like you have here. To avoid saving large datasets in the github repo, you should save the data in posts/data/. The contents of this folder do not push onto GitHub. To allow everyone to have access to the data, you should also save a copy of it on Teams in the Data/ala-labs/data folder. This contains all the data for every post, and people can copy these files into their local ala-labs/posts/data folder to render posts.**
 
 ```{r}
 #| eval: true
@@ -242,9 +248,11 @@ ggplot() +
 
 ### Set up positions
 
-Since some hexagons will contain occurrence records for more than one species, we need a way to display these overlaps. We'll do this by setting up 7 positions in each hexagon, 1 for each species, and assign each species a position and colour so they can be visually differentiated.
+As some hexagons will contain occurrence records for more than one species, we need a way to display these overlaps. We'll do this by setting up 7 positions in each hexagon, 1 for each species, and assign each species a position and colour so they can be visually differentiated.
 
-The figure below summarises how we'll do this: for each hexagon remaining in the grid, we'll generate a smaller hexagon, then get the coordinates of each vertex and centroid of the smaller hexagon.
+**Would it be possible to add colour to the final hexagon? That way it looks exactly like what users will eventually see if they follow these steps? Or does this not suit the point of the explanation below?**
+
+The figure below summarises how we'll do this: for each hexagon remaining in the grid, we'll generate a smaller hexagon, then get the coordinates of each vertex and centroid of the smaller hexagon. Eventually, we'll end up with a point for each species.
 
 ```{r}
 #| eval: true
@@ -323,7 +331,7 @@ p5 <- ggplot() +
 p1 + p2 + p3 + p4 + p5 + plot_layout(ncol = 5)
 ```
 
-Let's start by extracting the unique identifiers and spatial coordinates for every hexagon containing an occurrence record[^2].
+Let's start by extracting the unique identifiers and spatial coordinates for every hexagon containing an occurrence record[^2]. Each `hex_id` refers to one of the hexagons on our Australia map.
 
 [^2]: Using `distinct()` produces an identical result to `count()` here, but is far slower because checking for distinct values in the geometry column is computationally intensive. If your dataframe has fewer rows, you could also do this: `hex_with_species |> select(hex_id, hex_geometry) |> distinct()`.
 
@@ -331,13 +339,14 @@ Let's start by extracting the unique identifiers and spatial coordinates for eve
 unique_hex <- hex_with_species |> 
   count(hex_id, hex_geometry) |> 
   select(-`n`)
+unique_hex
 ```
 
-We can then create a smaller hexagon within each original hexagon in the grid using `st_buffer()`, extract the coordinates of it's vertices using `st_coordinates()`, and assign an integer to each vertex ranging from 1 to 7. Using `pmap()` here allows us to do this iteratively for every hexagon in the grid.
+Now let's arrange points within each hexagon using a custom function. In our function we'll make a smaller hexagon within each original hexagon in the grid using `st_buffer()`, extract the coordinates of it's vertices using `st_coordinates()`, and assign an integer to each vertex ranging from 1 to 7. We can then use `pmap()` to iterate this for every hexagon in the grid.
 
-<aside>Each hexagon is formed as a closed polygon, whereby the vertices are joined in the following order: 1-2-3-4-5-6-1. As a result, there are 7 rows of coordinates although there are only 6 vertices in each hexagon; the information in the first and seventh rows is duplicated.</aside>
+<aside>Each hexagon is formed as a closed polygon, whereby the vertices are joined in the following order: 1-2-3-4-5-6-1. As a result, there are 7 rows of coordinates although there are only 6 vertices in each hexagon; the information in the first and seventh rows is duplicated. **Is the reason for this because R has created a closed hexagon rather than an open one? Might be worth tacking that info on?**</aside> 
 
-Some points to note: the size of the smaller hexagon is set using the `dist` argument in `st_buffer()`, and this is in turn dependent on the `cellsize` of the original hexagon we created (in the example above, we set `cellsize` = 2). Depending on the number of species you'd like to fit within each polygon and the shape of the polygon you've chosen, you may need to try out different values of `cellsize` and `dist` to find combinations that work best for your visualisation.
+**The sentence below is a little confusing. Maybe simplify? Or it might be good to explain more about what each column contains in the dataframe. This could help the reader more quickly absorb that there are 7 rows for each `hex_id`, then understand what's in `hex_geometry`, etc**
 
 The resulting dataframe has a `geometry` column with spatial coordinates for each of the 7 vertices associated with the smaller hexagons we generated.
 
@@ -347,8 +356,8 @@ vertex_coords <- unique_hex |>
     .l = list(x = hex_geometry),
     .f = function(x) {
       x |>
-        st_buffer(dist = -0.4) |>
-        st_coordinates() |>
+        st_buffer(dist = -0.4) |> # set size of smaller hexagon
+        st_coordinates() |>       # extract coordinates
         as_tibble() |>
         st_as_sf(coords = c("X", "Y")) |>
         select(-L1,-L2) |>
@@ -359,7 +368,11 @@ vertex_coords <- unique_hex |>
 head(vertex_coords, n = 10)
 ```
 
-Since we need 7 positions in each hexagon (to fit a maximum of 7 species), and we conveniently have a duplicated row for every hexagon, we can mutate the repeated 7th vertex to hold the coordinates of the centroid of each hexagon.
+It's worth noting that we define the size of the smaller hexagon with the `dist` argument in `st_buffer()`, which changes based on the `cellsize` of the original hexagon we created (in our five-hexagon figure above, we set `cellsize` = 2). Depending on the number of species you'd like to fit within each polygon and the shape of the polygon you've chosen, you may need to try out different values of `cellsize` and `dist` to find combinations that work best for your visualisation.
+
+Since we need 7 positions in each hexagon (to fit a maximum of 7 species), and we conveniently have a duplicated row for every hexagon, we can mutate the repeated 7th vertex to hold the coordinates of the centroid of each hexagon. *it's not clear why?*
+
+**I've shown the output of this chunk, but it might need editing to show the reader exactly what you've done**
 
 ```{r}
 vertex_centroid_coords <- vertex_coords |> 
@@ -368,9 +381,12 @@ vertex_centroid_coords <- vertex_coords |>
                            geometry)) |> 
   st_drop_geometry() |> 
   st_as_sf(crs = 4326)
+vertex_centroid_coords
 ```
 
 ### Assign species to positions
+
+**I appreciate the brevity of this section but it's not very clear what is happening in these steps for a reader. For example, the string replacement in the first chunk uses regex which lots of people don't understand. The second step has some cleaning followed by 2 different joins. It might be worth showing how these joins affect what eventually becomes the final dataframe by separating steps and showing the output. Other times, some notes in the code could help too**
 
 Following a bit of tidying of our `melithreptus` dataframe (created earlier using `atlas_species()`) to remove subgenera from species names and ensure all species have a vernacular name, all we have to do now is assign a numbered position to each species[^3]...
 
