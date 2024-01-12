@@ -1,0 +1,73 @@
+---
+title: "Zooming in: Improving Koala monitoring with quality imagery"
+author: "Olivia Torresan"
+date: "2023-01-12"
+title-block-banner: "#6BDAD5"
+title-block-banner-color: "#222322"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png 
+categories:
+  - Conservation
+  - Citizen Science
+params:
+  authors: "Danaher, M., Schlagloth, R., Hewson, M., & Geddes, C."
+  year: 2023
+  title: "One Person and a Camera: A relatively nonintrusive approach to Koala citizen science"
+  publication: "Australian Zoologist"
+  doi: https://doi.org/10.7882/AZ.2023.006
+  image_url: https://images.ala.org.au/image/viewer?imageId=34fb7624-cd8e-4d29-9194-8fa5f2a1d64ab
+  alt_text: Koala perched in a tree
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Side panel -->
+
+:::{.column-page}
+
+:::{.paper-side-column}
+<center>
+:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/a/4/6/d/34fb7624-cd8e-4d29-9194-8fa5f2a1d64a/original" class="rounded"/></img>
+:::
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+[*Phascolarctos cinereus* (Charley Geddes CC BY 3.0)](https://images.ala.org.au/image/viewer?imageId=34fb7624-cd8e-4d29-9194-8fa5f2a1d64ab)
+:::
+
+### Citation
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+
+#### Page info
+Prepared by 
+[Olivia Torresan](https://labs.ala.org.au/people/Torresan_Olivia/)
+:::
+
+
+<!-- Main panel description -->
+
+::: {.paper-main-column}
+Images are an often undervalued component of biodiversity data. They can provide a myriad of information useful to conservation efforts. For example, a picture may be able to capture species trait and habitat changes across time, and, for those allowing species, images can identify unique individuals based on distinct markings or features. This offers researchers the capacity to monitor drastic changes for specific individuals in an easy and non-invasive manner. 
+
+Koalas are one species that can have unique features despite their similarities. Differences in fur patterns and skin markings, and even face shape, can be captured from afar by an image. Danaher et al. (2023) dedicate this research paper to qualitatively highlight how citizen science has the capability of providing detailed and intricately collected biodiversity data, and in particular, how this has been evidenced by one citizen scientist: Charley Geddes. Charley works tirelessly to capture koalas in her local area in Central Queensland, so well that each individual is able to be monitored through time. Distinguishable markings, fur colour, size, posture, and overall demeanour (even how they may dangle a leg!) contribute as identifying features. While nose markings are found to be the most reliable, she notes that is valuable to take almost an ethnographic stance as each koala (like us) has its own personality. 
+
+Charley’s Koala monitoring project has been ongoing for over ten years now, with other citizen scientists joining efforts in her project. All data is available on the Atlas of Living Australia’s BioCollect platform, and is visible [here](https://biocache.ala.org.au/occurrences/search?q=data_resource_uid:dr20943#tab_recordsView). 
+:::
+:::
