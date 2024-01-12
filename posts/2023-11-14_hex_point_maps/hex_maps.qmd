@@ -140,11 +140,12 @@ melithreptus
 **DAX: not sure what the convention is here - do we store downloaded data as RDS files and load them instead of downloading each time? Also I can't remember where they get saved**
 
 **C & S: You can do either. If the data is large, it's probably best to load it like you have here. To avoid saving large datasets in the github repo, you should save the data in posts/data/. The contents of this folder do not push onto GitHub. To allow everyone to have access to the data, you should also save a copy of it on Teams in the Data/ala-labs/data folder. This contains all the data for every post, and people can copy these files into their local ala-labs/posts/data folder to render posts.**
+*CW: I've copied the .RDS file to 'posts/data' and also added it to Teams*
 
 ```{r}
 #| eval: true
 #| echo: false
-species_occ <- readRDS(here::here("posts", "2023-11-14_hex_point_maps", "species_occ.RDS"))
+species_occ <- readRDS(here::here("posts", "data", "2023-11-14_hex_point_maps", "species_occ.RDS"))
 ```
 
 ```{r}
@@ -160,7 +161,6 @@ species_occ <- galah_call() |>
   galah_select(decimalLatitude,
                decimalLongitude,
                species, 
-               vernacularName, 
                scientificName) |> 
   atlas_occurrences()
 
@@ -342,13 +342,15 @@ unique_hex <- hex_with_species |>
 unique_hex
 ```
 
-Now let's arrange points within each hexagon using a custom function. In our function we'll make a smaller hexagon within each original hexagon in the grid using `st_buffer()`, extract the coordinates of it's vertices using `st_coordinates()`, and assign an integer to each vertex ranging from 1 to 7. We can then use `pmap()` to iterate this for every hexagon in the grid.
+Now let's arrange points within each hexagon using a custom function. In our function we'll create a smaller hexagon within each original hexagon using `st_buffer()`, extract the coordinates of it's vertices using `st_coordinates()`, and assign an integer to each vertex ranging from 1 to 7. We can use `pmap()` to iterate this for every hexagon in the grid.
 
-<aside>Each hexagon is formed as a closed polygon, whereby the vertices are joined in the following order: 1-2-3-4-5-6-1. As a result, there are 7 rows of coordinates although there are only 6 vertices in each hexagon; the information in the first and seventh rows is duplicated. **Is the reason for this because R has created a closed hexagon rather than an open one? Might be worth tacking that info on?**</aside> 
+<aside>Each hexagon is formed as a closed (rather than open) polygon, whereby the vertices are joined in the following order: 1-2-3-4-5-6-1. As a result, there are 7 rows of coordinates although there are only 6 vertices in each hexagon; the information in the first and seventh rows is duplicated. **Is the reason for this because R has created a closed hexagon rather than an open one? Might be worth tacking that info on?** *CW - looks like it is specified as a closed polygon in the first sentence, but I've added the "(rather than open)"?*</aside> 
 
 **The sentence below is a little confusing. Maybe simplify? Or it might be good to explain more about what each column contains in the dataframe. This could help the reader more quickly absorb that there are 7 rows for each `hex_id`, then understand what's in `hex_geometry`, etc**
 
-The resulting dataframe has a `geometry` column with spatial coordinates for each of the 7 vertices associated with the smaller hexagons we generated.
+PREVIOUS: *The resulting dataframe has a geometry column with spatial coordinates for each of the 7 vertices associated with the smaller hexagons we generated.*
+
+**NEW + added comments (maybe move below code block?):** In the resulting dataframe, `vertex_coords`, there are 7 rows for each large hexagon: one for each of the vertices associated with the smaller hexagons we generated. The large hexagons are identified by `hex_id` and `hex_geometry`. Each inner vertex point, numbered by `vertex_position`, is described by a `geometry` column with spatial coordinates.
 
 ```{r}
 vertex_coords <- unique_hex |> 
@@ -356,12 +358,12 @@ vertex_coords <- unique_hex |>
     .l = list(x = hex_geometry),
     .f = function(x) {
       x |>
-        st_buffer(dist = -0.4) |> # set size of smaller hexagon
-        st_coordinates() |>       # extract coordinates
+        st_buffer(dist = -0.4) |>     # set size of smaller hexagon
+        st_coordinates() |>           # extract coordinates
         as_tibble() |>
         st_as_sf(coords = c("X", "Y")) |>
-        select(-L1,-L2) |>
-        mutate(vertex_position = 1:7)
+        select(-L1, -L2) |>            # tidy output of `st_coordinates()`
+        mutate(vertex_position = 1:7) # number vertices consistently
     })) |> 
   unnest(cols = vertices)
 
@@ -370,50 +372,70 @@ head(vertex_coords, n = 10)
 
 It's worth noting that we define the size of the smaller hexagon with the `dist` argument in `st_buffer()`, which changes based on the `cellsize` of the original hexagon we created (in our five-hexagon figure above, we set `cellsize` = 2). Depending on the number of species you'd like to fit within each polygon and the shape of the polygon you've chosen, you may need to try out different values of `cellsize` and `dist` to find combinations that work best for your visualisation.
 
-Since we need 7 positions in each hexagon (to fit a maximum of 7 species), and we conveniently have a duplicated row for every hexagon, we can mutate the repeated 7th vertex to hold the coordinates of the centroid of each hexagon. *it's not clear why?*
+Since we need 7 positions in each hexagon (to fit a maximum of 7 species), and we conveniently have a duplicated row for every hexagon, we can mutate the repeated 7th vertex to hold the coordinates of the centroid of each hexagon. **it's not clear why?**
+
+**CW edit to replace above para:** We require seven positions in each hexagon (to fit a maximum of 7 species) and conveniently have seven rows for each hexagon in `vertex_coords`. However, recall that `vertex_position` 1 and 7 represent the same vertex of the closed hexagon shape. We can therefore mutate this repeated 7th vertex to hold the coordinates of the centroid of each hexagon, giving us seven distinct positions.
 
 **I've shown the output of this chunk, but it might need editing to show the reader exactly what you've done**
 
 ```{r}
 vertex_centroid_coords <- vertex_coords |> 
-  mutate(geometry = ifelse(vertex_position == 7,
-                           st_centroid(hex_geometry),
+  mutate(geometry = ifelse(vertex_position == 7,      # replace 7th vertex...
+                           st_centroid(hex_geometry), # ...with hex centre
                            geometry)) |> 
-  st_drop_geometry() |> 
+  st_drop_geometry() |> # remove hex_geometry column
   st_as_sf(crs = 4326)
-vertex_centroid_coords
+
+head(vertex_centroid_coords, n = 7)
 ```
 
 ### Assign species to positions
 
 **I appreciate the brevity of this section but it's not very clear what is happening in these steps for a reader. For example, the string replacement in the first chunk uses regex which lots of people don't understand. The second step has some cleaning followed by 2 different joins. It might be worth showing how these joins affect what eventually becomes the final dataframe by separating steps and showing the output. Other times, some notes in the code could help too**
 
-Following a bit of tidying of our `melithreptus` dataframe (created earlier using `atlas_species()`) to remove subgenera from species names and ensure all species have a vernacular name, all we have to do now is assign a numbered position to each species[^3]...
+*PREV: Following a bit of tidying of our `melithreptus` dataframe (created earlier using `atlas_species()`) to remove subgenera from species names and ensure all species have a vernacular name, all we have to do now is assign a numbered position to each species...*
 
-[^3]: Here we assign the positions simply with `position = c(1:7)`, however you can reorder the dataframe or this position vector to have more control over which point in the hexagon each species is assigned. For instance, you might wish to do this to separate similar colours within the hexagon, or to assign the most widely distributed species to the centre point.
+**NEW (CW):** Our `melithreptus` dataframe (created earlier using `atlas_species()`) requires a small amount of tidying to be compatible with the rest of our data. The `species` column still contains subgenera which we can remove with regular expressions (regex)[^3]. We also need to ensure all species have a vernacular name, noting that *Melithreptus chloropsis* is currently lacking one in the ALA database. We can then assign a numbered position to each species[^4].
+
+[^3]: Regular expressions, or regex, are used to match (and replace) specific patterns in strings. Here, we want to remove the bracketed subgenera in species names (e.g. `"Melithreptus (Melithreptus) affinis"` to `"Melithreptus  affinis"`), and we do this using the line `species = str_replace_all(species, "\\(.*?\\)\\s*", "")`. It is not
+crucial to understand how this regex works, but if you are curious: the expression searches through all strings in the `species` column and inserts the empty string (`""`) in place of any bracketed (`"\\("` and `"\\)"`) content (`".*?"`) that is immediately followed by a white-space (`"\\s*"`). 
+
+[^4]: Here we assign the positions simply with `vertex_position = c(1:7)`, however you can reorder the dataframe or this position vector to have more control over which point in the hexagon each species is assigned. For instance, you might wish to do this to separate similar colours within the hexagon, or to assign the most widely distributed species to the centre point.
 
 ```{r}
 species_data <- melithreptus |>
   select(species, vernacular_name) |>
-  mutate(species = str_replace_all(species, "\\s*\\(.*?\\)", ""),
+  mutate(species = str_replace_all(species, "\\(.*?\\)\\s*", ""),
          vernacular_name = if_else(species == "Melithreptus chloropsis", 
                                    "Gilbert's Honeyeater",
                                    vernacular_name),
-         position = c(1:7))
+         vertex_position = c(1:7))
+
+species_data
 ```
 
-... and join that to the dataframe telling us which species occur in which hexagon.
+Our final step is to bring our three dataframes (`hex_with_species`, `species_data`, `vertex_centroid_coords`) together with `left_join()`. We can perform these joins with some key identifying columns, namely `hex_id`, `species` and `vertex_position`. We begin with our distinct hexagon and species combinations and join the species positions and common names using the `species` field...
 
 ```{r}
-species_points <- hex_with_species |>
+species_points_a <- hex_with_species |>
   st_drop_geometry() |>
   select(hex_id, species) |>
   distinct() |> 
   left_join(species_data,
-            by = join_by(species)) |>
+            by = join_by(species))
+
+head(species_points_a, n = 10)
+```
+
+...and follow this with another join to bring in the coordinates of each species point inside the hexagons. These are uniquely identified by their `hex_id` and `vertex_position`, and we can assign the species to each vertex using the `vertex_position` column we also created in `species_data`.
+
+```{r}
+species_points <- species_points_a |>
   left_join(vertex_centroid_coords,
-            by = join_by(position == vertex_position, hex_id == hex_id)) |> 
+            by = join_by(vertex_position, hex_id)) |> 
   st_as_sf(crs = 4326)
+
+head(species_points, n = 10)
 ```
 
 ## Map
