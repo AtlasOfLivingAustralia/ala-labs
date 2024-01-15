@@ -64,10 +64,12 @@ Prepared by
 <!-- Main panel description -->
 
 ::: {.paper-main-column}
-Images are an often undervalued component of biodiversity data. They can provide a myriad of information useful to conservation efforts. For example, a picture may be able to capture species trait and habitat changes across time, and, for those allowing species, images can identify unique individuals based on distinct markings or features. This offers researchers the capacity to monitor drastic changes for specific individuals in an easy and non-invasive manner. 
+Images can provide myriad information useful to conservation efforts. A picture can capture changes in species traits and habitats, and sometimes even identify unique individuals of a species, making it possible for researchers to monitor individuals in a non-invasive manner. 
 
-Koalas are one species that can have unique features despite their similarities. Differences in fur patterns and skin markings, and even face shape, can be captured from afar by an image. Danaher et al. (2023) dedicate this research paper to qualitatively highlight how citizen science has the capability of providing detailed and intricately collected biodiversity data, and in particular, how this has been evidenced by one citizen scientist: Charley Geddes. Charley works tirelessly to capture koalas in her local area in Central Queensland, so well that each individual is able to be monitored through time. Distinguishable markings, fur colour, size, posture, and overall demeanour (even how they may dangle a leg!) contribute as identifying features. While nose markings are found to be the most reliable, she notes that is valuable to take almost an ethnographic stance as each koala (like us) has its own personality. 
+Koalas are one species that researchers are able to distinguish between individuals using fur patterns, skin markings, and even face shape. Danaher et al. (2023) explained how just one citizen scientist can make a huge impact on biodiversity data using pictures, evidenced by the work of Charley Geddes. 
 
-Charley’s Koala monitoring project has been ongoing for over ten years now, with other citizen scientists joining efforts in her project. All data is available on the Atlas of Living Australia’s BioCollect platform, and is visible [here](https://biocache.ala.org.au/occurrences/search?q=data_resource_uid:dr20943#tab_recordsView). 
+For over 10 years, Charley has worked tirelessly to capture koalas in her local area in Central Queensland. Her images provide detailed and intricately collected biodiversity data, so much so that researchers can track each individual's markings, fur colour, size, posture, and overall demeanour (even how they may dangle a leg)! While nose markings are found to be the most reliable, Charley notes that each koala (like us) has its own personality, and this realisation helps to improve her photography. 
+
+[Charley’s Koala monitoring project](https://biocache.ala.org.au/occurrences/search?q=data_resource_uid:dr20943#tab_recordsView) is available on the Atlas of Living Australia’s BioCollect platform. 
 :::
 :::
