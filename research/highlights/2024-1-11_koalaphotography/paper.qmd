@@ -1,9 +1,9 @@
 ---
-title: "Zooming in: Improving Koala monitoring with quality imagery"
+title: "Zooming in: Improving Koala monitoring with photography"
 author: "Olivia Torresan"
 date: "2023-01-12"
 title-block-banner: "#6BDAD5"
-title-block-banner-color: "#222322"
+title-block-banner-color: "#218380"
 include-after-body: _footer.html
 freeze: true
 image: thumbnail.png 
@@ -16,7 +16,7 @@ params:
   title: "One Person and a Camera: A relatively nonintrusive approach to Koala citizen science"
   publication: "Australian Zoologist"
   doi: https://doi.org/10.7882/AZ.2023.006
-  image_url: https://images.ala.org.au/image/viewer?imageId=34fb7624-cd8e-4d29-9194-8fa5f2a1d64ab
+  image_url: https://images.ala.org.au/image/34fb7624-cd8e-4d29-9194-8fa5f2a1d64a
   alt_text: Koala perched in a tree
 ---
 
@@ -43,7 +43,7 @@ params:
 
 ::: figure-caption
 <!-- edit caption -->
-[*Phascolarctos cinereus* (Charley Geddes CC BY 3.0)](https://images.ala.org.au/image/viewer?imageId=34fb7624-cd8e-4d29-9194-8fa5f2a1d64ab)
+[*Phascolarctos cinereus* (Charley Geddes CC BY 4.0)](https://images.ala.org.au/image/34fb7624-cd8e-4d29-9194-8fa5f2a1d64a)
 :::
 
 ### Citation
