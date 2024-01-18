@@ -15,6 +15,7 @@
   --subheader-font: 'Roboto', sans-serif;
   --mono-font: 'Fira Mono', monospace;
   --header-font: 'Lato' sans-serif;
+  --bs-navbar-hover-color: #E06E53;
 }
 
 /* navbar */
@@ -85,6 +86,14 @@ a.nav-link {
     content: url("./images/logos/ala-labs-logo-orange.png");
   }
 
+}
+
+.navbar-nav .nav-link.active {
+  color: var(--primary-orange) !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--primary-orange) !important;
 }
 
 .navbar-dark .navbar-nav .show>.nav-link,
@@ -515,4 +524,14 @@ img.rounded {
 
 .nav-link:hover {
   color: #FFC557;
+}
+
+.nav-item .nav-link {
+  color: white;
+}
+
+/* Tab appearance in panel-tabset */
+
+.value-box-title {
+  font-family: var(--main-font);
 }

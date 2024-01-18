@@ -16,7 +16,6 @@ listing:
 title-block-banner: "#E06E53"
 title-block-banner-color: body
 page-layout: full
-theme: cosmo
 format: 
   html:
     include-after-body: _footer.html 

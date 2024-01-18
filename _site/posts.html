@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.540">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -48,7 +48,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -57,6 +63,7 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -116,14 +123,38 @@ ga('send', {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="theme.css">
 <link rel="stylesheet" href="custom_theme.scss">
 <meta property="og:title" content="ALA Labs - Posts">
 <meta property="og:description" content="How-to articles to solve scientific problems">
-<meta property="og:image" content="https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/map_tree-frog.png">
-<meta property="og:site-name" content="ALA Labs">
-<meta property="og:image:height" content="1728">
-<meta property="og:image:width" content="1920">
+<meta property="og:site_name" content="ALA Labs">
 <meta name="twitter:title" content="ALA Labs - Posts">
 <meta name="twitter:description" content="How-to articles to solve scientific problems">
 <meta name="twitter:image" content="https://labs.ala.org.au/twitter-card-preview_frog-small.png">
@@ -135,10 +166,10 @@ ga('send', {
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
     <img src="./images/logos/ALA_Logo_Inline_REV-RGB.png" alt="" class="navbar-logo">
     </a>
@@ -153,51 +184,51 @@ ga('send', {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target=""><i class="bi bi-house-door-fill" role="img">
+    <a class="nav-link" href="./index.html"> <i class="bi bi-house-door-fill" role="img">
 </i> 
- <span class="menu-text"> </span></a>
+<span class="menu-text"> </span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
- <span class="menu-text">About</span></a>
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./posts.html" rel="" target="" aria-current="page">
- <span class="menu-text">Posts</span></a>
+    <a class="nav-link active" href="./posts.html" aria-current="page"> 
+<span class="menu-text">Posts</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-research" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-research" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Research</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-research">    
         <li>
-    <a class="dropdown-item" href="./research/highlights.html" rel="" target="">
+    <a class="dropdown-item" href="./research/highlights.html">
  <span class="dropdown-text">Highlights</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./research/citations.html" rel="" target="">
+    <a class="dropdown-item" href="./research/citations.html">
  <span class="dropdown-text">All citations</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="./software/software.html" rel="" target="">
- <span class="menu-text">Software</span></a>
+    <a class="nav-link" href="./software/software.html"> 
+<span class="menu-text">Software</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.ala.org.au" rel="" target=""><i class="bi bi-ala" role="img">
+    <a class="nav-link" href="https://www.ala.org.au"> <i class="bi bi-ala" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/AtlasOfLivingAustralia/ala-labs" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/AtlasOfLivingAustralia/ala-labs"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -211,7 +242,7 @@ ga('send', {
   </div>
     
   
-  <div class="quarto-title-meta">
+  <div class="quarto-title-meta column-body">
 
       
     
@@ -227,6 +258,7 @@ ga('send', {
     <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(15)</span></div><div class="category" data-category="Animalia">Animalia <span class="quarto-category-count">(11)</span></div><div class="category" data-category="Anura">Anura <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Aves">Aves <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Chlorophyta">Chlorophyta <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Chordata">Chordata <span class="quarto-category-count">(5)</span></div><div class="category" data-category="Eukaryota">Eukaryota <span class="quarto-category-count">(15)</span></div><div class="category" data-category="Intern-post">Intern-post <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Mammalia">Mammalia <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Maps">Maps <span class="quarto-category-count">(10)</span></div><div class="category" data-category="Mollusca">Mollusca <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Plantae">Plantae <span class="quarto-category-count">(6)</span></div><div class="category" data-category="Python">Python <span class="quarto-category-count">(2)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Summaries">Summaries <span class="quarto-category-count">(7)</span></div><div class="category" data-category="Trees">Trees <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-body" id="quarto-document-content">
+
 
 
 
@@ -258,25 +290,25 @@ ga('send', {
   </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Eukaryota,Animalia,Chordata,Anura,Maps,Python,R" data-listing-date-sort="1702818000000" data-listing-file-modified-sort="1702966425308" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18">
+<div class="quarto-post image-right" data-index="0" data-categories="Eukaryota,Animalia,Chordata,Anura,Maps,Python,R" data-listing-date-sort="1702818000000" data-listing-file-modified-sort="1705532795937" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3591">
 <div class="thumbnail">
-<p><a href="./posts/2023-12-18_beginners-guide-make-a-map/post.html"> <img src="./posts/2023-12-18_beginners-guide-make-a-map/map_tree-frog.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2023-12-18_beginners-guide-make-a-map/post.html" class="no-external"></a></p><a href="./posts/2023-12-18_beginners-guide-make-a-map/post.html" class="no-external">
+<p><img src="./posts/2023-12-18_beginners-guide-make-a-map/map_tree-frog.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2023-12-18_beginners-guide-make-a-map/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-12-18_beginners-guide-make-a-map/post.html">
 <h3 class="no-anchor listing-title">
-Beginner’s guide: Make a quick map of species observations in Python and R
+<a href="./posts/2023-12-18_beginners-guide-make-a-map/post.html" class="no-external">Beginner’s guide: Make a quick map of species observations in Python and R</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-12-18_beginners-guide-make-a-map/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>The ability to make a map quickly is an essential skill in ecology and conservation. This post shows how to make a quick, simple map of Peron’s tree frog occurrences &amp; set a custom font using either Python or R.</p>
+<a href="./posts/2023-12-18_beginners-guide-make-a-map/post.html" class="no-external">The ability to make a map quickly is an essential skill in ecology and conservation. This post shows how to make a quick, simple map of Peron’s tree frog occurrences &amp; set a custom font using either Python or R. </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-12-18_beginners-guide-make-a-map/post.html">
+<a href="./posts/2023-12-18_beginners-guide-make-a-map/post.html" class="no-external">
 <div class="listing-date">
 Dec 18, 2023
 </div>
@@ -289,25 +321,25 @@ Amanda Buyan, Dax Kellie
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="Eukaryota,Plantae,Summaries" data-listing-date-sort="1693144800000" data-listing-file-modified-sort="1693269686663" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="25">
+<div class="quarto-post image-right" data-index="1" data-categories="Eukaryota,Plantae,Summaries" data-listing-date-sort="1693144800000" data-listing-file-modified-sort="1693269686663" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="25" data-listing-word-count-sort="4996">
 <div class="thumbnail">
-<p><a href="./posts/2023-08-28_alternatives-to-box-plots/post.html"> <img src="./posts/2023-08-28_alternatives-to-box-plots/raincloud.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2023-08-28_alternatives-to-box-plots/post.html" class="no-external"></a></p><a href="./posts/2023-08-28_alternatives-to-box-plots/post.html" class="no-external">
+<p><img src="./posts/2023-08-28_alternatives-to-box-plots/raincloud.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2023-08-28_alternatives-to-box-plots/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-08-28_alternatives-to-box-plots/post.html">
 <h3 class="no-anchor listing-title">
-Alternatives to box plots: Using beeswarm and raincloud plots to summarise ecological data
+<a href="./posts/2023-08-28_alternatives-to-box-plots/post.html" class="no-external">Alternatives to box plots: Using beeswarm and raincloud plots to summarise ecological data</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-08-28_alternatives-to-box-plots/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Box plots are a common way to summarise data in ecology and biology research, but box plots have their weaknesses. Here we’ll show how easy it can be to make beeswarm and raincloud plots—two alternatives with greater data transparency—using plant trait data from {austraits}.</p>
+<a href="./posts/2023-08-28_alternatives-to-box-plots/post.html" class="no-external">Box plots are a common way to summarise data in ecology and biology research, but box plots have their weaknesses. Here we’ll show how easy it can be to make beeswarm and raincloud plots—two alternatives with greater data transparency—using plant trait data from {austraits}. </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-08-28_alternatives-to-box-plots/post.html">
+<a href="./posts/2023-08-28_alternatives-to-box-plots/post.html" class="no-external">
 <div class="listing-date">
 Aug 28, 2023
 </div>
@@ -320,25 +352,25 @@ Dax Kellie, Shandiya Balasubramaniam
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="Eukaryota,Animalia,Mammalia,Summaries,Maps,Intern-post" data-listing-date-sort="1684159200000" data-listing-file-modified-sort="1684721084585" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23">
+<div class="quarto-post image-right" data-index="2" data-categories="Eukaryota,Animalia,Mammalia,Summaries,Maps,Intern-post" data-listing-date-sort="1684159200000" data-listing-file-modified-sort="1684721084585" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="23" data-listing-word-count-sort="4560">
 <div class="thumbnail">
-<p><a href="./posts/2023-05-16_dingoes/post.html"> <img src="./posts/2023-05-16_dingoes/dingo-sa.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2023-05-16_dingoes/post.html" class="no-external"></a></p><a href="./posts/2023-05-16_dingoes/post.html" class="no-external">
+<p><img src="./posts/2023-05-16_dingoes/dingo-sa.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2023-05-16_dingoes/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-05-16_dingoes/post.html">
 <h3 class="no-anchor listing-title">
-An exploration of dingo observations in the ALA
+<a href="./posts/2023-05-16_dingoes/post.html" class="no-external">An exploration of dingo observations in the ALA</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-05-16_dingoes/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Dingoes are the subject of ongoing debate about whether they should be considered a protected species or a pest species. Here we explore dingo observations in the ALA to understand how differing attitudes affect dingo data, plotting spatial and temporal trends using {ggplot2}.</p>
+<a href="./posts/2023-05-16_dingoes/post.html" class="no-external">Dingoes are the subject of ongoing debate about whether they should be considered a protected species or a pest species. Here we explore dingo observations in the ALA to understand how differing attitudes affect dingo data, plotting spatial and temporal trends using {ggplot2}. </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-05-16_dingoes/post.html">
+<a href="./posts/2023-05-16_dingoes/post.html" class="no-external">
 <div class="listing-date">
 May 16, 2023
 </div>
@@ -351,25 +383,25 @@ Amos Smith, Dax Kellie
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="Eukaryota,Animalia,Plantae,Maps,Python" data-listing-date-sort="1682604000000" data-listing-file-modified-sort="1684222277089" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13">
+<div class="quarto-post image-right" data-index="3" data-categories="Eukaryota,Animalia,Plantae,Maps,Python" data-listing-date-sort="1682604000000" data-listing-file-modified-sort="1684222277089" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2498">
 <div class="thumbnail">
-<p><a href="./posts/2023-04-28_plotting-invasive-species/post.html"> <img src="./posts/2023-04-28_plotting-invasive-species/images/cane-toad-map.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2023-04-28_plotting-invasive-species/post.html" class="no-external"></a></p><a href="./posts/2023-04-28_plotting-invasive-species/post.html" class="no-external">
+<p><img src="./posts/2023-04-28_plotting-invasive-species/images/cane-toad-map.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2023-04-28_plotting-invasive-species/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-04-28_plotting-invasive-species/post.html">
 <h3 class="no-anchor listing-title">
-Plotting invasive species distributions with alpha shapes and choropleth maps in Python
+<a href="./posts/2023-04-28_plotting-invasive-species/post.html" class="no-external">Plotting invasive species distributions with alpha shapes and choropleth maps in Python</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-04-28_plotting-invasive-species/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Invasive and introduced species can expand quickly into new habitats, altering ecosystems. In this post we use Python’s {galah}, {alphashape} and {GeoPandas} packages to visualise the growing distribution of <em>Rhinella marina</em> (cane toads) and the expanding range of <em>Pittisporum undulatum</em> in Australia.</p>
+<a href="./posts/2023-04-28_plotting-invasive-species/post.html" class="no-external">Invasive and introduced species can expand quickly into new habitats, altering ecosystems. In this post we use Python’s {galah}, {alphashape} and {GeoPandas} packages to visualise the growing distribution of <em>Rhinella marina</em> (cane toads) and the expanding range of <em>Pittisporum undulatum</em> in Australia. </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-04-28_plotting-invasive-species/post.html">
+<a href="./posts/2023-04-28_plotting-invasive-species/post.html" class="no-external">
 <div class="listing-date">
 Apr 28, 2023
 </div>
@@ -382,25 +414,25 @@ Caitlin Ramsay, Amanda Buyan, Dax Kellie
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="Eukaryota,Animalia,Plantae,Summaries,Maps" data-listing-date-sort="1681135200000" data-listing-file-modified-sort="1702875685890" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="25">
+<div class="quarto-post image-right" data-index="4" data-categories="Eukaryota,Animalia,Plantae,Summaries,Maps" data-listing-date-sort="1681135200000" data-listing-file-modified-sort="1705532795923" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="25" data-listing-word-count-sort="4919">
 <div class="thumbnail">
-<p><a href="./posts/2023-04-11_quantifying-species-range/post.html"> <img src="./posts/2023-04-11_quantifying-species-range/images/bee_fire.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2023-04-11_quantifying-species-range/post.html" class="no-external"></a></p><a href="./posts/2023-04-11_quantifying-species-range/post.html" class="no-external">
+<p><img src="./posts/2023-04-11_quantifying-species-range/images/bee_fire.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2023-04-11_quantifying-species-range/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-04-11_quantifying-species-range/post.html">
 <h3 class="no-anchor listing-title">
-Quantifying species range and overlap with fire-burned areas using concave hulls
+<a href="./posts/2023-04-11_quantifying-species-range/post.html" class="no-external">Quantifying species range and overlap with fire-burned areas using concave hulls</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-04-11_quantifying-species-range/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Calculating range overlap is an efficient way to estimate the impact of natural disasters on biodiversity. Here we’ll use curated datasets to compute concave hulls to visualise the spatial distribution of <em>Apidae</em> (Bees) and <em>Daviesia</em> (Bitterpeas) and their overlap with burned areas of the Black Summer fires of 2019-2020.</p>
+<a href="./posts/2023-04-11_quantifying-species-range/post.html" class="no-external">Calculating range overlap is an efficient way to estimate the impact of natural disasters on biodiversity. Here we’ll use curated datasets to compute concave hulls to visualise the spatial distribution of <em>Apidae</em> (Bees) and <em>Daviesia</em> (Bitterpeas) and their overlap with burned areas of the Black Summer fires of 2019-2020. </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-04-11_quantifying-species-range/post.html">
+<a href="./posts/2023-04-11_quantifying-species-range/post.html" class="no-external">
 <div class="listing-date">
 Apr 11, 2023
 </div>
@@ -413,25 +445,25 @@ Fonti Kar, Margot Schneider
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="Eukaryota,Animalia,Aves,Summaries,Intern-post" data-listing-date-sort="1680444000000" data-listing-file-modified-sort="1680674720962" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14">
+<div class="quarto-post image-right" data-index="5" data-categories="Eukaryota,Animalia,Aves,Summaries,Intern-post" data-listing-date-sort="1680444000000" data-listing-file-modified-sort="1680674720962" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2607">
 <div class="thumbnail">
-<p><a href="./posts/2023-04-03_highlighted-time-series/post.html"> <img src="./posts/2023-04-03_highlighted-time-series/ducks.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2023-04-03_highlighted-time-series/post.html" class="no-external"></a></p><a href="./posts/2023-04-03_highlighted-time-series/post.html" class="no-external">
+<p><img src="./posts/2023-04-03_highlighted-time-series/ducks.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2023-04-03_highlighted-time-series/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-04-03_highlighted-time-series/post.html">
 <h3 class="no-anchor listing-title">
-Make a highlighted time-series plot
+<a href="./posts/2023-04-03_highlighted-time-series/post.html" class="no-external">Make a highlighted time-series plot</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-04-03_highlighted-time-series/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Time-series analyses can be handy for seeing trends over time, and exploring how trends relate to major events. Here, we show how to create an exploratory time-series plot comparing observations of waterbirds prior to and during the COVID-19 pandemic.</p>
+<a href="./posts/2023-04-03_highlighted-time-series/post.html" class="no-external">Time-series analyses can be handy for seeing trends over time, and exploring how trends relate to major events. Here, we show how to create an exploratory time-series plot comparing observations of waterbirds prior to and during the COVID-19 pandemic. </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-04-03_highlighted-time-series/post.html">
+<a href="./posts/2023-04-03_highlighted-time-series/post.html" class="no-external">
 <div class="listing-date">
 Apr 3, 2023
 </div>
@@ -444,25 +476,25 @@ Thai Rushbrook, Olivia Torresan, Dax Kellie
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="Eukaryota,Animalia,Mollusca,Maps,Intern-post" data-listing-date-sort="1678712400000" data-listing-file-modified-sort="1680674720942" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20">
+<div class="quarto-post image-right" data-index="6" data-categories="Eukaryota,Animalia,Mollusca,Maps,Intern-post" data-listing-date-sort="1678712400000" data-listing-file-modified-sort="1680674720942" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="20" data-listing-word-count-sort="3971">
 <div class="thumbnail">
-<p><a href="./posts/2023-03-14_animated-map/post.html"> <img src="./posts/2023-03-14_animated-map/SDM.gif" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2023-03-14_animated-map/post.html" class="no-external"></a></p><a href="./posts/2023-03-14_animated-map/post.html" class="no-external">
+<p><img src="./posts/2023-03-14_animated-map/SDM.gif" class="thumbnail-image"></p>
+</a><p><a href="./posts/2023-03-14_animated-map/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-03-14_animated-map/post.html">
 <h3 class="no-anchor listing-title">
-Animated species distribution maps with {gifski}
+<a href="./posts/2023-03-14_animated-map/post.html" class="no-external">Animated species distribution maps with {gifski}</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-03-14_animated-map/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>One useful way to see changes in a species’ habitat range over time is by using animation to view multiple distributions in succession. Here we will model the distribution of <em>Nudibranchia</em> across Australia each month to create an animated GIF of its distribution over a year.</p>
+<a href="./posts/2023-03-14_animated-map/post.html" class="no-external">One useful way to see changes in a species’ habitat range over time is by using animation to view multiple distributions in succession. Here we will model the distribution of <em>Nudibranchia</em> across Australia each month to create an animated GIF of its distribution over a year. </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-03-14_animated-map/post.html">
+<a href="./posts/2023-03-14_animated-map/post.html" class="no-external">
 <div class="listing-date">
 Mar 14, 2023
 </div>
@@ -475,25 +507,25 @@ Stephanie Woolley, Olivia Torresan, Dax Kellie
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="Maps,Eukaryota,Animalia,Chordata,Aves" data-listing-date-sort="1675602000000" data-listing-file-modified-sort="1680674720934" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10">
+<div class="quarto-post image-right" data-index="7" data-categories="Maps,Eukaryota,Animalia,Chordata,Aves" data-listing-date-sort="1675602000000" data-listing-file-modified-sort="1680674720934" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1959">
 <div class="thumbnail">
-<p><a href="./posts/2023-01-12_counting-points-in-shapefiles/post.html"> <img src="./posts/2023-01-12_counting-points-in-shapefiles/act-suburbs-map.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2023-01-12_counting-points-in-shapefiles/post.html" class="no-external"></a></p><a href="./posts/2023-01-12_counting-points-in-shapefiles/post.html" class="no-external">
+<p><img src="./posts/2023-01-12_counting-points-in-shapefiles/act-suburbs-map.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2023-01-12_counting-points-in-shapefiles/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2023-01-12_counting-points-in-shapefiles/post.html">
 <h3 class="no-anchor listing-title">
-Counting points in multipolygon shapefiles for choropleth mapping
+<a href="./posts/2023-01-12_counting-points-in-shapefiles/post.html" class="no-external">Counting points in multipolygon shapefiles for choropleth mapping</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2023-01-12_counting-points-in-shapefiles/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Choropleth maps are an excellent way to visualise numbers of observations, but when using point data, calculating the number of points in each polygon can be difficult when using shapefiles. Here we demonstrate how to extract and summarise the number of points in each polygon to create a choropleth map.</p>
+<a href="./posts/2023-01-12_counting-points-in-shapefiles/post.html" class="no-external">Choropleth maps are an excellent way to visualise numbers of observations, but when using point data, calculating the number of points in each polygon can be difficult when using shapefiles. Here we demonstrate how to extract and summarise the number of points in each polygon to create a choropleth map. </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2023-01-12_counting-points-in-shapefiles/post.html">
+<a href="./posts/2023-01-12_counting-points-in-shapefiles/post.html" class="no-external">
 <div class="listing-date">
 Feb 6, 2023
 </div>
@@ -506,25 +538,25 @@ Olivia Torresan, Dax Kellie
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="Summaries,Maps,Eukaryota,Animalia" data-listing-date-sort="1666184400000" data-listing-file-modified-sort="1680674720928" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15">
+<div class="quarto-post image-right" data-index="8" data-categories="Summaries,Maps,Eukaryota,Animalia" data-listing-date-sort="1666184400000" data-listing-file-modified-sort="1680674720928" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2833">
 <div class="thumbnail">
-<p><a href="./posts/2022-10-12_alpha-hulls/post.html"> <img src="./posts/2022-10-12_alpha-hulls/alpha-hull-fig.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2022-10-12_alpha-hulls/post.html" class="no-external"></a></p><a href="./posts/2022-10-12_alpha-hulls/post.html" class="no-external">
+<p><img src="./posts/2022-10-12_alpha-hulls/alpha-hull-fig.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2022-10-12_alpha-hulls/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-10-12_alpha-hulls/post.html">
 <h3 class="no-anchor listing-title">
-Convex and alpha hulls for conservation mapping
+<a href="./posts/2022-10-12_alpha-hulls/post.html" class="no-external">Convex and alpha hulls for conservation mapping</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-10-12_alpha-hulls/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions when a species has very few existing observations. Here, we will show you how to create these spatial polygons using data from the ALA.</p>
+<a href="./posts/2022-10-12_alpha-hulls/post.html" class="no-external">Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions when a species has very few existing observations. Here, we will show you how to create these spatial polygons using data from the ALA. </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-10-12_alpha-hulls/post.html">
+<a href="./posts/2022-10-12_alpha-hulls/post.html" class="no-external">
 <div class="listing-date">
 Oct 20, 2022
 </div>
@@ -537,25 +569,25 @@ Margot Schneider, Fonti Kar
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="Eukaryota,Animalia,Chordata,Summaries" data-listing-date-sort="1659880800000" data-listing-file-modified-sort="1680674720920" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11">
+<div class="quarto-post image-right" data-index="9" data-categories="Eukaryota,Animalia,Chordata,Summaries" data-listing-date-sort="1659880800000" data-listing-file-modified-sort="1680674720920" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2090">
 <div class="thumbnail">
-<p><a href="./posts/2022-07-22_sample-bias/post.html"> <img data-src="./posts/2022-07-22_sample-bias/samplebias_heatmap.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2022-07-22_sample-bias/post.html" class="no-external"></a></p><a href="./posts/2022-07-22_sample-bias/post.html" class="no-external">
+<p><img data-src="./posts/2022-07-22_sample-bias/samplebias_heatmap.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2022-07-22_sample-bias/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-07-22_sample-bias/post.html">
 <h3 class="no-anchor listing-title">
-Quantify geographic sampling bias with {sampbias}
+<a href="./posts/2022-07-22_sample-bias/post.html" class="no-external">Quantify geographic sampling bias with {sampbias}</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-07-22_sample-bias/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Human biases play a large role in the data we collect about species. Here we show a simple method to quantify the bias of roads, cities, rivers and airports on species observations of legless lizards in the Northern Territory</p>
+<a href="./posts/2022-07-22_sample-bias/post.html" class="no-external">Human biases play a large role in the data we collect about species. Here we show a simple method to quantify the bias of roads, cities, rivers and airports on species observations of legless lizards in the Northern Territory </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-07-22_sample-bias/post.html">
+<a href="./posts/2022-07-22_sample-bias/post.html" class="no-external">
 <div class="listing-date">
 Aug 8, 2022
 </div>
@@ -568,25 +600,25 @@ Dax Kellie
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="Eukaryota,Plantae,Chlorophyta,Maps" data-listing-date-sort="1653919200000" data-listing-file-modified-sort="1693269679120" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10">
+<div class="quarto-post image-right" data-index="10" data-categories="Eukaryota,Plantae,Chlorophyta,Maps" data-listing-date-sort="1653919200000" data-listing-file-modified-sort="1693269679120" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1943">
 <div class="thumbnail">
-<p><a href="./posts/2022-05-23-ggnewscale/post.html"> <img data-src="./posts/2022-05-23-ggnewscale/choropleth_ggnewscale.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2022-05-23-ggnewscale/post.html" class="no-external"></a></p><a href="./posts/2022-05-23-ggnewscale/post.html" class="no-external">
+<p><img data-src="./posts/2022-05-23-ggnewscale/choropleth_ggnewscale.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2022-05-23-ggnewscale/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-05-23-ggnewscale/post.html">
 <h3 class="no-anchor listing-title">
-Multiple colour scales in choropleth maps with {ggnewscale}
+<a href="./posts/2022-05-23-ggnewscale/post.html" class="no-external">Multiple colour scales in choropleth maps with {ggnewscale}</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-05-23-ggnewscale/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Using multiple colour scales can be a great way to visually differentiate between geographic categories on a map. Here, we demonstrate this by creating a choropleth map to represent the density of plant records from the ALA across bioregions in Australia, and add multiple colour scales to differentiate marine and terrestrial records</p>
+<a href="./posts/2022-05-23-ggnewscale/post.html" class="no-external">Using multiple colour scales can be a great way to visually differentiate between geographic categories on a map. Here, we demonstrate this by creating a choropleth map to represent the density of plant records from the ALA across bioregions in Australia, and add multiple colour scales to differentiate marine and terrestrial records </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-05-23-ggnewscale/post.html">
+<a href="./posts/2022-05-23-ggnewscale/post.html" class="no-external">
 <div class="listing-date">
 May 31, 2022
 </div>
@@ -599,25 +631,25 @@ Shandiya Balasubramaniam
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-categories="Eukaryota,Plantae,Maps" data-listing-date-sort="1653228000000" data-listing-file-modified-sort="1680674720912" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12">
+<div class="quarto-post image-right" data-index="11" data-categories="Eukaryota,Plantae,Maps" data-listing-date-sort="1653228000000" data-listing-file-modified-sort="1680674720912" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2203">
 <div class="thumbnail">
-<p><a href="./posts/2022-05-17_3d-map/post.html"> <img data-src="./posts/2022-05-17_3d-map/plants_3d.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2022-05-17_3d-map/post.html" class="no-external"></a></p><a href="./posts/2022-05-17_3d-map/post.html" class="no-external">
+<p><img data-src="./posts/2022-05-17_3d-map/plants_3d.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2022-05-17_3d-map/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-05-17_3d-map/post.html">
 <h3 class="no-anchor listing-title">
-Download plant species data by hexagon to make a 3D hex map
+<a href="./posts/2022-05-17_3d-map/post.html" class="no-external">Download plant species data by hexagon to make a 3D hex map</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-05-17_3d-map/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Making plots eye-catching can be useful for science communication. Here, we show how to make 3D plots in R with the <code>rayshader</code> package by visualising the number of species identified from ALA observations since 2020</p>
+<a href="./posts/2022-05-17_3d-map/post.html" class="no-external">Making plots eye-catching can be useful for science communication. Here, we show how to make 3D plots in R with the <code>rayshader</code> package by visualising the number of species identified from ALA observations since 2020 </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-05-17_3d-map/post.html">
+<a href="./posts/2022-05-17_3d-map/post.html" class="no-external">
 <div class="listing-date">
 May 23, 2022
 </div>
@@ -630,25 +662,25 @@ Dax Kellie
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-categories="Trees,Eukaryota,Animalia,Chordata" data-listing-date-sort="1645016400000" data-listing-file-modified-sort="1680674720903" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8">
+<div class="quarto-post image-right" data-index="12" data-categories="Trees,Eukaryota,Animalia,Chordata" data-listing-date-sort="1645016400000" data-listing-file-modified-sort="1680674720903" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1499">
 <div class="thumbnail">
-<p><a href="./posts/2022-02-17_sunburst-plots-for-taxonomic-data/post.html"> <img data-src="./posts/2022-02-17_sunburst-plots-for-taxonomic-data/sunburst-tree.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2022-02-17_sunburst-plots-for-taxonomic-data/post.html" class="no-external"></a></p><a href="./posts/2022-02-17_sunburst-plots-for-taxonomic-data/post.html" class="no-external">
+<p><img data-src="./posts/2022-02-17_sunburst-plots-for-taxonomic-data/sunburst-tree.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2022-02-17_sunburst-plots-for-taxonomic-data/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2022-02-17_sunburst-plots-for-taxonomic-data/post.html">
 <h3 class="no-anchor listing-title">
-Sunburst plots for taxonomic data
+<a href="./posts/2022-02-17_sunburst-plots-for-taxonomic-data/post.html" class="no-external">Sunburst plots for taxonomic data</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2022-02-17_sunburst-plots-for-taxonomic-data/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Since version 1.3.1 of {galah}, it has been possible to download taxonomic data using a ‘tree’ format from the {data.tree} package. Here I’ll demonstrate some ideas for plotting these trees using circular diagrams.</p>
+<a href="./posts/2022-02-17_sunburst-plots-for-taxonomic-data/post.html" class="no-external">Since version 1.3.1 of {galah}, it has been possible to download taxonomic data using a ‘tree’ format from the {data.tree} package. Here I’ll demonstrate some ideas for plotting these trees using circular diagrams. </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2022-02-17_sunburst-plots-for-taxonomic-data/post.html">
+<a href="./posts/2022-02-17_sunburst-plots-for-taxonomic-data/post.html" class="no-external">
 <div class="listing-date">
 Feb 17, 2022
 </div>
@@ -661,25 +693,25 @@ Martin Westgate
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="13" data-categories="Maps,Eukaryota,Animalia,Chordata,Aves" data-listing-date-sort="1614517200000" data-listing-file-modified-sort="1702875685880" data-listing-date-modified-sort="1675602000000" data-listing-reading-time-sort="8">
+<div class="quarto-post image-right" data-index="13" data-categories="Maps,Eukaryota,Animalia,Chordata,Aves" data-listing-date-sort="1614517200000" data-listing-file-modified-sort="1705532795920" data-listing-date-modified-sort="1675602000000" data-listing-reading-time-sort="8" data-listing-word-count-sort="1515">
 <div class="thumbnail">
-<p><a href="./posts/2021-04-14_hex-maps-for-species-occurrence-data/post.html"> <img data-src="./posts/2021-04-14_hex-maps-for-species-occurrence-data/magpie-hex-map.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2021-04-14_hex-maps-for-species-occurrence-data/post.html" class="no-external"></a></p><a href="./posts/2021-04-14_hex-maps-for-species-occurrence-data/post.html" class="no-external">
+<p><img data-src="./posts/2021-04-14_hex-maps-for-species-occurrence-data/magpie-hex-map.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2021-04-14_hex-maps-for-species-occurrence-data/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2021-04-14_hex-maps-for-species-occurrence-data/post.html">
 <h3 class="no-anchor listing-title">
-Hex maps for species occurrence data
+<a href="./posts/2021-04-14_hex-maps-for-species-occurrence-data/post.html" class="no-external">Hex maps for species occurrence data</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2021-04-14_hex-maps-for-species-occurrence-data/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>Hexagonal grid maps (i.e.&nbsp;hex maps) are one way to display information about the distribution of a species and the relative frequency that a species occurs in a given area. Here we will show how to make a hex map of magpie observations in Australia using <code>sf</code> and <code>ggplot2</code>.</p>
+<a href="./posts/2021-04-14_hex-maps-for-species-occurrence-data/post.html" class="no-external">Hexagonal grid maps (i.e.&nbsp;hex maps) are one way to display information about the distribution of a species and the relative frequency that a species occurs in a given area. Here we will show how to make a hex map of magpie observations in Australia using <code>sf</code> and <code>ggplot2</code>. </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2021-04-14_hex-maps-for-species-occurrence-data/post.html">
+<a href="./posts/2021-04-14_hex-maps-for-species-occurrence-data/post.html" class="no-external">
 <div class="listing-date">
 Mar 1, 2021
 </div>
@@ -692,25 +724,25 @@ Matilda Stevenson, Dax Kellie, Martin Westgate
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="14" data-categories="Summaries,Eukaryota,Plantae" data-listing-date-sort="1609592400000" data-listing-file-modified-sort="1680674720890" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
+<div class="quarto-post image-right" data-index="14" data-categories="Summaries,Eukaryota,Plantae" data-listing-date-sort="1609592400000" data-listing-file-modified-sort="1680674720890" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="949">
 <div class="thumbnail">
-<p><a href="./posts/2021-03-20_creating-a-color-palette-from-an-image/post.html"> <img data-src="./posts/2021-03-20_creating-a-color-palette-from-an-image/colour-dot-matrix.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/2021-03-20_creating-a-color-palette-from-an-image/post.html" class="no-external"></a></p><a href="./posts/2021-03-20_creating-a-color-palette-from-an-image/post.html" class="no-external">
+<p><img data-src="./posts/2021-03-20_creating-a-color-palette-from-an-image/colour-dot-matrix.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/2021-03-20_creating-a-color-palette-from-an-image/post.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/2021-03-20_creating-a-color-palette-from-an-image/post.html">
 <h3 class="no-anchor listing-title">
-Creating a color palette from an image
+<a href="./posts/2021-03-20_creating-a-color-palette-from-an-image/post.html" class="no-external">Creating a color palette from an image</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/2021-03-20_creating-a-color-palette-from-an-image/post.html" class="no-external"></a>
 </div>
 <div class="listing-description">
-<p>There are hundreds of color palettes in the R ecosystem, but sometimes we might want to use colors from a specific image. Here I show how to use the <code>paletter</code> package to create a color palette for the 2020 Eucalypt of the Year: the Western Australian Gimlet.</p>
+<a href="./posts/2021-03-20_creating-a-color-palette-from-an-image/post.html" class="no-external">There are hundreds of color palettes in the R ecosystem, but sometimes we might want to use colors from a specific image. Here I show how to use the <code>paletter</code> package to create a color palette for the 2020 Eucalypt of the Year: the Western Australian Gimlet. </a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/2021-03-20_creating-a-color-palette-from-an-image/post.html">
+<a href="./posts/2021-03-20_creating-a-color-palette-from-an-image/post.html" class="no-external">
 <div class="listing-date">
 Jan 3, 2021
 </div>
@@ -1112,10 +1144,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1125,8 +1156,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1139,6 +1179,120 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1182,6 +1336,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1207,6 +1362,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1267,6 +1448,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 
