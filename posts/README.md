@@ -6,30 +6,24 @@ Posts are how-to articles that are blog-like, with the intention to share brief 
 
 ## Creating a post
 
-Before making a new post, please create a new branch from `main`.
+Before making a new post, please create a new branch from `main`. On your new branch, the easiest way to start a new Post is to create a new folder, name it (detailed in the next section), and copy/paste the contents of an existing Post folder into your new folder - ideally one that has a similar structure or uses the same coding language for your article.
 
-Each Post on ALA Labs is saved in `/posts` within its own subfolder. Each subfolder contains:
+Each Post on ALA Labs is saved in `/posts` within its own subfolder. Each subfolder will contain the following components that all work together to render a Post:
 
   *  `post.qmd`: The Post article
-  *  `your-dataviz.png`: A final dataviz that you wish to use as a preview image (displayed on the Post listing page)
+  *  `preview-dataviz.png`: A final dataviz that you wish to use as a preview image (displayed on the Post listing page)
   *  `_footer.html`: Code to build the footer added to the bottom of every Post
-  *  `/images`: Contains logos necessary to build the footer
+  *  `/images`: Folder containing logos necessary to build the footer
 
-Without these components, a Post will not render correctly on the website.
-
-The easiest way to start a new Post is to create a new folder, name it using the correct folder naming (detailed in the next section), and copy/paste the contents of an existing Post folder into your new folder - ideally one that has a similar structure or uses the same coding language for your article.
+Without all of these components, a Post will not render correctly on the website.
 
 ### Folder naming
 
-Posts are listed in order based on folder names, with the most recent date appearing first. 
-
-Folder naming should always be in the format:
+Posts are listed in order by date, with the most recent date appearing first. Folders should be named in the format:
 
 *yyyy-mm-dd_short-post-name*
 
-This folder name will be used within the url of your eventual post. 
-
-For example, the url for the Post titled "Alternatives to box plots: Using beeswarm and raincloud plots to summarise ecological data" is [https://labs.ala.org.au/posts/2023-08-28_alternatives-to-box-plots/post.html](https://labs.ala.org.au/posts/2023-08-28_alternatives-to-box-plots/post.html).
+Ideally your short post name will be very similar to the title of your eventual Post because this folder name will be used within the url of your eventual post. For example, the url for the Post titled "Alternatives to box plots: Using beeswarm and raincloud plots to summarise ecological data" is [https://labs.ala.org.au/posts/2023-08-28_alternatives-to-box-plots/post.html](https://labs.ala.org.au/posts/2023-08-28_alternatives-to-box-plots/post.html).
 
 ## Writing a Post
 
@@ -43,11 +37,19 @@ Posts will contain:
   *  A short introduction, outlining the problem and what the Post will show
   *  A concluding remark with limitations or links to other resources
   
-##### Titles
+#### Main title
 
-Post titles and subtitles should be short (e.g. "Download data", "Make map"). See existing Posts for examples.
+The goal of the main title is to make it something that might be returned by a Google search to solve a problem, make something or use a package.
 
-## Metadata
+*Bad*: Distribution of magpies in Australia
+
+*Good*: Make a map of species observations using ggplot2
+
+#### Subtitles
+
+Titles and subtitles within the Post should be as short as reasonably possible (e.g. "Download data", "Make map"). See existing Posts for examples.
+
+### Metadata
 
 Every Post begins with a `yaml` header and additional code to build html components like the date/author/photo banner. These options shouldn't be deleted but will need to be edited for your new article. To help you avoid deleting anything important, there is a note to let you know where to start writing your Post content:
 
