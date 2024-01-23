@@ -64,9 +64,9 @@ Prepared by
 <!-- Main panel description -->
 
 ::: {.paper-main-column}
-Images can provide myriad information useful to conservation efforts. A picture can capture changes in species traits and habitats, and sometimes even identify unique individuals of a species, making it possible for researchers to monitor individuals in a non-invasive manner. 
+Images can provide a lot of information useful to conservation efforts. A picture can capture changes in species traits and habitats, and sometimes even identify unique individuals of a species. Koalas are one species where individuals can be distinguished by their fur and markings, making it possible for researchers to monitor individuals in a non-invasive manner. 
 
-Koalas are one species that researchers are able to distinguish between individuals using fur patterns, skin markings, and even face shape. Danaher et al. (2023) explained how just one citizen scientist can make a huge impact on biodiversity data using pictures, evidenced by the work of Charley Geddes. 
+Danaher et al. (2023) explained how just one citizen scientist can make a huge impact on monitoring individuals using photography, evidenced by the work of Charley Geddes. 
 
 For over 10 years, Charley has worked tirelessly to capture koalas in her local area in Central Queensland. Her images provide detailed and intricately collected biodiversity data, so much so that researchers can track each individual's markings, fur colour, size, posture, and overall demeanour (even how they may dangle a leg)! While nose markings are found to be the most reliable, Charley notes that each koala (like us) has its own personality, and this realisation helps to improve her photography. 
 

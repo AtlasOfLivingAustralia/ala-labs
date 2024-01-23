@@ -103,6 +103,9 @@ a.nav-link {
     color: var(--primary-orange) !important;
 }
 
+.navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
+    color: var(--primary-orange);
+}
 
 .sidebar nav[role=doc-toc] ul>li>a.active {
     border-left: 1px solid var(--primary-orange) !important;

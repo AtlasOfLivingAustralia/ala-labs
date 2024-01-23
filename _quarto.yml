@@ -49,7 +49,7 @@ format:
     linkcolor: "#B8573E"
 
 execute:
-  freeze: true
+  freeze: auto
 
 
 
