@@ -1,7 +1,7 @@
 ---
 title: "Combining multiple species distributions on one map with hexagons and points"
 description: |
-  Visualising multiple species distributions in a single figure can be difficult if there are areas where ranges overlap. In this post we introduce a way to show several species distributions in an area at once using a novel twist on the commonly used hexbin map.  
+  Visualising multiple species distributions in a single figure can be difficult if there are areas where ranges overlap. In this post we introduce a way to show several species distributions in an area at once using a novel twist on the commonly used hexbin map.
 author:
   - name: "Callum Waite"
   - name: "Shandiya Balasubramaniam"
@@ -11,14 +11,18 @@ include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3
+filters: 
+  - lightbox
+lightbox: true
 categories:
   - Eukaryota
   - Animalia
   - Chordata
   - Aves
   - Maps
+  - R
 image: map_hexbin-points.png
-draft: true
+draft: false
 freeze: true
 editor_options: 
   chunk_output_type: console
@@ -53,13 +57,13 @@ library(htmltools)
 :::
 
 ::: author-card-image
-```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE, lightbox=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/callum.jpg")
 ```
 :::
 
 ::: author-card-image
-```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE, lightbox=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/shandiya.png")
 ```
 :::
@@ -353,6 +357,9 @@ The figure below summarises the process we'll follow: for each hexagon remaining
 #| fig-height: 2
 #| fig-width: 10
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
+#| lightbox: 
+#|   group: hex
+#|   description: Steps to build a grid of points inside each hexagon
 library(patchwork)
 p1 + p2 + p3 + p4 + p5 + p6 + plot_layout(ncol = 6)
 ```
@@ -482,6 +489,9 @@ This all looks correct! Now to add some final flourishes to make our map more ae
 #| column: page
 #| fig-align: center
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
+#| lightbox: 
+#|   group: final-plot
+#|   description: Distribution of Honeyeater species
 
 font_add_google("Montserrat")
 showtext_auto(enable = TRUE)

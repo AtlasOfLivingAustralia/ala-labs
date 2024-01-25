@@ -438,6 +438,13 @@ img.rounded {
   width: 50%
 }
 
+/* Centre circular images in row layout on phones */
+
+@media (max-width: 767.98px)
+.quarto-layout-row {
+    align-items: center;
+}
+
 /*@media screen and (max-width: 952px) {
   .l-body img {
     margin-right: 15px;
@@ -510,27 +517,39 @@ img.rounded {
 
 /* Tab appearance in panel-tabset */
 
+
+.nav-link {
+  color: var(--secondary-orange);
+}
+
+.nav-pills {
+  border-color: var(--primary-orange);
+}
+
 .nav-pills .nav-link {
     background: none;
     border: 10px;
     border-radius: 1.00rem;
 }
 
-.nav-link {
-  color: var(--secondary-orange);
-}
-
 .nav-pills .nav-link.active {
-    color: #fff;
-    background-color: var(--secondary-orange);
+    background-color: #FFC557;
 }
 
 .nav-link:hover {
-  color: #FFC557;
+  color: var(--primary-orange);
 }
 
 .nav-item .nav-link {
   color: white;
+}
+
+.nav-pills .nav-item .nav-link {
+  color: var(--secondary-orange);
+}
+
+.nav-pills .nav-item .nav-link:hover {
+  color: var(--primary-orange;
 }
 
 /* Tab appearance in panel-tabset */
@@ -538,3 +557,4 @@ img.rounded {
 .value-box-title {
   font-family: var(--main-font);
 }
+
