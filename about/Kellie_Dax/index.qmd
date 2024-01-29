@@ -53,26 +53,26 @@ create_button(
 
 ### {{< fa newspaper >}} Posts 
 
-[Beginner's guide to making a quick map of species occurrences in Python and R](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/post.html)<br>
+[Beginner's guide to making a quick map of species occurrences in Python and R](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/)<br>
 *The ability to make a map quickly is an essential skill in ecology and conservation. This post shows how to make a quick, simple map of Peron's tree frog occurrences & set a custom font using either Python or R.*
 
-[Alternatives to box plots: Using beeswarm and raincloud plots to summarise ecological data](https://labs.ala.org.au/posts/2023-08-28_alternatives-to-box-plots/post.html)<br>
+[Alternatives to box plots: Using beeswarm and raincloud plots to summarise ecological data](https://labs.ala.org.au/posts/2023-08-28_alternatives-to-box-plots/l)<br>
 *Box plots are a common way to summarise data in ecology and biology research, but box plots have their weaknesses. Here we’ll show how easy it can be to make beeswarm and raincloud plots—two alternatives with greater data transparency—using plant trait data from {austraits}.*
 
 [Plotting invasive species distributions with alpha shapes and choropleth maps in Python](https://labs.ala.org.au/posts/2023-04-28_plotting-invasive-species/post.html)<br>
 *Invasive and introduced species can expand quickly into new habitats, altering ecosystems. In this post we use Python's {galah}, {alphashape} and {GeoPandas} packages to visualise the growing distribution of Rhinella marina (cane toads) and the expanding range of Pittisporum undulatum in Australia.*
 
-[Make a highlighted time-series plot](https://labs.ala.org.au/posts/2023-04-03_highlighted-time-series/post.html)<br>
+[Make a highlighted time-series plot](https://labs.ala.org.au/posts/2023-04-03_highlighted-time-series/)<br>
 *Time-series analyses can be handy for seeing trends over time, and exploring how trends relate to major events. Here, we show how to create an exploratory time-series plot comparing observations of waterbirds prior to and during the COVID-19 pandemic.*
 
-[Animated species distribution maps with {gifski}](https://labs.ala.org.au/posts/2023-03-14_animated-map/post.html)<br>
+[Animated species distribution maps with {gifski}](https://labs.ala.org.au/posts/2023-03-14_animated-map/)<br>
 *One useful way to see changes in a species' habitat range over time is by using animation to view multiple distributions in succession. Here we will model the distribution of Nudibranchia across Australia each month to create an animated GIF of its distribution over a year.*
 
-[Counting points in multipolygon shapefiles for choropleth mapping](https://labs.ala.org.au/posts/2023-01-12_counting-points-in-shapefiles/post.html)<br>
+[Counting points in multipolygon shapefiles for choropleth mapping](https://labs.ala.org.au/posts/2023-01-12_counting-points-in-shapefiles/)<br>
 *Choropleth maps are an excellent way to visualise numbers of observations in each region. When using point data, calculating the number of points in each polygon can be difficult when using shapefiles. Here we demonstrate how to extract and summarise the number of points in each polygon within a shapefile to create a choropleth map.*
 
-[Quantify geographic sampling bias with {sampbias}](https://labs.ala.org.au/posts/2022-07-22_sample-bias/post.html)<br>
+[Quantify geographic sampling bias with {sampbias}](https://labs.ala.org.au/posts/2022-07-22_sample-bias/)<br>
 *Human biases play a large role in the data we collect about species. Here we show a simple method to quantify the bias of roads, cities, rivers and airports on species observations of legless lizards in the Northern Territory*
 
-[Download plant species data by hexagon to make a 3D hex map](https://labs.ala.org.au/posts/2022-05-17_3d-map/post.html)<br>
+[Download plant species data by hexagon to make a 3D hex map](https://labs.ala.org.au/posts/2022-05-17_3d-map/)<br>
 *Making plots eye-catching can be useful for science communication. Here, we show how to make 3D plots in R with the `rayshader` package by visualising the number of species identified from ALA observations since 2020*

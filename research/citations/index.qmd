@@ -7,7 +7,6 @@ toc: false
 format: 
   html: 
     include-after-body: _footer.html
-    css: ../theme.css
     self-contained: true
 freeze: true
 ---

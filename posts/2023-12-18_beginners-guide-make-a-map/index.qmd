@@ -676,8 +676,29 @@ To make it clearer how the CRS changes the projection of a map, here are 3 maps 
   *  EPSG:8058 (a state/territory-specific projection for NSW)
   *  EPSG:2955 (intended for Canadian territories)
 
-```{r}
+```{r make-crs-maps}
 #| code-fold: true
+
+p1 <- nsw |> 
+  ggplot() +
+  geom_sf(colour = "grey60",
+          fill = "white")
+
+p2 <- nsw |> 
+  st_transform(crs = st_crs(8058)) |>
+  ggplot() +
+  geom_sf(colour = "grey60",
+          fill = "white")
+
+p3 <- nsw |> 
+  st_transform(crs = st_crs(2955)) |>
+  ggplot() +
+  geom_sf(colour = "grey60",
+          fill = "white")
+```
+
+```{r print-crs-maps}
+#| echo: false
 #| layout-ncol: 3
 #| fig-cap: 
 #|   - "GDA94"
@@ -685,24 +706,10 @@ To make it clearer how the CRS changes the projection of a map, here are 3 maps 
 #|   - "EPSG:2955"
 #| fig-column: body-outset
 #| fig-align: center
-#| out-extra: "style=margin-left:auto;margin-right:auto;"
 
-nsw |> 
-  ggplot() +
-  geom_sf(colour = "grey60",
-          fill = "white")
-
-nsw |> 
-  st_transform(crs = st_crs(8058)) |>
-  ggplot() +
-  geom_sf(colour = "grey60",
-          fill = "white")
-
-nsw |> 
-  st_transform(crs = st_crs(2955)) |>
-  ggplot() +
-  geom_sf(colour = "grey60",
-          fill = "white")
+p1
+p2
+p3
 ```
 
 Data from the ALA use CRS EPSG:4326 (also known as "WGS84"). Reprojecting our shapefile to the same CRS allows us to make sure the points of our data align correctly with our shapefile.
@@ -732,12 +739,12 @@ For some final touches (to make the map prettier), we can add a centred title an
 We'll add a custom Google font, [Roboto](https://fonts.google.com/specimen/Roboto), using the showtext package, loading it into R with `font_add_google()`.
 
 ```{r}
-#| column: screen-inset
-#| fig-align: center
-#| fig-height: 9
-#| fig-width: 10
+#| fig-height: 8
+#| fig-width: 9
 #| warning: false
 #| message: false
+#| column: page
+#| fig-align: center
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 # Add font

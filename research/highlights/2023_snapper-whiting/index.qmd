@@ -66,9 +66,9 @@ Prepared by
 <!-- Main panel description -->
 
 ::: {.paper-main-column}
-Species distribution models are widely used in ecology to predict where a species might live. These models can be particularly useful to understand species that are difficult to observe or survey. However, when there is limited data on a species, models are prone to making poor predictions as well. 
+Species distribution models are useful to predict where species that are difficult to observe or survey might live. However, when there is limited data on a species, models are prone to making poor predictions, too. 
 
-Citizen science data can help increase not only the number of observations, but also the breadth of surveillance of many different species. When the range of a species is known to be shifting or expanding, data collected by citizen scientists may be especially useful for gathering up-to-date information because the chance of incidentally observing a species increases. 
+Citizen science data can help increase the breadth of surveillance of many different species and their number of observations. When the range of a species is shifting or expanding, data collected by citizen scientists may be especially useful because the chance of incidentally observing a species is higher. 
 
 Landry et al. (2023) compared species distribution models of Tasmanian species of Snapper and Whiting—two recreationally important fish with expanding habitat ranges—that included or excluded citizen science observations data with traditional data repository observations. They found models that include citizen science data predict a substantially larger habitat range for both species: an increase of 277km for Snapper, and 437km for Whiting. Adding citizen science data also increased the volume of data by 2.3% for Snapper and 52.7% for Whiting. For species with expanding habitat ranges, citizen science data can be useful for capturing occurrences of species at their range edge. 
 
