@@ -38,8 +38,8 @@ freeze: true
 
 #### Author
 Caitlin Ramsay  
-[Amanda Buyan](https://labs.ala.org.au/people/Buyan_Amanda/index.html)  
-[Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)  
+[Amanda Buyan](https://labs.ala.org.au/about/Buyan_Amanda/index.html)  
+[Dax Kellie](https://labs.ala.org.au/about/Kellie_Dax/index.html)  
 
 #### Date
 28 April 2023
@@ -242,6 +242,7 @@ This figure showcases the incredible pace of the cane toad's spread across north
 #| column: page
 #| fig-align: center
 #| fig-height: 9
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 ax = states.boundary.plot(edgecolor="#5A5A5A", linewidth=0.5, facecolor="white", zorder=-1)
 
 alpha_shape_gdf.plot(ax = ax, cmap="plasma", column = "decade_string", legend=True, categorical=True)
@@ -274,6 +275,7 @@ Let's use the same code as above to visualise other invasive species *Camelus dr
 #| fig-align: center
 #| fig-height: 7
 #| warning: false
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 # Camel
 camels = galah.atlas_occurrences("Camelus dromedarius", use_data_profile="ALA")
@@ -468,6 +470,7 @@ Our map shows that *Pittosporum undulatum* has been observed in Western Australi
 #| column: page
 #| fig-align: center
 #| fig-height: 9
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 bioregions.plot(edgecolor="white", linewidth = 0.25, color = bioregions["colour"])
 
 title_text = "<style:italic>Pittosporum undulatum</> <color:#8FBD4C, weight:bold>native</> and <color:#F7872E, weight:bold>introduced</> Australian bioregions"

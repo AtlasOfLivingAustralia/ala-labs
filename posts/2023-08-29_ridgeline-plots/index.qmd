@@ -1,0 +1,139 @@
+---
+title: "Alternatives to box plots: Ridgeline plots"
+description: |
+  cool intro
+author:
+  - name: "Dax Kellie"
+  - name: "Shandiya Balasubramaniam"
+date: "2023-05-16"
+title-block-banner: "#B8573E"
+include-after-body: _footer.html
+toc: true
+toc-location: left
+toc-depth: 2
+categories:
+  - Eukaryota
+  - Animalia
+  - Chordata
+  - Aves
+  - Summaries
+image: tbd
+draft: true
+freeze: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| include: false
+library(htmltools)
+```
+
+<!-- remove metadata section -->
+<style>
+  #title-block-header.quarto-title-block.default .quarto-title-meta {
+      display: none;
+  }
+</style>
+
+
+
+<!-- Author card -->
+
+:::{.author-card}
+:::{.author-card-text}
+
+#### Author
+[Dax Kellie](https://labs.ala.org.au/about/Kellie_Dax/index.html)  
+[Shandiya Balasubramaniam](https://labs.ala.org.au/about/Balasubramaniam_Shandiya/index.html)  
+
+#### Date
+5 May 2023
+
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg")
+```
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/shandiya.jpg")
+```
+:::
+
+:::
+
+<!------------------------ Post starts here ------------------------>
+
+
+
+
+```{r}
+#| eval: false
+#| echo: false
+library(galah)
+library(ggridges)
+library(tidyverse)
+library(showtext)
+
+galah_config(email = "dax.kellie@csiro.au")
+
+search_all(fields, "cl1048") |> search_values("northern")
+
+waders <- galah_call() |>
+  galah_identify("Charadriiformes") |>
+  galah_filter(cl1048 == "Northern Kimberley") |>
+  galah_apply_profile(ALA) |>
+  atlas_occurrences()
+
+waders_date <- waders |>
+  mutate(eventDate = as_date(eventDate),
+         date_julian = yday(eventDate))
+
+font_add_google("Roboto", roboto)
+pilot::set_pilot_family("roboto")
+
+ggplot(data = waders_date |> 
+         filter(scientificName %in% sample(unique(scientificName), 40)),
+       aes(x = date_julian, 
+           y = scientificName,
+           colour = scientificName,
+           fill = scientificName)) +
+  ggridges::geom_density_ridges(
+    alpha = .8, size = 1, 
+    rel_min_height = 0.02
+  ) + 
+  scale_x_continuous(breaks = c(1, 91, 182, 274),
+                     labels = c("Jan", "Apr", "Jul", "Oct")) +
+  labs(x = "Month", 
+       y = "Species") +
+  pilot::scale_fill_pilot() +
+  pilot::scale_color_pilot() +
+  pilot::theme_pilot(grid = "") + 
+  theme(legend.position = "none",
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_rect(fill = "#E5DCC8", color = NA),
+        plot.background = element_rect(fill = "#E5DCC8"))
+
+```
+
+
+
+<details><summary style = "color: #E06E53;">Expand for session info</summary>
+
+```{r, echo = FALSE}
+library(sessioninfo)
+# save the session info as an object
+pkg_sesh <- session_info(pkgs = "attached")
+# print it out
+pkg_sesh
+```
+
+</details>

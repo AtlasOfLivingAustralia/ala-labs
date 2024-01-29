@@ -1,0 +1,75 @@
+---
+title: "Aligning citizen-science objectives to foster research grade data"
+author: "Olivia Torresan"
+date: "2023-12-14"
+title-block-banner: "#EEECEA"
+title-block-banner-color: "#E06E53"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png 
+categories:
+  - Citizen science
+params:
+  authors: "O’Reilly, W. & Starrs, D."
+  year: 2023
+  title: "Science citizen: Shifting to a “science-first” approach and recognising the trade-offs between objectives in a long-term citizen science program"
+  publication: "Frontiers in Environmental Science"
+  doi: https://doi.org/10.3389/fenvs.2023.1270247
+  image_url: https://images.ala.org.au/image/details?imageId=a978473b-23a0-4d8d-b74b-5ca60235316b
+  alt_text: A dragonfly (Austroargiolestes icteromelas) perching near water
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+<!-- Side panel -->
+
+::: column-page
+::: paper-side-column
+<center>
+
+::: {.col-image layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/b/6/1/3/a978473b-23a0-4d8d-b74b-5ca60235316b/original" class="rounded"/></img>
+:::
+
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+
+[*Austroargiolestes icteromelas* (JohnBundock CC BY 3.0)]( https://images.ala.org.au/image/details?imageId=a978473b-23a0-4d8d-b74b-5ca60235316b)
+:::
+
+### Citation
+
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+#### Page info
+
+Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
+:::
+
+<!-- Main panel description -->
+
+::: paper-main-column
+There remains ongoing debate on how reliable citizen science data is within ecological research. This debate often questions the accuracy and viability of long-term data collection within citizen science. One prevalent opinion is that citizen science data is unreliable compared to professionally collected data for ecological research. Those in support of citizen science argue that citizen science data can be made reliable with proper methodological planning. 
+
+In this paper, O’Reilly et al. (2023) review WaterWatch ACT, a thirty-year citizen science project on water quality and biodiversity, to understand its successes and failures. The authors find that diverging objectives between keen citizen scientists and professional researchers was one major difficulty of using citizen science for research-grade data collection. 
+
+For example, citizen scientists value independence and data ownership; these objectives can empower volunteers to choose sites and times that work best for them to collect data. However, this freedom can fragment sample sizes and sites, making data less accurate than data from professionally collected, methodologically rigourous research projects. Despite the benefits of added rigour, there are limitations to the amount of data professional researchers can collect, too, usually due to short-term project funding or finite time and resource commitments. 
+
+WaterWatch ACT found that balancing these objectives was key to improving data quality while retaining strong citizen science support for their long-term program. Citizen science has huge potential for regular data collection in ecology. Learning to adapt methods will improve the use, breadth and quality of ecological data into the future.
+:::
+:::

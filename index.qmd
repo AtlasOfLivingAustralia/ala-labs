@@ -53,9 +53,9 @@ tags$div(class = "category-row",
          
   tags$div( 
     class = "category-column",
-    tags$a(href = "posts.html#category=Summaries",
+    tags$a(href = "posts/index.html#category=Summaries",
       tags$img(
-        href = "posts.html#category=Summaries",
+        href = "posts/index.html#category=Summaries",
         src = "images/vectors/barplot.svg",
         style = "color:#fff !important;",
         class = "category-image honey-white"
@@ -63,13 +63,13 @@ tags$div(class = "category-row",
   tags$h4(style = "text-align:center;",
       tags$a(
         class = "white",
-        href = "posts.html#category=Summaries", "Summaries"))),
+        href = "posts/index.html#category=Summaries", "Summaries"))),
   
   tags$div( 
     class = "category-column",
-    tags$a(href = "posts.html#category=Maps",
+    tags$a(href = "posts/index.html#category=Maps",
       tags$img(
-        href = "posts.html#category=Maps",
+        href = "posts/index.html#category=Maps",
         src = "images/vectors/Australia.svg",
         style = "color:#fff !important;",
         class = "category-image honey-white"
@@ -77,13 +77,13 @@ tags$div(class = "category-row",
   tags$h4(style = "text-align:center",
       tags$a(
         class = "white",
-        href = "posts.html#category=Maps", "Maps"))),
+        href = "posts/index.html#category=Maps", "Maps"))),
   
   tags$div( 
     class = "category-column",
-    tags$a(href = "posts.html#category:Trees",
+    tags$a(href = "posts/index.html#category:Trees",
       tags$img(
-        href = "posts.html#category=Trees",
+        href = "posts/index.html#category=Trees",
         src = "images/vectors/tree.svg",
         style = "color:#fff !important;",
         class = "category-image honey-white"
@@ -91,7 +91,7 @@ tags$div(class = "category-row",
   tags$h4(style = "text-align:center",
       tags$a(
         class = "white",
-        href = "posts.html#category=Trees", "Trees")))
+        href = "posts/index.html#category=Trees", "Trees")))
   
   )
 ```
@@ -126,26 +126,26 @@ tags$div(class = "category-row",
   tags$div( 
     class = "category-column",
     style = "width: 50%",
-    tags$a(href = "research/highlights.html",
+    tags$a(href = "research/highlights/index.html",
       tags$img(
-        href = "research/highlights.html",
+        href = "research/highlights/index.html",
         src = "images/vectors/seedling-solid.svg",
         class = "category-image honey"
   )),
   tags$h4(style = "text-align:center;",
-      tags$a(href = "research/highlights.html", "Selected\nhighlights"))),
+      tags$a(href = "research/highlights/index.html", "Selected\nhighlights"))),
   
   tags$div( 
     class = "category-column",
     style = "width: 50%",
-    tags$a(href = "research/citations.html",
+    tags$a(href = "research/citations/index.html",
       tags$img(
-        href = "research/citations.html",
+        href = "research/citations/index.html",
         src = "images/vectors/table-list-solid.svg",
         class = "category-image honey"
   )),
   tags$h4(style = "text-align:center;",
-      tags$a(href = "research/citations.html", "Complete list"))
+      tags$a(href = "research/citations/index.html", "Complete list"))
   
   ))
 ```
@@ -193,9 +193,9 @@ tags$div(class = "category-row",
   tags$div( 
     class = "category-column",
     style = "width: 100%",
-    tags$a(href = "software/software.html",
+    tags$a(href = "software/index.html",
       tags$img(
-        href = "software/software.html",
+        href = "software/index.html",
         src = "images/vectors/hexagon-vector.svg",
         style = "color:#fff !important;",
         class = "category-image honey-white"
@@ -203,7 +203,7 @@ tags$div(class = "category-row",
   tags$h4(style = "text-align:center;",
       tags$a(
         class = "white",
-        href = "software/software.html", "Packages"))
+        href = "software/index.html", "Packages"))
   
   ))
 ```

@@ -1,0 +1,48 @@
+---
+title: "Callum Waite"
+include-after-body: _footer.html
+---
+
+```{r, include=FALSE}
+library(htmltools)
+library(here)
+source(here("R", "functions.R"))
+```
+
+### {{< fa circle-user >}} Bio 
+
+:::{.bio-row}
+:::{.bio-column-right}
+
+```{r out.width='275px', out.extra='style="display:block; margin-left:auto; margin-right:auto; clip-path: circle();"'}
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/callum.jpg")
+```
+:::
+
+:::{.bio-column-left}
+Callum is an ecological data analyst with a Masters in Quantitative Biology. He has a background in population ecology modelling and is passionate about effective and aesthetic data visualisation. As a data analyst with the ALA, he works on projects that support biosecurity and improve data visualisation using ALA data.
+
+:::
+:::
+
+:::{.column-body style="margin-top:-20px;"}
+
+```{r}
+#| echo: false
+
+tags$div(class = "row", style = "display: flex;",
+         
+create_button(
+  icon = "fab fa-github fa-xl",
+  url = "https://github.com/cjwaite23"
+)
+)
+```
+
+:::
+
+### {{< fa newspaper >}} Posts 
+
+[Combining multiple species distributions on one map with hexagons and points](https://labs.ala.org.au/posts/2024-01-25_hex_point_maps/)<br>
+*Visualising multiple species distributions in a single figure can be difficult if there are areas where ranges overlap. In this post we introduce a way to show several species distributions in an area at once using a novel twist on the commonly used hexbin map.*

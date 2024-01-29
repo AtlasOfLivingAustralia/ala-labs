@@ -1,0 +1,76 @@
+---
+title: "When do Jacaranda trees bloom?"
+author: "Olivia Torresan"
+date: "2022-05-16"
+title-block-banner: "#A191B2"
+title-block-banner-color: "#D8E4C8"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png
+categories:
+  - Citizen science
+  - Climate change
+params:
+  authors: "Garcia-Rojas, M. I., Keatley, M. R., & Roslan, N."
+  year: 2022
+  title: "Citizen science and expert opinion working together to understand the impacts of climate change"
+  publication: "PLOS ONE"
+  doi: https://doi.org/10.1371/journal.pone.0273822
+  image_url: https://images.ala.org.au/image/details?imageId=2dd10017-9042-4e9c-8980-b4e578101f81
+  alt_text: Flowering Jacaranda tree
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Side panel -->
+
+:::{.column-page}
+
+:::{.paper-side-column}
+
+<center>
+:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/1/8/f/1/2dd10017-9042-4e9c-8980-b4e578101f81/original" class="rounded"/></img>
+:::
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+[*Jacaranda mimosifolia* (2fgaj | questagame.com CC BY NC 3.0)](https://images.ala.org.au/image/details?imageId=2dd10017-9042-4e9c-8980-b4e578101f81)
+:::
+
+### Citation
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+
+#### Page info
+Prepared by 
+[Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
+:::
+
+
+<!-- Main panel description -->
+
+::: {.paper-main-column}
+Pictures of species are a valuable way of documenting how traits and characteristics vary in different locations and over time.
+
+To understand how shifts in climate influence seasonal behaviour of Australia’s plants, Garcia-Rojas, Keatley & Roslan (2023) used images of Jacaranda trees (*Jacaranda mimosifolia*) to investigate how their flowering patterns might have changed across time. These images were obtained from a decade-long citizen science program published to the Atlas of Living Australia. A total of 11,578 Jacaranda sightings were used to calculate the time period and intensity of flowering from 2009 – 2019.
+
+Jacaranda’s were found to flower more intensely and for a longer amount of time in warm and dry conditions, but when too hot and dry this trend reversed. With the climate predicted to grow warmer and drier in the future, Jacarandas may find temporary success along Australia’s east coast, but find conditions increasingly difficult in regions like Perth that are already warm and dry.
+:::
+
+:::
+

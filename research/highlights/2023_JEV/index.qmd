@@ -1,0 +1,79 @@
+---
+title: "Mapping transmission risk: Japanese Encephalitis Virus"
+author: "Margot Schneider & Olivia Torresan"
+date: "2022-05-15"
+title-block-banner: "#222322"
+title-block-banner-color: "#EEECEA"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png
+categories:
+  - Human health
+  - Agriculture
+  - Climate change
+params:
+  authors: "Furlong, M., Adamu, A. M., Hoskins, A., Russell, T. L., Gummow, B., Golchin, M., Hickson, R. I., & Horwood, P. F."
+  year: 2023
+  title: "Japanese Encephalitis Enzootic and Epidemic Risks across Australia"
+  publication: "Viruses"
+  doi:  https://doi.org/10.3390/v15020450
+  image_url: https://images.ala.org.au/image/details?imageId=20e67558-6fe7-49cc-964a-aaabca0933cb
+  alt_text: A mosquito on a net
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Side panel -->
+
+:::{.column-page}
+
+:::{.paper-side-column}
+
+<center>
+:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/b/c/3/3/20e67558-6fe7-49cc-964a-aaabca0933cb/original" class="rounded"/></img>
+:::
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+[*Culex (Culex) sitiens* (Nick Lambert CC BY NC SA 3.0)](https://images.ala.org.au/image/details?imageId=20e67558-6fe7-49cc-964a-aaabca0933cb)
+:::
+
+### Citation
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+
+#### Page info
+Prepared by 
+[Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/), 
+[Margot Schneider](https://labs.ala.org.au/about/Schneider_Margot/)
+
+:::
+
+
+<!-- Main panel description -->
+
+::: {.paper-main-column}
+Japanese encephalitis virus is a blood-borne virus spread via mosquitos. It is often considered a rural disease, present in animal populations (often pigs and waterbirds) and able to infect humans that interact closely with animal hosts. Urbanisation and agricultural production can increase the risk that humans contract the virus.
+
+Until recently Japanese encephalitis was thought to be geographically restricted to Northern Australia, but in 2022, it was found across all the eastern states of Australia and declared nationally significant.
+
+Furlong and others (2023) used ALA data to obtain occurrence records of both mosquitos and waterbirds. Using ecological niche models, they found the highest risk of human exposure to the virus in coastal Australia—sprawling across the Great Dividing Range and the Murray-Darling Basin. The authors predict that Japanese encephalitis will establish an endemic circulation in Australia, increasing risks to human health.
+:::
+
+:::
+

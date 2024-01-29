@@ -1,0 +1,63 @@
+---
+title: "Shandiya Balasubramaniam"
+include-after-body: _footer.html
+---
+
+```{r, include=FALSE}
+library(htmltools)
+library(here)
+source(here("R", "functions.R"))
+```
+
+### {{< fa circle-user >}} Bio 
+
+:::{.bio-row}
+:::{.bio-column-right}
+
+```{r out.width='275px', out.extra='style="display:block; margin-left:auto; margin-right:auto; clip-path: circle();"'}
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/shandiya.png")
+```
+:::
+
+:::{.bio-column-left}
+Shandiya is an evolutionary ecologist with interests in conservation genetics and wildlife disease. She is the Decision Support Program Lead. Her work as a data analyst at the ALA focuses on streamlining reproducible pathways for researchers to access and analyse open data. 
+:::
+:::
+
+:::{.column-body style="margin-top:-20px;"}
+```{r}
+#| echo: false
+
+tags$div(class = "row", style = "display: flex;",
+         
+create_button(
+  icon = "fab fa-github fa-xl",
+  url = "http://github.com/shandiya"
+),
+create_button(
+  icon = "fas fa-globe fa-xl",
+  url = "https://shandiya.netlify.app/"
+),
+create_button(
+  icon = "fab fa-twitter fa-xl",
+  url = "http://twitter.com/ShandiyaB"
+)
+)
+```
+:::
+
+
+
+### {{< fa newspaper >}} Posts 
+
+[Combining multiple species distributions on one map with hexagons and points](https://labs.ala.org.au/posts/2024-01-25_hex_point_maps/)<br>
+*Visualising multiple species distributions in a single figure can be difficult if there are areas where ranges overlap. In this post we introduce a way to show several species distributions in an area at once using a novel twist on the commonly used hexbin map.*
+
+[Alternatives to box plots: Using beeswarm and raincloud plots to summarise ecological data](https://labs.ala.org.au/posts/2023-08-28_alternatives-to-box-plots/post.html)<br>
+*Box plots are a common way to summarise data in ecology and biology research, but box plots have their weaknesses. Here we’ll show how easy it can be to make beeswarm and raincloud plots—two alternatives with greater data transparency—using plant trait data from {austraits}.*
+
+[Multiple colour scales in choropleth maps with {ggnewscale}](https://labs.ala.org.au/posts/2022-05-23-ggnewscale/post.html)<br>
+*Using multiple colour scales can be a great way to visually differentiate between geographic categories on a map. Here, we demonstrate this by creating a choropleth map to represent the density of plant records from the ALA across bioregions in Australia, and add multiple colour scales to differentiate marine and terrestrial records*
+
+

@@ -72,7 +72,7 @@ Things that should be updated in the `yaml` of each article include:
 Things that should be updated in the html components code:
 
   *  Author name & url to their People page  
-      *  e.g. `[firstName lastName](https://labs.ala.org.au/people/lastName_firstName/index.html)`
+      *  e.g. `[firstName lastName](https://labs.ala.org.au/about/lastName_firstName/index.html)`
   *  Date
   *  Url to author image in `::: author-card-image` section
       *  e.g., `knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/firstName.jpg")`

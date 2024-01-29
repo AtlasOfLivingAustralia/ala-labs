@@ -1,0 +1,80 @@
+---
+title: "Citizen scientists uncover environmental history with pollen & spore fossils"
+author: "Margot Schneider & Olivia Torresan"
+date: "2022-05-15"
+title-block-banner: "#FFC557"
+title-block-banner-color: "#6B3224"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png
+categories:
+  - Citizen science
+  - Biodiversity science
+params:
+  authors: "Djokic, T., Frese, M., Woods, A., Dettmann, M., Flemons, P., Brink, F., & McCurry, M. R."
+  year: 2023
+  title: "Inferring the age and environmental characteristics of fossil sites using citizen science"
+  publication: "PLOS ONE"
+  doi:  https://doi.org/10.1371/journal.pone.0284388
+  image_url: https://images.ala.org.au/image/details?imageId=d73f7636-1057-4ee5-a68a-e0f156b29542
+  alt_text: Magnified bark of a Bunya pine
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Side panel -->
+
+:::{.column-page}
+
+:::{.paper-side-column}
+
+<center>
+:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/2/4/5/9/d73f7636-1057-4ee5-a68a-e0f156b29542/original" class="rounded"/></img>
+:::
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+[*Araucaria bidwillii* (Michael Hains CC BY 3.0)](https://images.ala.org.au/image/details?imageId=d73f7636-1057-4ee5-a68a-e0f156b29542)
+:::
+
+### Citation
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+
+#### Page info
+Prepared by 
+[Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/), 
+[Margot Schneider](https://labs.ala.org.au/about/Schneider_Margot/)
+
+:::
+
+
+<!-- Main panel description -->
+
+::: {.paper-main-column}
+
+Microfossils are the fossilized remains of bacteria, protists, fungi, animals and plants. The most common way to extract and analyse microfossils is by using a compatible acid to dissolve the rock they are preserved in while leaving the fossil intact. In some cases, though, this method does not work. If the rock matrix and the fossils are too compositionally similar, for instance, the choice of acid can degrade the fossil or reduce its quality. 
+
+Faced with this problem, Djokic and others (2023) used citizen science to analyse images of pollen and spore microfossils from McGrath’s Flat near Gulgong in the Central Tablelands (NSW). Analysing images of microfossils is an incredibly time and resource-consuming feat. A professional scientist usually needs around 6 hours to locate and image 50 microfossils (not including analysis or identification). 
+
+Using images hosted by Atlas of Living Australia’s online volunteering platform DigiVol, 250 citizen scientists analysed 25,000+ images at three times this pace (!), successfully identifying 300 pollen and spores from the Miocene age (11–20 million-years-ago). The authors hope to encourage other researchers to use the power of citizen science for fossil identification.
+
+:::
+
+:::
+

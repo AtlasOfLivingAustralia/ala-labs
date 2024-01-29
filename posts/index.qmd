@@ -1,0 +1,25 @@
+---
+title: "Posts"
+subtitle: "How-to articles to solve scientific problems"
+listing:
+  sort-ui: true
+  sort: 
+    - "date desc"
+    - "title desc"
+  type: default
+  date-format: medium
+  categories: true
+  page-size: 9
+  fields: [image, author, title, description, date, reading-time]
+title-block-banner: "#E06E53"
+title-block-banner-color: body
+page-layout: full
+format: 
+  html:
+    include-after-body: _footer.html 
+    grid:
+      sidebar-width: 250px
+      body-width: 1000px
+      margin-width: 200px
+---
+

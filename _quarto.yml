@@ -21,17 +21,17 @@ website:
       - href: index.qmd
         icon: house-door-fill
         text: " "
-      - href: about.qmd
+      - href: about/index.qmd
         text: "About"
-      - href: posts.qmd
+      - href: posts/index.qmd
         text: "Posts"
       - text: "Research"
         menu:
-        - href: research/highlights.qmd
+        - href: research/highlights/index.qmd
           text: "Highlights"
-        - href: research/citations.qmd
+        - href: research/citations/index.qmd
           text: "All citations"
-      - href: software/software.qmd
+      - href: software/index.qmd
         text: "Software"
       - href: https://www.ala.org.au
         icon: ala

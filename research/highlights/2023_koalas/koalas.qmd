@@ -1,0 +1,79 @@
+---
+title: "Rapid loss of genetic diversity in Koalas from urbanisation"
+author: "Margot Schneider & Olivia Torresan"
+date: "2022-03-07"
+title-block-banner: "#667073"
+title-block-banner-color: "#ADEBE8"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png
+categories:
+  - Biodiversity science
+  - Conservation
+params:
+  authors: "Hohwieler Katrin R., de Villiers Deidre L., Cristescu Romane, Celine H. Frere"
+  year: 2023
+  title: "Genetic erosion detected in a specialist mammal living in a fast-developing environment"
+  publication: "Conservation Science and Practice"
+  doi: https://doi.org/10.1111/csp2.12738
+  image_url: https://images.ala.org.au/image/details?imageId=510ef86e-0fa3-41c3-a023-1b569398788d
+  alt_text: An image of a Koala sitting in a tree
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Side panel -->
+
+:::{.column-page}
+
+:::{.paper-side-column}
+
+<center>
+:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/d/8/8/7/510ef86e-0fa3-41c3-a023-1b569398788d/original" class="rounded"/></img>
+:::
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+[*Phascolarctos cinereus* (Nathaniel Xggum CC BY NC 3.0)](https://images.ala.org.au/image/details?imageId=510ef86e-0fa3-41c3-a023-1b569398788dl)
+:::
+
+### Citation
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+
+#### Page info
+Prepared by 
+[Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/), 
+[Margot Schneider](https://labs.ala.org.au/about/Schneider_Margot/)
+:::
+
+
+<!-- Main panel description -->
+
+::: {.paper-main-column}
+Habitat fragmentation—when a large habitat is divided into smaller isolated patches of habitat—is a major threat to species survival. Usually caused by habitat destruction, habitat fragmentation can separate populations from the larger group of individuals. 
+
+Compared to larger populations, fragmented populations are more likely to inbreed, reducing their genetic diversity. Genetic diversity is important for species. It improves their resilience to disease and their ability to adapt to changing environmental conditions. Without detection or management, fragmentation heightens species extinction risk. 
+
+With the help of ALA data, Hohwieler and others (2022) assessed the genetic diversity of a Queensland koala population by comparing physical samples (ear biopsy specimens and scats) between two generations (2006 vs. 2018).
+
+The authors found a decline in diversity that correlated with accelerating urbanisation, traffic increases and habitat loss. Supported by this evidence, the authors call for stronger requirements of genetic diversity guidelines when determining species' and ecosystems' critical status by the International Union for Conservation (IUCN).
+:::
+
+:::
+

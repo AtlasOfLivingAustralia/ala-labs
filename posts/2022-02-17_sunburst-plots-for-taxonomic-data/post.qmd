@@ -39,7 +39,7 @@ library(htmltools)
 :::{.author-card-text}
 
 #### Author
-[Martin Westgate](https://labs.ala.org.au/people/Westgate_Martin/index.html)  
+[Martin Westgate](https://labs.ala.org.au/about/Westgate_Martin/index.html)  
 
 #### Date
 February 17 2022

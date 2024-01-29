@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.540">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Margot Schneider">
+<meta name="author" content="Fonti Kar">
+<meta name="dcterms.date" content="2022-10-20">
+<meta name="description" content="Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions when a species has very few existing observations. Here, we will show you how to create these spatial polygons using data from the ALA.">
+
+<title>ALA Labs - Convex and alpha hulls for conservation mapping</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+<script type="text/javascript">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-4355440-1', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+<style>
+
+      .quarto-title-block .quarto-title-banner {
+        background: #B8573E;
+      }
+</style>
+
+
+<link rel="stylesheet" href="../../theme.css">
+<link rel="stylesheet" href="../../custom_theme.scss">
+<meta property="og:title" content="ALA Labs - Convex and alpha hulls for conservation mapping">
+<meta property="og:description" content="Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions when a species has very few existing observations. Here, we will show you how to create these spatial polygons using data from the ALA.">
+<meta property="og:image" content="https://labs.ala.org.au/posts/2022-10-12_alpha-hulls/alpha-hull-fig.png">
+<meta property="og:site_name" content="ALA Labs">
+<meta property="og:image:height" content="2100">
+<meta property="og:image:width" content="2100">
+<meta name="twitter:title" content="ALA Labs - Convex and alpha hulls for conservation mapping">
+<meta name="twitter:description" content="Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions when a species has very few existing observations. Here, we will show you how to create these spatial polygons using data from the ALA.">
+<meta name="twitter:image" content="https://labs.ala.org.au/posts/2022-10-12_alpha-hulls/alpha-hull-fig.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="2100">
+<meta name="twitter:image-width" content="2100">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/logos/ALA_Logo_Inline_REV-RGB.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ALA Labs</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> <i class="bi bi-house-door-fill" role="img">
+</i> 
+<span class="menu-text"> </span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about/index.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts/index.html"> 
+<span class="menu-text">Posts</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-research" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Research</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-research">    
+        <li>
+    <a class="dropdown-item" href="../../research/highlights/index.html">
+ <span class="dropdown-text">Highlights</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../research/citations/index.html">
+ <span class="dropdown-text">All citations</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../software/index.html"> 
+<span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.ala.org.au"> <i class="bi bi-ala" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/AtlasOfLivingAustralia/ala-labs"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Convex and alpha hulls for conservation mapping</h1>
+                  <div>
+        <div class="description">
+          <p>Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions when a species has very few existing observations. Here, we will show you how to create these spatial polygons using data from the ALA.</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Summaries</div>
+                <div class="quarto-category">Maps</div>
+                <div class="quarto-category">Eukaryota</div>
+                <div class="quarto-category">Animalia</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Authors</div>
+      <div class="quarto-title-meta-contents">
+               <p>Margot Schneider </p>
+               <p>Fonti Kar </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 20, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#download-data" id="toc-download-data" class="nav-link active" data-scroll-target="#download-data">Download data</a></li>
+  <li><a href="#map-a-convex-hull" id="toc-map-a-convex-hull" class="nav-link" data-scroll-target="#map-a-convex-hull">Map a convex hull</a></li>
+  <li><a href="#what-is-an-alpha-hull" id="toc-what-is-an-alpha-hull" class="nav-link" data-scroll-target="#what-is-an-alpha-hull">What is an alpha hull?</a></li>
+  <li><a href="#map-an-alpha-hull" id="toc-map-an-alpha-hull" class="nav-link" data-scroll-target="#map-an-alpha-hull">Map an alpha hull</a>
+  <ul class="collapse">
+  <li><a href="#alpha-hull-with-filtered-observations" id="toc-alpha-hull-with-filtered-observations" class="nav-link" data-scroll-target="#alpha-hull-with-filtered-observations">Alpha hull with filtered observations</a></li>
+  </ul></li>
+  <li><a href="#a-real-life-example" id="toc-a-real-life-example" class="nav-link" data-scroll-target="#a-real-life-example">A real-life example</a></li>
+  <li><a href="#final-thoughts" id="toc-final-thoughts" class="nav-link" data-scroll-target="#final-thoughts">Final thoughts</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+
+<!-- remove metadata section -->
+<div class="cell">
+<style type="text/css">
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+</style>
+</div>
+<!-- Author card -->
+<div class="author-card">
+<div class="author-card-text">
+<section id="author" class="level4">
+<h4 class="anchored" data-anchor-id="author">Author</h4>
+<p><a href="https://labs.ala.org.au/people/Schneider_Margot/index.html">Margot Schneider</a> <a href="https://labs.ala.org.au/people/Kar_Fonti/index.html">Fonti Kar</a></p>
+</section>
+<section id="date" class="level4">
+<h4 class="anchored" data-anchor-id="date">Date</h4>
+<p>20 October 2022</p>
+</section>
+</div>
+<div class="author-card-image">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/margot.jpg" class="img-fluid figure-img" style="clip-path: circle();" width="120"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="author-card-image">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/fonti.jpg" class="img-fluid figure-img" style="clip-path: circle();" width="120"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!------------------------ Post starts here ------------------------>
+<p>The ability to predict where a species resides is important in conservation ecology, but when a species has very few existing observations (i.e.&nbsp;a <em>data-deficient species</em>), predicting its distribution can be difficult (or impossible) using standard methods for species distributions.</p>
+<p><strong>Convex hulls</strong> and <strong>alpha hulls</strong> are two ways to plot the spatial distribution of data-deficient species, making it possible to calculate metrics that help us predict whether a species is threatened to become extinct (i.e.&nbsp;<a href="https://link.springer.com/article/10.1007/s10531-019-01697-9">IUCN metrics</a>).</p>
+<p>Recently, <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/geb.13550">Dr.&nbsp;Marsh and colleagues</a> used alpha hulls to estimate the impact of the 2020 mega bushfires on invertebrates in southern Australia. Since invertebrate data is inherently sparse, alpha hulls are really useful when you only have a handful of records to work with.</p>
+<p>In this post, we’ll explain the difference between convex hulls and alpha hulls and show you how to make them yourself!</p>
+<section id="download-data" class="level2">
+<h2 class="anchored" data-anchor-id="download-data">Download data</h2>
+<p>To illustrate the various spatial polygons you can make, let’s look at an invertebrate species from Dr.&nbsp;Marsh’s study: an endemic damselfly, <em>Austroargiolestes calcaris</em>, commonly known as the <a href="https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/2d944503-2f03-48ec-8a8a-b78bc2b674af">Powdered Flatwing</a></p>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout="[-1, 1, -1]">
+<div class="quarto-layout-row">
+<div class="quarto-figure-spacer quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<p>&nbsp;</p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<p><img class="clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/5/a/9/2/f6f52563-3bb4-45f3-a5cd-26a3773329a5/original"></p>
+</div>
+<div class="quarto-figure-spacer quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<p>&nbsp;</p>
+</div>
+</div>
+</div>
+<div class="figure-caption">
+<p><a href="https://images.ala.org.au/image/f6f52563-3bb4-45f3-a5cd-26a3773329a5">A Powdered Flatwing perched on a plant by Reiner Richter CC-BY 4.0</a></p>
+</div>
+<p>First we will load the R packages we’ll need:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("pacman")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(remotes, galah, tidyverse, alphahull, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>               sp, sf, ozmaps, patchwork)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now let’s use <code>galah</code> to download occurrence records from the <a href="https://www.ala.org.au/">Atlas of Living Australia (ALA)</a>. Note that you will need to first enter a <a href="https://auth.ala.org.au/userdetails/registration/createAccount">registered email with the ALA</a> using <code>galah_config</code> before fetching records.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add registered email (register at ala.org.au)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">email =</span> <span class="st">"your-email@email.com"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download Powdered flatwing records </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">"Austroargiolestes calcaris"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(<span class="at">profile=</span><span class="st">"ALA"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_select</span>(<span class="at">group =</span> <span class="st">"basic"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_occurrences</span>() <span class="ot">-&gt;</span> dfly</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># See first 10 rows</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>dfly <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">10</span>L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 8
+   decimal…¹ decim…² eventDate           scien…³ taxon…⁴ recor…⁵ dataR…⁶ occur…⁷
+       &lt;dbl&gt;   &lt;dbl&gt; &lt;dttm&gt;              &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
+ 1     -38.5    147. 2016-11-09 13:00:00 Austro… https:… 20b351… iNatur… PRESENT
+ 2     -38      146. 2011-12-20 13:00:00 Austro… https:… d4e2c9… Reiner… PRESENT
+ 3     -38.0    146. 2010-01-10 17:48:00 Austro… https:… 0c69fb… iNatur… PRESENT
+ 4     -38.0    146. 2009-11-24 13:00:00 Austro… https:… b01df3… Reiner… PRESENT
+ 5     -38.0    146. 2009-12-19 13:00:00 Austro… https:… 2ed539… Reiner… PRESENT
+ 6     -38.0    146. 2018-02-04 03:40:00 Austro… https:… 586eb7… iNatur… PRESENT
+ 7     -38.0    146. 2015-12-28 13:00:00 Austro… https:… 125786… Reiner… PRESENT
+ 8     -37.9    145. 2004-10-30 14:00:00 Austro… https:… 9ff508… Reiner… PRESENT
+ 9     -37.9    145. 2016-10-31 23:50:00 Austro… https:… fae8d5… ALA sp… PRESENT
+10     -37.9    145. 2019-11-23 01:38:00 Austro… https:… faae5f… iNatur… PRESENT
+# … with abbreviated variable names ¹​decimalLatitude, ²​decimalLongitude,
+#   ³​scientificName, ⁴​taxonConceptID, ⁵​recordID, ⁶​dataResourceName,
+#   ⁷​occurrenceStatus</code></pre>
+</div>
+</div>
+<p>Before we can plot anything, we will also need to remove all duplicated values and any NA values!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove duplicates &amp; NAs</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dfly <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">duplicated</span>(decimalLongitude) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">duplicated</span>(decimalLatitude)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(decimalLongitude) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(decimalLatitude) ) <span class="ot">-&gt;</span> dfly_clean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="map-a-convex-hull" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="map-a-convex-hull">Map a convex hull</h2>
+<p>A <strong>convex hull</strong> is a way to draw around all the points of a species on a map with as few lines as possible. It’s defined as the smallest polygon that <em>encloses all the points</em> in the data set.</p>
+<p>To plot a convex hull on a map, we can use <code>chull()</code> to compute a convex hull from our cleaned Powdered Flatwing data. <code>chull()</code> computes a series of points that make up our convex hull.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute convex hull</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dfly_clean <span class="sc">|&gt;</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(decimalLongitude, decimalLatitude) <span class="sc">|&gt;</span>  </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">chull</span>() <span class="ot">-&gt;</span> dfly_chull</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>dfly_chull</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 149 148   1  25 137 223 401 355</code></pre>
+</div>
+</div>
+<p>Next, we join the first point of the hull vector to the last point, creating a closed outline which can be plotted on a map.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r fold-show code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join first point of hull to the last point</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dfly_chull_pts <span class="ot">&lt;-</span> <span class="fu">c</span>(dfly_chull, dfly_chull[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can get a map of Australia from the <code>{ozmaps}</code> package and use <code>st_transform()</code> to make sure it has the correct projection of <code>4326</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get map of Australia</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>aus <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(ozmaps<span class="sc">::</span>ozmap_country, <span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And finally, we plot our Powdered Flatwing occurrence records and its convex hull on a map!</p>
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot occurrences and convex hull</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> aus, </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">colour =</span> <span class="st">"black"</span>, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill =</span> <span class="st">"white"</span>)  <span class="sc">+</span> </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> dfly_clean, </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">mapping =</span> <span class="fu">aes</span>(decimalLongitude, decimalLatitude), </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="at">data =</span> dfly_clean[dfly_chull_pts, ], </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">mapping =</span> <span class="fu">aes</span>(decimalLongitude, decimalLatitude), </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill =</span> <span class="st">"orange"</span>, </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">colour =</span> <span class="st">"black"</span>, </span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">142</span>, <span class="dv">152</span>), </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">32</span>,<span class="sc">-</span><span class="dv">44</span>)) <span class="sc">+</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Convex hull"</span>, </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Longtitude (DD)"</span>, </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Latitude (DD)"</span>) <span class="sc">+</span> <span class="do">## DD here stands for decimal degrees</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="post_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-body-outset" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="what-is-an-alpha-hull" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="what-is-an-alpha-hull">What is an alpha hull?</h2>
+<p>Like a convex hull, an <strong>alpha hull</strong> is also a way to draw the smallest polygon that encloses all the points in a data set. However, alpha hulls differ because they use an <strong>alpha parameter</strong> to control how tightly the boundary fits around a set of points. This method creates concave, arched edges that fit around occurrence records more tightly. A tighter boundary around our points helps us avoid over-predicting the range of a species.</p>
+<p>To illustrate, here are three alpha hulls with <em>increasing</em> values for alpha. Notice as the alpha value increases, the tightness of our boundary decreases.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute alpha shapes and store in list column within a tibble</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha_value =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">ahull_ls =</span> <span class="fu">map</span>(<span class="at">.x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">.f =</span> <span class="sc">~</span> dfly_clean <span class="sc">|&gt;</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">select</span>(decimalLongitude, decimalLatitude) <span class="sc">|&gt;</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">ahull</span>(<span class="at">alpha =</span> .x)) </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>) <span class="ot">-&gt;</span> dfly_ahulls</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform alpha hull to an `sp` object and set map projection to 4326</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>set_map_proj <span class="ot">&lt;-</span> <span class="cf">function</span>(sp_obj){</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>sp_obj<span class="sc">@</span>proj4string <span class="ot">&lt;-</span> sp<span class="sc">::</span><span class="fu">CRS</span>(<span class="st">"EPSG:4326"</span>) </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>sp_obj</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>dfly_ahulls <span class="sc">|&gt;</span> </span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ahull_sp =</span> <span class="fu">map</span>(<span class="at">.x =</span> ahull_ls,</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>                        <span class="at">.f =</span> hull2spatial<span class="sc">::</span>ahull2poly),</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">ahull_sp =</span> <span class="fu">map</span>(<span class="at">.x =</span> ahull_sp,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>                        <span class="at">.f =</span> set_map_proj)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>         ) <span class="ot">-&gt;</span> dfly_ahulls</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform `sp` object into a `sf` object </span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>dfly_ahulls <span class="sc">|&gt;</span> </span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ahull_sf =</span> <span class="fu">map</span>(<span class="at">.x =</span> ahull_sp,</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>                        <span class="at">.f =</span> st_as_sf)</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>         ) <span class="ot">-&gt;</span> dfly_ahulls</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform occurrences into `sf` object for plotting</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="fu">st_as_sf</span>(dfly_clean, </span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>         <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span>), </span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>         <span class="at">crs =</span> <span class="dv">4326</span>) <span class="ot">-&gt;</span> dfly_sf</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="do">## A function to compose map </span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>plot_ahull_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(ahull_sf, <span class="at">title =</span> <span class="cn">NULL</span>){</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> aus, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"white"</span>)  <span class="sc">+</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> dfly_sf, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span>  </span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> ahull_sf, <span class="at">fill =</span> <span class="st">"orange"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_sf</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">142</span>, <span class="dv">152</span>),<span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">32</span>,<span class="sc">-</span><span class="dv">44</span>)) <span class="sc">+</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="fu">paste</span>(<span class="st">"a = "</span>, <span class="fu">as.character</span>(title))) <span class="sc">+</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Longtitude (DD)"</span>, <span class="at">y =</span> <span class="st">"Latitude (DD)"</span>) <span class="sc">+</span> </span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>  p</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>dfly_ahulls <span class="sc">|&gt;</span> </span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ahull_maps =</span> <span class="fu">map2</span>(<span class="at">.x =</span> ahull_sf,</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>                           <span class="at">.y =</span> alpha_value,</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>                           <span class="at">.f =</span> <span class="sc">~</span> <span class="fu">plot_ahull_fun</span>(.x , .y)) </span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> dfly_ahulls</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="post_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-body-outset" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Alpha = 2</strong> is the alpha value we’ve most commonly come across in research, and is the value recommended by the IUCN for various forms of species vulnerability analysis.</p>
+<p>So, let’s learn how to make the <strong>a = 2</strong> plot above!</p>
+</section>
+<section id="map-an-alpha-hull" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="map-an-alpha-hull">Map an alpha hull</h2>
+<p>To make an alpha hull, we will rely on the <code>hull2spatial</code> package (developed by Cecina Babich Morrow). This package allows us to convert “<code>ahull</code>” objects into ggplot-friendly objects (to learn more, <a href="https://babichmorrowc.github.io/post/2019-03-18-alpha-hull/">check out their blog post about the package</a>).</p>
+<p>Install the package from GitHub using:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"babichmorrowc/hull2spatial"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hull2spatial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To compute our alpha hull, we’ll provide the longitude and latitude coordinates of our data points to the <code>ahull()</code> function, and set <code>alpha = 2</code>. <code>ahull()</code> creates a <code>list</code> object with far more complexity than our convex hull. A nice way to understand the difference is to look at the first 5 rows of the <code>arcs</code> component of our list <code>dfly_ahull</code>, which stores information like the center and radius of each arch in our alpha hull.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute an alpha hull</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>dfly_clean <span class="sc">|&gt;</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(decimalLongitude, decimalLatitude) <span class="sc">|&gt;</span> </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ahull</span>(<span class="at">alpha =</span> <span class="dv">2</span>) <span class="ot">-&gt;</span> dfly_ahull</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># See first 5 values of `arcs` component of list</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>dfly_ahull<span class="sc">$</span>arcs <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">5</span>L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           c1        c2 r       v.x       v.y       theta end1 end2
+[1,] 144.8341 -39.83458 2 0.3890667 0.9212096 0.009959896    2    4
+[2,] 144.8227 -39.82989 2 0.3508991 0.9364133 0.037253656    4   10
+[3,] 144.7963 -39.82087 2 0.3060905 0.9520024 0.024179028   10   19
+[4,] 144.6001 -39.75170 2 0.3791546 0.9253334 0.002089519   19   25
+[5,] 143.4759 -38.58566 2 0.9341507 0.3568788 0.014707205   25  137</code></pre>
+</div>
+</div>
+<p>Next we’ll transform our alpha hull and occurrence points into spatial objects for plotting.</p>
+<p>The <code>ahull2poly()</code> function converts our alpha hull to one type of spatial object (an <code>sp</code> object), but we’ll use <code>st_as_sf()</code> to convert our result to an <code>sf</code> object (because it’s easier to plot) and set our map projection to <code>4326</code>. We’ll do the same for our damselfly occurrence points.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform  `ahull` into spatial object, convert to sf, set coordinates</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>hull2spatial<span class="sc">::</span><span class="fu">ahull2poly</span>(dfly_ahull) <span class="sc">|&gt;</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_crs</span>(<span class="fu">st_crs</span>(aus)) <span class="ot">-&gt;</span> dfly_sf_ahull</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert occurrence points to `sf` for plotting</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>dfly_clean <span class="sc">|&gt;</span> </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span>), </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">crs =</span> <span class="dv">4326</span>) <span class="ot">-&gt;</span> dfly_sf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, we can create our plot!</p>
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the occurrences and alpha hull</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> aus, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"white"</span>)  <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> dfly_sf, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span>  </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> dfly_sf_ahull, <span class="at">fill =</span> <span class="st">"orange"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">142</span>, <span class="dv">152</span>),<span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">32</span>,<span class="sc">-</span><span class="dv">44</span>)) <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Alpha hull"</span>) <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Longtitude (DD)"</span>, <span class="at">y =</span> <span class="st">"Latitude (DD)"</span>) <span class="sc">+</span> </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="post_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-body-outset" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="alpha-hull-with-filtered-observations" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="alpha-hull-with-filtered-observations">Alpha hull with filtered observations</h3>
+<p>Citizen science data are often excluded from scientific analyses due to poor data quality e.g.&nbsp;rare species can be misidentified by someone who’s not an expert. Although a strict data criteria will reduce the number of data points, we can still compute and plot alpha hulls for the Powdered Flatwing - this is the beauty of them!</p>
+<p>Let’s repeat exactly the same steps as above for generating an alpha hull, but only use a subset of our damselfly observations that comes from specimen data. We can do this by specifying the <code>basisOfRecord</code> with <code>galah_filter()</code>.</p>
+<div class="cell" data-hash="post_cache/html/unnamed-chunk-21_a6577ab40d1481d9f361b9cc3f56f76b">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r fold-show code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a vector excluding human observations</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>institution_only <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"PRESERVED_SPECIMEN"</span>, <span class="st">"LIVING_SPECIMEN"</span>, </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"MACHINE_OBSERVATION"</span>, <span class="st">"MATERIAL_SAMPLE"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">"Austroargiolestes calcaris"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(basisOfRecord <span class="sc">==</span> institution_only,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">profile =</span> <span class="st">"ALA"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_select</span>(<span class="at">group =</span> <span class="st">"basic"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>   <span class="fu">atlas_occurrences</span>() <span class="ot">-&gt;</span> dfly_specionly</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Below is our alpha hull of our specimen-only damselfly data. You’ll notice that there are <strong>two separate hulls</strong> in this map! This is another benefit of using an alpha hull over a convex hull. The mathematical constraints of a convex hull mean all points must be contained within a single polygon - this can lead to an over-estimation of a species’ range.</p>
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="post_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-body-outset" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="a-real-life-example" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="a-real-life-example">A real-life example</h2>
+<p>Alpha hulls, and their ability to generate multiple hulls when data is sparse, can help us understand how sensitive certain species are to environmental change over time, even when species have few existing observations.</p>
+<p>For example, <a href="https://onlinelibrary.wiley.com/doi/10.1111/ddi.13145">Dr.&nbsp;Takach and their team</a> wanted to investigate how the distribution of mammals in the tropical savanna like <a href="https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/f38bcd7e-ae6a-4734-bd64-06995bc230eb"><em>Mesembriomys gouldii</em> (the Black-Footed Tree Rat)</a> shrink or expand in response to pressures like habitat loss and changing climate. Using alpha hulls, they found that the ecological niche of this species has shrunk due to a loss of suitable habitat over time.</p>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout="[-1, 1, -1]">
+<div class="quarto-layout-row">
+<div class="quarto-figure-spacer quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<p>&nbsp;</p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="images/species/black-rat-cropped.jfif" class="clipped img-fluid" style="object-fit:cover;"></p>
+</div>
+<div class="quarto-figure-spacer quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<p>&nbsp;</p>
+</div>
+</div>
+</div>
+<div class="figure-caption">
+<p><a href="https://images.ala.org.au/image/a197988c-5da5-4260-8f2a-5bb55b468fce">A Black-Footed Tree Rat perched on a branch by Colin Trainor CC-BY-NC 4.0</a></p>
+</div>
+<p>The published paper didn’t provide a visual of this species’ distribution, so we’ve made a map below with ALA data to show the change in distribution over time:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download records</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">"Mesembriomys gouldii"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(<span class="at">profile =</span> <span class="st">"ALA"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_select</span>(<span class="at">group =</span> <span class="st">"basic"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_occurrences</span>() <span class="ot">-&gt;</span> tree_rat</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove duplicates and NAs</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>tree_rat <span class="sc">|&gt;</span> </span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span> <span class="fu">duplicated</span>(decimalLongitude) <span class="sc">&amp;</span> <span class="sc">!</span> <span class="fu">duplicated</span>(decimalLatitude)) <span class="sc">|&gt;</span> </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span> <span class="fu">is.na</span>(decimalLongitude) <span class="sc">&amp;</span> <span class="sc">!</span> <span class="fu">is.na</span>(decimalLatitude) ) <span class="ot">-&gt;</span> tree_ratclean</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert occurrence points to sf for plotting</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>tree_ratclean <span class="sc">|&gt;</span> </span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span>), </span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">crs =</span> <span class="dv">4326</span>) <span class="ot">-&gt;</span> tree_rat_sf</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute alpha hull</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>tree_ratclean <span class="sc">|&gt;</span> </span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(decimalLongitude, decimalLatitude) <span class="sc">|&gt;</span> </span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ahull</span>(<span class="at">alpha =</span> <span class="dv">2</span>) <span class="ot">-&gt;</span> tree_rat_ahull</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform `ahull` to `sf`, set projection</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>hull2spatial<span class="sc">::</span><span class="fu">ahull2poly</span>(tree_rat_ahull) <span class="sc">|&gt;</span> </span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_crs</span>(<span class="fu">st_crs</span>(aus)) <span class="ot">-&gt;</span> tree_rat_sf_ahull</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert occurrence points to sf for plotting</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>tree_ratclean <span class="sc">|&gt;</span> </span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span>), </span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>           <span class="at">crs =</span> <span class="dv">4326</span>) <span class="ot">-&gt;</span> tree_rat_sf</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Get map of Australia &amp; set projection</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>aus <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(ozmaps<span class="sc">::</span>ozmap_country, <span class="dv">4326</span>)</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="co">#---</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Download tree rat records after 2000</span></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_call</span>() <span class="sc">|&gt;</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_identify</span>(<span class="st">"Mesembriomys gouldii"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_filter</span>(<span class="at">profile =</span> <span class="st">"ALA"</span>,</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>               year <span class="sc">&gt;=</span> <span class="dv">2000</span>,) <span class="sc">|&gt;</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_select</span>(<span class="at">group =</span> <span class="st">"basic"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_occurrences</span>() <span class="ot">-&gt;</span> Rtree_rat</span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove duplicates &amp; exclude NAs</span></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>Rtree_rat <span class="sc">|&gt;</span> </span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">duplicated</span>(decimalLongitude) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">duplicated</span>(decimalLatitude)) <span class="sc">|&gt;</span> </span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(decimalLongitude) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(decimalLatitude) ) <span class="ot">-&gt;</span> Rtree_ratclean</span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute an alpha hull for our specimen only occurrences</span></span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>Rtree_ratclean <span class="sc">|&gt;</span> </span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(decimalLongitude, decimalLatitude) <span class="sc">|&gt;</span> </span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ahull</span>(<span class="at">alpha =</span> <span class="dv">2</span>) <span class="ot">-&gt;</span> Rtree_rat_ahull</span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform `ahull` to sf, set coordinates</span></span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>hull2spatial<span class="sc">::</span><span class="fu">ahull2poly</span>(Rtree_rat_ahull) <span class="sc">|&gt;</span> </span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_crs</span>(<span class="fu">st_crs</span>(aus)) <span class="ot">-&gt;</span> Rtree_rat_sf_ahull</span>
+<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform occurrence points to sf for plotting </span></span>
+<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a>Rtree_ratclean <span class="sc">|&gt;</span> </span>
+<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span>), </span>
+<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a>           <span class="at">crs =</span> <span class="dv">4326</span>) <span class="ot">-&gt;</span> Rtree_rat_sf</span>
+<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-66"><a href="#cb18-66" aria-hidden="true" tabindex="-1"></a><span class="co">#---</span></span>
+<span id="cb18-67"><a href="#cb18-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-68"><a href="#cb18-68" aria-hidden="true" tabindex="-1"></a><span class="co"># Nice title</span></span>
+<span id="cb18-69"><a href="#cb18-69" aria-hidden="true" tabindex="-1"></a>rat_title <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="fu">italic</span>(<span class="st">"Mesembriomys gouldii "</span>), <span class="st">"alpha hulls"</span>)</span>
+<span id="cb18-70"><a href="#cb18-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-71"><a href="#cb18-71" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot!</span></span>
+<span id="cb18-72"><a href="#cb18-72" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb18-73"><a href="#cb18-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> aus, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"white"</span>)  <span class="sc">+</span></span>
+<span id="cb18-74"><a href="#cb18-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> tree_rat_sf_ahull, <span class="fu">aes</span>(<span class="at">fill =</span> <span class="st">"chartreuse3"</span>) ,<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">position =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb18-75"><a href="#cb18-75" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> Rtree_rat_sf_ahull, <span class="fu">aes</span>(<span class="at">fill =</span> <span class="st">"blueviolet"</span>), <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">position =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb18-76"><a href="#cb18-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_identity</span>(<span class="at">guide =</span> <span class="st">"legend"</span>,</span>
+<span id="cb18-77"><a href="#cb18-77" aria-hidden="true" tabindex="-1"></a>                      <span class="at">name =</span> <span class="st">"Record date ranges"</span>,</span>
+<span id="cb18-78"><a href="#cb18-78" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'2000 Onwards'</span>, <span class="st">'All Records'</span>)) <span class="sc">+</span></span>
+<span id="cb18-79"><a href="#cb18-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">colour =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>))) <span class="sc">+</span></span>
+<span id="cb18-80"><a href="#cb18-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">125</span>, <span class="dv">145</span>),<span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">20</span>,<span class="sc">-</span><span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb18-81"><a href="#cb18-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(rat_title) <span class="sc">+</span></span>
+<span id="cb18-82"><a href="#cb18-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Longtitude (DD)"</span>, <span class="at">y =</span> <span class="st">"Latitude (DD)"</span>) <span class="sc">+</span> </span>
+<span id="cb18-83"><a href="#cb18-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb18-84"><a href="#cb18-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>) <span class="ot">-&gt;</span> combinedtree_rat_ahull_p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="post_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-page" width="1344"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="final-thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="final-thoughts">Final thoughts</h2>
+<p>While sophisticated tools for modelling species distribution exist, they require a lot of data to make reliable estimates. <strong>Convex polygons</strong> and <strong>alpha hulls</strong> are flexible alternatives that can help us understand dynamic changes to distributions of understudied or vulnerable data-deficient species.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Acknowledgement:
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The work in this post is part of project titled: Curated biodiversity data for rapid assessment of bushfire impact. This project is funded by the <a href="https://ardc.edu.au/program/bushfire-data-challenges/">Australian Research Data Commons (ARDC) bushfire data challenges program</a>.</p>
+</div>
+</div>
+<details>
+<summary style="color: #E06E53;">
+Expand for session info
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.2.2 (2022-10-31 ucrt)
+ os       Windows 10 x64 (build 19044)
+ system   x86_64, mingw32
+ ui       RTerm
+ language (EN)
+ collate  English_Australia.utf8
+ ctype    English_Australia.utf8
+ tz       Australia/Sydney
+ date     2023-03-16
+ pandoc   2.19.2 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package       * version date (UTC) lib source
+ alphahull     * 2.5     2022-06-16 [1] CRAN (R 4.2.1)
+ dplyr         * 1.1.0   2023-01-29 [1] CRAN (R 4.2.2)
+ forcats       * 1.0.0   2023-01-29 [1] CRAN (R 4.2.2)
+ galah         * 1.5.1   2023-02-21 [1] Github (AtlasOfLivingAustralia/galah@bd43dd2)
+ ggplot2       * 3.4.1   2023-02-10 [1] CRAN (R 4.2.2)
+ htmltools     * 0.5.4   2022-12-07 [1] CRAN (R 4.2.2)
+ hull2spatial  * 0.1.0   2022-10-12 [1] Github (babichmorrowc/hull2spatial@921594f)
+ lubridate     * 1.9.2   2023-02-10 [1] CRAN (R 4.2.2)
+ ozmaps        * 0.4.5   2021-08-03 [1] CRAN (R 4.2.1)
+ pacman        * 0.5.1   2019-03-11 [1] CRAN (R 4.2.1)
+ patchwork     * 1.1.2   2022-08-19 [1] CRAN (R 4.2.1)
+ purrr         * 1.0.1   2023-01-10 [1] CRAN (R 4.2.2)
+ readr         * 2.1.4   2023-02-10 [1] CRAN (R 4.2.2)
+ remotes       * 2.4.2   2021-11-30 [1] CRAN (R 4.2.1)
+ sessioninfo   * 1.2.2   2021-12-06 [1] CRAN (R 4.2.1)
+ sf            * 1.0-9   2022-11-08 [1] CRAN (R 4.2.2)
+ sp            * 1.5-0   2022-06-05 [1] CRAN (R 4.2.1)
+ stringr       * 1.5.0   2022-12-02 [1] CRAN (R 4.2.2)
+ tibble        * 3.1.8   2022-07-22 [1] CRAN (R 4.2.1)
+ tidyr         * 1.3.0   2023-01-24 [1] CRAN (R 4.2.2)
+ tidyverse     * 2.0.0   2023-02-22 [1] CRAN (R 4.2.2)
+ xaringanExtra * 0.7.0   2022-07-16 [1] CRAN (R 4.2.1)
+
+ [1] C:/Users/KEL329/R-packages
+ [2] C:/Users/KEL329/AppData/Local/Programs/R/R-4.2.2/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</details>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- ALA Template Footer -->
+
+<style>
+
+/*-- Copyright --*/
+
+.copyright-container {
+  display: flex!important;
+  width: 100%;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.copyright-row {
+  width: 100%;
+
+  position: relative;
+
+  background-color: #c44d34;
+  background-position: bottom;
+  background-size: cover;
+  display: flex;
+}
+
+.copyright-width {
+  display: flex;
+  width: 100%;
+  max-width: 1140px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 0px;
+  margin: auto;
+}
+
+.copyright-column-left {
+  float: left;
+  width: 50%;
+  max-width: 50%;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  display: flex!important;
+  flex-direction:column;
+  display:inline-block;
+}
+
+.copyright-column-right {
+  float: right;
+  text-align: right;
+  width: 50%;
+  max-width: 50%;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  display: flex!important;
+  flex-direction: column;
+  display:inline-block;
+}
+
+.copyright-text {
+  color: white;
+  font-size: 12px;
+  padding-top: 10px}
+
+.copyright-text a:hover {
+  color: #222322;
+}
+
+
+/*-- Logos and acknowledgement --*/
+
+.footer-container {
+  display: flex!important;
+  width: 100%;
+  max-width: 1140px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  margin: auto;
+}
+
+.distill-site-footer {
+  padding-top: 0px;
+  padding-bottom: 10px;
+  text-align: left;
+}
+
+.row-footer { /* Do not change the name of this column - it causes issues */
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.column-footer { /* Do not change the name of this column - it causes issues */
+  float: left;
+  width: 50%;
+  max-width: 50%;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  display: flex;
+  flex-direction:column;
+  display:inline-block;
+}
+
+
+.footer-logo {
+  text-align: left;
+  margin:5px;
+}
+
+.footer-text {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  color: #565656;
+  text-align: left;
+}
+
+.footer-text-small {
+  font-family: Roboto,sans-serif;
+  font-size: .82rem;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  color: #565656;
+  text-align: left;
+  margin-top: 10px;
+}
+
+/*-- Back to ALA button --*/
+
+.link-container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: block;
+  width: 30em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.link-button {
+  border: none;
+  color: #E06E53;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin: 4px 2px;
+  transition-duration: 0.3s;
+  cursor: pointer;
+  background-color: white;
+  border: 2px solid #E06E53;
+  border-radius: 10px;
+}
+
+.link-button:hover {
+  background-color: #222322;
+  border: 2px solid #222322;
+  color: #E06E53;
+}
+
+.ala-icon {
+    height: 20px;
+    width: auto;
+    /* Other styles here */
+}
+
+@media screen and (max-width: 952px) {
+  .link-container {
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .footer-container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .column-footer {
+    float:left;
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    margin-top: 20px;
+  }
+  .link-container {
+    display: block;
+    width: 20em;
+    margin: auto;
+  }
+
+  .copyright-column-left {
+    width: 50%;
+  }
+
+  .copyright-column-right {
+    width: 50%;
+  }
+
+  .copyright-row {
+    height: 100px;
+    margin-bottom: -3.75vw;
+  }
+}
+
+.logo-ncris {
+  width: auto;
+  height: 109px;
+  margin-right: 15px;
+  margin-top: 20px;
+}
+
+.logo-csiro {
+  width: auto;
+  height: 109px;
+  margin-right: 15px;
+  margin-top: 20px;
+}
+
+.logo-gbif {
+  width: auto;
+  height: 109px;
+}
+
+@media (min-width: 992px) {}
+body .page-columns{
+  grid-column: screen-start/screen-end;
+  z-index: 998;
+  transform: translate3d(0, 0, 0);
+}
+}
+
+</style>
+
+<hr style="padding-top: 1px">
+
+<div class="footer-container column-screen page-columns page-full">
+
+  <!--<div class = "row-footer">-->
+    <div class="column-footer">
+      <p class="footer-text">The ALA is made possible by contributions from its partners, is supported
+      by
+      <a href="https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris" class="footer-link">NCRIS</a>, is hosted by
+             <a href="https://csiro.au/" class="footer-link">CSIRO</a>, and is the Australian node of
+             <a href="https://www.gbif.org/en/" id="d-article" class="footer-link">GBIF</a>.
+      </p>
+      <a href="https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris">
+        <img src="images/logos/NCRIS_logo.png" class="logo-ncris" alt="NCRIS logo">
+        
+        </a>
+      <a href="https://csiro.au/">
+        <img src="images/logos/CSIRO_logo.png" class="logo-csiro" alt="CSIRO logo">
+        
+        </a>
+      <a href="https://www.gbif.org/en/">
+        <img src="images/logos/GBIF_109px.png" class="logo-gbif" alt="GBIF logo">
+        
+        </a>
+    </div>
+    <div class="column-footer" id="footer-logo">
+      <p class="footer-text"><strong>Acknowledgement of Traditional Owners and Country</strong></p>
+      <p class="footer-text-small">The Atlas of Living Australia acknowledges Australia's Traditional Owners
+      and pays respect to the past and present Elders of the nation's Aboriginal
+      and Torres Strait Islander communities. We honour and celebrate the
+      spiritual, cultural and customary connections of Traditional Owners to
+      country and the biodiversity that forms part of that country.<br><br></p>
+    </div>
+<!--  </div>-->
+</div>
+
+<div class="copright-container column-screen">
+  <div class="copyright-row">
+     <div class="copyright-width">
+  		<div class="copyright-column-left">
+  				<p class="copyright-text">
+  					This work is licensed under a <a style="color:#fff!important;" href="https://creativecommons.org/licenses/by/3.0/au/">Creative Commons Attribution 3.0 Australia License</a>
+  					<a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/"><img alt="Creative Commons License" style="border-width:0" src="images/logos/cc-by.png"></a>
+  				</p>
+			</div><!--col end -->
+    	<div class="copyright-column-right">
+         <p class="copyright-text">
+           <a style="color:#fff!important;" href="https://www.ala.org.au/terms-of-use#cy">Copyright</a>
+           &nbsp;&nbsp;
+           <a style="color:#fff!important;" href="https://www.ala.org.au/terms-of-use">Terms of Use</a>
+           &nbsp;&nbsp;
+           <a style="color:#fff!important;" href="https://status.ala.org.au/">System Status</a>
+         </p>
+      </div>
+    </div>
+	</div><!-- row end -->
+</div>
+<!-- ALA Template Footer -->
+
+<style>
+
+/*-- Copyright --*/
+
+.copyright-container {
+  display: flex!important;
+  width: 100%;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.copyright-row {
+  width: 100%;
+
+  position: relative;
+
+  background-color: #c44d34;
+  background-position: bottom;
+  background-size: cover;
+  display: flex;
+}
+
+.copyright-width {
+  display: flex;
+  width: 100%;
+  max-width: 1140px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 0px;
+  margin: auto;
+}
+
+.copyright-column-left {
+  float: left;
+  width: 50%;
+  max-width: 50%;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  display: flex!important;
+  flex-direction:column;
+  display:inline-block;
+}
+
+.copyright-column-right {
+  float: right;
+  text-align: right;
+  width: 50%;
+  max-width: 50%;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  display: flex!important;
+  flex-direction: column;
+  display:inline-block;
+}
+
+.copyright-text {
+  color: white;
+  font-size: 12px;
+  padding-top: 10px}
+
+.copyright-text a:hover {
+  color: #222322;
+}
+
+
+/*-- Logos and acknowledgement --*/
+
+.footer-container {
+  display: flex!important;
+  width: 100%;
+  max-width: 1140px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  margin: auto;
+}
+
+.distill-site-footer {
+  padding-top: 0px;
+  padding-bottom: 10px;
+  text-align: left;
+}
+
+.row-footer { /* Do not change the name of this column - it causes issues */
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.column-footer { /* Do not change the name of this column - it causes issues */
+  float: left;
+  width: 50%;
+  max-width: 50%;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  display: flex;
+  flex-direction:column;
+  display:inline-block;
+}
+
+
+.footer-logo {
+  text-align: left;
+  margin:5px;
+}
+
+.footer-text {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  color: #565656;
+  text-align: left;
+}
+
+.footer-text-small {
+  font-family: Roboto,sans-serif;
+  font-size: .82rem;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  color: #565656;
+  text-align: left;
+  margin-top: 10px;
+}
+
+/*-- Back to ALA button --*/
+
+.link-container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: block;
+  width: 30em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.link-button {
+  border: none;
+  color: #E06E53;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin: 4px 2px;
+  transition-duration: 0.3s;
+  cursor: pointer;
+  background-color: white;
+  border: 2px solid #E06E53;
+  border-radius: 10px;
+}
+
+.link-button:hover {
+  background-color: #222322;
+  border: 2px solid #222322;
+  color: #E06E53;
+}
+
+.ala-icon {
+    height: 20px;
+    width: auto;
+    /* Other styles here */
+}
+
+@media screen and (max-width: 952px) {
+  .link-container {
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .footer-container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .column-footer {
+    float:left;
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    margin-top: 20px;
+  }
+  .link-container {
+    display: block;
+    width: 20em;
+    margin: auto;
+  }
+
+  .copyright-column-left {
+    width: 50%;
+  }
+
+  .copyright-column-right {
+    width: 50%;
+  }
+
+  .copyright-row {
+    height: 100px;
+    margin-bottom: -3.75vw;
+  }
+}
+
+.logo-ncris {
+  width: auto;
+  height: 109px;
+  margin-right: 15px;
+  margin-top: 20px;
+}
+
+.logo-csiro {
+  width: auto;
+  height: 109px;
+  margin-right: 15px;
+  margin-top: 20px;
+}
+
+.logo-gbif {
+  width: auto;
+  height: 109px;
+}
+
+@media (min-width: 992px) {}
+body .page-columns{
+  grid-column: screen-start/screen-end;
+  z-index: 998;
+  transform: translate3d(0, 0, 0);
+}
+}
+
+</style>
+
+<hr style="padding-top: 1px">
+
+<div class="footer-container column-screen page-columns page-full">
+
+  <!--<div class = "row-footer">-->
+    <div class="column-footer">
+      <p class="footer-text">The ALA is made possible by contributions from its partners, is supported
+      by
+      <a href="https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris" class="footer-link">NCRIS</a>, is hosted by
+             <a href="https://csiro.au/" class="footer-link">CSIRO</a>, and is the Australian node of
+             <a href="https://www.gbif.org/en/" id="d-article" class="footer-link">GBIF</a>.
+      </p>
+      <a href="https://www.education.gov.au/national-collaborative-research-infrastructure-strategy-ncris">
+        <img src="images/logos/NCRIS_logo.png" class="logo-ncris" alt="NCRIS logo">
+        
+        </a>
+      <a href="https://csiro.au/">
+        <img src="images/logos/CSIRO_logo.png" class="logo-csiro" alt="CSIRO logo">
+        
+        </a>
+      <a href="https://www.gbif.org/en/">
+        <img src="images/logos/GBIF_109px.png" class="logo-gbif" alt="GBIF logo">
+        
+        </a>
+    </div>
+    <div class="column-footer" id="footer-logo">
+      <p class="footer-text"><strong>Acknowledgement of Traditional Owners and Country</strong></p>
+      <p class="footer-text-small">The Atlas of Living Australia acknowledges Australia's Traditional Owners
+      and pays respect to the past and present Elders of the nation's Aboriginal
+      and Torres Strait Islander communities. We honour and celebrate the
+      spiritual, cultural and customary connections of Traditional Owners to
+      country and the biodiversity that forms part of that country.<br><br></p>
+    </div>
+<!--  </div>-->
+</div>
+
+<div class="copright-container column-screen">
+  <div class="copyright-row">
+     <div class="copyright-width">
+  		<div class="copyright-column-left">
+  				<p class="copyright-text">
+  					This work is licensed under a <a style="color:#fff!important;" href="https://creativecommons.org/licenses/by/3.0/au/">Creative Commons Attribution 3.0 Australia License</a>
+  					<a rel="license" href="http://creativecommons.org/licenses/by/3.0/au/"><img alt="Creative Commons License" style="border-width:0" src="images/logos/cc-by.png"></a>
+  				</p>
+			</div><!--col end -->
+    	<div class="copyright-column-right">
+         <p class="copyright-text">
+           <a style="color:#fff!important;" href="https://www.ala.org.au/terms-of-use#cy">Copyright</a>
+           &nbsp;&nbsp;
+           <a style="color:#fff!important;" href="https://www.ala.org.au/terms-of-use">Terms of Use</a>
+           &nbsp;&nbsp;
+           <a style="color:#fff!important;" href="https://status.ala.org.au/">System Status</a>
+         </p>
+      </div>
+    </div>
+	</div><!-- row end -->
+</div>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

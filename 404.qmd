@@ -1,0 +1,29 @@
+---
+title: "<span style='text-align:center;'> Page not found </span>"
+title-block-banner: "#B8573E"
+include-after-body: _footer.html
+---
+
+:::{style="text-align:center;"}
+
+We've moved some things on ALA Labs around, but **all the content is still here!** <br>(It might just be called something different) 
+
+:::
+
+::: {layout="[-1,1,-1]" style="margin-left: auto; margin-right: auto;"}
+
+![](images/species/green-tree-frog.jpg){.rounded}
+
+:::
+
+::: figure-caption
+*Ranoidea caerulea* - Australian Green Tree Frog (Photo credit: Aleckarcz CC BY NC)
+:::
+
+
+
+:::{style="text-align:center;"}
+
+Don't hop away! Check out the [Home page](https://labs.ala.org.au/) or our list of [Posts](https://labs.ala.org.au/posts/) to find what your are looking for!
+
+:::

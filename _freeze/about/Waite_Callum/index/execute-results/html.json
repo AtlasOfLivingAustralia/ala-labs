@@ -1,0 +1,15 @@
+{
+  "hash": "8a34b5594725a7e8a93c976d35793f82",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Callum Waite\"\ninclude-after-body: _footer.html\n---\n\n\n\n\n### {{< fa circle-user >}} Bio \n\n:::{.bio-row}\n:::{.bio-column-right}\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/callum.jpg){width=275px style=\"display:block; margin-left:auto; margin-right:auto; clip-path: circle();\"}\n:::\n:::\n\n:::\n\n:::{.bio-column-left}\nCallum is an ecological data analyst with a Masters in Quantitative Biology. He has a background in population ecology modelling and is passionate about effective and aesthetic data visualisation. As a data analyst with the ALA, he works on projects that support biosecurity and improve data visualisation using ALA data.\n\n:::\n:::\n\n:::{.column-body style=\"margin-top:-20px;\"}\n\n\n::: {.cell}\n::: {.cell-output-display}\n\n```{=html}\n<div class=\"row\" style=\"display: flex;\">\n<div class=\"button-column\">\n<a href=\"https://github.com/cjwaite23\" style=\"border-bottom: none\">\n<button class=\"button-2\">\n<i class=\"fab fa-github fa-xl\"></i>\n</button>\n</a>\n</div>\n</div>\n```\n\n:::\n:::\n\n\n:::\n\n### {{< fa newspaper >}} Posts \n\n[Combining multiple species distributions on one map with hexagons and points](https://labs.ala.org.au/posts/2024-01-25_hex_point_maps/)<br>\n*Visualising multiple species distributions in a single figure can be difficult if there are areas where ranges overlap. In this post we introduce a way to show several species distributions in an area at once using a novel twist on the commonly used hexbin map.*\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

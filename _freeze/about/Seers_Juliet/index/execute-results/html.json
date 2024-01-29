@@ -1,0 +1,15 @@
+{
+  "hash": "716ad40d3ffb02b9ac104dd661a90ae6",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Juliet Seers\"\ninclude-after-body: _footer.html\n---\n\n\n\n\n### {{< fa circle-user >}} Bio \n\n:::{.bio-row}\n:::{.bio-column-right}\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/juliet.jpg){width=275px style=\"display:block; margin-left:auto; margin-right:auto; clip-path: circle();\"}\n:::\n:::\n\n:::\n\n:::{.bio-column-left}\nJuliet specialises in education and engagement in the environmental sector. Her work as the Training & Outreach Coordinator at the ALA involves identifying and addressing knowledge gaps users have with ALA’s use and functionality, and helping to elevate ALA’s profile with our stakeholders.\n:::\n:::\n\n:::{.column-body style=\"margin-top:-20px;\"}\n\n::: {.cell}\n::: {.cell-output-display}\n\n```{=html}\n<div class=\"row\" style=\"display: flex;\">\n<div class=\"button-column\">\n<a href=\"https://www.linkedin.com/in/julietseers/\" style=\"border-bottom: none\">\n<button class=\"button-2\">\n<i class=\"fab fa-linkedin-in fa-xl\"></i>\n</button>\n</a>\n</div>\n</div>\n```\n\n:::\n:::\n\n:::\n\n### {{< fa newspaper >}} Posts \n\n\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
