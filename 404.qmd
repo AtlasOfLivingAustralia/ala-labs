@@ -6,7 +6,7 @@ include-after-body: _footer.html
 
 :::{style="text-align:center;"}
 
-We've moved some things on ALA Labs around, but **all the content is still here!** <br>(It might just be called something different) 
+We've moved some things around, but **all the content is still here!** <br>(It might just be called something different) 
 
 :::
 
