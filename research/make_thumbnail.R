@@ -7,11 +7,11 @@
 
 #------------ Edit these parameters for highlighted paper ---------------------#
 
-title <- "Zooming in: Improving Koala monitoring with photography"
-authors <- "Danaher et al. 2023"
-main_colour <- "#6BDAD5" # use an ALA colour as your main colour
-text_colour <- "#218380" # choose your own matching text colour: https://coolors.co/
-line_colour <- "#ffd670" # choose your own matching line colour
+title <- "The tale of changing gecko tails in extreme climates"
+authors <- "Green et al. 2024"
+main_colour <- "#994733" # use an ALA colour as your main colour
+text_colour <- "#FFFFFF" # choose your own matching text colour: https://coolors.co/
+line_colour <- "#1C2826" # choose your own matching line colour
 
 
 # ALA colours to use as main colour
