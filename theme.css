@@ -522,10 +522,6 @@ img.rounded {
   color: var(--secondary-orange);
 }
 
-.nav-pills {
-  border-color: var(--primary-orange);
-}
-
 .nav-pills .nav-link {
     background: none;
     border: 10px;
