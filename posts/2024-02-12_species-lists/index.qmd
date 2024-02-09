@@ -7,7 +7,6 @@ author:
   - name: "Dax Kellie"
 date: "2024-02-12"
 title-block-banner: "#B8573E"
-include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 2
@@ -186,10 +185,10 @@ species_yass
 
 # Cross-reference with threatened and sensitive species lists
 
-Next we will compare our Yass valley species list with several state-wide conservation status lists of threatened and sensitive species. We can retrieve lists of threatened and sensitive species in one of two ways: 
+Next we will compare our Yass valley species list with several state-wide conservation status lists of threatened and sensitive species. We can retrieve lists of threatened and sensitive species in one of two ways: <br>
 
-  * Use the lists available in the Atlas of Living Australia
-  * Use your own list
+  - Use the lists available in the Atlas of Living Australia<br>
+  - Use your own list
 
 Both use the same method of matching species names in our Yass Valley list to species names in official conservation status lists. However, there is a slightly different workflow between using `galah-python` and using an externally downloaded list. Choose from the options below to use either method.
 
