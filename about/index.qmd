@@ -4,7 +4,6 @@ subtitle: Role and membership of the ALA Science & Decision Support Team
 format: 
   html: 
     include-after-body: _footer.html
-    css: theme.css
 title-block-banner: "#E06E53"
 title-block-banner-color: body
 ---
