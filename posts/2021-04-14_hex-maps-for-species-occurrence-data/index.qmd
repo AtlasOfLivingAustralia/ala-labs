@@ -9,7 +9,6 @@ author:
 date: "March 2021"
 date-modified: "6 February 2023"
 title-block-banner: "#B8573E"
-include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3
@@ -19,6 +18,7 @@ categories:
   - Animalia
   - Chordata
   - Aves
+  - R
 image: magpie-hex-map.png
 freeze: true
 ---
@@ -240,8 +240,8 @@ Finally, let's build our map! We'll use `scale_fill_gradientn()` to add a nice l
 #| warning: false
 #| column: page
 #| fig-align: center
-#| fig-height: 10
-#| fig-width: 10
+#| out-width: 10in
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 ggplot() +
   geom_sf(data = oz_grid, aes(fill = count), size = .01) +
   scale_fill_gradientn(colours = c("#EEECEA", "#E06E53"), 

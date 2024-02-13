@@ -7,13 +7,9 @@ author:
   - name: "Shandiya Balasubramaniam"
 date: "2024-01-25"
 title-block-banner: "#B8573E"
-include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3
-filters: 
-  - lightbox
-lightbox: true
 categories:
   - Eukaryota
   - Animalia

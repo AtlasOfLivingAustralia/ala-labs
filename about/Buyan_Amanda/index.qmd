@@ -42,6 +42,9 @@ create_button(
 
 ### {{< fa newspaper >}} Posts 
 
+[Download a species list and cross-reference with conservation status lists](https://labs.ala.org.au/posts/2024-02-12_species-lists/)<br>
+*Knowing what species have been observed in a local area is an important, regular task for ecosystem management and environmental impact assessment. Here we show how to make a species list with {galah-python} and how to cross-reference this list with threatened and sensitive species lists. We also show how to visualise this information as a waffle chart using {pywaffle} & {matplotlib}.*
+
 [Beginner's guide to making a quick map of species occurrences in Python and R](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/)<br>
 *The ability to make a map quickly is an essential skill in ecology and conservation. This post shows how to make a quick, simple map of Peron's tree frog occurrences & set a custom font using either Python or R.*
 

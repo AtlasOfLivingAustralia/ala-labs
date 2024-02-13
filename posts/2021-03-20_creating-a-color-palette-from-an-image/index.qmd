@@ -8,7 +8,6 @@ description: |
 author: "Martin Westgate"
 date: "01/03/2021"
 title-block-banner: "#B8573E"
-include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3
@@ -16,6 +15,7 @@ categories:
   - Summaries 
   - Eukaryota
   - Plantae
+  - R
 image: colour-dot-matrix.png
 freeze: true
 ---
@@ -251,7 +251,8 @@ axes with `theme_void()`
 ```{r}
 #| column: page
 #| fig-align: center
-#| fig-height: 9
+#| out-width: 9in
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 ggplot(test_layout, aes(x = x, y = y, colour = colour_index)) +
   geom_point(size = 3, alpha = 0.9) +
   scale_color_manual(values = image_pal) +

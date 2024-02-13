@@ -6,7 +6,6 @@ author:
   - name: "Dax Kellie"
 date: "2022-08-08"
 title-block-banner: "#B8573E"
-include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3
@@ -15,6 +14,7 @@ categories:
   - Animalia
   - Chordata
   - Summaries
+  - R
 image: samplebias_heatmap.png
 freeze: true
 format:
@@ -170,7 +170,7 @@ It's time to quantify the influence of roads, cities, airports and rivers on *De
 
 {`sampbias`} uses a probabilistic method to quantify accessibility bias. You can check out their [published paper](https://onlinelibrary.wiley.com/doi/10.1111/ecog.05102) if you'd like to know more about the Bayesian methods underlying these estimates.
 
-We use the `calculate_bias()` function to run our model. We have specified that our model make estimates at a fine spatial scale resolution of `res = 0.05` and we have added a buffer, which helps our model account for any neighbouring features just outside of our specified area that might affect our data. We also make sure to restrict our model to be within our map of the Northern Territory, ensuring it is in the correct format by using `sf:::as_Spatial(nt_wgs84)`.
+We'll use the `calculate_bias()` function to run our model. We'll specify that our model make estimates at a fine spatial scale resolution of `res = 0.05` and add a buffer, which helps our model account for any neighbouring features just outside of our specified area that might affect our data. We'll also make sure to restrict our model to within our map of the Northern Territory, ensuring it is in the correct format by using `sf:::as_Spatial(nt_wgs84)`.
 
 **Important Note:** *Fine scale resolutions increase how long it takes for the model to run. This example took around 30 minutes. If you are short on time, I'd suggest starting with a lower resolution like `res = 0.5`.*
 
@@ -206,6 +206,7 @@ It's worth pointing out that {`sampbias`} uses data of most major roads in Austr
 #| fig-align: center
 #| column: page
 #| fig-width: 9
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 plot(model_bias_delma)
 ```
 
@@ -226,9 +227,10 @@ summary(model_bias_delma)
 Before viewing the mapped output from {`sampbias`}, it would be useful to see where the airports, cities, roads and rivers are. Observations of *Delma* are in <span style="color: #E06E53; font-weight: bold">orange</span>.
 
 ```{r}
-#| fig.cap: "Observations of *Delma* in the Northern Territory"
+#| fig-cap: "Observations of *Delma* in the Northern Territory"
 #| warning: false
 #| code-fold: true
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 # Load in data for landscape features
 data(airports)
@@ -300,6 +302,7 @@ features_map <- ggplot() +
 #| column: body-outset
 #| fig-align: center
 #| fig-height: 7
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 features_map
 ```
 
@@ -316,6 +319,7 @@ First, you'll notice that the highest sampling rates centre around airports, hig
 #| fig-height: 8
 #| message: false
 #| warning: false
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 # Project the bias effect in space
 delma <- sampbias::project_bias(model_bias_delma)

@@ -10,7 +10,6 @@ author:
   - name: "Fonti Kar"
 date: "2022-10-20"
 title-block-banner: "#B8573E"
-include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3
@@ -19,6 +18,7 @@ categories:
   - Maps
   - Eukaryota
   - Animalia
+  - R
 image: alpha-hull-fig.png
 freeze: true
 ---
@@ -176,6 +176,7 @@ And finally, we plot our Powdered Flatwing occurrence records and its convex hul
 #| column: body-outset
 #| fig-align: center
 #| fig-height: 7
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 # Plot occurrences and convex hull
 ggplot() + 
@@ -272,6 +273,7 @@ dfly_ahulls |>
 #| echo: false
 #| column: body-outset
 #| fig-align: center
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 wrap_plots(dfly_ahulls$ahull_maps)
 ```
 
@@ -326,6 +328,7 @@ Finally, we can create our plot!
 #| column: body-outset
 #| fig-align: center
 #| fig-height: 7
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 # Plot the occurrences and alpha hull
 ggplot() + 
@@ -401,6 +404,7 @@ ggplot() +
 #| column: body-outset
 #| fig-align: center
 #| fig-height: 7
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 dflysp_ahull_p
 ```
 
@@ -521,6 +525,7 @@ ggplot() +
 #| fig-align: center
 #| fig-width: 14
 #| fig-height: 8
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 combinedtree_rat_ahull_p 
 ```
 

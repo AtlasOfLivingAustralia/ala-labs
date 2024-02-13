@@ -14,6 +14,7 @@ categories:
   - Plantae
   - Chlorophyta
   - Maps
+  - R
 image: choropleth_ggnewscale.png
 freeze: true
 ---
@@ -198,8 +199,8 @@ Checking the distribution of counts in each dataset shows a substantial skew to 
 #| message: false
 #| warning: false
 #| fig-show: hold
-#| out-width: 50%
 #| layout-ncol: 2
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 hist(imcra_counts$count)
 hist(ibra_counts$count)
 
@@ -211,8 +212,8 @@ Applying a log-transformation to the count data makes the distribution more symm
 #| message: false
 #| warning: false
 #| fig-show: hold
-#| out-width: 50%
 #| layout-ncol: 2
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 hist(log(imcra_counts$count))
 hist(log(ibra_counts$count))
 
@@ -294,6 +295,7 @@ ggplot() +
 #| fig-column: screen
 #| fig-align: center
 #| out-width: 12in
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 knitr::include_graphics("choropleth_ggnewscale.png")
 ```
 

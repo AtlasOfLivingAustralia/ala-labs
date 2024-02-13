@@ -7,7 +7,6 @@ author:
   - name: "Shandiya Balasubramaniam"
 date: "2023-08-28"
 title-block-banner: "#B8573E"
-include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 2
@@ -338,6 +337,7 @@ The {colorspace} package is [a toolbox designed to select clear colour palettes]
 #| fig-height: 10
 #| fig-width: 9
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
+#| lightbox: true
 ggplot(data = leaf_mass_sample, 
        aes(x = taxon_name |> stringr::str_wrap(10) |> reorder(value), 
            y = value, 
@@ -414,6 +414,7 @@ And just like that we can make it rain!^[Fun fact: "How to make it rain" is an a
 #| fig-height: 10
 #| fig-width: 9
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
+#| lightbox: true
 ggplot(data = leaf_mass_sample, 
        aes(x = taxon_name |> stringr::str_wrap(10) |> reorder(value), 
            y = value, 
@@ -468,6 +469,7 @@ Is this where you expected these plants to be found?
 #| code-fold: true
 #| fig-cap: "Figures display each species' median LMA value."
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
+#| lightbox: true
 library(galah)
 library(sf)
 library(ozmaps)

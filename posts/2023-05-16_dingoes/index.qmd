@@ -7,7 +7,6 @@ author:
   - name: "Dax Kellie"
 date: "2023-05-16"
 title-block-banner: "#B8573E"
-include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 2
@@ -17,6 +16,7 @@ categories:
   - Mammalia
   - Summaries
   - Maps
+  - R
   - Intern-post
 image: dingo-sa.png
 freeze: true
@@ -281,12 +281,8 @@ Just five data providers account for ~98% of dingo records, with Fauna Atlas N. 
 
 ```{r}
 #| code-fold: true
-#| column: page
-#| fig-align: center
-#| layout-nrow: 1
 #| message: false
 #| warning: false
-#| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 custom_colours <- c(
   "Museums Victoria provider for OZCAM" = "#604830",
@@ -300,7 +296,7 @@ custom_colours <- c(
 )
 
 # Bar plot
-counts_filtered |>
+bar_plot <- counts_filtered |>
   ggplot(aes(
     x = reorder(str_wrap(dataResourceName, 28), count),
     y = count, fill = dataResourceName)) +
@@ -318,7 +314,7 @@ counts_filtered |>
 # Map
 aus <- ozmap_data(data = "states")
 
-ggplot() +
+map <- ggplot() +
   geom_sf(data = aus, fill = "#FBFBEF") +
   geom_point(
     data = points_filtered,
@@ -333,6 +329,19 @@ ggplot() +
     ylim = c(-45, -10),
     xlim = c(110, 155)) +
   theme(legend.position = "none")
+```
+
+```{r}
+#| column: page
+#| fig-align: center
+#| layout-nrow: 1
+#| layout-ncol: 2
+#| message: false
+#| warning: false
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
+#| echo: false
+bar_plot
+map
 ```
 
 
@@ -382,7 +391,9 @@ Now we can make a bar chart to see observations over the year. We'll do the same
 Northern Territory's dingo observations are recorded mainly over winter months (June–August). Alternatively, South Australia's dingo observations are mainly recorded during autumn months (April–June).
 
 ```{r}
-# plot
+#| message: false
+#| warning: false
+# Northern Territory plot
 barplot_nt <- ggplot(data = month_NT, 
                      aes(x = month, y = count)) +
   geom_bar(stat = "identity", fill = "#a84830") +
@@ -397,16 +408,9 @@ barplot_nt <- ggplot(data = month_NT,
 
 
 ```{r}
-#| code-fold: true
-#| column: page
-#| fig-align: center
-#| layout-nrow: 1
 #| message: false
 #| warning: false
-#| out-extra: "style=margin-left:auto;margin-right:auto;"
-# Northern Territory
-barplot_nt
-
+#| code-fold: true
 ## South Australia
 
 # download data
@@ -421,7 +425,7 @@ dingo_SA <- galah_call() |>
     )
 
 # plot
-ggplot(data = dingo_SA, 
+barplot_sa <- ggplot(data = dingo_SA, 
        aes(x = month, y = count)) +
   geom_bar(stat = "identity", fill = "#d89060") +
   labs(title = "South Australia", 
@@ -432,6 +436,20 @@ ggplot(data = dingo_SA,
                      expand = c(0,0)) +
   pilot::theme_pilot(grid = "h")
 ```
+
+```{r}
+#| column: page
+#| fig-align: center
+#| layout-nrow: 1
+#| layout-ncol: 2
+#| message: false
+#| warning: false
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
+#| echo: false
+barplot_nt
+barplot_sa
+```
+
 
 
 Does this suggest dingoes are more active during winter, or are data collectors surveying during cooler times of the year? The answer might be "both". One dingo tracking research study found that dingoes are far more active in winter, [spending 46% of their day stationary in winter compared to 91% of their day in summer](https://movementecologyjournal.biomedcentral.com/articles/10.1186/s40462-021-00246-w). Similarly, it's easier for data collectors to survey during winter months when the heat is less extreme. Cooler winter temperatures might allow dingoes *and* surveyors to be more active, increasing the likelihood of incidental observations.
@@ -535,6 +553,7 @@ Finally, we can avoid adding more than one legend by using colour in our title t
 #| column: page
 #| fig-height: 10
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
+#| lightbox: true
 # create palette for title
 dingo_palette <- list("protected" = "#1F901F",
                       "obs" = "#404788")
@@ -560,7 +579,7 @@ By comparing the number of records in CAPAD areas to the total observations in N
 Searching for CAPAD fields in {galah} shows us that {galah} has the CAPAD 2020 layer available for us to use in a query. 
 
 ```{r}
-search_all(fields, "capad") |> print(n = 2)
+search_all(fields, "capad") |> print(n = 5)
 ```
 
 We can return the number of dingo observations in *each* CAPAD area by using `galah_group_by(cl11033)` in our query. Adding the observation counts together will give us the total observations in CAPAD areas.
@@ -611,6 +630,7 @@ The Dog Fence is labelled in our map below. There are noticeably fewer observati
 #| fig-height: 10
 #| code-fold: true
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
+#| lightbox: true
 # filter to SA
 capad_sa <- capad |>
   filter(STATE == "SA")

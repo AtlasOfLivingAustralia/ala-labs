@@ -1,0 +1,515 @@
+---
+title: "Plotting invasive species distributions with alpha shapes and choropleth maps in Python"
+description: |
+  Invasive and introduced species can expand quickly into new habitats, altering ecosystems. In this post we use Python's {galah}, {alphashape} and {GeoPandas} packages to visualise the growing distribution of *Rhinella marina* (cane toads) and the expanding range of *Pittisporum undulatum* in Australia.
+author:
+  - name: "Caitlin Ramsay"
+  - name: "Amanda Buyan"
+  - name: "Dax Kellie"
+date: "2023-04-28"
+title-block-banner: "#B8573E"
+toc: true
+toc-location: left
+toc-depth: 2
+categories:
+  - Eukaryota
+  - Animalia
+  - Plantae
+  - Maps
+  - Python
+image: images/cane-toad-map.png
+freeze: true
+---
+
+<!-- remove metadata section -->
+
+<style>
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+</style>
+
+
+<!-- Author card -->
+
+:::{.author-card}
+:::{.author-card-text style="white-space: nowrap;"}
+
+#### Author
+Caitlin Ramsay  
+[Amanda Buyan](https://labs.ala.org.au/about/Buyan_Amanda/index.html)  
+[Dax Kellie](https://labs.ala.org.au/about/Kellie_Dax/index.html)  
+
+#### Date
+28 April 2023
+
+:::
+
+:::{.row-b layout-ncol="3" style="margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto;"}
+
+:::{.author-card-image style="width: auto; height: 120px; margin-right: auto;"}
+<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/caitlin.jpg" style="object-fit: cover; border-radius: 50% !important; width: 140px;"></img>
+
+:::
+
+:::{.author-card-image style="width: auto; height: 120px; margin-right: auto;"}
+<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/amanda.jpg" style="object-fit: cover; border-radius: 50% !important; width: 140px;"></img>
+
+:::
+
+:::{.author-card-image style="width: auto; height: 120px; margin-right: auto !important;"}
+<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg" style="object-fit: cover; border-radius: 50% !important; width: 140px;"></img>
+
+:::
+:::
+:::
+
+<!------------------------ Post starts here ------------------------>
+
+:::{.callout-tip}
+
+## Intern Post
+
+:::
+Humans' movement across the globe has led to the accidental, and sometimes deliberate, transportation of species beyond their native habitats. In Australia since European colonisation, [around 3,000 species have been introduced](https://cloud.gbif.org/griis/resource?r=griis-australia). 
+
+Within the last 200 years [over 100 native species have gone extinct](https://theconversation.com/invasive-species-are-australias-number-one-extinction-threat-116809), with invasive species labelled as affecting [82% (1,257 of 1,533) of Australia's threatened taxa in 2018](https://soe.dcceew.gov.au/overview/pressures/invasive-species-and-range-shifts#impacts-of-invasive-species). Since 1960, invasive species have cost the Australian economy [at least $390 billion in damages](https://theconversation.com/pest-plants-and-animals-cost-australia-around-25-billion-a-year-and-it-will-get-worse-164969), and are now considered a main driver of extinctions in native plants and animals. 
+
+However, species from outside of Australia aren't the only ones that can encroach on other species' habitats. [Native Australian species can do it, too](https://phys.org/news/2021-08-australian-native-invasive-species.html). Thanks in part to human activity, changing temperatures and more frequent extreme weather events, some Australian species have established themselves in new areas outside of their native range. Although not as popularly discussed, Australian species that have become pests in new habitats can disrupt ecosystems much like internationally invasive species.
+
+In this post, we will use Python and the [{galah} package](https://galah.ala.org.au/) to visualise how distributions of both international invasive species and native introduced pest species have shifted over time. To do this, we will use alpha shapes to visualise the distribution of *Rhinella marina* (Cane toads) since the 1930s and create a choropleth map to visualise the expanded habitat range of *Pittosporum undulatum*.
+
+# Invasive Species
+
+### Download data
+
+To start, we will use the infamous example of the cane toad to illustrate how far an invasive species' distribution can spread each decade.
+
+:::{layout="[-1, 1, -1]"}
+<img class="rounded" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/f/b/2/0dd84abb-041e-4868-93fb-7b120ab92bfe/original"></img>
+:::
+::: {.figure-caption}
+[Rhinella marina (Isaac Clarey CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/722881a9-aff8-40f9-af5d-fe6bea58743d)
+:::
+
+First load the required Python packages.
+
+```{python}
+#| warning: false
+#| message: false
+import galah
+import pandas as pd
+import geopandas
+import numpy as np
+from dateutil.parser import parse
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import alphashape
+from flexitext import flexitext
+```
+
+Next, we will use the [{galah} package](https://galah.ala.org.au/Python/index.html) to download occurrence records of cane toads in Australia from the Atlas of Living Australia (ALA). You will need to first provide a registered email with the ALA using `galah.galah_config()` before retrieving records.
+
+```{python}
+#| echo: false
+
+galah.galah_config(email="amanda.buyan@csiro.au")
+galah.galah_config(data_profile="ALA")
+```
+
+```{python}
+#| eval: false
+# Add registered email (register at ala.org.au)
+galah.galah_config(email = "your-email@email.com")
+galah.galah_config(data_profile="ALA")
+```
+
+```{python}
+#| column: page
+#| fig-align: center
+cane_toads = galah.atlas_occurrences(taxa = "Rhinella marina", use_data_profile = True)
+cane_toads.head(5)
+```
+
+### Clean data
+
+We'll clean our data to ensure that there are no null or missing values in our coordinates and date fields. Because `galah.atlas_occurrences()` returns a Pandas dataframe, we have plenty of functions we can use to clean our data.
+
+```{python}
+cane_toads = cane_toads.dropna(subset=["eventDate", "decimalLatitude", "decimalLongitude"])
+```
+
+We want to map cane toad's distribution each decade in our final visualisation. However, the `eventDate` value for each record is formaatted as a string value `yyyy-mm-dd Thh:mm:ssZ`. Let's write our own function `convert_date_to_decade()` that extract the year from a date `string` and return its corresponding decade by rounding down to the nearest decade.
+
+```{python}
+def convert_date_to_decade(value):
+    date = parse(value)
+    return date.year - (date.year%10)
+```
+
+We'll create our new `decade` column by mapping each record's date value in `eventDate` to its corresponding decade value.
+
+```{python}
+#| warning: false
+cane_toads["decade"] = cane_toads["eventDate"].map(convert_date_to_decade)
+```
+
+### Make Australia map
+
+Next, let's download a shapefile of Australia with state boundaries. The Australian Bureau of Statistics provides [digital boundary files](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files) from which you can explore many other Australian shapefiles. Download the [States and Territories - 2021 - Shapefile](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files/STE_2021_AUST_SHP_GDA2020.zip) a zip folder. Save the zip folder inside your working folder and then unzip it to access the `.shp` file inside.
+
+{`GeoPandas`} is a package that handles geospatial data in Python and can be used to load in shapefiles as `GeoPandas` dataframes. Let's test this out by plotting our Australian state boundary shapefile.
+
+```{python}
+#| eval: false
+mpl.rcParams['figure.dpi'] = 1200 # generate a high resolution image
+states = geopandas.read_file("Australia_state_boundaries/STE_2021_AUST_GDA2020.shp")
+states.plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white")
+```
+
+```{python}
+#| warning: false
+#| message: false
+#| echo: false
+mpl.rcParams['figure.dpi'] = 1200 # generate a high resolution image
+states = geopandas.read_file("../data/Australia_state_boundaries/STE_2021_AUST_GDA2020.shp")
+states.plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white")
+```
+
+
+### Generate alpha shapes
+
+Alpha shapes can be used to define and visualise the shape of a set of species occurrence points in space. They are useful because they can be generated on *data-deficient* species with few available observations, and without using environmental data or complex algorithms. Let's use alpha shapes to see how cane toads' distribution has changed each decade since they were introduced.
+
+First, we need to obtain a list of all decades with cane toad observations. We'll use the `decade` column from our `cane_toads` dataframe to group our observations.
+
+```{python}
+decades = list(set(cane_toads["decade"]))
+```
+
+We will be using the [{`alphashape`} package](https://pypi.org/project/alphashape/) to create alpha shapes representing the cane toad distribution for each decade they have been observed. The  alphashape.alphashape() function requires two things:
+
+  1.  A set of observation coordinates
+  2.  An alpha parameter, which sets how tightly the shape’s lines conform to our observations
+    
+Let's make an alpha shape for each decade's observations. We'll also add a slight buffer to each alpha shape to smooth out some of its edges. Then we'll group all the shapes into one large `GeoPandas` dataframe.
+
+:::{.callout-note}
+We used `alpha = 1`, but it's good practice to change this parameter depending on how widely distributed the coordinates of your data are. Also note that `alphashape.alphashape()` requires at least 3 data points to calculate an alpha shape.
+:::
+
+```{python}
+alpha_shape_gdf = geopandas.GeoDataFrame() # GeoPandas data frame to contain all alpha shapes
+for i, d in enumerate(decades):
+    decade_points = cane_toads[["decimalLongitude", "decimalLatitude"]] [cane_toads["decade"] == d]
+    if len(decade_points) <= 3: 
+        continue
+    alpha_shape = alphashape.alphashape(decade_points, 1)
+    d = {"decade": d, "geometry": [alpha_shape.buffer(0.2)]}
+    tmp_gdf = geopandas.GeoDataFrame(d, crs="EPSG:7844")
+    alpha_shape_gdf = pd.concat([alpha_shape_gdf, tmp_gdf])
+```
+
+Next, let's clean up our `GeoPandas` dataframe so that it is ready for plotting! Sometimes the `alphashape.alphashape()` algorithm will produce an empty shape that needs to be removed from the dataframe (this generally happens when the chosen alpha parameter is not appropriate for the supplied set of points). Let's remove these shapes from our data.
+
+```{python}
+alpha_shape_gdf = alpha_shape_gdf[~alpha_shape_gdf["geometry"].is_empty]
+```
+
+Now let's format our decade string to display correctly on the figure legend by making sure it's in `YYYYs` format.
+
+```{python}
+alpha_shape_gdf["decade_string"] = alpha_shape_gdf["decade"].map(lambda d: str(d) + "s")
+```
+
+Finally, because we expect cane toad distributions in earlier decades to be smaller than in recent decades, we'll need to plot earlier distributions *on top* of later distributions to avoid covering the earlier ones up. To achieve this, let's order the alpha shapes in descending order by decade.
+
+```{python}
+alpha_shape_gdf.sort_values(by='decade', ascending=False, inplace=True)
+```
+
+
+### Map alpha shape distributions
+
+Finally, we can plot our alpha shape distributions for each decade onto our map of Australia!
+
+This figure showcases the incredible pace of the cane toad's spread across northern Australia. Our map shows that cane toads have spread across most of Queensland, the top end of the Northern Territory (from the 1980s to 2010s) and more recently, into the Kimberley region of Western Australia.
+
+```{python}
+#| warning: false
+#| message: false
+#| column: page
+#| fig-align: center
+#| fig-height: 9
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
+ax = states.boundary.plot(edgecolor="#5A5A5A", linewidth=0.5, facecolor="white", zorder=-1)
+
+alpha_shape_gdf.plot(ax = ax, cmap="plasma", column = "decade_string", legend=True, categorical=True)
+lgd = ax.get_legend()
+lgd.draw_frame(False)
+lgd.set_bbox_to_anchor((1.2, 0.8))
+
+title_text = "<style: italic>Rhinella marina</> (cane toad) distributions per decade"
+flexitext(0.5, 1, title_text, va="bottom", ha="center");
+
+caption_text = "<color:#5A5A5A, style:italic, size:7>Distributions calculated with alpha hulls of each decade's cane toad observations</>"
+flexitext(0.05, 0, caption_text, va="top");
+
+plt.xlim([110, 161])
+plt.ylim([-45, -8])
+plt.axis("off")
+plt.subplots_adjust(left=-0.15, right=1)
+
+plt.show()
+```
+
+### Other invasive species
+
+Let's use the same code as above to visualise other invasive species *Camelus dromedarius* (Feral dromedary camels) and *Echium plantagineum* (Paterson's curse).
+
+:::{.panel-tabset .nav-pills}
+
+#### Camels
+
+```{python}
+#| code-fold: true
+#| fig-align: center
+#| fig-height: 7
+#| warning: false
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
+
+# Camel
+camels = galah.atlas_occurrences("Camelus dromedarius", use_data_profile="ALA")
+camels = camels.dropna(subset=["eventDate", "decimalLatitude", "decimalLongitude"])
+camels["decade"] = camels["eventDate"].map(convert_date_to_decade)
+decades = list(set(camels["decade"]))
+
+alpha_shape_gdf = geopandas.GeoDataFrame() # GeoPandas data frame to contain all alpha shapes
+
+for i, d in enumerate(decades):
+    decade_points = camels[["decimalLongitude", "decimalLatitude"]] [camels["decade"] == d]
+    if len(decade_points) <= 3: 
+        continue
+    alpha_shape = alphashape.alphashape(decade_points, 1)
+    d = {"decade": d, "geometry": [alpha_shape.buffer(0.2)]}
+    tmp_gdf = geopandas.GeoDataFrame(d, crs="EPSG:4326")
+    alpha_shape_gdf = pd.concat([alpha_shape_gdf, tmp_gdf])
+
+alpha_shape_gdf = alpha_shape_gdf[ ~alpha_shape_gdf["geometry"].is_empty]
+alpha_shape_gdf["decade_string"] = alpha_shape_gdf["decade"].map(lambda d: str(d) + "s")
+alpha_shape_gdf.sort_values(by='decade', ascending=False, inplace=True)
+
+ax = states.boundary.plot(edgecolor="#5A5A5A", linewidth=0.5, facecolor="white", zorder=-1)
+
+alpha_shape_gdf.plot(ax = ax, cmap="plasma", column = "decade", legend=True, categorical=True)
+lgd = ax.get_legend()
+lgd.draw_frame(False)
+lgd.set_bbox_to_anchor((1.2, 0.61))
+
+title_text = "<style: italic>Camelus dromedarius</> (dromedary camel) distributions per decade"
+flexitext(0.5, 1, title_text, va="bottom", ha="center");
+
+caption_text = "<color:#5A5A5A, style:italic, size:7>Distributions calculated with alpha hulls of each decade's dromedary camel observations</>"
+flexitext(0.05, 0, caption_text, va="top");
+
+plt.xlim([110, 161])
+plt.ylim([-45, -8])
+plt.axis("off")
+plt.subplots_adjust(left=-0.1, right=1)
+
+plt.show()
+```
+
+#### Patterson's curse
+
+```{python}
+#| code-fold: true
+#| fig-align: center
+#| fig-height: 7
+#| warning: false
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
+
+# Paterson's Curse
+opuntia = galah.atlas_occurrences("Echium plantagineum", use_data_profile="ALA")
+opuntia = opuntia.dropna(subset=["eventDate", "decimalLatitude", "decimalLongitude"])
+opuntia["decade"] = opuntia["eventDate"].map(convert_date_to_decade)
+decades = list(set(opuntia["decade"]))
+
+alpha_shape_gdf = geopandas.GeoDataFrame() # GeoPandas data frame to contain all alpha shapes
+
+for i, d in enumerate(decades):
+    decade_points = opuntia[["decimalLongitude", "decimalLatitude"]] [opuntia["decade"] == d]
+    if len(decade_points) <= 3: 
+        continue
+    alpha_shape = alphashape.alphashape(decade_points, 1)
+    d = {"decade": d, "geometry": [alpha_shape.buffer(0.2)]}
+    tmp_gdf = geopandas.GeoDataFrame(d, crs="EPSG:4326")
+    alpha_shape_gdf = pd.concat([alpha_shape_gdf, tmp_gdf])
+
+alpha_shape_gdf = alpha_shape_gdf[ ~alpha_shape_gdf["geometry"].is_empty]
+alpha_shape_gdf["decade_string"] = alpha_shape_gdf["decade"].map(lambda d: str(d) + "s")
+alpha_shape_gdf.sort_values(by='decade', ascending=False, inplace=True)
+
+ax = states.boundary.plot(edgecolor="#5A5A5A", linewidth=0.5, facecolor="white", zorder=-1)
+
+alpha_shape_gdf.plot(ax = ax, cmap="plasma", column = "decade", legend=True, categorical=True)
+lgd = ax.get_legend()
+lgd.draw_frame(False)
+lgd.set_bbox_to_anchor((1.2, 0.85))
+
+title_text = "<style: italic>Echium plantagineum</> (Paterson's curse) distributions per decade"
+flexitext(0.5, 1, title_text, va="bottom", ha="center");
+
+caption_text = "<color:#5A5A5A, style:italic, size:7>Distributions calculated with alpha hulls of each decade's Paterson's curse observations</>"
+flexitext(0.05, 0, caption_text, va="top");
+
+plt.xlim([110, 161])
+plt.ylim([-45, -8])
+plt.axis("off")
+plt.subplots_adjust(left=-0.1, right=1)
+
+plt.show()
+```
+
+:::
+
+# Native introduced pest species
+
+When people think of invasive species, they generally think of species that have been introduced to Australia from other countries. However, even Australia's native species can become pests when introduced to a new ecosystem. 
+
+One good example of native pests are the trees *Pittosporum undulatum* (sometimes called Sweet Pittosporum). These trees have been introduced as ornamental plants in gardens across Australia because of their sweet-scented flowers and bright berries. Although *Pittosporum undulatum*'s native range extends from southern Queensland to eastern Victoria, it is now considered an environmental weed in many regions where it has been introduced.
+
+:::{layout="[-1, 1, -1]"}
+<img class="rounded" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/9/9/e/b/3765267a-f11a-474f-9bc9-215a5394be99/original"></img>
+:::
+::: {.figure-caption}
+[Pittosporum undulatum (Chris Clarke CC-BY)](https://biocache.ala.org.au/occurrences/30b0b6dc-1d77-4a1f-ae15-18ef5ef67e28)
+:::
+
+Let's create a choropleth map to visualise the to visualise the bioregions where *Pittosporum undulatum* is native and introduced.
+
+
+### Download IBRA regions
+
+First, let's download a shapefile of Australia's bioregions. The [IBRA7 bioregions](https://data.gov.au/dataset/ds-dga-d44dd392-ebea-4f1a-b30e-4a2da154aae4/details?q=ibra) classify areas within Australia that are geographically and ecologically distinct. Download the zip folder, save it in your project directory and unzip it. We can again use the {GeoPandas} package to read in and handle these data.
+
+```{python}
+#| eval: false
+bioregions = geopandas.read_file("IBRA7_regions/ibra7_regions.shp")
+bioregions.plot(edgecolor = "#5A5A5A", linewidth = 0.25, facecolor = "white")
+```
+
+```{python}
+#| echo: false
+#| message: false
+#| warning: false
+bioregions = geopandas.read_file("../data/IBRA7_regions/ibra7_regions.shp")
+bioregions.plot(edgecolor = "#5A5A5A", linewidth = 0.25, facecolor = "white")
+```
+
+Within our `bioregions` dataframe, the column `REG_NAME_7` contains IBRA bioregion names.
+
+```{python}
+#| column: page
+bioregions.head(5)
+```
+
+
+### Find bioregions with observations
+
+We'll once again use {galah} to find numbers of *Pittosporum undulatum* in each bioregion. First, let's find which field ID corresponds to bioregions in {galah}
+
+```{python}
+galah.search_all(fields = "IBRA") 
+```
+
+It looks like field `cl1048` contains IBRA 7 regions. Let's check what values this field contains by using `galah.show_values()`.
+
+```{python}
+galah.show_values(field = "cl1048")
+```
+
+Now we can use the `group_by` argument in `galah.atlas_counts()` to group observations of *Pittosporum undulatum* by bioregion, returning all bioregions where *Pittosporum undulatum* has been observed at least once. We'll extract extract and save the bioregion names in a dataframe.
+
+```{python}
+found_bioregion_counts = galah.atlas_counts("Pittosporum undulatum",
+                                           group_by="cl1048",
+                                           expand = False)
+
+# extract bioregion names from Pandas dataframe into list
+found_bioregions = list(found_bioregion_counts["cl1048"])
+
+print(found_bioregion_counts[0:10])
+```
+
+### Separate native & introduced regions
+
+Next, let's separate bioregions where *Pittosporum undulatum* is native from bioregions where it has been introduced. The Australia Native Plants Society estimates *Pittosporum undulatum*'s native range overlapping with South Eastern Queensland, NSW North Coast, Sydney Basin, South East Corner and South East Coastal Plain (see [here](https://anpsa.org.au/plant_profiles/pittosporum-undulatum/)). Let's save these bioregion names in a separate dataframe and compare them to the overall list `found_bioregions`.
+
+```{python}
+native_bioregions = ["South Eastern Queensland", "NSW North Coast", "Sydney Basin", "South East Corner", "South East Coastal Plain"]
+introduced_bioregions = [region for region in found_bioregions if region not in native_bioregions]
+
+print(introduced_bioregions[1:5]) # first 5 introduced regions
+```
+
+Next we can add a new column `native` to our GeoPandas bioregion dataframe to identify native and introduced regions. We'll use the `.loc` method to assign a "Native", "Introduced" or "No observations" label to each row depending on whether the region is in `native_bioregions` or `introduced_bioregions`.
+
+```{python}
+bioregions.loc[bioregions["REG_NAME_7"].isin(native_bioregions), "native"] = "Native"
+bioregions.loc[bioregions["REG_NAME_7"].isin(introduced_bioregions), "native"] = "Introduced"
+bioregions["native"] = bioregions["native"].replace("nan", "No observations")
+```
+
+### Make choropleth map
+
+When plotting this GeoPandas dataframe, we can specify that we want the map coloured according to its `native` label so that native, introduced and not found bioregions are distinguishable colours. This is done by supplying the `column` argument of the `.plot()` function with the column of the dataframe that the colouring is based upon. However, `matplotlib` would choose a default colourmap to colour the bioregions so we will need to specify the exact colours we wanted associated with each type of bioregion. 
+
+To identify our three categories of regions on our map, we'll create a new column `colour` containing colour hex codes for plotting our regions.
+
+```{python}
+bioregions.loc[bioregions["native"] == "Native", "colour"] = "#8FBD4C" # Native
+bioregions.loc[bioregions["native"] == "Introduced", "colour"] = "#F7872E" # Introduced
+bioregions.loc[bioregions["native"] == "No observations", "colour"] = "#E4DFCF" # No observations
+```
+
+We can use this `colour` column as the input to our `.plot()` function.
+
+Our map shows that *Pittosporum undulatum* has been observed in Western Australia, Northern Territory, South Australia, and even Tasmania despite having a fairly narrow native range along the east coast of Australia.
+
+```{python}
+#| column: page
+#| fig-align: center
+#| fig-height: 9
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
+bioregions.plot(edgecolor="white", linewidth = 0.25, color = bioregions["colour"])
+
+title_text = "<style:italic>Pittosporum undulatum</> <color:#8FBD4C, weight:bold>native</> and <color:#F7872E, weight:bold>introduced</> Australian bioregions"
+flexitext(0.5, 1, title_text, va="bottom", ha="center");
+
+plt.xlim([110, 161])
+plt.ylim([-45, -8])
+plt.axis("off")
+plt.show()
+```
+
+# Final thoughts
+
+Human activity—from constructing buildings to travelling overseas to gardening—plays a part in shaping modern ecosystems. Our maps showed how quickly well-known invasive species have established themselves across Australia, and how widely even native Australian plants can spread when introduced to non-native regions.
+
+Humans are just one of many drivers of introducing species to new areas. Changes to the environment, for example, can shrink available resources and living space in a habitat, giving introduced species a chance to outcompete native species for what resources and space are left. [As species inevitably enter and alter ecosystems](https://soe.dcceew.gov.au/overview/pressures/invasive-species-and-range-shifts#range-shifts-and-extensions), large weather events, extreme temperatures and habitat degradation [can give invasives a big leg-up on the native competition, too](https://theconversation.com/research-reveals-fire-is-pushing-88-of-australias-threatened-land-mammals-closer-to-extinction-185965). 
+
+Nonetheless, there is still hope. Research finds [native species can still adapt to changing environments](https://www.ecolsoc.org.au/news/native-plants-are-taking-back-their-homes/) and simple tasks like [pulling weeds](https://theconversation.com/pulling-out-weeds-is-the-best-thing-you-can-do-to-help-nature-recover-from-the-fires-130296) can help native species survive after events like fires.
+
+<details><summary style = "color: #E06E53;">Expand for session info</summary>
+
+```{python}
+import math
+import natsort
+import pandas
+import session_info
+
+session_info.show()
+```
+
+</details>

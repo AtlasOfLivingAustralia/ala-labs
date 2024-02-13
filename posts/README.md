@@ -10,9 +10,8 @@ Before making a new post, please create a new branch from `main`. On your new br
 
 Each Post on ALA Labs is saved in `/posts` within its own subfolder. Each subfolder will contain the following components that all work together to render a Post:
 
-  *  `post.qmd`: The Post article
+  *  `index.qmd`: The article
   *  `preview-dataviz.png`: A final dataviz that you wish to use as a preview image (displayed on the Post listing page)
-  *  `_footer.html`: Code to build the footer added to the bottom of every Post
   *  `/images`: Folder containing logos necessary to build the footer
 
 Without all of these components, a Post will not render correctly on the website.
@@ -24,6 +23,14 @@ Posts are listed in order by date, with the most recent date appearing first. Fo
 *yyyy-mm-dd_short-post-name*
 
 Ideally your short post name will be very similar to the title of your eventual Post because this folder name will be used within the url of your eventual post. For example, the url for the Post titled "Alternatives to box plots: Using beeswarm and raincloud plots to summarise ecological data" is [https://labs.ala.org.au/posts/2023-08-28_alternatives-to-box-plots/post.html](https://labs.ala.org.au/posts/2023-08-28_alternatives-to-box-plots/post.html).
+
+## Using data in a Post
+
+A lot of Posts will use data or files from external sources which need to be saved and loaded from their file location (e.g., `read_csv("data.csv")). If you want to load files into a Post, **do not add data files to your Post's folder**. GitHub has limitations to the size of a repository, so odds are you won't be able to push your data onto the repository.
+
+Files should be saved locally in `/posts/data` and loaded from this folder. This folder is in `.gitignore` and so any files in this folder will not be loaded to the repository.
+
+To allow others to be able to build your Post even though your data isn't pushed to the `ala-labs` repository, save a copy of your files in the Science and Decision Support Teams folder in `/Data/ala-labs/data/`. If you have access to this folder, you can access it [using this link](https://csiroau.sharepoint.com/:f:/r/sites/AtlasofLivingAustraliaTeams/Shared%20Documents/Teams/Science%20and%20Decision%20Support/Data/ala-labs/data?csf=1&web=1&e=H8SQRS).
 
 ## Writing a Post
 
@@ -99,10 +106,3 @@ pkg_sesh
 
 ```
 
-## Using data in a Post
-
-A lot of Posts will use data or files from external sources which need to be saved in the repository and loaded from their file location (e.g., `read_csv("data.csv")). If you want to load files into a Post, **do not add data files to your Post folder**, as GitHub has limitations to the size of a repository.
-
-Files should be saved in `/posts/data` and loaded from this folder. This folder is in `.gitignore` and so any files in this folder will not be loaded to the repository.
-
-To allow others to be able to build your Post even though your data isn't pushed to the `ala-labs` repository, save a copy of your files in the Science and Decision Support Teams folder in `/Data/ala-labs/data/`. If you have access to this folder, you can access it [using this link](https://csiroau.sharepoint.com/:f:/r/sites/AtlasofLivingAustraliaTeams/Shared%20Documents/Teams/Science%20and%20Decision%20Support/Data/ala-labs/data?csf=1&web=1&e=H8SQRS).

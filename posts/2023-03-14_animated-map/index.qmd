@@ -8,7 +8,6 @@ author:
   - name: "Dax Kellie"
 date: "2023-03-14"
 title-block-banner: "#B8573E"
-include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3
@@ -17,6 +16,7 @@ categories:
   - Animalia
   - Mollusca
   - Maps
+  - R
   - Intern-post
 image: SDM.gif
 freeze: true
@@ -185,7 +185,7 @@ env <- load_layers(layercodes = c("MS_biogeo08_sss_mean_5m",
 To prepare variable data for our model, we need to crop the geographical boundaries of our data to include *only* the coast (and surrounding ocean) of Australia. With the help of the {raster} package, we'll use `extent()` to set the outer boundaries and `crop()` to remove the land.
 
 ```{r plot-layers}
-#| fig.aligh: center
+#| fig-align: center
 # Create extent
 aus_ext <- raster::extent(100, 165, -45, -10)
 
@@ -476,6 +476,7 @@ For context before we see our animation, let's first look at the distribution of
 #| height: 12
 #| column: page
 #| code-fold: true
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 ## Run the 3 models on our data
 SDM_GLM <- modelling("GLM",
                      Occurrences = occurrences_clean,
@@ -563,6 +564,7 @@ gifski(glue("maps/{map_files}"), gif_file = "SDM.gif", delay = 0.5,
 #| column: page
 #| fig-height: 9
 #| fig-align: center
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 knitr::include_graphics("SDM.gif")
 ```
@@ -582,7 +584,10 @@ counts <- galah_call() |>
   galah_identify("nudibranchia") |>
   galah_group_by(month) |>
   atlas_counts() |>
-  mutate(month = month(as.integer(month), label = TRUE)) |>
+  mutate(
+    month = match(month, month.name) |>
+      lubridate::month(label = TRUE)
+    ) |>
   arrange(-desc(month))
 
 ggplot(data = counts,

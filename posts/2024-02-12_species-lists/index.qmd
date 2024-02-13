@@ -15,7 +15,6 @@ categories:
   - Summaries
   - Python
 image: waffle-chart.png
-draft: true
 freeze: false
 engine: knitr
 jupyter: python3
@@ -69,7 +68,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 Knowing what species inhabit an area is important for conservation and ecosystem management. In particular, it can help us find out how many known species are in a given area, whether each species is common or rare, and whether any species are threatened or endangered.
 
-In this post, we will use the `galah-python`, `geopandas`, `matplotlib` and `pywaffle` packages to show you how to download a list of species within the Yass Valley in 2023, and visualise the number of threatened and sensitive species in the region. 
+In this post, we will use the `galah-python`, `geopandas`, `matplotlib` and `pywaffle` packages to show you how to download a list of species within the Yass Valley in 2023, cross-reference this list with state-wide conservation status lists, and visualise the number of threatened and sensitive species in the region. 
 
 # Download a list of species
 
@@ -162,7 +161,7 @@ Now let's use `to_crs()` to set the Coordinate Reference System (CRS) of our sha
 LGAs_2023 = LGAs_2023.to_crs(4326)
 ```
 
-Next we can filter our shapefile to only Yass Valley. The column `LGA_NAME23` contains area names, and we can filter our `Dataframe` to only rows where `LGA_NAME23` is equal to `Yass Valley`.
+Next we can filter our shapefile to only Yass Valley. The column `LGA_NAME23` contains area names, and we can filter our `Dataframe` to only rows where `LGA_NAME23` is equal to `Yass Valley`. We are left with a single polygon shape of Yass Valley.
 
 ```{python}
 yass_valley = LGAs_2023[LGAs_2023['LGA_NAME23'] == "Yass Valley"]
@@ -171,7 +170,7 @@ yass_valley["geometry"]
 
 ## Download data
 
-Now that `yass_geometry` contains our LGA shape, we can build our query. We can use `atlas_species()` to return a species list, passing our shape to the `polygon` argument of `atlas_species()` and specifying the year to `filters`. To add the observation count for each species, add `counts=True`.
+Now that `yass_valley` contains our LGA shape, we can build our query. We can use `atlas_species()` to return a species list, passing our shape to the `polygon` argument of `atlas_species()` and specifying the year to `filters`. To add the observation count for each species, add `counts=True`.
 
 ```{python}
 species_yass = galah.atlas_species(
@@ -207,15 +206,15 @@ galah.search_all(lists="New South Wales")
 Two lists are returned, and both appear relevant. With the help of some additional columns returned by `search_all()`—`listType`, `isAuthoritative` and `isThreatened`—we can learn more about which list suits our needs best. Although both lists are authoritative, only one list (`dr650`) contains threatened species whereas the other `dr487` contains sensitive species. 
 
 ```{python}
-galah.search_all(lists="New South Wales")[["dataResourceUid", "listType", "isAuthoritative", "isThreatened"]]
+galah.search_all(lists="New South Wales")[["species_list_uid", "listType", "isAuthoritative", "isThreatened"]]
 ```
 
-We can return only species in Yass Valley on the New South Wales Conservation Status List (`dr650`) by adding the list ID `dataResourceUid=dr650` to `filters`. Our query returns 21 species.
+We can return only species in Yass Valley on the New South Wales Conservation Status List (`dr650`) by adding the list ID `species_list_uid=dr650` to `filters`. Our query returns 22 species.
 
 ```{python}
 yass_threatened = galah.atlas_species(
   polygon=yass_valley["geometry"][127],
-  filters=["year=2023", "dataResourceUid=dr650"],
+  filters=["year=2023", "species_list_uid=dr650"],
   counts=True
   )
 yass_threatened
@@ -226,7 +225,7 @@ We can do the same using the New South Wales Sensitive Species (`dr487`). Our qu
 ```{python}
 yass_sensitive = galah.atlas_species(
   polygon=yass_valley["geometry"][127],
-  filters=["year=2023", "dataResourceUid=dr487"],
+  filters=["year=2023", "species_list_uid=dr487"],
   counts=True
   )
 yass_sensitive
@@ -261,7 +260,7 @@ sensitive_list = pd.read_csv("../data/example_SSL.csv")
 ```
 
 We can use the `isin()` to return the names in `species_yass` that 
-match names in `threatened_list`. We return 21 species.
+match names in `threatened_list`. We return 22 species.
 
 ```{python}
 yass_threatened = species_yass[species_yass['Species Name'].isin(list(threatened_list['species name']))].reset_index(drop=True)
@@ -368,8 +367,7 @@ Waffle.make_waffle(
 ```{python}
 #| column: page
 #| fig-align: center
-#| fig-height: 9
-#| fig-width: 10
+#| out-width: 9in
 #| echo: false
 #| eval: true
 #| warning: false

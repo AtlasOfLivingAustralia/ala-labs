@@ -9,7 +9,6 @@ author:
   - name: Dax Kellie
 date: "2022-05-23"
 title-block-banner: "#B8573E"
-include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3
@@ -17,6 +16,7 @@ categories:
   - Eukaryota
   - Plantae
   - Maps
+  - R
 image: plants_3d.png
 freeze: true
 ---
@@ -161,10 +161,19 @@ This function will send **lots** of queries all at once to the ALA, so it is bes
 :::
 
 ```{r}
+#| eval: false
 # download number of species for each polygon
 counts_list <- map(seq_along(oz_grid), get_counts)
 
 # bind lists to data frame
+counts_df <- map_dfr(counts_list, rbind)
+```
+
+```{r}
+#| echo: false
+counts_list <- readRDS(here::here("posts",
+                                  "data",
+                                  "plants-counts_2022.rds"))
 counts_df <- map_dfr(counts_list, rbind)
 ```
 
@@ -201,6 +210,7 @@ The first step to making our 3D map is to make a 2D map with `ggplot2`. I have s
 #| warning: false
 #| column: page
 #| fig-align: center
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 hex_map <- ggplot() +
   geom_sf(
     data = oz_df,
@@ -263,7 +273,9 @@ plot_gg(hex_map,
 #| echo: false
 #| column: page
 #| fig-align: center
-#| fig-height: 10
+#| out-height: 8in
+#| out-width: 9in
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 knitr::include_graphics(here::here("images", "dataviz", "plants_hex-map.png"))
 ```
 

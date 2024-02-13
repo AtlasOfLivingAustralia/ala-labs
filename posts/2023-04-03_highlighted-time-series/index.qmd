@@ -8,7 +8,6 @@ author:
   - name: "Dax Kellie"
 date: "2023-04-03"
 title-block-banner: "#B8573E"
-include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 3
@@ -332,6 +331,7 @@ We'll also set our `fill` inside of `aes()` and define its value within `scale_f
 ```{r}
 #| column: body-outset
 #| fig-align: center
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 p1 <- ggplot() +
   geom_rect(data = lockdowns,
             aes(xmin = week_start,
@@ -351,6 +351,7 @@ Next we'll add our proportional species observation counts as lines. We can defi
 #| warning: false
 #| column: body-outset
 #| fig-align: center
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 p2 <- p1 +
   # add lines
   geom_line(data = birds_final, 
@@ -387,6 +388,7 @@ The plot above is enough to see everything we need to see from our data. You *co
 #| fig-width: 10
 #| fig-height: 6
 #| code-fold: true
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 # add fonts
 font_add_google("Montserrat", family = "mont")

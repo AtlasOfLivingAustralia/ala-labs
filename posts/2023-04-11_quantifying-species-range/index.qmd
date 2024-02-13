@@ -7,7 +7,6 @@ author:
   - name: "Margot Schneider"
 date: "2023-04-11"
 title-block-banner: "#B8573E"
-include-after-body: _footer.html
 toc: true
 toc-location: left
 toc-depth: 2
@@ -17,6 +16,7 @@ categories:
   - Plantae
   - Summaries
   - Maps
+  - R
 image: images/bee_fire.png
 freeze: true
 editor_options: 
