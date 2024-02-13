@@ -15,7 +15,7 @@ categories:
   - Summaries
   - Python
 image: waffle-chart.png
-freeze: false
+freeze: true
 engine: knitr
 jupyter: python3
 editor_options: 
