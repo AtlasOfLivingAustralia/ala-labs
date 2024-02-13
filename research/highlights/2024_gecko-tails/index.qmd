@@ -1,0 +1,74 @@
+---
+title: "The tale of changing gecko tails in extreme climates"
+author: "Olivia Torresan"
+date: "2024-01-12"
+title-block-banner: "#E06E53"
+title-block-banner-color: "#FFFFFF"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png 
+categories:
+  - Conservation
+  - Citizen Science
+params:
+  authors: "Green, A.L, Oliver, P.M,Gray, J.A., Sherratt, E."
+  year: 2024
+  title: "Adaptive tails? Parallel evolution of expanded tails in monsoonal tropics lineages of an Australian gecko radiation (Oedura)"
+  publication: "Zoological Journal of the Linnean Society"
+  doi: https://doi.org/10.1093/zoolinnean/zlad186
+  image_url: https://images.ala.org.au/image/details?imageId=c8192787-e0a4-43d1-957d-a9b76d8ee2b6
+  alt_text: Marbled Velvet Gecko on a log
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Side panel -->
+
+:::{.column-page}
+
+:::{.paper-side-column}
+<center>
+:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/6/b/2/e/c8192787-e0a4-43d1-957d-a9b76d8ee2b6/original" class="rounded"/></img>
+:::
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+[*Oedura marmorata* (rubynats CC BY 4.0)](https://images.ala.org.au/image/details?imageId=c8192787-e0a4-43d1-957d-a9b76d8ee2b6)
+:::
+
+### Citation
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+
+#### Page info
+Prepared by 
+[Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
+:::
+
+
+<!-- Main panel description -->
+
+::: {.paper-main-column}
+With enough time, species can evolve to adapt to a different environment or climate. Sometimes (though, not always) this can be expressed in a detectable physical change: the shape and size of a leaf, limb; or even the colour of their scales, feathers, or fur. This is one of many points where a taxonomist may attempt to demarcate a species split –
+or the beginning of a new species. 
+
+To make sense of the potential drivers of physical changes and species splits, we require some kind of knowledge on the historic environment and climate of the interested species distributive range. In this paper, Green et al. use climate data from the Atlas of Living Australia’s Spatial Portal alongside delineated environmental regions in an attempt to explain the changes in gecko tail shape across Australia. 
+
+They find that wider tails with a low surface area to volume ratio to predominantly occur in the Australian Monsoonal Tropics (regions with stark wet and dry seasons), and narrow, tapered tails with a high surface area to volume ratio tend to occur in more arid regions. They suggest the ‘bulbous’ morphology of the former could reflect a need for these lizards to harness energy stores during periods of high resource availability (wet seasons) in order to prepare for potential scarcity in dry seasons.  This is analogous to how succulents’ function in the plant world!
+:::
+:::
