@@ -317,13 +317,14 @@ percentage = round(float(yass_sensitive.shape[0] + yass_threatened.shape[0]) / s
 fig.text(0.56,0.44,"*1 square = 1 species",fontsize=12)
 fig.text(0.56,0.22,"{}%".format(percentage),fontsize=56)
 fig.text(0.56,0.18,"Threatened/Sensitive Species",fontsize=12)
+fig.text(0.13,0.50,"Taxonomic Breakdown",fontsize=13)
 
 # waffle chart
 Waffle.make_waffle(
     ax=ax1,
     rows=15,
     values=all_species, 
-    colors = ["#2C0741","#F5CD5F","#E5EBE4"],
+    colors = ["#FFC547","#A12B58","#E1E1E1"],
     legend={
         'labels': ["Sensitive","Threatened","Remaining"],
         'loc': 'upper left',
@@ -406,13 +407,14 @@ percentage = round(float(yass_sensitive.shape[0] + yass_threatened.shape[0]) / s
 fig.text(0.56,0.44,"*1 square = 1 species",fontsize=12)
 fig.text(0.56,0.22,"{}%".format(percentage),fontsize=56)
 fig.text(0.56,0.18,"Threatened/Sensitive Species",fontsize=12)
+fig.text(0.13,0.50,"Taxonomic Breakdown",fontsize=13)
 
 # waffle chart
 Waffle.make_waffle(
     ax=ax1,
     rows=15,
     values=all_species, 
-    colors = ["#2C0741","#F5CD5F","#E5EBE4"],
+    colors = ["#FFC547","#A12B58","#E1E1E1"],
     legend={
         'labels': ["Sensitive","Threatened","Remaining"],
         'loc': 'upper left',
