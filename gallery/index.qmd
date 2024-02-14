@@ -1,0 +1,21 @@
+---
+title: "Gallery"
+subtitle: |
+  A gallery of work inspired by ALA Labs or made using galah
+title-block-banner: "#E06E53"
+title-block-banner-color: body
+format:
+  html:
+    toc: false
+    css: gallery.css
+search: false
+execute:
+  echo: false
+listing:
+  - id: gallery
+    template: gallery.ejs
+    contents: gallery.yml
+---
+
+::: {#gallery .column-page}
+:::

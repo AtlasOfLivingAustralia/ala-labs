@@ -1,0 +1,25 @@
+
+- tiles:
+    - title: Invasive species
+      author: Johann Wagner, Rob Lanfear
+      subtitle: Interactive Shiny app
+      href: https://0uexv8-johann-wagner.shinyapps.io/invasive_species_dashboard/
+      code: https://github.com/johann-wagner/DS4B-final-project
+      thumbnail: images/shiny-app.png
+    - title: Fire ephemerals
+      author: Adele Gemmell, Dax Kellie
+      subtitle: R dataviz
+      href: https://twitter.com/atlaslivingaust/status/1749193914546782301/photo/1
+      code: https://github.com/adelegem/ala_annuals
+      thumbnail: images/fire-ephemerals.png
+    - title: World Cassowary Day
+      author: Callum Waite, Shandiya Balasubramaniam
+      subtitle: Interactive Shiny app
+      href: https://cjwaite23.shinyapps.io/cassowary_app/
+      code: https://github.com/cjwaite23/cassowary_app
+      thumbnail: images/cassowary-app.png
+    - title: Frog diversification
+      author: Ian Brennan et al.
+      subtitle: Peer-reviewed paper
+      href: https://academic.oup.com/sysbio/advance-article/doi/10.1093/sysbio/syad048/7235049?utm_source=authortollfreelink&utm_campaign=sysbio&utm_medium=email&guestAccessKey=9b77aef3-64bb-4c25-ad49-9fbf0b947cd9&login=true
+      thumbnail: images/frog-hex-maps.jfif
