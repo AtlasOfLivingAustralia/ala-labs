@@ -1,7 +1,7 @@
 ---
 title: "Download a species list and cross-reference with conservation status lists"
 description: |
-  Knowing what species have been observed in a local area is an important, regular task for ecosystem management and environmental impact assessment. Here we show how to make a species list with {galah-python} and how to cross-reference this list with threatened and sensitive species lists. We also show how to visualise this information as a waffle chart using {pywaffle} & {matplotlib}.
+  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to make a species list with {galah-python} and how to cross-reference this list with threatened and sensitive species lists. We then show how to visualise this information as a waffle chart using {pywaffle} & {matplotlib}.
 author:
   - name: "Amanda Buyan"
   - name: "Dax Kellie"
