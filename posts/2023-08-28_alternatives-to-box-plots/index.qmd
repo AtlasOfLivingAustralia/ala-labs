@@ -76,8 +76,6 @@ Box plots can mask differences in sample size and underlying data structure, whi
 
 ```{r}
 #| code-fold: true
-#| fig-align: center
-#| layout-nrow: 1
 #| message: false
 #| warning: false
 
@@ -121,9 +119,13 @@ anim <- ggplot(data) +
   ease_aes('cubic-in-out') +
   enter_fly(x_loc = 0, y_loc = 15) +
   exit_fly(x_loc = 0, y_loc = 10)
+```
 
+
+```{r}
+#| fig-align: center
+#| echo: false
 anim
-
 ```
 
 To understand how to summarise data more transparently, let's see how adding data points and distributions can help improve our visualisations.
@@ -463,12 +465,10 @@ Is this where you expected these plants to be found?
 ```{r}
 #| warning: false
 #| fig-align: center
-#| column: page
 #| fig-height: 9
 #| fig-width: 10
 #| code-fold: true
 #| fig-cap: "Figures display each species' median LMA value."
-#| out-extra: "style=margin-left:auto;margin-right:auto;"
 #| lightbox: true
 library(galah)
 library(sf)
