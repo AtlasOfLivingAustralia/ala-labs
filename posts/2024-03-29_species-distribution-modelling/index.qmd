@@ -72,6 +72,13 @@ Species distribution models are an essential tool to understand where species li
 
 In this article, we will create a species distribution model to predict the distribution of laughing kookaburras in a small area of New South Wales, Australia. We'll use tidymodels and tidysdm to build a species distribution model, train and test the model for prediction, and map the prediction onto a map. We hope that this article serve as a useful resource for understanding species distribution models in R—especially models based in machine learning like MaxEnt models.
 
+<!------------------------ ALT suggestion for introduction: 
+Species distribution models (SDMs) relate biodiversity observations at specific locations to environmental variables at those sites, and are widely used in biogeography, conservation biology, and macroecology. SDMs allow us to predict the suitability of geographic areas for species, which has such implications as predicting range expansions of invasive species and understanding habitat suitability under different climate change scenarios.   
+
+The process of building a model is iterative and often, predictions across different modelling methods are combined into ensembles. Here, we walk through the steps of building a SDM for the laughing kookaburra in a small area of New South Wales, Australia, using the [tidymodels](https://www.tidymodels.org/), [tidysdm](https://evolecolgroup.github.io/tidysdm/), and [tidyterra](https://dieghernan.github.io/tidyterra/) packages. tidymodels is a collection of packages for modelling using tidyverse principles, and tidysdm implements SDMs using the tidymodels framework. While not essential to the workflow, tidyterra facilitates manipulating and plotting rasters in a tidy manner, which keeps the syntax of the code consistent throughout. (I'm not certain if the last 2 sentences are correct) ------------------------>
+
+**I think this callout note can be removed: there's no obvious reason to introduce MaxEnt specifically since the post fits a bunch of different models** 
+
 :::{.callout-note collapse="true"}
 
 ## What are species distribution models?
@@ -99,7 +106,7 @@ To begin, we can load some packages.
 #| message: false
 library(galah)
 library(tidyverse)
-library(tidymodels)
+library(tidymodels) # automatically loaded with tidysdm I think
 library(tidysdm) # devtools::install_github("EvolEcolGroup/tidysdm")
 library(terra)
 library(tidyterra)
@@ -220,16 +227,16 @@ kookaburras_sf <- kookaburras |>
 ```
 
 
-## Bioclimate data
+## Environmental data
 
 To help with our model prediction, we'll also download the [BioClim variables](https://www.worldclim.org/data/bioclim.html), a list of 24 biologically relevant environmental variables, for all of Australia as a raster.
 
 ::: {.callout-note collapse="true"}
 ## What's a raster?
 
-A **raster** is a spatial grid of cells, where each cell is assigned a value. Each cell represents a pixel, and each pixel's colour and gradient is defined by its cell value. The resolution of the raster depends on the size of each pixel (just like a TV or computer screen).
+A **raster** is a spatial grid of cells, where cell contains a value representing information, such as temperature or elevation. This information is often visualised by mapping colours to values in the raster (see image below). The resolution of the raster depends on the size of cells within the grid, with smaller cells corresponding to higher resolution. 
 
-Here is a simple and slightly less simple example of a raster cell grid.
+**I'm not sure that having two examples here is necessary to explain what a raster is, and I wonder if it might be better to explain this with a subset of one of the bioclim variables they've just downloaded** 
 
 ```{r}
 #| code-fold: true
@@ -358,6 +365,8 @@ tidyterra follows the Grammar of Graphics made popular in R by ggplot2 (the most
 
 # Prepare data
 
+**Add note on steps here**
+
 Now that we have our occurrence data and environmental data, there are a few steps we'll complete to prepare our data for modelling.
 
 ### Thinning
@@ -406,6 +415,10 @@ ggplot() +
 A recent paper showed that too much thinning can decrease model performance. https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.4703
 As far as I can tell, thinning by cell is probably sufficient.
 Not sure if we should keep the next step of more thinning? It probably reduces the computational size of everything in our model (yay), but it feels like we are recommending this (booo)
+
+I disagree strongly with this paper's assertion that the effects of spatial thinning on model performance are unclear - just because the extent and type of thinning cannot be generalised across models and species does not mean the effects of thinning are unclear. If anything, this variation highlights the importance of testing different types of thinning and assessing model outputs instead of just choosing one and hoping for the best. There is an abundance of literature exploring this subject.
+
+I also think that the main reason for thinning is to reduce spatial bias and autocorrelation, not make improvements to the speed of model fitting - SB
 -->
 
 We can thin our data further using distance, removing points closer than 5 km. This step can further improve the speed of our model by reducing its size.
