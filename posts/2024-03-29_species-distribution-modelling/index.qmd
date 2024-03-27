@@ -73,11 +73,11 @@ Species distribution models are an essential tool to understand where species li
 In this article, we will create a species distribution model to predict the distribution of laughing kookaburras in a small area of New South Wales, Australia. We'll use tidymodels and tidysdm to build a species distribution model, train and test the model for prediction, and map the prediction onto a map. We hope that this article serve as a useful resource for understanding species distribution models in R—especially models based in machine learning like MaxEnt models.
 
 <!------------------------ ALT suggestion for introduction: 
-Species distribution models (SDMs) relate biodiversity observations at specific locations to environmental variables at those sites, and are widely used in biogeography, conservation biology, and macroecology. SDMs allow us to predict the suitability of geographic areas for species, which has such implications as predicting range expansions of invasive species and understanding habitat suitability under different climate change scenarios.   
+Species distribution models (SDMs) are widely used in biogeography, conservation biology, and macroecology, and offer a way to quantify relationships between biodiversity observations and environmental variables. SDMs allow us to assess the suitability of geographic areas for species, which has such implications as predicting range shifts of invasive or threatened species, and understanding habitat suitability under different climate change scenarios.   
 
-The process of building a model is iterative and often, predictions across different modelling methods are combined into ensembles. Here, we walk through the steps of building a SDM for the laughing kookaburra in a small area of New South Wales, Australia, using the [tidymodels](https://www.tidymodels.org/), [tidysdm](https://evolecolgroup.github.io/tidysdm/), and [tidyterra](https://dieghernan.github.io/tidyterra/) packages. tidymodels is a collection of packages for modelling using tidyverse principles, and tidysdm implements SDMs using the tidymodels framework. While not essential to the workflow, tidyterra facilitates manipulating and plotting rasters in a tidy manner, which keeps the syntax of the code consistent throughout. (I'm not certain if the last 2 sentences are correct) ------------------------>
+The process of fitting and choosing the best model is iterative and often, predictions across different modelling methods are combined into ensembles. Here, we walk through the steps of building a SDM for the laughing kookaburra in a small area of New South Wales, Australia, using the [tidymodels](https://www.tidymodels.org/), [tidysdm](https://evolecolgroup.github.io/tidysdm/), and [tidyterra](https://dieghernan.github.io/tidyterra/) packages. tidymodels is a collection of packages for modelling using tidyverse principles, and tidysdm implements SDMs using the tidymodels framework. While not essential to the workflow, tidyterra facilitates manipulating and plotting rasters in a tidy manner, which keeps the syntax of the code consistent throughout. (I'm not certain if the last 2 sentences are correct) ------------------------>
 
-**I think this callout note can be removed: there's no obvious reason to introduce MaxEnt specifically since the post fits a bunch of different models** 
+**I think the reason for this callout note is unclear, and I'm suggesting either removing it or explaining why we're talking about MaxEnt specifically given we then fit a bunch of different models later** 
 
 :::{.callout-note collapse="true"}
 
@@ -236,7 +236,7 @@ To help with our model prediction, we'll also download the [BioClim variables](h
 
 A **raster** is a spatial grid of cells, where cell contains a value representing information, such as temperature or elevation. This information is often visualised by mapping colours to values in the raster (see image below). The resolution of the raster depends on the size of cells within the grid, with smaller cells corresponding to higher resolution. 
 
-**I'm not sure that having two examples here is necessary to explain what a raster is, and I wonder if it might be better to explain this with a subset of one of the bioclim variables they've just downloaded** 
+**I'm not sure that having two examples here is necessary to explain what a raster is, and I wonder if it might be simpler to explain this with a subset of one of the bioclim variables they're going to download soon e.g. temp?** 
 
 ```{r}
 #| code-fold: true
@@ -365,8 +365,6 @@ tidyterra follows the Grammar of Graphics made popular in R by ggplot2 (the most
 
 # Prepare data
 
-**Add note on steps here**
-
 Now that we have our occurrence data and environmental data, there are a few steps we'll complete to prepare our data for modelling.
 
 ### Thinning
@@ -418,7 +416,7 @@ Not sure if we should keep the next step of more thinning? It probably reduces t
 
 I disagree strongly with this paper's assertion that the effects of spatial thinning on model performance are unclear - just because the extent and type of thinning cannot be generalised across models and species does not mean the effects of thinning are unclear. If anything, this variation highlights the importance of testing different types of thinning and assessing model outputs instead of just choosing one and hoping for the best. There is an abundance of literature exploring this subject.
 
-I also think that the main reason for thinning is to reduce spatial bias and autocorrelation, not make improvements to the speed of model fitting - SB
+I also think that the main reason for thinning is to reduce spatial bias and autocorrelation, not make improvements to the speed of model fitting, so suggesting this may be confusing to readers (maybe?). I think there's an argument to be made for thinning by distance rather than cell size in the case of comparisons across species, but we're not doing that here so I would suggest keeping the step above and just mentioning that it's also possible to thin by minimum distance - SB
 -->
 
 We can thin our data further using distance, removing points closer than 5 km. This step can further improve the speed of our model by reducing its size.
@@ -462,12 +460,13 @@ ggplot() +
 ### Pseudo-absences
 
 <!-- 
-[this was the intro to this section. Cut or keep?]
+[this was the intro to this section. Cut or keep?]  
+Definitely cut this bit - SB
 
 To build a model that tells us where a kookaburra is more or less likely to live, we can't just supply points of where a kookaburra *has* been observed. We also need to supply data points where kookaburras *haven't* been observed. Our model can use these two types of information to figure out how variables (like temperature) associate with a point being a presence or an absence.
 -->
 
-Our data from the ALA is "presence-only" data. So, the second step is to create **pseudo-absences** (also called background points) that represent the full extent of the area where kookaburras haven't been observed (yet) in our data. Importantly, these are not the same as *true* absences and this should be taken into account when interpreting results[^pseudoabs].
+Our data from the ALA is "presence-only" data. So, the second step is to create **pseudo-absences** (also called background points) that represent the full extent of the area where kookaburras haven't been observed (yet) in our data. Importantly, these are not the same as *true* absences and this should be taken into account when interpreting results[^pseudoabs].  
 
 [^pseudoabs]: A true absence has quite a different meaning than a pseudo-absence to a species distribution model. The main difference is in the value a known absence provides compared to a simulated one for our interpretation of the results.<br><br>A *true* absence is a point where, at a specific time, an organism was not found there. Alternatively, a pseudo-absence is a point that *acts* like we haven't found an animal there, but we don't actually have data for that location! The model, however, doesn't *know* if a point represents a true absence or a psuedo-absence. It only knows the information it is given and will interpret that information using the parameters it is provided (in this way, models are a reflection of the real-world, but never a substitute).<br><br>Collecting *true* absence data is difficult, typically requiring expert knowledge, surveys with stricter methodologies, and repeated measures of the same areas over time. Pseudo-absences are much easier to collect---you simply simulate them on a computer---but they are less informative. Keep this trade-off in mind as you interpret your model's results.
 
@@ -533,6 +532,8 @@ In species distribution models, *multicollinearity*---high correlation between s
 [^7]: A model can only use the information it is provided to make inferences about the world. If multiple variables in a model correlate, the model can place too much weight on those values to determine the outcome! The model isn't aware of the many other environmental variables that affect the real world outcome.
 
 Here, we selected two BioClim variables that we thought were reasonable environmental predictors (using mainly data science techniques):
+
+<!-- What data science techniques? Also, we've talked about collinearity but not shown readers how to check for this, and we haven't said anything about the suitability of the predictors we've chosen. Is that deliberate (i.e. length of the article)? -->
 
 -   **BIO4**: Temperature Seasonality[^8]
 -   **BIO12**: Annual Precipitation
