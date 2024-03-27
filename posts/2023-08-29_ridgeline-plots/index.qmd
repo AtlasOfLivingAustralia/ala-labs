@@ -1,7 +1,7 @@
 ---
 title: "Alternatives to box plots: Ridgeline plots"
 description: | 
- Graphing large groups of ecological data can become crowded quickly. Presenting this information in a singular concise, accessable and aesthetically pleasing visualisation might seem difficult. If you want to plot large groups of data on the same graph and present possible trends or patterns between these groups, a ridgeline plot might be the answer. 
+ Graphing large groups of ecological data can become crowded quickly. Presenting this information in a concise, accessable and aesthetically pleasing visualisation might seem difficult. If you want to plot large groups of data on the same graph and present possible trends or patterns between these groups, a ridgeline plot might be the answer. 
 author:
   - name: "Dax Kellie"
   - name: "Shandiya Balasubramaniam"
@@ -52,9 +52,6 @@ library(htmltools)
 
 :::
 
-
-:::
-
 :::{.row-b layout-ncol="3" style="margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto;"}
 
 :::{.author-card-image style="width: auto; height: 120px; margin-right: auto;"}
@@ -77,10 +74,9 @@ library(htmltools)
 <!------------------------ Post starts here ------------------------>
 
 
-Ridgeline plots are great ways to visualise and compare patterned ecological data. In ecology, temporal or time related trends are commonly expressed patterns (for example, seasonality). They are also particularly useful when comparing a large number of groups, which may be presented in an overly cramped manner in other graph styles. Some examples of ecological data appropriate to a ridgeline plot might be: the frequency of a species observed through time (date), or the frequency of a group of species observed across given climatic variables (increasing temperature).  
+Ridgeline plots are great ways to visualise and compare patterned ecological data (e.g. seasonal, temporal or time related trends). They are also particularly useful when comparing a large number of groups which might overcrowd other graphs. Some examples of ecological data appropriate to a ridgeline plot might be: the frequency of a species observed through time, or the frequency of a group of species observed across a climatic variable.
 
-
-Here, we plot the daily number of observations of Wader or shorebirds through time in a small bioregion within northern Western Australia. This sub bioregion, Pindanland, within the broader bioregion of Dampierland, is home to many seasonally prominent birds, especially large numbers of migratory birds within the extensive coastal mudflats. As such, we can expect some kind of temporal trends within our occurrence data. 
+Here, we plot the daily number of observations of shorebirds through time in *Pindanland*, north Western Australia. This [IBRA](https://www.dcceew.gov.au/environment/land/nrs/science/ibra) sub-bioregion is known as a hotspot for large numbers of migratory birds. Therefore, we can expect some kind of temporal trends within our occurrence data as these birds come and go.
  
 
 Let's start by loading the R packages that we will need. 
@@ -93,12 +89,95 @@ library(ggridges)
 ```
 
 
-We'll use the [{galah} package](https://galah.ala.org.au) to download occurrence records from the [Atlas of Living Australia (ALA)](https://www.ala.org.au). To do this, you'll need to [register your email address with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount), then pass it to {galah} using `galah_config()`.
+::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/b/f/d/1/d6c6005f-fa29-4ad9-ae1c-334f74c11dfb/original" class="rounded"/></img>
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/f/0/a/4/aa67a84d-130a-4b16-aecc-4671496e4a0f/original" class="rounded"/></img>
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/b/9/0/7/1e6c5521-9816-4786-97b5-d96eb56c709b/original" class="rounded"/></img>
+:::
+
+::: figure-caption
+Left: [*Xenus cinereus* (Ken Harris CC-BY-NC 4.0 (Int)](https://biocache.ala.org.au/occurrences/5c83b20e-1ad4-4c7e-91fd-0b951f7063df), Middle: [*Stiltia isabella* (Steve Murray CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/e7732077-891e-45b3-a284-9655ed53176e), Right: [*Cladorhynchus leucocephalus* (Blythe Nilson, iNaturalist CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/93a48a21-5c56-4955-82a7-3738884daf1e)
+:::
+
+## Download data 
+
+In [{galah}](https://galah.ala.org.au), you can search available fields to filter your data by. These are shortened by an identifier or ID to make the filtering process streamlined. 
+
+First we need to figure out what ID our region of interest corresponds to. *Pindlandland* is a subregion of a wider IBRA bioregion *Dampierland*, so it will take the code cl1049 for IBRA subregions. 
+
+```{r}
+search_all(fields, "ibra")
+```
 
 
 ```{r}
-#| include: FALSE
-galah_config(email = "dax.kellie@csiro.au", atlas = "Australia")
+search_all(fields, "cl1049") |> 
+  search_values("Pindanland")
+```
+
+<aside>
+
+For those unfamiliar with Australian geography, Pindanland is located here. This map also shows other [IBRA](https://www.dcceew.gov.au/environment/land/nrs/science/ibra) sub-bioregions.  
+
+```{r}
+#| echo: false
+#| message: false
+library(ozmaps)
+
+# read in IBRA shapefile
+ibra_shp <- sf::st_read(here::here("posts",
+                         "data",
+                         "IBRA7_subregions",
+                         "ibra7_subregions.shp"),
+                    quiet = TRUE) |>  
+  sf::st_transform(crs = sf::st_crs("WGS84")) |>
+  rmapshaper::ms_simplify(keep = 0.1)
+
+Pindanland <- ibra_shp |>
+filter(SUB_NAME_7 == "Pindanland") |>
+sf::st_transform(crs = sf::st_crs("WGS84"))
+
+#create the start and end points of the label arrow
+arrows <- tibble(
+  x1 = 119.813640,   # Starting x-coordinate
+  x2 = 121,          # Ending x-coordinate
+  y1 = -16,   # Starting y-coordinate
+  y2 = -18           # Ending y-coordinate
+)
+
+
+IBRAhighlightplot <- 
+  ggplot(data = ibra_shp) + 
+  geom_sf(fill = "transparent") + 
+  geom_sf(data = Pindanland, fill = "#E06E53") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  xlim(c(112, 156)) +  # Set limits for x-axis 
+  ylim(c(-44, -10)) + 
+  geom_curve( # Set limits for y-axis 
+  data = arrows, aes(x = x1, y = y1, xend = x2, yend = y2),
+  arrow = arrow(length = unit(0.08, "inch")), 
+  linewidth = 1.5,
+  color = "gray10", 
+  curvature = -0.3) + 
+  annotate("text", x = 115, y = -16, label = "Pindanland", size = 5.2) +
+theme_void()
+IBRAhighlightplot
+
+```
+
+</aside>
+
+
+
+We'll use the [{galah} package](https://galah.ala.org.au) to download shorebird occurrence records from the [Atlas of Living Australia (ALA)](https://www.ala.org.au). To do this, you'll need to [register your email address with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount), then pass it to {galah} using `galah_config()`.
+
+
+```{r}
+#| include: false
+galah_config(email = "dax.kellie@csiro.au", atlas = "Australia", verbose = FALSE)
 ```
 
 ```{r}
@@ -106,193 +185,125 @@ galah_config(email = "dax.kellie@csiro.au", atlas = "Australia")
 galah_config(email = "your-email@email.com")
 ```
 
-## Download data 
 
-In [{galah}](https://galah.ala.org.au), you can search available fields to filter your data by. These are shortened by an identifier to make the filtering process streamlined. First we need to figure out what ID our region of interest (Pindanland)  corresponds to. It is a subregion of a wider IBRA bioregion (Dampierland), so it will take the code cl1049 for IBRA subregions. 
-
-```{r}
-search_all(fields, "ibra")
-```
-
-It is a subregion of a wider IBRA bioregion (Dampierland), so it will take the code cl1049 for IBRA subregions. 
-
-```{r}
-search_all(fields, "cl1049") |> search_values("Pindanland")
-```
-
-
-Now we can use {galah} to refine a data download of Wader birds (from the order *Charadriiformes*) in Pindanland recorded after the year 2000. We further filter to ensure these records are not preserved museum specimen records, and then restrict our download to records identified to the species level. You can use `galah_apply_profile(ALA)` to enforce our standardised automatic data cleaning flags to reduce erroneous or suspicious records. 
+Now we can use [{galah}](https://galah.ala.org.au) to refine a data download of shorebirds (from the order *Charadriiformes*) in *Pindanland* recorded after the year 2000. We further filter to ensure these records are not preserved museum specimen records, and then restrict our download to records identified to the species level. You can use `galah_apply_profile(ALA)` to filter the data using our standardised automatic data cleaning flags to reduce erroneous or suspicious records. 
 
 
 ```{r}
-#| warning: FALSE
+#| message: false
+#| warning: false
+#| verbose: false
 # download "wader" bird records
-waders <- galah_call() |>
-  galah_identify("Charadriiformes") |>
+shorebirds <- galah_call() |>
+  galah_identify("Charadriiformes") |> 
   galah_filter(year > 2000,
                cl1049 == "Pindanland",
                basisOfRecord == "HUMAN_OBSERVATION",
                taxonRank == "species") |>
   galah_apply_profile(ALA) |>
-  galah_select(eventDate, scientificName, taxonRank) |>
+  galah_select(eventDate, scientificName, genus, taxonRank) |>
   atlas_occurrences()
+shorebirds
 ```
 
-
-To clean our data for plotting, we first use the `as_date` function from the `<lubridate>` package to ensure the date is in a `<date>` format. We then extract the month only from each date (column = `EventDate`) into a new column using the `mutate` function for labeling our graph later. Lastly, we extract the Julian date (the numeric day of the year/ 365), for plotting purposes. This allows our data to be aggregated across all of the years (2000-2024) by a single numeric value. 
+To clean our data for plotting, we extract the month from each date (yyyy/mm/dd) to a new column to label our graph. Lastly, we extract the day of the year (Julian) for plotting purposes. This allows our data to be aggregated across all of the years (2000-2024) by a single numeric value. 
 
 
 ```{r}
 # format date, extract month
-waders_cleaned <- waders |>
+shorebirds_cleaned <- shorebirds |>
   drop_na() |>
   mutate(
-    eventDate = lubridate::as_date(eventDate),
+    eventDate = as_date(eventDate),
     month = month(eventDate, abbr = TRUE, label = TRUE),
-    date_julian = lubridate::yday(eventDate)
+    date_julian = yday(eventDate)
   )
+shorebirds_cleaned
 ```
 
-
-We now filter our data to only include species groupings with more than 10 records to avoid species with too little records being plotted. We then ungroup this data post our filtering to create a new column that extracts the genus from our `scientificName`so that we can colour our ridgelines as per their genus groupings for easy readability. 
+We now filter our data to only include species groupings with more than 10 records to avoid species with too little records being plotted.  
 
 ```{r}
-waders_filtered <- waders_cleaned |>
+shorebirds_filtered <- shorebirds_cleaned |>
   group_by(scientificName) |>
   filter(n_distinct(date_julian) >= 10) |>
-  ungroup() |> 
-  mutate(genus = gsub(" .*", "", scientificName))
-
-genus_colors <- scales::hue_pal()(length(unique(waders_filtered$genus)))
-
+  ungroup() 
+shorebirds_filtered |> rmarkdown::paged_table()
 ```
 
+Using `{ggplot2}` and `{ggridges}`, we can now create a ridgeline plot for our data.
 
-Using `{ggplot2}` and `{ggridges}`, we can now create a ridgeline plot for our data
+```{r}
+#| warning: false
+#| fig-height: 10
+#| fig-width: 15
+#| column: page
+#| fig-align: center
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
+
+shorebirdplot <- ggplot(
+  data = shorebirds_filtered,
+  aes(
+    x = date_julian,
+    y = scientificName,
+    fill = scientificName)) +  # Use the species for fill color
+  ggridges::geom_density_ridges() +
+  pilot::theme_pilot() + # use the oli hawkins pilot package theme 
+  pilot::scale_fill_pilot() +
+  theme(legend.position = "none")
+shorebirdplot
+```
+
+## Final thoughts 
+
+And that's it! Ridgelines are simple plots to create and are a beautiful way to showcase trends in ecological data. 
+
+If you want to, there are some extra ways you can increase the readability and aesthetic of your ridgeline plot. For example, we can order the species alphabetically so that each genus is grouped together, and make the plotted colours coincide with the changes in genera too. You might also want to adjust the Julian dates to months of the year. 
+
 
 ```{r}
 #| warning: false
 #| code-fold: true
-#| fig-height: 7
-#| fig-width: 10
+#| fig-height: 10
+#| fig-width: 15
 #| column: page
 #| fig-align: center
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
-waderplot <- ggplot(
-  data = waders_filtered,
+
+shorebirdplot <- ggplot(
+  data = shorebirds_filtered |>
+  mutate(scientificName = reorder(scientificName, desc(scientificName))),
   aes(
     x = date_julian,
-    y = factor(scientificName, levels = rev(sort(unique(scientificName)))), #order in alphabetical order for readability
-    fill = genus,  # Use the genus for fill color
-    colour = genus  # Use the genus for line color
+    y = (scientificName),
+    fill = genus, # Use the genus for fill color
+    colour = genus,
   )) +
+  scale_x_continuous(
+    breaks = c(1, 91, 182, 274, 365),  # Add a break for December
+    labels = c("Jan", "Apr", "Jul", "Oct", "Dec"),  # Add label for December
+    expand = c(0,0)) + 
+  labs(x = 
+"Month 
+2000 - 2024", #add x axis label 
+y = "") + #remove y axis label 
   ggridges::geom_density_ridges(
     scale = 3,          # Adjust the scale to widen the ridges
     height = 0.05,      # Adjust the height to increase space between ridges
     alpha = .8,
-    rel_min_height = 0.02
-  ) +
-  scale_x_continuous(
-    breaks = c(1, 91, 182, 274, 365),  # Add a break for December
-    labels = c("Jan", "Apr", "Jul", "Oct", "Dec"),  # Add label for December
-    expand = c(0,0)
-  ) +
-  scale_y_discrete(expand = c(0,0)) +
-  scale_fill_manual(values = genus_colors) +  # Set color scale for genus
-  scale_color_manual(values = genus_colors) + # Set color scale for genus
-  pilot::theme_pilot(
+    rel_min_height = 0.02) +
+  pilot::theme_pilot( # use the oli hawkins pilot package theme 
     grid = "v", # maintain only the vertical lines from the backing grid 
-    axes = "" #remove axis lines for a cleaner appearance
-  ) +
-  labs(x = "Month 
-2000 - 2024", #add x axis label 
-       y = NULL) + # remove y axis labels 
-  theme(legend.position = "none",
-        axis.text.x = element_text(size = 6), #adjust axis text sizes 
-        axis.text.y = element_text(size = 5), 
-        axis.title.y = element_blank(), 
-        axis.title.x = element_text(size = 7), 
-        plot.margin = margin(t = 0.5, r = 0.5, b = 0.5, l = 0.5, unit = "cm"))  # Adjust whitespace / outside margin sizes 
-waderplot
+    axes = "") + # remove axis lines for a cleaner appearance
+  theme(legend.position = "none")
+shorebirdplot
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r}
-#| eval: false
-#| echo: false
-library(galah)
-library(ggridges)
-library(tidyverse)
-library(showtext)
-
-galah_config(email = "dax.kellie@csiro.au")
-
-search_all(fields, "cl1048") |> search_values("northern")
-
-waders <- galah_call() |>
-  galah_identify("Charadriiformes") |>
-  galah_filter(cl1048 == "Northern Kimberley") |>
-  galah_apply_profile(ALA) |>
-  atlas_occurrences()
-
-waders_date <- waders |>
-  mutate(eventDate = as_date(eventDate),
-         date_julian = yday(eventDate))
-
-font_add_google("Roboto")
-pilot::set_pilot_family("Roboto")
-
-ggplot(data = waders_date |> 
-         filter(scientificName %in% sample(unique(scientificName), 40)),
-       aes(x = date_julian, 
-           y = scientificName,
-           colour = scientificName,
-           fill = scientificName)) +
-  ggridges::geom_density_ridges(
-    alpha = .8, size = 1, 
-    rel_min_height = 0.02
-  ) + 
-  scale_x_continuous(breaks = c(1, 91, 182, 274),
-                     labels = c("Jan", "Apr", "Jul", "Oct")) +
-  labs(x = "Month", 
-       y = "Species") +
-  pilot::scale_fill_pilot() +
-  pilot::scale_color_pilot() +
-  pilot::theme_pilot(grid = "") + 
-  theme(legend.position = "none",
-        axis.text.x = element_blank(),
-        axis.text.y = element_blank(),
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        panel.border = element_blank(),
-        panel.background = element_rect(fill = "#E5DCC8", color = NA),
-        plot.background = element_rect(fill = "#E5DCC8"))
-
-```
-
 
 
 <details><summary style = "color: #E06E53;">Expand for session info</summary>
 
 ```{r, echo = FALSE}
+#| warning: false
 library(sessioninfo)
 # save the session info as an object
 pkg_sesh <- session_info(pkgs = "attached")
