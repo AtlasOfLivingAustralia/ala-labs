@@ -75,9 +75,11 @@ In this article, we will create a species distribution model to predict the dist
 <!------------------------ ALT suggestion for introduction: 
 Species distribution models (SDMs) are widely used in biogeography, conservation biology, and macroecology, and offer a way to quantify relationships between biodiversity observations and environmental variables. SDMs allow us to assess the suitability of geographic areas for species, which has such implications as predicting range shifts of invasive or threatened species, and understanding habitat suitability under different climate change scenarios.   
 
-The process of fitting and choosing the best model is iterative and often, predictions across different modelling methods are combined into ensembles. Here, we walk through the steps of building a SDM for the laughing kookaburra in a small area of New South Wales, Australia, using the [tidymodels](https://www.tidymodels.org/), [tidysdm](https://evolecolgroup.github.io/tidysdm/), and [tidyterra](https://dieghernan.github.io/tidyterra/) packages. tidymodels is a collection of packages for modelling using tidyverse principles, and tidysdm implements SDMs using the tidymodels framework. While not essential to the workflow, tidyterra facilitates manipulating and plotting rasters in a tidy manner, which keeps the syntax of the code consistent throughout. (I'm not certain if the last 2 sentences are correct) ------------------------>
+The process of fitting and choosing the best model is iterative and often, predictions across different modelling methods are combined into ensembles. Here, we walk through the steps of building a SDM for the laughing kookaburra in a small area of New South Wales, Australia, using the [tidymodels](https://www.tidymodels.org/), [tidysdm](https://evolecolgroup.github.io/tidysdm/), and [tidyterra](https://dieghernan.github.io/tidyterra/) packages. tidymodels is a collection of packages for modelling using tidyverse principles, and tidysdm implements SDMs using the tidymodels framework. While not essential to the workflow, tidyterra facilitates manipulating and plotting rasters in a tidy manner, which keeps the syntax of the code consistent throughout. (I'm not certain if the last 2 sentences are correct, and also if they would be better off elsewhere) ------------------------>
 
-**I think the reason for this callout note is unclear, and I'm suggesting either removing it or explaining why we're talking about MaxEnt specifically given we then fit a bunch of different models later** 
+**I think the reason for this callout note is unclear, and I'm suggesting either removing it or explaining why we're talking about MaxEnt specifically given we then fit a bunch of different models later.**
+
+**I have now heard your reasons for having this but it still doesn't make sense in the current state of the post**
 
 :::{.callout-note collapse="true"}
 
@@ -138,6 +140,60 @@ Left: [*Dacelo (Dacelo) novaeguineae* (craigc_86 CC-BY-NC 4.0 (Int))](https://bi
 The laughing kookaburra also has one of the most recognisable bird calls. [This video is an amazing example](https://www.youtube.com/watch?v=TqdRQxgtZtI).
 
 :::
+
+<!-- Could possibly shorten the beginning by removing a lot of the steps that we tend to introduce in every blog post. This is probably at a more intermediate level than a lot of the other posts we've done, so we could assume some knowledge:  
+Let's start by downloading some biodiversity observations: we'll use the [galah package](https://galah.ala.org.au/R/) to download laughing kookaburra records from the [Atlas of Living Australia](https://www.ala.org.au) within a specified geographic region. 
+
+We'll choose a region in New South Wales... 
+
+```{r}
+# define geographic region
+# possibly show code and map side by side? would cut down on apparent 
+# length of post
+
+custom_bbox <- tibble(ymin = -35, 
+                      ymax = -32, 
+                      xmin = 149, 
+                      xmax = 152.1)
+                      
+ggplot() +
+  geom_sf(data = ozmaps::ozmap_states) + 
+  geom_rect(data = custom_bbox,
+            aes(xmin = xmin, 
+                ymin = ymin, 
+                xmax = xmax, 
+                ymax = ymax))
+```
+
+... and download records from the ALA. 
+
+```{r}
+#| eval: false
+
+galah_config(email = "your-email-here") # Registered ALA email
+
+kookaburras <- galah_call() |>
+  identify("Dacelo novaeguineae") |>
+  filter(year == 2023) |>
+  galah_apply_profile(ALA) |>
+  galah_geolocate(custom_bbox, type = "bbox") |>
+  atlas_occurrences()
+
+# might be helpful to show the box again here?
+ggplot() +
+  geom_sf(data = ozmaps::ozmap_country) +
+  geom_point(data = kookaburras,
+             aes(x = decimalLongitude, 
+                 y = decimalLatitude)) + 
+  geom_rect(data = custom_bbox,
+            aes(xmin = xmin, 
+                ymin = ymin, 
+                xmax = xmax, 
+                ymax = ymax)) +
+  theme(legend.position = "none")
+```
+
+-->
 
 ### Define area with bounding box
 
@@ -213,7 +269,9 @@ ggplot() +
   theme(legend.position = "none")
 ```
 
-For many of the later steps we'll need to have the coordinates in a spatial data format to plot each point (i.e., `geometry`). So, let's convert our occurrence data to a spatial object (`sf`) defined by the longitude and latitudes coordinates, and set the CRS[^crs] to EPSG:4326[^epsg].
+For many of the later steps we'll need to have the coordinates in a spatial data format to plot each point (i.e., `geometry`). So, let's convert our occurrence data to a spatial object (`sf`) defined by the longitude and latitude coordinates, and set the CRS[^crs] to EPSG:4326[^epsg] (WGS84).
+
+<!-- I know it doesn't add to the length of the post, but I think these footnotes can be removed. It feels out fo scope for a post on modelling and I think if someone doesn't understand a CRS they need to be starting somewhere else. -->
 
 [^crs]: The Coordinate Reference System (CRS) determines how spatial data on a globe (the earth) are displayed on a flat surface (a map).
 
@@ -231,12 +289,14 @@ kookaburras_sf <- kookaburras |>
 
 To help with our model prediction, we'll also download the [BioClim variables](https://www.worldclim.org/data/bioclim.html), a list of 24 biologically relevant environmental variables, for all of Australia as a raster.
 
+**I think my version has 19 layers, not 24...**
+
 ::: {.callout-note collapse="true"}
 ## What's a raster?
 
 A **raster** is a spatial grid of cells, where cell contains a value representing information, such as temperature or elevation. This information is often visualised by mapping colours to values in the raster (see image below). The resolution of the raster depends on the size of cells within the grid, with smaller cells corresponding to higher resolution. 
 
-**I'm not sure that having two examples here is necessary to explain what a raster is, and I wonder if it might be simpler to explain this with a subset of one of the bioclim variables they're going to download soon e.g. temp?** 
+**I'm not sure that having two examples here is necessary to explain what a raster is, and I wonder if it might be simpler to explain this with a subset of one of the bioclim variables they're going to download soon e.g. temp? I got confused for a moment reading this because it was a made-up example and I couldn't figure out what the values were encoding** 
 
 ```{r}
 #| code-fold: true
@@ -328,7 +388,7 @@ bbox_ext <- terra::ext(
     custom_bbox[["ymax"]]
     ))
 
-# Crop our wordlcim data to within our bounding box coordinates
+# Crop our worldclim data to within our bounding box coordinates
 aus <- bioclim |>
   terra::crop(bbox_ext) |>
   terra::project(crs("EPSG:4326"))
@@ -414,7 +474,7 @@ A recent paper showed that too much thinning can decrease model performance. htt
 As far as I can tell, thinning by cell is probably sufficient.
 Not sure if we should keep the next step of more thinning? It probably reduces the computational size of everything in our model (yay), but it feels like we are recommending this (booo)
 
-I disagree strongly with this paper's assertion that the effects of spatial thinning on model performance are unclear - just because the extent and type of thinning cannot be generalised across models and species does not mean the effects of thinning are unclear. If anything, this variation highlights the importance of testing different types of thinning and assessing model outputs instead of just choosing one and hoping for the best. There is an abundance of literature exploring this subject.
+I disagree strongly with this paper's assertion that the effects of spatial thinning on model performance are unclear - just because the extent and type of thinning cannot be generalised across models and species does not mean the effects of thinning are unclear. There is an abundance of literature exploring this subject. If anything, this variation highlights the importance of testing different types of thinning and assessing model outputs instead of just choosing one and hoping for the best. 
 
 I also think that the main reason for thinning is to reduce spatial bias and autocorrelation, not make improvements to the speed of model fitting, so suggesting this may be confusing to readers (maybe?). I think there's an argument to be made for thinning by distance rather than cell size in the case of comparisons across species, but we're not doing that here so I would suggest keeping the step above and just mentioning that it's also possible to thin by minimum distance - SB
 -->
@@ -508,7 +568,7 @@ ggplot() +
 
 ### Extract environmental values
 
-Now that we have our presence and pseudo-absence points, the third step is to extract the environmental data for each point location in `aus` and bind the resulting values to our points data in `kookaburras_psuedoabs`. The result is a `tibble` with our points, their class, and the specific values of all 30 BioClim variables.
+Now that we have our presence and pseudo-absence points, the third step is to extract the environmental data for each point location in `aus` and bind the resulting values to our points data in `kookaburras_psuedoabs`. The result is a `tibble` with our points, their class, and the specific values of all 30 BioClim variables. **Again, I only have 19, and you appear to have found more layers...?**  
 
 ```{r}
 kookaburras_bioclim <- kookaburras_pseudoabs |> 
@@ -533,7 +593,10 @@ In species distribution models, *multicollinearity*---high correlation between s
 
 Here, we selected two BioClim variables that we thought were reasonable environmental predictors (using mainly data science techniques):
 
-<!-- What data science techniques? Also, we've talked about collinearity but not shown readers how to check for this, and we haven't said anything about the suitability of the predictors we've chosen. Is that deliberate (i.e. length of the article)? -->
+<!-- A couple of points here:  
+1. What are data science techniques? 
+2. We've talked about collinearity but not shown readers how to check for this, and we haven't said anything about the suitability of the predictors we've chosen. Is that deliberate (i.e. length of the article)? 
+3. I wonder if it might be more straightforward for readers to follow the order of events if we simplify this section a bit. Currently, we get biological data, get all the env data, then get rid of a bunch of env data. What if we just choose a couple of env layers from the beginning, because they make sense for the biology of the species, and only download those? If you're opposed to this and want to download everything and then cull unnecessary layers, I think it might make more sense to check for collinearity and remove layers on that basis-->
 
 -   **BIO4**: Temperature Seasonality[^8]
 -   **BIO12**: Annual Precipitation
@@ -644,6 +707,8 @@ kookaburras_test |> head(5L)
 ### Resampling
 
 Now let's resample our training data so we can use it to optimise and evaluate our model.
+
+**Suggest removing reference to resampling altogether and just talking about cross-validation, since it's suitable for the type of data we're using and it might simplify the flow of the article**
 
 ::: {.callout-note collapse="true"}
 
@@ -1033,9 +1098,11 @@ And there we have our predictions of our species distribution model!
 
 ## Final thoughts
 
-We hope this article hhas made the steps of species distribution modelling and interpretation clearer. Species distribution models remain one of the most powerful statistical tools for making inferences about species and their habitat range. tidymodels, tidysdm and tidyterra offer a useful toolset for running these models in R.
+We hope this article has made the steps of species distribution modelling and interpretation clearer. Species distribution models remain one of the most powerful statistical tools for making inferences about species and their habitat range. tidymodels, tidysdm and tidyterra offer a useful toolset for running these models in R.
 
 Although our map performed decently under several model performance metrics, no model is perfect. For example, you can see that many of the values towards the centre of Australia have low relative habitat suitability despite quite a few kookaburra occurrences. This is a limitation likely caused by our data and our choice of predictor variable. Collecting more presence/absence data in regional areas (which isn't always easy) or adding another informative predictor could improve the predictions in those areas.
+
+**I don't entirely agree with the suggestion to collect more presence/absence data, because that's a fundamental difference in what we were trying to do here i.e. the difference between using collection and survey data for fitting SDMs. But perhaps a note on how the modelling could be improved iteratively by smth like adding more predictors/using a wider range of model types/testing different tuning parameters**
 
 To learn more on ALA Labs, check out our posts on [spatial bias](https://labs.ala.org.au/posts/2022-07-22_sample-bias/) and [mapping multiple overlapping species distributions](https://labs.ala.org.au/posts/2024-01-25_hex_point_maps/).
 
