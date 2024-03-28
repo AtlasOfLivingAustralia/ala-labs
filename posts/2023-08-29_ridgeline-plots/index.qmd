@@ -1,11 +1,10 @@
 ---
 title: "Alternatives to box plots: Ridgeline plots"
 description: | 
- Graphing large groups of ecological data can become crowded quickly. Presenting this information in a concise, accessable and aesthetically pleasing visualisation might seem difficult. If you want to plot large groups of data on the same graph and present possible trends or patterns between these groups, a ridgeline plot might be the answer. 
+  Displaying trends of many species or groups at once can look unorganised, messy and crowded. Ridgeline plots offer a minimalist way to view data trends. Here, we present one example of how to view trends in seasonal observations of migratory bird species using {ggridge}.
 author:
-  - name: "Dax Kellie"
-  - name: "Shandiya Balasubramaniam"
   - name: "Olivia Torresan"
+  - name: "Dax Kellie"
 date: "2023-05-16"
 title-block-banner: "#B8573E"
 toc: true
@@ -43,9 +42,8 @@ library(htmltools)
 :::{.author-card-text}
 
 #### Author
-[Dax Kellie](https://labs.ala.org.au/about/Kellie_Dax/index.html)  
-[Shandiya Balasubramaniam](https://labs.ala.org.au/about/Balasubramaniam_Shandiya/index.html)  
 [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)  
+[Dax Kellie](https://labs.ala.org.au/about/Kellie_Dax/index.html)  
 
 #### Date
 5 May 2023
@@ -54,29 +52,28 @@ library(htmltools)
 
 :::{.row-b layout-ncol="3" style="margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto;"}
 
+:::{.author-card-image style="width: auto; height: 120px; margin-right: auto !important;"}
+<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/olivia.jpg" style="object-fit: cover; border-radius: 50% !important; width: 140px;"></img>
+
+:::
+
 :::{.author-card-image style="width: auto; height: 120px; margin-right: auto;"}
 <img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg" style="object-fit: cover; border-radius: 50% !important; width: 140px;"></img>
 
 :::
 
-:::{.author-card-image style="width: auto; height: 120px; margin-right: auto;"}
-<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/shandiya.png" style="object-fit: cover; border-radius: 50% !important; width: 140px;"></img>
-
-:::
-
-:::{.author-card-image style="width: auto; height: 120px; margin-right: auto !important;"}
-<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/olivia.jpg" style="object-fit: cover; border-radius: 50% !important; width: 140px;"></img>
-
-:::
 :::
 :::
 
 <!------------------------ Post starts here ------------------------>
 
+**The general structure of these introductions is to mention what problem a certain plot might solve. In this case, ridgelines are useful because they pretty easy to make and can show trends while showing the spread of data. Feel free to edit the text**
 
-Ridgeline plots are great ways to visualise and compare patterned ecological data (e.g. seasonal, temporal or time related trends). They are also particularly useful when comparing a large number of groups which might overcrowd other graphs. Some examples of ecological data appropriate to a ridgeline plot might be: the frequency of a species observed through time, or the frequency of a group of species observed across a climatic variable.
+In ecology, it's common to try to view broad trends across individuals, populations, species or taxonomic groups. Although it's possible to use box plots and bar plots to do this, viewing many boxes or bars at once can become messy or crowded. These plots also display summary statistics that can mask variation and overexaggerate existing trends. **What I mean here is, the median or mean might appear to be increasing, but if the data is super spread out, the mean/median probably don't reflect the trend very well**
 
-Here, we plot the daily number of observations of shorebirds through time in *Pindanland*, north Western Australia. This [IBRA](https://www.dcceew.gov.au/environment/land/nrs/science/ibra) sub-bioregion is known as a hotspot for large numbers of migratory birds. Therefore, we can expect some kind of temporal trends within our occurrence data as these birds come and go.
+Ridgeline plots are one useful, fast type of visualisation for showing trends in ecological data, like seasonality, diurnality, population growth or decline. They are especially useful for comparing a large number of individuals, species or groups because they display density curves, rather than summary statistics. This means that variation in the data is preserved.
+
+Here, we use a ridgeline plot to quickly display the yearly seasonality of shorebirds, **define shorebirds**, in Pindanland, north Western Australia---a hotspot for large numbers of migratory birds---using the galah, ggplot2 and ggridges packages.
  
 
 Let's start by loading the R packages that we will need. 
@@ -88,6 +85,21 @@ library(tidyverse)
 library(ggridges)
 ```
 
+We will use the [{galah} package](https://galah.ala.org.au) to download occurrence records from the [Atlas of Living Australia (ALA)](https://www.ala.org.au). To do this, you'll need to provide an registered email address and pass it to galah using `galah_config()`. 
+
+```{r}
+#| include: false
+galah_config(email = "dax.kellie@csiro.au", atlas = "Australia", verbose = FALSE)
+```
+
+```{r}
+#| eval: FALSE
+galah_config(email = "your-email@email.com")
+```
+
+## Download data 
+
+Our goal is to display the days of the year when shorebirds are observed. Let's download data of shorebirds from the order *Charadriiformes* [do they have a common name?]. This family of Shorebirds...*fun fact*
 
 ::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/b/f/d/1/d6c6005f-fa29-4ad9-ae1c-334f74c11dfb/original" class="rounded"/></img>
@@ -101,25 +113,17 @@ library(ggridges)
 Left: [*Xenus cinereus* (Ken Harris CC-BY-NC 4.0 (Int)](https://biocache.ala.org.au/occurrences/5c83b20e-1ad4-4c7e-91fd-0b951f7063df), Middle: [*Stiltia isabella* (Steve Murray CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/e7732077-891e-45b3-a284-9655ed53176e), Right: [*Cladorhynchus leucocephalus* (Blythe Nilson, iNaturalist CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/93a48a21-5c56-4955-82a7-3738884daf1e)
 :::
 
-## Download data 
-
-In [{galah}](https://galah.ala.org.au), you can search available fields to filter your data by. These are shortened by an identifier or ID to make the filtering process streamlined. 
-
-First we need to figure out what ID our region of interest corresponds to. *Pindlandland* is a subregion of a wider IBRA bioregion *Dampierland*, so it will take the code cl1049 for IBRA subregions. 
+We are interested in downloading data from Pindanland, a subregion of the [IBRA](https://www.dcceew.gov.au/environment/land/nrs/science/ibra) bioregion *Dampierland*. To filter our data to only Pindanland, we'll do a text search for any fields in galah that contain IBRA information.
 
 ```{r}
 search_all(fields, "ibra")
 ```
 
-
-```{r}
-search_all(fields, "cl1049") |> 
-  search_values("Pindanland")
-```
-
 <aside>
 
 For those unfamiliar with Australian geography, Pindanland is located here. This map also shows other [IBRA](https://www.dcceew.gov.au/environment/land/nrs/science/ibra) sub-bioregions.  
+
+**Try to avoid using capitalisation in your object names. Better to use snake_case**
 
 ```{r}
 #| echo: false
@@ -136,10 +140,10 @@ ibra_shp <- sf::st_read(here::here("posts",
   rmapshaper::ms_simplify(keep = 0.1)
 
 Pindanland <- ibra_shp |>
-filter(SUB_NAME_7 == "Pindanland") |>
-sf::st_transform(crs = sf::st_crs("WGS84"))
+  filter(SUB_NAME_7 == "Pindanland") |>
+  sf::st_transform(crs = sf::st_crs("WGS84"))
 
-#create the start and end points of the label arrow
+# create the start and end points of the label arrow
 arrows <- tibble(
   x1 = 119.813640,   # Starting x-coordinate
   x2 = 121,          # Ending x-coordinate
@@ -147,57 +151,66 @@ arrows <- tibble(
   y2 = -18           # Ending y-coordinate
 )
 
-
-IBRAhighlightplot <- 
-  ggplot(data = ibra_shp) + 
-  geom_sf(fill = "transparent") + 
-  geom_sf(data = Pindanland, fill = "#E06E53") +
+IBRAhighlightplot <-
+  ggplot() +
+  geom_sf(data = ibra_shp,
+          fill = "transparent",
+          colour = "grey90") +
+  geom_sf(data = ozmap_country,
+          fill = "transparent",
+          colour = "grey40") +
+  geom_sf(data = Pindanland, 
+          fill = "#E06E53",
+          colour = "#E06E53") +
   xlab("Longitude") +
   ylab("Latitude") +
-  xlim(c(112, 156)) +  # Set limits for x-axis 
-  ylim(c(-44, -10)) + 
-  geom_curve( # Set limits for y-axis 
-  data = arrows, aes(x = x1, y = y1, xend = x2, yend = y2),
-  arrow = arrow(length = unit(0.08, "inch")), 
-  linewidth = 1.5,
-  color = "gray10", 
-  curvature = -0.3) + 
+  xlim(c(112, 156)) + # Set limits for x-axis
+  ylim(c(-44, -10)) +
+  geom_curve( # Set limits for y-axis
+    data = arrows, 
+    aes(x = x1, y = y1, xend = x2, yend = y2),
+    arrow = arrow(length = unit(0.08, "inch")),
+    linewidth = 1.5,
+    color = "gray10",
+    curvature = -0.3
+  ) +
   annotate("text", x = 115, y = -16, label = "Pindanland", size = 5.2) +
-theme_void()
-IBRAhighlightplot
+  theme_void()
 
+IBRAhighlightplot
 ```
 
 </aside>
 
+The field ID `cl1049` appears to contain IBRA subregions. Let's show what values are recorded in the IBRA 7 Subregions field.
 
-
-We'll use the [{galah} package](https://galah.ala.org.au) to download shorebird occurrence records from the [Atlas of Living Australia (ALA)](https://www.ala.org.au). To do this, you'll need to [register your email address with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount), then pass it to {galah} using `galah_config()`.
-
-
-```{r}
-#| include: false
-galah_config(email = "dax.kellie@csiro.au", atlas = "Australia", verbose = FALSE)
-```
+**Add this**
 
 ```{r}
-#| eval: FALSE
-galah_config(email = "your-email@email.com")
+# show values
 ```
 
 
-Now we can use [{galah}](https://galah.ala.org.au) to refine a data download of shorebirds (from the order *Charadriiformes*) in *Pindanland* recorded after the year 2000. We further filter to ensure these records are not preserved museum specimen records, and then restrict our download to records identified to the species level. You can use `galah_apply_profile(ALA)` to filter the data using our standardised automatic data cleaning flags to reduce erroneous or suspicious records. 
+We can also search for "Pindanland" to double check for our subregion.
+
+```{r}
+search_all(fields, "cl1049") |> 
+  search_values("Pindanland")
+```
+
+
+Now we can download occurrence data of *Charadriiformes* shorebirds in Pindanland by using field `cl1049` in our query. We further filter our query to return occurrences recorded after the year 2000, human observations (rather than museum specimens), and records identified to the species level. We'll also use a set of ALA data cleaning filters (i.e. a data *profile*) by adding `galah_apply_profile(ALA)` to return fewer erroneous records. To shrink the amount of data we return, we'll select to return columns `eventDate`, `scientificName`, `genus` and `taxonRank`. **why do we need taxonRank?**
 
 
 ```{r}
 #| message: false
 #| warning: false
 #| verbose: false
-# download "wader" bird records
+# download shorebird records
 shorebirds <- galah_call() |>
   galah_identify("Charadriiformes") |> 
-  galah_filter(year > 2000,
-               cl1049 == "Pindanland",
+  galah_filter(cl1049 == "Pindanland",
+               year > 2000,
                basisOfRecord == "HUMAN_OBSERVATION",
                taxonRank == "species") |>
   galah_apply_profile(ALA) |>
@@ -206,60 +219,78 @@ shorebirds <- galah_call() |>
 shorebirds
 ```
 
-To clean our data for plotting, we extract the month from each date (yyyy/mm/dd) to a new column to label our graph. Lastly, we extract the day of the year (Julian) for plotting purposes. This allows our data to be aggregated across all of the years (2000-2024) by a single numeric value. 
+**It might be good to start this section saying what you will be plotting, ie total number of observations on each day of the year. This will give context to why you are getting this specific date info.**
+**It's also good to keep in mind what info is more important. In this case, the month is saved for labels (which isn't essential), but the julian date is saved to be the x axis of the plot (which is essential). I'd suggest reordering in the code chunk and the description in the paragraph.**
+
+To clean our data for plotting, we'll remove records missing an `eventDate`. Then we can convert the `eventDate` to a standard date class (yyyy/mm/dd), extract the month to a new column to label our graph, and extract the day of the year (Julian date). [This allows our data to be aggregated across all of the years (2000-2024) by a single numeric value.]**Remove - too long**
 
 
 ```{r}
 # format date, extract month
 shorebirds_cleaned <- shorebirds |>
-  drop_na() |>
+  drop_na(eventDate) |>
   mutate(
     eventDate = as_date(eventDate),
     month = month(eventDate, abbr = TRUE, label = TRUE),
     date_julian = yday(eventDate)
   )
+
 shorebirds_cleaned
 ```
 
-We now filter our data to only include species groupings with more than 10 records to avoid species with too little records being plotted.  
+We now filter our data to only include species with more than 10 occurrence records.  
 
 ```{r}
 shorebirds_filtered <- shorebirds_cleaned |>
   group_by(scientificName) |>
-  filter(n_distinct(date_julian) >= 10) |>
-  ungroup() 
+  filter(n_distinct(date_julian) >= 10)
+
 shorebirds_filtered |> rmarkdown::paged_table()
 ```
 
 Using `{ggplot2}` and `{ggridges}`, we can now create a ridgeline plot for our data.
 
+**I'd suggest keeping the basic plot small, then the fancy one big**
+**You need to add the pilot package to your list of packages loaded at the start if you are going to use it. You don't have to, you could use a different colour package if you want**
+**I'd suggest removing the black line on the ridges. It's a bit visually trippy**
+
 ```{r}
 #| warning: false
-#| fig-height: 10
-#| fig-width: 15
-#| column: page
+#| fig-height: 6
+#| fig-width: 10
+#| column: body-outset
 #| fig-align: center
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
-
-shorebirdplot <- ggplot(
+ridge_plot <- ggplot(
   data = shorebirds_filtered,
-  aes(
-    x = date_julian,
-    y = scientificName,
-    fill = scientificName)) +  # Use the species for fill color
+  aes(x = date_julian,
+      y = scientificName,
+      fill = scientificName)) +  
   ggridges::geom_density_ridges() +
-  pilot::theme_pilot() + # use the oli hawkins pilot package theme 
   pilot::scale_fill_pilot() +
+  theme_minimal() +
   theme(legend.position = "none")
-shorebirdplot
+
+ridge_plot
 ```
 
 ## Final thoughts 
 
-And that's it! Ridgelines are simple plots to create and are a beautiful way to showcase trends in ecological data. 
+And that's it! Ridgelines are simple and fast to use and are a beautiful way to visualise trends in ecological data. **What are their limitations? Maybe google whether there are scenarios where they aren't useful?** **Maybe provide a suggestion to read the other alternatives to boxplots post and a link?**
+
+**I think because this is really the highlight of the post (showing off how beautiful these plots are), the below plot should come before the Final Thoughts section**
+
+**I think you need to order the ridges in some way, possibly by median?**
+
+**The reason the pilot package doesn't work is because it uses a discrete colour scale, rather than a continuous colour scale. You should choose a prettier alternative. The paletteer package contains many colour palettes. You can have a look through them here: https://pmassicotte.github.io/paletteer_gallery/#continuous-palettes**
+
+**I'm not sold on grouping by genus, mainly because I'm uncertain whether the genus has much to do with how seasonal a species of bird is. Might not be essential?**
+
+**Your December date isn't quite right. December doesn't start on the final day of the year**
+
+**I don't think you need to include most of the code notes here. They are a little too verbose, and some of them like "fill" are very common, so you don't need a note. I've provided an example of code comments in `scale_x_continuous`**
 
 If you want to, there are some extra ways you can increase the readability and aesthetic of your ridgeline plot. For example, we can order the species alphabetically so that each genus is grouped together, and make the plotted colours coincide with the changes in genera too. You might also want to adjust the Julian dates to months of the year. 
-
 
 ```{r}
 #| warning: false
@@ -268,6 +299,7 @@ If you want to, there are some extra ways you can increase the readability and a
 #| fig-width: 15
 #| column: page
 #| fig-align: center
+#| fig-cap: "Total daily observations of shorebirds from 2000–2024 in Pindanland, WA"
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 shorebirdplot <- ggplot(
@@ -280,13 +312,10 @@ shorebirdplot <- ggplot(
     colour = genus,
   )) +
   scale_x_continuous(
-    breaks = c(1, 91, 182, 274, 365),  # Add a break for December
-    labels = c("Jan", "Apr", "Jul", "Oct", "Dec"),  # Add label for December
+    breaks = c(1, 91, 182, 274, 365),  # Set numbers for labels
+    labels = c("Jan", "Apr", "Jul", "Oct", "Dec"),  # Add labels
     expand = c(0,0)) + 
-  labs(x = 
-"Month 
-2000 - 2024", #add x axis label 
-y = "") + #remove y axis label 
+  labs(x = "Month") +
   ggridges::geom_density_ridges(
     scale = 3,          # Adjust the scale to widen the ridges
     height = 0.05,      # Adjust the height to increase space between ridges
@@ -295,7 +324,8 @@ y = "") + #remove y axis label
   pilot::theme_pilot( # use the oli hawkins pilot package theme 
     grid = "v", # maintain only the vertical lines from the backing grid 
     axes = "") + # remove axis lines for a cleaner appearance
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        axis.title.y = element_blank())
 shorebirdplot
 ```
 
