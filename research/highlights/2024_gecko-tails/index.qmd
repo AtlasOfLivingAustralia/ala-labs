@@ -8,8 +8,8 @@ include-after-body: _footer.html
 freeze: true
 image: thumbnail.png 
 categories:
-  - Conservation
-  - Citizen Science
+  - Evolution
+  - Phylogenetics
 params:
   authors: "Green, A.L, Oliver, P.M,Gray, J.A., Sherratt, E."
   year: 2024
