@@ -7,11 +7,11 @@
 
 #------------ Edit these parameters for highlighted paper ---------------------#
 
-title <- "The tale of changing gecko tails in extreme climates"
-authors <- "Green et al. 2024"
-main_colour <- "#994733" # use an ALA colour as your main colour
+title <- "Climate movements: Australia’s species going centre stage?"
+authors <- "Archibald et al. 2024"
+main_colour <- "#835CAC" # use an ALA colour as your main colour
 text_colour <- "#FFFFFF" # choose your own matching text colour: https://coolors.co/
-line_colour <- "#1C2826" # choose your own matching line colour
+line_colour <- "#B7CD96" # choose your own matching line colour
 
 
 # ALA colours to use as main colour
