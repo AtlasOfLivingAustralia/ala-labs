@@ -9,7 +9,7 @@
 
 title <- "Climate movements: Australia’s species going centre stage?"
 authors <- "Archibald et al. 2024"
-main_colour <- "#835CAC" # use an ALA colour as your main colour
+main_colour <- "#624580" # use an ALA colour as your main colour
 text_colour <- "#FFFFFF" # choose your own matching text colour: https://coolors.co/
 line_colour <- "#B7CD96" # choose your own matching line colour
 
