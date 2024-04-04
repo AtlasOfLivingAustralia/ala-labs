@@ -1,5 +1,5 @@
 ---
-title: "Climate movements: Australia’s species going centre stage?"
+title: "Climate movements: Australia’s species going centre stage? [suggestion: Openly accessible habitat suitability maps of 10,633 Australian flora & fauna species]"
 author: "Olivia Torresan"
 date: "2024-04-3"
 title-block-banner: "#624580"
@@ -64,10 +64,18 @@ Prepared by
 <!-- Main panel description -->
 
 ::: {.paper-main-column}
-Climate shifts can change where a species might prefer to live. With knowledge on how this might play out, management decisions on where to allocate resources and efforts become more informed and, likely, more effective in preserving biodiversity. It is a nuanced phenomenon though, and climate isn’t something that can be considered alone in determining a changing species distribution. Climate functions in tandem with other finer scale factors to determine livability, as far down to soil characteristics, to larger habitat quality – and has the capacity to change them too. 
+<!-- The purple used in the thumbnail isn't an ALA colour. I thought we decided to use only ALA colours as background colours but use whatever other matching colours as for the line and the text? -->
 
-This paper uses species occurrence data from the Atlas of Living Australia and combines them with environmental and climatic data to predict possible large-scale habitat preference changes under different climate scenarios. Individual species maps and tabled data are made openly available for researchers and managers to access, as well as an ensemble of species to make general remarks on Australia's overall species movements through time. 
+<!-- This paper is basically published documentation of a mega-analysis, attempting to create predictive models of tens of thousands of species. I think it's best to start with the problem (that Australia is diverse, but a giant country with lots of areas that are hard to survey). Then talk about the huge effort made to estimate species distributions in the future. Then make a single statement about why this is useful (they help to prioritise national/state-level restorationa and renewal initiatives) -->
 
-Substantial changes in distributions for many species are found. The combined analysis points species generally to be moving away from coastal regions, with the exception of south and south-west Australia. Adelaide and surrounding central areas have the highest habitat suitability for the over 10,000 combined species included in the study. 
+Climate shifts can change where a species might prefer to live. With knowledge on how this might play out, management decisions on where to allocate resources and efforts become more informed and, likely, more effective in preserving biodiversity. <!--It is a nuanced phenomenon though, and climate isn’t something that can be considered alone in determining a changing species distribution. Climate functions in tandem with other finer scale factors to determine livability, as far down to soil characteristics, to larger habitat quality – and has the capacity to change them too. -->
+
+This paper uses species occurrence data from the Atlas of Living Australia and combines them with environmental and climatic data to predict possible **large-scale habitat preference changes** <!-- MaxEnt models don't quite do this --> under different climate scenarios <!-- which ones? Does the paper explain what they are? -->. Individual species maps and tables are made openly available for researchers and managers to access, as well as an ensemble of species to make general remarks on Australia's overall species movements through time. 
+
+<!-- I don't think you can gauge this from what's in the paper, so I'd remove the below conclusions. They show a few examples of tens of thousands of species, and the authors notably avoid making any conclusions about what their results are in the paper. I think we should do the same. - DK -->
+
+<!--Substantial changes in distributions for many species are found. The combined analysis points species generally to be moving away from coastal regions, with the exception of south and south-west Australia. Adelaide and surrounding central areas have the highest habitat suitability for the over 10,000 combined species included in the study. -->
+
+
 :::
 :::
