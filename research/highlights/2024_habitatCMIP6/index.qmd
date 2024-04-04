@@ -1,5 +1,5 @@
 ---
-title: "Open access habitat suitability maps of 10,633 Australian flora & fauna species"
+title: "Habitat suitability of 10,633 Australian flora & fauna species in future climates"
 author: "Olivia Torresan"
 date: "2024-04-3"
 title-block-banner: "#A191B2"
@@ -29,25 +29,28 @@ params:
 }
 ```
 
-
 <!-- Side panel -->
 
-:::{.column-page}
-
-:::{.paper-side-column}
+::: column-page
+::: paper-side-column
 <center>
-:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
+
+::: {.col-image layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
 <!-- add image url -->
+
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/4/5/4/7/dffda628-bcd8-4d94-8d42-39b8d2887454/original" class="rounded"/></img>
 :::
+
 </center>
 
 ::: figure-caption
 <!-- edit caption -->
+
 [*Eucalyptus pauciflora* (Irene Proebsting CC BY 4.0)](https://images.ala.org.au/image/details?imageId=dffda628-bcd8-4d94-8d42-39b8d2887454)
 :::
 
 ### Citation
+
 ```{r}
 #| echo: false
 htmltools::HTML(
@@ -55,22 +58,18 @@ htmltools::HTML(
 )
 ```
 
-
 #### Page info
-Prepared by 
-[Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
-:::
 
+Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
+:::
 
 <!-- Main panel description -->
 
-::: {.paper-main-column}
+::: paper-main-column
+Australia's environment is vast and diverse, but many large areas are difficult to monitor ecologically using on-ground surveys. As the global climate shifts, figuring out where species can find suitable habitat is a pressing issue for scientists and resource managers. Modelled data is of particular importance for decision-makers to understand how future conditions will affect available habitat of Australia's species. These data improve decision-makers' ability to plan and prioritise national- and state-level restoration and conservation initiatives.
 
+In this paper, Archibald & colleagues use species occurrence data from the Atlas of Living Australia, Queensland Museum & CSIRO along with environmental and climatic data to predict potential habitat suitability maps under different climate scenarios for 1,382 terrestrial vertebrates and 9,251 vascular plants at 5 km^2^. These climate scenarios are based on varying levels of potential emission intensities and their projected impact to temperature. 
 
-Australia's environment is vast and diverse. Many areas are difficult to survey ecologically. As our climate and environment shifts, figuring out where species might be, or might prefer to be into the future, becomes an increasingly pressing issue for scientists and resource managers. With knowledge on how this might play out management decisions on the prioritisation of national and state-level restoration initiatives become more informed and, likely, more effective in preserving biodiversity.  
-
-This paper uses species occurrence data from the Atlas of Living Australia and combines it with environmental and climatic data to predict potential habitat suitability maps for over ten thousand species (individually and collectively) under different climate scenarios. These climate scenarios are based on varying levels of potential emission intensities and how they are projected to impact temperature. The resulting individual species maps and tables are made openly available for researchers and managers to access, as well as an ensemble of models involving all species to allow more generalised remarks on Australia's overall species movements through time. 
-
-
+The [resulting species maps and tables are openly available](http://gigadb.org/dataset/102491) for researchers and managers to improve conservation planning and species management.
 :::
 :::
