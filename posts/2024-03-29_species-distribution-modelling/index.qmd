@@ -1,7 +1,7 @@
 ---
-title: "An introduction to species distribution modelling using {tidysdm}, {tidymodels} & {tidyterra}"
+title: "An introduction to species distribution modelling using {tidysdm} & {tidymodels}"
 description: |
-  Species distribution modelling is a common task for ecologists in R. Here we show the fundamental steps to build, assess and use models to predict species distributions using {tidymodels}, {tidysdm} & {tidyterra}, modern packages that use tidy syntax to run and plot geospatial models.
+  Species distribution modelling is a common task for ecologists in R. Here we show the fundamental steps to build, assess and use models to predict species distributions using {tidymodels} & {tidysdm}, modern packages that use tidy syntax to run and plot geospatial models.
 author:
   - name: "Dax Kellie"
   - name: "Shandiya Balasubramaniam"
@@ -66,40 +66,46 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 <!------------------------ Post starts here ------------------------>
 
-Species distribution models are an essential tool to understand where species live, have lived in the past or might live in the future. In R, packages for running species distribution models have existed for over five years (e.g., [dismo](https://github.com/rspatial/dismo), raster, sp), supporting tens of thousands of researchers who use code for ecological analyses. Although these packages were groundbreaking for running ecological analyses, they use base R syntax, which might be less familiar to newer R users who prefer the [tidyverse](https://www.tidyverse.org/) for data wrangling and visualisation.
+Species distribution models (SDMs) offer a way to quantify relationships between biodiversity observations and environmental variables, and are widely used in biogeography, conservation biology, and macroecology. SDMs allow us to assess how suitable geographic areas are for species to survive in, which has implications for predicting range shifts of invasive or threatened species, and understanding habitat suitability under different climate change scenarios.
 
-[Tidymodels](https://www.tidymodels.org/) is the tidyverse's take on modelling. It offers a suite of powerful, modular packages for many types of statistical analysis. Although tidymodels has no specific packages for species distribution modelling, [the tidysdm package](https://evolecolgroup.github.io/tidysdm/) has emerged, offering functions that specifically build, run and assess species distribution models.
+The process of fitting and choosing the best model is iterative and, often, predictions across different modelling methods are stacked into one workflow. Here, we walk through the steps of building a SDM for the laughing kookaburra in a small area of New South Wales, Australia, using the [tidymodels](https://www.tidymodels.org/) and [tidysdm](https://evolecolgroup.github.io/tidysdm/). tidymodels is a collection of packages for modelling using tidyverse principles, and tidysdm implements SDMs using the tidymodels framework.
 
-In this article, we will create a species distribution model to predict the distribution of laughing kookaburras in a small area of New South Wales, Australia. We'll use tidymodels and tidysdm to build a species distribution model, train and test the model for prediction, and map the prediction onto a map. We hope that this article serve as a useful resource for understanding species distribution models in R—especially models based in machine learning like MaxEnt models.
+<!-- I'm confused. Is it typical for species distribution models to use parts of many types of models (ie, random forest, MaxEnt, GLM, etc)? I know choosing predictors and weights is iterative, but I rarely see multi-model implementations to create species distribution in the literature. I figured this was new-ish thanks to tools like tidymodels and therefore might be useful. - DK-->
 
-<!------------------------ ALT suggestion for introduction: 
-Species distribution models (SDMs) are widely used in biogeography, conservation biology, and macroecology, and offer a way to quantify relationships between biodiversity observations and environmental variables. SDMs allow us to assess the suitability of geographic areas for species, which has such implications as predicting range shifts of invasive or threatened species, and understanding habitat suitability under different climate change scenarios.   
+::: {.callout-note collapse="true"}
+## Pros & cons of tidymodels
 
-The process of fitting and choosing the best model is iterative and often, predictions across different modelling methods are combined into ensembles. Here, we walk through the steps of building a SDM for the laughing kookaburra in a small area of New South Wales, Australia, using the [tidymodels](https://www.tidymodels.org/), [tidysdm](https://evolecolgroup.github.io/tidysdm/), and [tidyterra](https://dieghernan.github.io/tidyterra/) packages. tidymodels is a collection of packages for modelling using tidyverse principles, and tidysdm implements SDMs using the tidymodels framework. While not essential to the workflow, tidyterra facilitates manipulating and plotting rasters in a tidy manner, which keeps the syntax of the code consistent throughout. (I'm not certain if the last 2 sentences are correct, and also if they would be better off elsewhere) ------------------------>
+:::{layout-ncol="2"}
 
-**I think the reason for this callout note is unclear, and I'm suggesting either removing it or explaining why we're talking about MaxEnt specifically given we then fit a bunch of different models later.**
+#### Pros
 
-**I have now heard your reasons for having this but it still doesn't make sense in the current state of the post**
+-   **Machine learning models are easier to build and use** <br>
+[Tidymodels packages are good for machine learning models in R. Many types of SDMs like MaxEnt models are well-suited for tidymodels.]{style="font-size:.7rem;"}
+-   **Data transformations are more transparent** <br>
+[Steps like log-transformations, scaling and centring are occur *within* the model building workflow (rather than before during data wrangling), making these data manipulations more transparent to the model's results.]{style="font-size:.7rem;"}
+-   **Functions are modular** <br>
+[Tidymodels functions are modular, so many different types of models can be run with the same functions and workflow.]{style="font-size:.7rem;"}
+-   **Many different models can be one at once** <br>
+[Many different types of models can be run at once using a `workflow_set()`. These different models can also be compared and even combined into a final predictive model.]{style="font-size:.7rem;"}
+-   **Auto-detects visualisations** <br>
+[Helper functions like `autoplot()` make visualising model performance less cumbersome by determining which visual to display based on the previous object's output.]{style="font-size:.7rem;"}
+-   **Make something pretty good quickly** <br>
+[Users can build fairly good predictive models quite quickly, streamlining the process of going from raw data to prediction.]{style="font-size:.7rem;"}
 
-:::{.callout-note collapse="true"}
+#### Cons
 
-## What are species distribution models?
-
-**Species distribution models** use environmental and biological information to predict the areas that are suitable for a species to live given a set of observations. One of the most popular examples, a Maximum Entropy (MaxEnt) model, does this by contrasting presence-only points (locations where species have occurred) with absence points (locations where species have not occurred) or background points (referred to, confusingly, as *pseudo-absences*).
-
-MaxEnt models are a useful example to explain species distribution modelling (especially in the context of tidymodels) because MaxEnt models are *machine learning models* that account for many limitations of ecological monitoring and data[^1]. MaxEnt models start with a prior assumption that all locations are equally likely for a species to be present. They then use environmental and biological variables to predict the relative probability that a cell or pixel is in the collection of cells that contain a presence sample (known as the Relative Occurrence Rate, ROR). Another way to say this is MaxEnt models estimate habitat suitability, not necessarily the true probability of occurrence[^maxent].
-
-As a result, the background data and environmental data used in a model can make a big difference to your final output. It is important to use relevant ecological knowledge of your species to inform what is best for your model.
+-   **Learning the workflow can be hard** <br> 
+[Learning tidymodels can be confusing and time consuming because the workflow differs quite a lot from other popular statistical modelling packages in R.]{style="font-size:.7rem;"}
+-   **Confusing function names** <br>
+[The {recipes} package uses function names like `prep()`, `bake()` and `juice()` which makes them difficult to know what they do or when to use them.]{style="font-size:.7rem;"}
+-   **Learning function outputs takes time** <br> 
+[Learning what output to expect from each function, and what helper functions are available for each step takes time.]{style="font-size:.7rem;"}
+-   **Tidymodels isn't good at everything** <br>
+[Tidymodels is optimised for machine learning, but it isn't necessarily "better" than other packages like {dismo}, {lme4}, or packages for bayesian models like {tidybayes} or {brms}.]{style="font-size:.7rem;"}
 
 :::
 
-[^1]: The authors of [this paper](https://www.nature.com/articles/s41598-018-25437-1) sum up why MaxEnt models are so popular when explaining why they chose to use them: <br>
-
-    <blockquote>We selected MAXENT because, a) it does not require absence data, b) it efficiently handles complex interactions between predictor and response variables, c) being a generative model, it performs better than discriminative models when it comes to modelling with presence-only records, d) it can be run with both categorical and continuous data variables and, e) it efficiently transfers the model projections to another geographical area. We used a reasonably large sample size and applied the recommended screening and verification of occurrence records.</blockquote>
-
-
-[^maxent]: If you intend to use MaxEnt models for prediction, we highly recommend reading [this paper](https://nsojournals.onlinelibrary.wiley.com/doi/full/10.1111/j.1600-0587.2013.07872.x). [This webpage on Biosecurity Commons](https://support.biosecuritycommons.org.au/support/solutions/articles/6000262266-maxent-sdm-explained) is also useful. It can also help to have a basic understanding of bayesian statistics. One way to get an introduction is to watch the first few lectures from [Richard McElreath's Statistical Rethinking course](https://xcelab.net/rm/statistical-rethinking/) (all of which are free).
-
+:::
 
 To begin, we can load some packages.
 
@@ -108,7 +114,7 @@ To begin, we can load some packages.
 #| message: false
 library(galah)
 library(tidyverse)
-library(tidymodels) # automatically loaded with tidysdm I think
+library(tidymodels) # automatically loaded with tidysdm I think [I think I want it there anyway]
 library(tidysdm) # devtools::install_github("EvolEcolGroup/tidysdm")
 library(terra)
 library(tidyterra)
@@ -117,9 +123,9 @@ library(sf)
 library(ozmaps)
 ```
 
+# Prepare data
 
-
-# Download data
+### Download biological data
 
 Our model will use occurrence data of laughing kookaburras (*Dacelo novaeguineae*) in a small area in New South Wales. The laughing kookaburra is the largest Kingfisher in the world.
 
@@ -135,147 +141,96 @@ Our model will use occurrence data of laughing kookaburras (*Dacelo novaeguineae
 Left: [*Dacelo (Dacelo) novaeguineae* (craigc_86 CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/0dccaf64-9aed-4b5e-bbc9-06a7ee3ae11e), Middle: [*Dacelo (Dacelo) novaeguineae* (Wildash \| questagame.com CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/3e26b79d-803c-4b0a-95b7-05a39dad4caf), Right: [*Dacelo (Dacelo) novaeguineae* (c_a_critter CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/6028fd90-df9b-4d12-86f8-08f47f005e61)
 :::
 
-:::{.aside}
-
+::: aside
 The laughing kookaburra also has one of the most recognisable bird calls. [This video is an amazing example](https://www.youtube.com/watch?v=TqdRQxgtZtI).
-
 :::
 
-<!-- Could possibly shorten the beginning by removing a lot of the steps that we tend to introduce in every blog post. This is probably at a more intermediate level than a lot of the other posts we've done, so we could assume some knowledge:  
-Let's start by downloading some biodiversity observations: we'll use the [galah package](https://galah.ala.org.au/R/) to download laughing kookaburra records from the [Atlas of Living Australia](https://www.ala.org.au) within a specified geographic region. 
-
-We'll choose a region in New South Wales... 
+We'll choose a region in New South Wales...
 
 ```{r}
 # define geographic region
-# possibly show code and map side by side? would cut down on apparent 
-# length of post
-
 custom_bbox <- tibble(ymin = -35, 
                       ymax = -32, 
                       xmin = 149, 
                       xmax = 152.1)
-                      
+```
+
+::: aside
+```{r}
+#| echo: false
 ggplot() +
-  geom_sf(data = ozmaps::ozmap_states) + 
+  geom_sf(data = ozmaps::ozmap_states,
+          fill = NA,
+          colour = "grey30") + 
   geom_rect(data = custom_bbox,
             aes(xmin = xmin, 
                 ymin = ymin, 
                 xmax = xmax, 
-                ymax = ymax))
+                ymax = ymax),
+            colour = "#E76F51",
+            linewidth = 1.3,
+            fill = NA) + 
+  theme_light()
 ```
+:::
 
-... and download records from the ALA. 
+...and download records from the ALA.
 
 ```{r}
 #| eval: false
-
 galah_config(email = "your-email-here") # Registered ALA email
 
+# download occurrence records
 kookaburras <- galah_call() |>
   identify("Dacelo novaeguineae") |>
   filter(year == 2023) |>
   galah_apply_profile(ALA) |>
   galah_geolocate(custom_bbox, type = "bbox") |>
   atlas_occurrences()
-
-# might be helpful to show the box again here?
-ggplot() +
-  geom_sf(data = ozmaps::ozmap_country) +
-  geom_point(data = kookaburras,
-             aes(x = decimalLongitude, 
-                 y = decimalLatitude)) + 
-  geom_rect(data = custom_bbox,
-            aes(xmin = xmin, 
-                ymin = ymin, 
-                xmax = xmax, 
-                ymax = ymax)) +
-  theme(legend.position = "none")
 ```
-
--->
-
-### Define area with bounding box
-
-Before we download records, we'll define the small area to get data for with a bounding box.
-
-```{r bounding-box}
-# specify bounding box
-custom_bbox <- tibble(ymin = -35, 
-                      ymax = -32, 
-                      xmin = 149, 
-                      xmax = 152.1)
-```
-
-```{r}
-# map
-ggplot() +
-  geom_sf(data = ozmaps::ozmap_states) + 
-  geom_rect(data = custom_bbox,
-            mapping = aes(xmin = xmin, 
-                          ymin = ymin, 
-                          xmax = xmax, 
-                          ymax = ymax))
-```
-
-## Occurrences data
-
-Next, let's use the [galah package](https://galah.ala.org.au/R/) to download records from the [Atlas of Living Australia](https://www.ala.org.au). Before we do, let's see the number of records that fall within our bounding box.
-
-```{r}
-# counts
-galah_call() |>
-  identify("Dacelo novaeguineae") |>
-  filter(year == 2023) |>
-  galah_apply_profile(ALA) |>
-  galah_geolocate(custom_bbox, type = "bbox") |>
-  atlas_counts()
-```
-
-And now we can download these occurrence records. To do this, you'll need to [register your email address with the ALA](https://auth.ala.org.au/userdetails/registration/createAccount), then pass it to {galah} using `galah_config()`.
-
-```{r}
-#| eval: false
-galah_config(email = "your-email-here") # Registered ALA email
-```
-
 
 ```{r}
 #| echo: false
-galah_config(email = "dax.kellie@csiro.au", 
-             verbose = FALSE)
-```
-
-
-```{r}
 #| message: false
 #| warning: false
-# occurrence records
+galah_config(email = "dax.kellie@csiro.au", 
+             verbose = FALSE)
+
+# download occurrence records
 kookaburras <- galah_call() |>
   identify("Dacelo novaeguineae") |>
   filter(year == 2023) |>
   galah_apply_profile(ALA) |>
   galah_geolocate(custom_bbox, type = "bbox") |>
   atlas_occurrences()
-
-kookaburras
-
-# map
-ggplot() +
-  geom_sf(data = ozmaps::ozmap_country) +
-  geom_point(data = kookaburras,
-             aes(x = decimalLongitude, 
-                 y = decimalLatitude)) + 
-  theme(legend.position = "none")
 ```
 
-For many of the later steps we'll need to have the coordinates in a spatial data format to plot each point (i.e., `geometry`). So, let's convert our occurrence data to a spatial object (`sf`) defined by the longitude and latitude coordinates, and set the CRS[^crs] to EPSG:4326[^epsg] (WGS84).
+::: aside
+```{r}
+#| echo: false
+ggplot() +
+  geom_sf(data = ozmaps::ozmap_states) +
+  geom_rect(data = custom_bbox,
+            aes(xmin = xmin, 
+                ymin = ymin, 
+                xmax = xmax, 
+                ymax = ymax),
+            colour = "#E76F51",
+            linewidth = 1.3,
+            fill = NA) + 
+  geom_point(data = kookaburras,
+             aes(x = decimalLongitude, 
+                 y = decimalLatitude),
+             colour = "#264653",
+             alpha = 0.3) + 
+  theme_light() +
+  theme(legend.position = "none")
+```
+:::
 
-<!-- I know it doesn't add to the length of the post, but I think these footnotes can be removed. It feels out fo scope for a post on modelling and I think if someone doesn't understand a CRS they need to be starting somewhere else. -->
+For many of the later steps we'll need the coordinates formatted as a spatial object (i.e., `geometry`). So, let's convert our occurrence data to a spatial object (`sf`) defined by the longitude and latitude coordinates, and set the Coordinate Reference System (CRS) to EPSG:4326[^1] (WGS84).
 
-[^crs]: The Coordinate Reference System (CRS) determines how spatial data on a globe (the earth) are displayed on a flat surface (a map).
-
-[^epsg]: ALA data is projected using [CRS EPSG:4326](https://epsg.io/4326) (the same one used by Google Earth).
+[^1]: ALA data is projected using [CRS EPSG:4326](https://epsg.io/4326) (the same one used by Google Earth).
 
 ```{r}
 # convert to sf
@@ -284,68 +239,34 @@ kookaburras_sf <- kookaburras |>
   st_set_crs(4326)
 ```
 
+### Download environmental data
 
-## Environmental data
-
-To help with our model prediction, we'll also download the [BioClim variables](https://www.worldclim.org/data/bioclim.html), a list of 24 biologically relevant environmental variables, for all of Australia as a raster.
-
-**I think my version has 19 layers, not 24...**
+To help with our model prediction, we'll also download the [BioClim variables](https://www.worldclim.org/data/bioclim.html), a list of 19 biologically relevant environmental variables, for all of Australia as a raster.
 
 ::: {.callout-note collapse="true"}
 ## What's a raster?
 
-A **raster** is a spatial grid of cells, where cell contains a value representing information, such as temperature or elevation. This information is often visualised by mapping colours to values in the raster (see image below). The resolution of the raster depends on the size of cells within the grid, with smaller cells corresponding to higher resolution. 
+A **raster** is a spatial grid of cells, where each cell contains a value representing information such as temperature or elevation. This information is often visualised by mapping colours to values in the raster (see image below). The resolution of the raster depends on the size of cells within the grid, with smaller cells corresponding to higher resolution (just like how the resolution of a television screen is determined by the number of pixels).
 
-**I'm not sure that having two examples here is necessary to explain what a raster is, and I wonder if it might be simpler to explain this with a subset of one of the bioclim variables they're going to download soon e.g. temp? I got confused for a moment reading this because it was a made-up example and I couldn't figure out what the values were encoding** 
+<!--I'm not sure that having two examples here is necessary to explain what a raster is, and I wonder if it might be simpler to explain this with a subset of one of the bioclim variables they're going to download soon e.g. temp? I got confused for a moment reading this because it was a made-up example and I couldn't figure out what the values were encoding-->
+
+<!--I personally found these simple examples much easier to understand than more complex examples based on real data when getting started (though I suppose I haven't decided how beginner-level these dropdown boxes should be. I've removed the second more convoluted plot and added a caption to reiterate that the colour is determined by the value assigned to the cell. If you have a more effective way to demonstrate what a raster is using bioclim variables then you are welcome to try, but I worry it will be too much effort - DK-->
 
 ```{r}
 #| code-fold: true
-#| eval: false
+#| fig-cap: "The colour of the cell/pixel is determined by the value assigned to it"
 plot_raster <- function(r) {
   plot(r, axes = FALSE, legend = FALSE)
   plot(as.polygons(r, dissolve = FALSE, trunc = FALSE), add = TRUE)
   text(r, digits = 2)
 }
-## Simple example
+
 # Create a 4 x 4 matrix
 m <- matrix(1:16, ncol = 4, nrow = 4)
 # Convert the matrix into a raster
 r16 <- rast(m)
 
-## Less simple example
-# Create an 8 x 8 matrix of log-transformed numbers
-m2 <- matrix(log(1:64), ncol = 16, nrow = 16)
-# Convert the matrix into a raster
-r32 <- rast(m2)
-
 plot_raster(r16)
-plot_raster(r32)
-```
-
-```{r}
-#| fig-caption: "Left: Simple example. Right: Less simple example"
-#| layout-ncol: 2
-#| layout-nrow: 1
-#| echo: false
-plot_raster <- function(r) {
-  plot(r, axes = FALSE, legend = FALSE)
-  plot(as.polygons(r, dissolve = FALSE, trunc = FALSE), add = TRUE)
-  text(r, digits = 2)
-}
-## Simple example
-# Create a 4 x 4 matrix
-m <- matrix(1:16, ncol = 4, nrow = 4)
-# Convert the matrix into a raster
-r16 <- rast(m)
-
-## Less simple example
-# Create an 8 x 8 matrix of log-transformed numbers
-m2 <- matrix(log(1:64), ncol = 16, nrow = 16)
-# Convert the matrix into a raster
-r32 <- rast(m2)
-
-plot_raster(r16)
-plot_raster(r32)
 ```
 :::
 
@@ -355,7 +276,6 @@ Note: This data exists in the Science & Decision Support folder on Microsoft Tea
 * ./Data/science/projects/sdm-workflows/data
 -->
 ```
-
 ```{r}
 #| eval: false
 # Download world climate data
@@ -394,7 +314,9 @@ aus <- bioclim |>
   terra::project(crs("EPSG:4326"))
 ```
 
-To make sure everything looks correct, let's plot one of the variables with `geom_spatraster()` from the [tidyterra package](https://dieghernan.github.io/tidyterra/).
+To make sure everything looks correct, let's plot one of the variables with `geom_spatraster()` from the [tidyterra package](https://dieghernan.github.io/tidyterra/)[^tidyterra].
+
+[^tidyterra]: tidyterra follows the Grammar of Graphics made popular in R by ggplot2 and allows rasters to be plotted using the same syntax. In contrast, the terra package requires users to plot using base R styling (using `plot()`).
 
 ```{r}
 # Download NSW map, set CRS projection
@@ -417,11 +339,6 @@ first_map <- ggplot() +
 first_map
 ```
 
-::: {.callout-note collapse="true"}
-## Why use tidyterra?
-
-tidyterra follows the Grammar of Graphics made popular in R by ggplot2 (the most popular R package for dataviz in R). However, to plot raster data using only the terra package requires users to plot using base R styling (using `plot()`). This syntax may be unfamiliar and clunky to ggplot2 fans. 
-:::
 
 # Prepare data
 
@@ -429,9 +346,11 @@ Now that we have our occurrence data and environmental data, there are a few ste
 
 ### Thinning
 
-The first step is to remove data where many points are overlapping. Our map above shows that we have quite a few overlapping observations in some locations. However, because we are predicting using a grid, the granularity of our prediction is dependent on the resolution of our environmental data. If each cell in our grid of our environmental data defines the average value of one square kilometre, even if we had kookaburra observations for every square *metre* of our defined area, we can only detect differences to the resolution of our grid cells.
+The first step is to remove data where many points are overlapping. The resolution of our prediction is dependent on the resolution of our environmental data. If each cell in our environmental data defines the average value of one square kilometre, even if we had kookaburra observations at a higher resolution (for example, every square *metre* of our defined area), we can only detect differences to the lowest resolution of our grid cells.
 
-So, we can **thin** our data so that there is only one observation per cell of our raster. This will mainly improve the speed of our model.
+So, we can **thin** our data so that there is only one observation per cell of our raster[^2]. This step reduces spatial bias and lowers the risk that autocorrelation affects final predictions of our model.
+
+[^2]: It's also possible to thin data by distance rather than cell size using [`tidysdm::thin_by_dist()`](https://evolecolgroup.github.io/tidysdm/reference/thin_by_dist.html).
 
 ```{r}
 # thin
@@ -447,9 +366,11 @@ tibble(
   )
 ```
 
+::: aside
 ```{r}
+#| echo: false
 #| code-fold: true
-#| title: Code for map
+#| code-summary: Code for map
 # see results of thinning
 ggplot() +
   geom_spatraster(data = aus,
@@ -468,7 +389,9 @@ ggplot() +
   theme_void() + 
   theme(legend.position = "none")
 ```
+:::
 
+```{=html}
 <!--
 A recent paper showed that too much thinning can decrease model performance. https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.4703
 As far as I can tell, thinning by cell is probably sufficient.
@@ -477,73 +400,34 @@ Not sure if we should keep the next step of more thinning? It probably reduces t
 I disagree strongly with this paper's assertion that the effects of spatial thinning on model performance are unclear - just because the extent and type of thinning cannot be generalised across models and species does not mean the effects of thinning are unclear. There is an abundance of literature exploring this subject. If anything, this variation highlights the importance of testing different types of thinning and assessing model outputs instead of just choosing one and hoping for the best. 
 
 I also think that the main reason for thinning is to reduce spatial bias and autocorrelation, not make improvements to the speed of model fitting, so suggesting this may be confusing to readers (maybe?). I think there's an argument to be made for thinning by distance rather than cell size in the case of comparisons across species, but we're not doing that here so I would suggest keeping the step above and just mentioning that it's also possible to thin by minimum distance - SB
+
+Ok - DK
 -->
-
-We can thin our data further using distance, removing points closer than 5 km. This step can further improve the speed of our model by reducing its size.
-
-```{r}
-kookaburras_thinner <- tidysdm::thin_by_dist(kookaburras_thin, 
-                                             dist_min = km2m(5)
-                                             )
-
-# number of observations
-tibble(
-  before = nrow(kookaburras_thin),
-  after = nrow(kookaburras_thinner)
-  )
 ```
 
-```{r}
-#| code-fold: true
-#| title: Code for map
-# see results of thinning again
-ggplot() +
-  geom_spatraster(data = aus,
-                  aes(fill = wc2.1_30s_bio_1),
-                  alpha = 0.1) +
-  geom_rect(data = custom_bbox,
-            mapping = aes(xmin = xmin, 
-                          ymin = ymin, 
-                          xmax = xmax, 
-                          ymax = ymax),
-            colour = "grey50",
-            fill = NA) +  
-  geom_sf(data = kookaburras_thinner,
-          colour = "#312108",
-          size = 2) +
-  scale_fill_whitebox_c(palette = "muted",
-                        na.value = NA) +
-  theme_void() + 
-  theme(legend.position = "none")
-```
 
 ### Pseudo-absences
 
-<!-- 
-[this was the intro to this section. Cut or keep?]  
-Definitely cut this bit - SB
+Our data from the ALA is presence-only data. So, the second step is to create **pseudo-absences** (also called background points) that represent the full extent of the area where kookaburras haven't been observed (yet) in our data. Importantly, these are not the same as *true* absences and this should be taken into account when interpreting results[^3].
 
-To build a model that tells us where a kookaburra is more or less likely to live, we can't just supply points of where a kookaburra *has* been observed. We also need to supply data points where kookaburras *haven't* been observed. Our model can use these two types of information to figure out how variables (like temperature) associate with a point being a presence or an absence.
--->
-
-Our data from the ALA is "presence-only" data. So, the second step is to create **pseudo-absences** (also called background points) that represent the full extent of the area where kookaburras haven't been observed (yet) in our data. Importantly, these are not the same as *true* absences and this should be taken into account when interpreting results[^pseudoabs].  
-
-[^pseudoabs]: A true absence has quite a different meaning than a pseudo-absence to a species distribution model. The main difference is in the value a known absence provides compared to a simulated one for our interpretation of the results.<br><br>A *true* absence is a point where, at a specific time, an organism was not found there. Alternatively, a pseudo-absence is a point that *acts* like we haven't found an animal there, but we don't actually have data for that location! The model, however, doesn't *know* if a point represents a true absence or a psuedo-absence. It only knows the information it is given and will interpret that information using the parameters it is provided (in this way, models are a reflection of the real-world, but never a substitute).<br><br>Collecting *true* absence data is difficult, typically requiring expert knowledge, surveys with stricter methodologies, and repeated measures of the same areas over time. Pseudo-absences are much easier to collect---you simply simulate them on a computer---but they are less informative. Keep this trade-off in mind as you interpret your model's results.
+[^3]: A true absence has quite a different meaning than a pseudo-absence to a species distribution model. The main difference is in the value a known absence provides compared to a simulated one for our interpretation of the results.<br><br>A *true* absence is a point where, at a specific time, an organism was not found there. Alternatively, a pseudo-absence is a point that *acts* like we haven't found an animal there, but we don't actually have data for that location! The model, however, doesn't *know* if a point represents a true absence or a psuedo-absence. It only knows the information it is given and will interpret that information using the parameters it is provided (in this way, models are a reflection of the real-world, but never a substitute).<br><br>Collecting *true* absence data is difficult, typically requiring expert knowledge, surveys with stricter methodologies, and repeated measures of the same areas over time. Pseudo-absences are much easier to collect---you simply simulate them on a computer---but they are less informative. Keep this trade-off in mind as you interpret your model's results.
 
 Let's add 3 times the number of presences to fill our grid, making sure they aren't closer than 5 km to another point like our occurrence points.
 
 ```{r}
 kookaburras_pseudoabs <- tidysdm::sample_pseudoabs(
-  kookaburras_thinner,
-  n = 3 * nrow(kookaburras_thinner),
+  kookaburras_thin,
+  n = 3 * nrow(kookaburras_thin),
   raster = aus,
   method = c("dist_min", km2m(5))
 )
 ```
 
+::: aside
 ```{r}
+#| echo: false
 #| code-fold: true
-#| title: Code for map
+#| code-summary: Code for map
 # see pseudo absences
 ggplot() +
   geom_spatraster(data = aus,
@@ -565,10 +449,11 @@ ggplot() +
   guides(fill = "none") +
   theme_void()
 ```
+:::
 
 ### Extract environmental values
 
-Now that we have our presence and pseudo-absence points, the third step is to extract the environmental data for each point location in `aus` and bind the resulting values to our points data in `kookaburras_psuedoabs`. The result is a `tibble` with our points, their class, and the specific values of all 30 BioClim variables. **Again, I only have 19, and you appear to have found more layers...?**  
+Now that we have our presence and pseudo-absence points, the third step is to extract the environmental data for each point location in `aus` and bind the resulting values to our points data in `kookaburras_psuedoabs`. The result is a `tibble` with our points, their class, and the specific values of all 24 BioClim variables.
 
 ```{r}
 kookaburras_bioclim <- kookaburras_pseudoabs |> 
@@ -580,28 +465,93 @@ kookaburras_bioclim <- kookaburras_pseudoabs |>
 kookaburras_bioclim
 ```
 
-
 ### Select predictor variables
 
-The fourth and final step is to choose predictor variables for our model. These are variables we think explain variation in our outcome (i.e., the probability a kookaburra could live in a given location). When choosing predictor variables, it is good practice to use theory and previous research to inform what variables you choose as predictors[^6].
+The fourth and final step is to choose predictor variables for our model. These are variables we think explain variation in our outcome (i.e., the probability a kookaburra could live in a given location). When choosing predictor variables, it is good practice to use theory and previous research to inform what variables you choose as predictors[^4].
 
-[^6]: Keep in mind that the strength of variables depends on the scale of your prediction. If you wish to make predictions at a broad-scale, variables like temperature and rainfall will likely be strong predictors, whereas if you wish to make predictions at a fine-scale, variables like food scarcity and competition might be stronger predictors for your outcome.
+[^4]: Keep in mind that the strength of variables depends on the scale of your prediction. If you wish to make predictions at a broad-scale, variables like temperature and rainfall will likely be strong predictors, whereas if you wish to make predictions at a fine-scale, variables like food scarcity and competition might be stronger predictors for your outcome.
 
-In species distribution models, *multicollinearity*---high correlation between several independent variables in a model---can have unintended effects that bias predictions[^7]. Other data science tools can help refine your predictor variable choices, too, including [some functions in tidysdm](https://evolecolgroup.github.io/tidysdm/articles/a0_tidysdm_overview.html#thinning-step).
+:::{.callout-note collapse="true"}
 
-[^7]: A model can only use the information it is provided to make inferences about the world. If multiple variables in a model correlate, the model can place too much weight on those values to determine the outcome! The model isn't aware of the many other environmental variables that affect the real world outcome.
+## Choosing variables and avoiding multicollinearity
+
+In species distribution models, *multicollinearity*---high correlation between several independent variables in a model---can have unintended effects that bias predictions[^5]. Data science tools can also help refine your predictor variable choices, too, including [some functions in tidysdm](https://evolecolgroup.github.io/tidysdm/articles/a0_tidysdm_overview.html#thinning-step) that we used below.
+
+[^5]: A model can only use the information it is provided to make inferences about the world. If multiple variables in a model correlate, the model can place too much weight on those values to determine the outcome! The model isn't aware of the many other environmental variables that affect the real world outcome.
+
+A good start is to choose variables that differentiate between presences and pseudo-absences, which in the plot below are variables that have less overlap between red and blue distributions. To help choose variables with the highest non-overlapping distribution, we can decide on a percentage cut-off of 55% non-overlap, leaving us with the top 3 variables in the table below.
+
+:::{.panel-tabset .nav-pills style="margin-bottom:15px;"}
+
+## Plot
+
+```{r}
+#| code-fold: true
+kookaburras_bioclim |>
+  rename_with(
+    ~ str_remove_all(.x, "wc2.1_30s_"), 
+    starts_with("wc2.1_30s_")) |>
+  plot_pres_vs_bg(class)
+```
+
+## Table
+
+<style>
+.output-scroll {
+  max-height: 420px;
+  overflow-y: scroll;
+  margin-bottom: 20px;
+}
+</style>
+
+```{r}
+#| code-fold: true
+#| class: output-scroll
+overlap <- kookaburras_bioclim |>
+  dist_pres_vs_bg(class) |>
+  enframe("bioclim", "percent_non_overlap") |>
+  arrange(desc(percent_non_overlap))
+
+overlap |> gt::gt()
+```
+
+:::
+
+Now we can use pair plots to view the relationship between each pair of variables. Variables `bio_12` and `bio_16` are very highly correlated (94%). To avoid multicollinearity in our model, we'll decide to only include `bio_12` and `bio_4`.
+
+```{r}
+#| code-fold: true
+aus |>
+  select(wc2.1_30s_bio_12, 
+         wc2.1_30s_bio_4, 
+         wc2.1_30s_bio_16) |>
+  terra::pairs()
+```
+
+:::
 
 Here, we selected two BioClim variables that we thought were reasonable environmental predictors (using mainly data science techniques):
 
+```{=html}
 <!-- A couple of points here:  
 1. What are data science techniques? 
-2. We've talked about collinearity but not shown readers how to check for this, and we haven't said anything about the suitability of the predictors we've chosen. Is that deliberate (i.e. length of the article)? 
-3. I wonder if it might be more straightforward for readers to follow the order of events if we simplify this section a bit. Currently, we get biological data, get all the env data, then get rid of a bunch of env data. What if we just choose a couple of env layers from the beginning, because they make sense for the biology of the species, and only download those? If you're opposed to this and want to download everything and then cull unnecessary layers, I think it might make more sense to check for collinearity and remove layers on that basis-->
 
--   **BIO4**: Temperature Seasonality[^8]
+Dax: I think this was the fast way I wrote that I only used the tidysdm tools
+
+2. We've talked about collinearity but not shown readers how to check for this, and we haven't said anything about the suitability of the predictors we've chosen. Is that deliberate (i.e. length of the article)? 
+
+Dax: Well I don't really know how suitable they are, other than knowing they seem to vary between presences and absences and they are collinear with each other. These steps were removed after a previous conversation we had because I agreed they might be overkill given how long the article already is.
+
+3. I wonder if it might be more straightforward for readers to follow the order of events if we simplify this section a bit. Currently, we get biological data, get all the env data, then get rid of a bunch of env data. What if we just choose a couple of env layers from the beginning, because they make sense for the biology of the species, and only download those? If you're opposed to this and want to download everything and then cull unnecessary layers, I think it might make more sense to check for collinearity and remove layers on that basis
+
+-------
+I agree that at the moment this section is a bit unclear, but I don't agree with ignoring these steps completely. I feel like variable choice is one of the most crucial parts of SDM model building (simply because I imagine this is where people might face scrutiny if the model output is inaccurate or unexpected). I have tried to streamline this process and placed it in a tab. People who care can read about it, but people could also skip over it completely. I don't know if this solves the order issue you raised earlier, but 
+-->
+```
+-   **BIO4**: Temperature Seasonality[^6]
 -   **BIO12**: Annual Precipitation
 
-[^8]: Measured as the standard deviation of the mean monthly temperature
+[^6]: Measured as the standard deviation of the mean monthly temperature
 
 We'll filter our point data and BioClim raster data to only include our two variables.
 
@@ -609,8 +559,7 @@ We'll filter our point data and BioClim raster data to only include our two vari
 # predictor variable names
 vars <- c("wc2.1_30s_bio_4", "wc2.1_30s_bio_12")
 
-# filter point data,
-# keep presence/absence `class` column 
+# filter point data columns
 kookaburras_bioclim_filtered <- 
   kookaburras_bioclim |> 
   select(all_of(c(vars, "class")))
@@ -619,7 +568,7 @@ kookaburras_bioclim_filtered |> head(5L)
 ```
 
 ```{r}
-# filter bioclim data for later predictions
+# filter bioclim data columns
 aus_filtered <- aus[[vars]]
 aus_filtered
 ```
@@ -670,9 +619,9 @@ bioclim4
 bioclim12
 ```
 
-# Model
+# Fit Model
 
-Tidymodels is designed to build a model workflow, train the model's performance, then test the model's ability to predict data accurately. This machine learning workflow is ideal for species distribution modelling, but might be slightly different to what many research scientists are used to. .
+Tidymodels is designed to build a model workflow, train the model's performance, then test the model's ability to predict data accurately. This workflow might be slightly different to what many research scientists are used to.
 
 In machine learning models, data is like a limited resource that we must divide using a "data budget" for two main purposes: training a reasonable model, and testing the final model.
 
@@ -699,67 +648,75 @@ kookaburras_test <- testing(kookaburras_split)
 
 We are left with two dataframes with identical columns but different points.
 
+:::{.panel-tabset .nav-pills}
+
+## Train
+
 ```{r}
 kookaburras_train |> head(5L)
+```
+
+## Test
+
+```{r}
 kookaburras_test |> head(5L)
 ```
 
-### Resampling
-
-Now let's resample our training data so we can use it to optimise and evaluate our model.
-
-**Suggest removing reference to resampling altogether and just talking about cross-validation, since it's suitable for the type of data we're using and it might simplify the flow of the article**
-
-::: {.callout-note collapse="true"}
-
-## What is resampling?
-
-**Resampling** grabs random points from our existing data and splits them into groups for analysis and assessment. Rather than only sampling points from our data once, however, we do this resampling several times, creating several sets of resampled data. Creating several resampled data sets helps to ensure our model's performance isn't just a result of the points we happened to sample. Our resampled data sets will be used to run many models under different parameters (using the "analysis" data) and assess how each model performed (using the "assessment" data). 
-
 :::
 
-One way to resample is using *cross-validation*, a well-established method of resampling that randomly assigns points to analysis and assessment groups. These randomly resampled and split data sets are known as *folds*. We can use the [spatialsample package](https://spatialsample.tidymodels.org/) to create 5 v-folds with `spatial_block_cv()`, a function for resampling spatial data.
+### Resampling
+
+Now let's resample our training data so we can use it to optimise and evaluate our model. One way to resample is using *cross-validation*, a well-established method of resampling that randomly assigns points to analysis and assessment groups. These randomly resampled and split data sets are known as *folds*. We can use the [spatialsample package](https://spatialsample.tidymodels.org/) to create 5 v-folds with `spatial_block_cv()`, a function for resampling spatial data.
 
 ```{r}
 set.seed(100)
 kookaburras_cv <- spatial_block_cv(kookaburras_train, v = 5)
 ```
 
-`spatial_block_cv()` uses a type of resampling called *block cross-validation*. This process creates a grid of "blocks", and attempts to maintain these blocked groups when resampling data points. The plot below demonstrates the general process.
+`spatial_block_cv()` uses a type of resampling called *block cross-validation*, which creates a grid of "blocks" and attempts to maintain these blocked groups when resampling data points. Block cross-validation is important because spatial data is not completely random; data from neighbouring locations probably relate in some way (they aren't completely random), and block cross-validation attempts to preserve this spatial relationship. The plots below demonstrate the general process. The plot on the left shows the blocks, the animation on the right shows the resulting 5 folds.
+
+:::{.column-page layout-ncol="2"}
+
+:::{}
 
 ```{r}
+#| fig-align: center
+#| echo: false
 autoplot(kookaburras_cv)
 ```
 
-Block resampling is important because spatial data is not completely random; data from neighbouring locations probably relate in some way (they aren't completely random), and block cross-validation attempts to preserve this spatial relationship. Below is an animation showing the resulting 5 folds. You'll notice that points appear to fall into groups, rather than being completely random[^random].
+:::
 
-[^random]: Completely random sampling usually looks a lot like [white noise](https://en.wikipedia.org/wiki/White_noise#/media/File:White-noise-mv255-240x180.png).
+:::{}
 
 ```{r splits-gif}
+#| fig-align: center
 #| animation-hook: gifski
-#| code-fold: true
+#| echo: false
 purrr::walk(kookaburras_cv$splits, function(x) print(autoplot(x)))
 ```
 
+:::
+:::
+
+
 ### Define our model
 
-Next let's make our model's "recipe". This is the tidymodels term for any pre-processing steps that happen to our data before adding them to a model. A recipe includes our model formula, and any transformations or standardisations we might wish to do[^10].
+Next let's make our model's "recipe". This is the tidymodels term for any pre-processing steps that happen to our data before adding them to a model. A recipe includes our model formula, and any transformations or standardisations we might wish to do[^7].
 
-[^10]: For example, log transformation, centring scales, setting dummy variables
+[^7]: For example, log transformation, centring scales, setting dummy variables
 
-In our case, let's define that our model's outcome variable[^11] is the `class` of presence or absence. We'll then add our predictor variables[^12] to our model, with the formula `class ~ .`, equivalent to `class ~ bio4 + bio12`.
-
-[^11]: Outcome: What we are interested in knowing
-
-[^12]: Predictor: What we think might explain our outcome variable
+In our case, let's define that our model's outcome variable[^8] is the `class` of presence or absence. We'll then add our predictor variables[^9] to our model, with the formula `class ~ .`, equivalent to `class ~ bio4 + bio12`.
 
 ```{r}
+#| column: page-inset-right
 kookaburras_recipe <- recipe(
   kookaburras_train, 
   formula = class ~ .
   )
 kookaburras_recipe
 ```
+
 
 ```{r}
 #| echo: false
@@ -770,20 +727,7 @@ prep(kookaburras_recipe) |>
   juice()
 ```
 
-::: {.callout-tip collapse="true"}
-## Check your baseline
-
-For our model to make predictions correctly, the model assumes that "presence" is the baseline for our model, set as the first level in our data (i.e., presence = 0, absence = 1). If you are unsure if this is the case for your data, a handy function in tidysdm is `check_sdm_presence()`.
-
-```{r}
-kookaburras_train |> 
-  check_sdm_presence(class)
-```
-:::
-
-### Create a workflow
-
-One of the coolest parts about tidymodels is that we can run several different types of models in a single [`workflow_set()`](https://workflowsets.tidymodels.org/index.html) to train and optimise them.
+Now we can set our workflow, which merges our formula, any data pre-processing, and specifies which models we'll use. One of the strengths of using tidymodels is that we can run several different types of models in a single [`workflow_set()`](https://workflowsets.tidymodels.org/index.html) to train and optimise them.
 
 ```{r}
 kookaburras_models <-
@@ -804,56 +748,31 @@ kookaburras_models <-
 kookaburras_models
 ```
 
-### Tuning
+### Fit our model
 
-**Tuning** is a way to optimise our model's performance. Tuning models let's us find out which type of model under what parameters makes reasonable predictions.
+Next we will determine what parameters optimise our model's performance by **tuning** our model. Tuning uses trial-and-error to figure out which type of model under what hyperparameters makes reasonable predictions.
 
-Let's tune our models using our resampled folds (`kookaburras_cv`). 
+Let's tune our models using our resampled folds (`kookaburras_cv`).
 
 ::: {.callout-note collapse="true"}
 ## How does tuning work?
 
-The "wiggliness" of a model's line of best fit increases as a model becomes more complex, determined by its degrees of freedom. Very wiggly lines are able to more closely fit the training data (the [**blue**]{style="color:blue;"} lines below). However, lines that are too wiggly aren't as good at predicting future values as less wiggly lines with fewer degrees of freedom ([**red**]{style="color:red;"} lines).
+<!-- This could also be a footnote -->
 
-Tuning is the process of simulating many different ways to fit wiggly lines made by our models to our training data. By using different functions to set reasonable weighting parameters that penalize a model for getting a little too wiggly, tuning attempts to optimise the model's performance. Optimising the model's performance means finding the balance between fitting our current training data and predicting new values correctly.
+Tuning is the process of simulating many different ways to fit lines made by our models to our training data. The number of curves in a model's line of best fit increases as a model becomes more complex, determined by its degrees of freedom. By using different functions to set reasonable weighting parameters that penalize a model when lines curve too much, tuning optimises the model's performance by finding the balance between fitting our current training data and predicting new values correctly. For more information, check out the [tunes package Getting Started vignette](https://tune.tidymodels.org/articles/tune.html).
 
-```{r}
-#| echo: false
-#| fig-caption: An example from the tunes package website.
-data(ames)
-
-set.seed(4595)
-data_split <- ames %>%
-  mutate(Sale_Price = log10(Sale_Price)) %>%
-  initial_split(strata = Sale_Price)
-ames_train <- training(data_split)
-ames_test  <- testing(data_split)
-
-ames_train %>% 
-  dplyr::select(Sale_Price, Longitude, Latitude) %>% 
-  tidyr::pivot_longer(cols = c(Longitude, Latitude), 
-                      names_to = "predictor", values_to = "value") %>% 
-  ggplot(aes(x = value, Sale_Price)) + 
-  geom_point(alpha = .2) + 
-  geom_smooth(se = FALSE, method = lm, formula = y ~ splines::ns(x, df = 3),  col = "red")  + 
-  geom_smooth(se = FALSE, method = lm, formula = y ~ splines::ns(x, df = 16)) +
-  scale_y_log10() +
-  facet_wrap(~ predictor, scales = "free_x")
-```
-
-After tuning we can use measures of model fit (and uncertainty) to determine which model and weighting parameters performed the best. For more information, check out the [tunes package Getting Started vignette](https://tune.tidymodels.org/articles/tune.html).
 :::
 
-```{r}
+```{r run-the-model}
 #| warning: false
 #| message: false
-set.seed(1234567) # for reproducability
+set.seed(234567) # for reproducability
 
 kookaburras_models_tune <-
   kookaburras_models |>
   workflow_map("tune_grid",
     resamples = kookaburras_cv, 
-    grid = 20,
+    grid = 5,
     metrics = sdm_metric_set(),
     verbose = TRUE,
     control = stacks::control_stack_grid()
@@ -865,8 +784,10 @@ kookaburras_models_tune
 We can use `autoplot()` to visualise which models performed best by a set of common performance metrics for species distribution models.
 
 ```{r}
-#| column: body-outset
 #| fig-align: center
+#| fig-column: page
+#| fig-width: 8
+#| fig-height: 5
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
 autoplot(kookaburras_models_tune)
 ```
@@ -877,31 +798,61 @@ We can also collect each model's metrics and rank the models by performance.
 # see metrics
 collect_metrics(kookaburras_models_tune) # <1>
 ```
-1. As a general tidymodels tip, any column with a `.` at the start of its column name can be retrieved with a `collect_` function (e.g., `collect_metrics()`, `collect_parameters()`).
+
+1.  As a general tidymodels tip, many columns with a `.` at the start of its column name can be retrieved with a `collect_` function (e.g., `collect_metrics()`, `collect_parameters()`).
+
+
+<!-- I think we can cut this - DK
+
+The [Boyce index]() is a common metric to assess predictions of presence-only models. We can specify to see models that ranked highest for this metric.
 
 ```{r}
 rank_results(kookaburras_models_tune, rank_metric = "boyce_cont")
 ```
 
 
-The [Boyce index]() is a common metric to assess predictions of presence-only models. We can specify to see models that ranked highest for this metric. 
-
 ```{r}
 autoplot(kookaburras_models_tune, metric = "boyce_cont")
 ```
 
-Our tuning results show that there are several types of models and parameters that performed quite well, including a logistic regression model and several MaxEnt models.
+-->
 
 
-## Make a model stack
+Our tuning results show that several types of models and parameters performed quite well. Rather than choosing only one model to use for predictions, it's possible to use several as a "stacked ensemble model"! The [stacks package](https://stacks.tidymodels.org/index.html) in tidymodels let's us blend predictions of a few good candidate models (based on whatever metric you choose) to make better overall estimates[^stacks].
 
-Rather than choosing only one model to use for predictions, it's possible to use several as a "stack"! The [stacks package]() in tidymodels let's us blend predictions of a few good candidate models (based on whatever metric you choose) to make better estimates.
+[^stacks]: To learn more about how putting together a stack works, check out [this helpful article on the stacks website](https://stacks.tidymodels.org/articles/basics.html#putting-together-a-stack).
+
+```{r}
+#| warning: false
+library(stacks)
+set.seed(234567)
+
+kookaburras_stacked <- 
+  stacks() |>                                # initialize the stack
+  add_candidates(kookaburras_models_tune) |> # add candidate members
+  blend_predictions() |>                     # determine how to combine their predictions
+  fit_members()                              # fit the candidates with nonzero stacking coefficients
+
+kookaburras_stacked
+```
+
+Here is a nice visual of how each member model is weighted to inform our predictions.
+
+```{r}
+autoplot(kookaburras_stacked, type = "weights")
+```
+
+<!-- 
+We can remove this section. The stacks website covers the same content pretty well
+
+::: {.callout-note collapse="true"}
+## How do stacks work?
 
 We can get a general idea of how stacks work by going through the process of building a stack. We first initialise a stack and add candidate models to blend...
 
 ```{r}
 #| warning: false
-library(stacks)
+set.seed(234567)
 
 stacks() |>
   add_candidates(kookaburras_models_tune)
@@ -918,22 +869,16 @@ stacks() |>
 ...and, finally, we fit our stacked model to the training data. After fitting our model to our training data, we can use our stack to make predictions.
 
 ```{r}
-kookaburras_stacked <- 
-  stacks() |>                                # initialize the stack
-  add_candidates(kookaburras_models_tune) |> # add candidate members
-  blend_predictions() |>                     # determine how to combine their predictions
-  fit_members()                              # fit the candidates with nonzero stacking coefficients
-
-kookaburras_stacked
+stacks() |>
+  add_candidates(kookaburras_models_tune) |> 
+  blend_predictions() |> 
+  fit_members()
 ```
+:::
 
-Here is a nice visual of how each member model is weighted to inform our predictions.
+-->
 
-```{r}
-autoplot(kookaburras_stacked, type = "weights")
-```
-
-### Test model predictions
+# Assess model
 
 Our model `kookaburras_stacked` is now ready, and we can use it to make predictions about our test data. We'll bind the predicted values to the true values of our test data...
 
@@ -955,6 +900,7 @@ kookaburras_test_predictions |>
 We can also visualise how well the model has correctly predicted the class of each point by predicting `"class"` rather than `"prob"` and mapping correct vs incorrect predictions.
 
 ```{r}
+#| code-fold: true
 # predict class
 kookaburras_test_predictions_class <-
   kookaburras_test %>%
@@ -981,87 +927,14 @@ kookaburras_test_predictions_class |>
 ```
 
 ::: {.callout-tip collapse="true"}
+## tidysdm wrapper functions
 
-## Use a simple ensemble instead
-
-tidysdm offers its own wrapper functions to simplify the above workflow. Depending on your preference, using these wrapper functions can shorten the amount of code you need to make a stacked model and predict new values (at the expense of some control and transparency).
-
-The `simple_ensemble()` function is tidysdm's version of a `stacks::linear_stack()` ensemble.
-
-Let's select the best set of parameters for each model (this step is mainly relevant to random forest)
-
-```{r}
-kookaburras_ensemble <- 
-  simple_ensemble() |>
-  add_member(kookaburras_models_tune, metric = "boyce_cont")
-
-kookaburras_ensemble
-```
-
-Plotting our `kookaburras_ensemble` object shows that it has chosen the best of each model type to use in our stack.
-
-```{r}
-autoplot(kookaburras_ensemble, metric = "boyce_cont")
-```
-
-tidysdm also supplies some [helpful ways](https://evolecolgroup.github.io/tidysdm/articles/a2_tidymodels_additions.html#exploring-models-with-dalex) we can use [DALEX](https://modeloriented.github.io/DALEX/index.html) (a moDel Agnostic Language for Exploration and eXplanation) to understand our ensemble.
-
-We can visualise the relative importance of each variable in our model to our predicted values
-
-```{r}
-#| eval: false
-library(DALEX)
-kookaburras_ensemble |> 
-  explain_tidysdm() |>
-  model_parts() |>
-  plot()
-```
-
-```{r}
-#| warning: false
-#| message: false
-#| echo: false
-library(DALEX)
-kookaburras_ensemble |> 
-  explain_tidysdm(verbose = FALSE) |>
-  model_parts() |>
-  plot()
-```
-
-We can also see differences in how each model responds to each variable (in this case how the higher values of `bio 4` affect the predicted probability of occurrence/suitability).
-
-```{r}
-#| eval: false
-kookaburras_ensemble |> 
-  explain_tidysdm(by_workflow = TRUE) |>
-  map(\(ensemble) 
-      model_profile(ensemble, 
-                    N = 500, 
-                    variables = "wc2.1_30s_bio_4")
-      ) |>
-  plot()
-```
-
-```{r}
-#| warning: false
-#| message: false
-#| echo: false
-kookaburras_ensemble |> 
-  explain_tidysdm(by_workflow = TRUE, verbose = FALSE) |>
-  map(\(ensemble) 
-      model_profile(ensemble, 
-                    N = 500, 
-                    variables = "wc2.1_30s_bio_4")
-      ) |>
-  plot()
-```
+tidysdm offers [its own wrapper function]() [`simple_ensemble()`]() to run a stack model workflow and some [helpful ways](https://evolecolgroup.github.io/tidysdm/articles/a2_tidymodels_additions.html#exploring-models-with-dalex) to assess their performance.
 :::
 
-## Final prediction
+### Final prediction
 
-Finally, we can use our model to predict the distribution of laughing kookaburras over our area[^interpret]. We'll predict an entire surface of values within our `aus_filtered` area using the incredible `predict_raster()` function from tidysdm (which saves us quite a few wrangling steps to work nicely with terra).
-
-[^interpret]: Or, technically, how suitable each cell is for kookaburras to inhabit.
+Finally, we can use our model to predict the habitat suitability of laughing kookaburras over our area. We'll predict an entire surface of values within our `aus_filtered` area using the incredible `predict_raster()` function from tidysdm (which saves us quite a few wrangling steps to work nicely with terra).
 
 ```{r}
 #| fig-width: 9
@@ -1079,10 +952,13 @@ prediction_present <- predict_raster(kookaburras_stacked,
 
 # map
 ggplot() +
-  geom_spatraster(data = prediction_present, aes(fill = .pred_presence)) +
+  geom_spatraster(data = prediction_present, 
+                  aes(fill = .pred_presence)) +
   scale_fill_whitebox_c(palette = "purple",
                         na.value = NA) +
-  guides(fill=guide_colorbar(title="Relative\nHabitat\nSuitability")) +
+  guides(
+    fill = guide_colorbar(title="Relative\nHabitat\nSuitability")
+    ) +
 
   # plot presences used in the model
   geom_sf(data = kookaburras_sf,
@@ -1103,6 +979,8 @@ We hope this article has made the steps of species distribution modelling and in
 Although our map performed decently under several model performance metrics, no model is perfect. For example, you can see that many of the values towards the centre of Australia have low relative habitat suitability despite quite a few kookaburra occurrences. This is a limitation likely caused by our data and our choice of predictor variable. Collecting more presence/absence data in regional areas (which isn't always easy) or adding another informative predictor could improve the predictions in those areas.
 
 **I don't entirely agree with the suggestion to collect more presence/absence data, because that's a fundamental difference in what we were trying to do here i.e. the difference between using collection and survey data for fitting SDMs. But perhaps a note on how the modelling could be improved iteratively by smth like adding more predictors/using a wider range of model types/testing different tuning parameters**
+
+<!-- You might have to walk me through why suggesting more data isn't a good suggestion. I agree with the second part but haven't gotten to it because I feel it requires a few links/references. -->
 
 To learn more on ALA Labs, check out our posts on [spatial bias](https://labs.ala.org.au/posts/2022-07-22_sample-bias/) and [mapping multiple overlapping species distributions](https://labs.ala.org.au/posts/2024-01-25_hex_point_maps/).
 
@@ -1191,7 +1069,6 @@ final_res %>%
 
 ```
 
-
 ```{r}
 #| eval: false
 #| echo: false
@@ -1217,4 +1094,3 @@ prediction_present <- predict_raster(kookaburras_ensemble,
                                      c(aus_filtered,
                                        pop_density_cropped))
 ```
-
