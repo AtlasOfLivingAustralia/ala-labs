@@ -68,8 +68,6 @@ library(htmltools)
 <!------------------------ Post starts here ------------------------>
 
 
-<!-- This is very close but not quite there. The fact this is close is why my comments might seem even more pedantic than normal. Again, the aim is to explain my thinking of why I might change or adjust things so you can hopefully learn (rather than me just deleting and rewriting stuff without explaining). Happy to chat any of this through if you don't agree or need more info :) -->
-
 In ecology, it's common to investigate trends across individuals, populations, species or taxonomic groups. Although it's possible to use box plots and bar plots for this task, viewing many boxes or bars at once can become messy or crowded. These plots also display summary statistics that can mask variation and over-exaggerate existing trends. 
 
 Ridgeline plots are one useful, fast type of visualisation for showing trends in ecological data, like seasonality, diurnality, population growth or decline. They are especially useful for comparing a large number of individuals, species or groups because they display density curves, rather than summary statistics. This means that variation in the data is preserved.
@@ -103,7 +101,7 @@ galah_config(email = "your-email@email.com")
 Shorebirds are a group with many highly migratory birds that travel large distances between breeding seasons. Their abundance in one given area, as a result, fluctuates a lot depending on the time of year. Our goal is to display how many total shorebird observations there have been on each day of the year, grouped by species. Let's download data of shorebirds: the order *Charadriiformes*. 
 
 ::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/b/f/d/1/d6c6005f-fa29-4ad9-ae1c-334f74c11dfb/original" class="rounded"/></img>
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/2/7/8/0/67245076-5f33-47e4-abe0-5f9e3e300872/original" class="rounded"/></img>
 
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/f/0/a/4/aa67a84d-130a-4b16-aecc-4671496e4a0f/original" class="rounded"/></img>
 
@@ -111,22 +109,10 @@ Shorebirds are a group with many highly migratory birds that travel large distan
 :::
 
 ::: figure-caption
-Left: [*Xenus cinereus* (Ken Harris CC-BY-NC 4.0 (Int)](https://biocache.ala.org.au/occurrences/5c83b20e-1ad4-4c7e-91fd-0b951f7063df), Middle: [*Stiltia isabella* (Steve Murray CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/e7732077-891e-45b3-a284-9655ed53176e), Right: [*Cladorhynchus leucocephalus* (Blythe Nilson, iNaturalist CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/93a48a21-5c56-4955-82a7-3738884daf1e)
+Left: [*Limosa lapponica* (lozwoz88 CC-BY-NC 4.0 (Int)](https://biocache.ala.org.au/occurrences/357e5646-58f4-4336-96ed-cb2adb81eec9), Middle: [*Stiltia isabella* (Steve Murray CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/e7732077-891e-45b3-a284-9655ed53176e), Right: [*Cladorhynchus leucocephalus* (Blythe Nilson, iNaturalist CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/93a48a21-5c56-4955-82a7-3738884daf1e)
 :::
 
-<!-- 
-My suggestion is to include the Godwit photo in your group of 3 and refer to it in the fun fact text. It seems weird to have a completely separate image of one bird when we provide photos of 3 birds just before/after. If the text isn't sitting where you want, experiment with where the aside section starts.
--->
-
-<aside>
-
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/2/7/8/0/67245076-5f33-47e4-abe0-5f9e3e300872/original" class="rounded"/></img> 
-
-Bar-tailed Godwit in WA by [loz88woz CC-BY-NC 4.0](https://biocache.ala.org.au/occurrences/357e5646-58f4-4336-96ed-cb2adb81eec9)
-
-One species found in Pindanland is the Bar-tailed Godwit, *Limosa lapponica*. Once a year, it migrates to Australia for food across the Pacific for up to 11,000 kilometers non-stop. This is considered one of the longest continuous journeys by any bird in the world!
-
-</aside>
+One species found in Pindanland is the Bar-tailed Godwit, *Limosa lapponica* (left). Once a year, it migrates to Australia for food across the Pacific for up to [11,000 kilometers](https://doi.org/10.1093/condor/107.1.1) non-stop. This is considered one of the longest continuous journeys by any bird in the world!
 
 We are interested in downloading data from Pindanland, a subregion of the [IBRA](https://www.dcceew.gov.au/environment/land/nrs/science/ibra) bioregion *Dampierland*. To filter our data to only Pindanland, we'll do a text search for any fields in galah that contain IBRA information.
 
@@ -212,7 +198,7 @@ search_all(fields, "cl1049") |>
   search_values("Pindanland")
 ```
 
-Now we can download occurrence data of *Charadriiformes* (shorebirds) <!-- Because you have already defined that these two names are the same thing, you should stick with just one and be consistent throughout the rest of the article. I tend to prefer the simpler term like shorebirds (other examples, birds, frogs, etc) just because I think it's a little easier to imagine (and pronounce) --> in Pindanland by using field `cl1049` in our query. We'll further filter our query to return occurrences recorded after the year 2000, human observations (rather than museum specimens), and records identified to the species level. We'll also use a set of ALA data cleaning filters (i.e. a data *profile*) by adding `galah_apply_profile(ALA)` to return fewer erroneous records. To shrink the amount of data we return, we'll select to only return columns `eventDate`, `scientificName`. 
+Now we can download occurrence data of shorebirds in Pindanland by using field `cl1049` in our query. We'll further filter our query to return occurrences recorded after the year 2000, human observations (rather than museum specimens), and records identified to the species level. We'll also use a set of ALA data cleaning filters (i.e. a data *profile*) by adding `galah_apply_profile(ALA)` to return fewer erroneous records. To shrink the amount of data we return, we'll select to only return columns `eventDate`, `scientificName`. 
 
 ```{r}
 #| message: false
@@ -231,7 +217,7 @@ shorebirds <- galah_call() |>
 shorebirds
 ```
 
-Now that we have our data, we need to prepare it for our plot. Remember that we are trying to visualise total number of observations of each species each day <!-- I removed the phrase "each aggregated day" because it sounded like you are combining days rather than observations. When editing, it's good to remove these kinds of phrases if you can, and in context here, the aggregation should be clear from the statement at the very start of this section, and viewing the plot in just a few steps. -->  of the year.
+Now that we have our data, we need to prepare it for our plot. Remember that we are trying to visualise total number of observations of each species each day of the year.
 
 To clean our data, we'll remove records missing an `eventDate`. Then we can convert `eventDate` to a standard date class (yyyy/mm/dd) so it is recognised by gpplot2, and extract the day of the year (Julian date)[^1]. 
 
@@ -262,8 +248,6 @@ shorebirds_filtered |> rmarkdown::paged_table()
 
 Using `ggplot2` and `ggridges`, we can now create a ridgeline plot for our data.
 
-<!-- I have gone back to the normal ugly colours to show what the absolute basic plot can look like. Then you can show off even more with your beautiful plot. -->
-
 ```{r}
 #| warning: false
 #| fig-height: 6
@@ -284,27 +268,7 @@ ridge_plot
 
 ```
 
-There are also some extra ways you can increase the readability of your ridgeline plot. For example, we can make trends clearer by ordering species by mean or mean, which will help place birds at the top with greater abundance at the end of the year towards the top, and birds at the bottom with greater abundance at the beginning of the year. <!-- Remove: This will make the ridges that are flatter appear at the bottom and those with a prominent cluster at the top. [This is not true?] --> We can also adjust the colours and axis labels. 
-
-<!--
-
-I'm not sure why you needed to run all of these steps again if you only wanted month? I've added the step to the below plot
-
-```{r}
-# format date, extract month
-shorebirds_cleaned <- shorebirds |>
-  drop_na(eventDate) |>
-  mutate(
-    eventDate = as_date(eventDate),
-    month = month(eventDate, abbr = TRUE, label = TRUE), # add a column for month here
-    date_julian = yday(eventDate)) 
-```
-
--->
-
-<!-- Your axis is wrong again I think. December should not be on it if you are adding labels every two months. If this is still annoying you, then it's best to do every month (The reasoning here is the December label makes it look like there are 2 months, not just 1, between the last 2 ticks in your plot)-->
-
-<!-- I have also increased the axis text size, which you should always be sure to do to improve readability (people shouldn't need to strain to read axis labels) -->
+There are also some extra ways you can increase the readability of your ridgeline plot. For example, we can make trends clearer by ordering species by mean or averages, which will help place birds with greater abundance at the end of the year towards the top, and birds with greater abundance at the beginning of the year at the bottom. We can also adjust the colours and axis labels. We chose the `theme_pilot` from the pilot package as it uses a colour-blind friendly palette. We also adjust the the smoothness of our ridges to account for more fine-scale variation if that is something of interest using `bandwidth`. 
 
 ```{r}
 #| warning: false
@@ -328,14 +292,15 @@ shorebirds_filtered |>
     colour = fct_reorder(scientificName, date_julian, .fun = mean),
   )) +
   scale_x_continuous(
-    breaks = c(1, 61, 121, 181, 241, 301, 361),  # set numbers for labels every two months including December
-    labels = c("Jan", "Mar", "May", "Jul", "Sep", "Nov", "Dec"),  # add labels
+    breaks = c(1, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330),  # set numbers for labels every two months including December
+    labels = c("Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"),  # add labels
     expand = c(0,0)) + 
   labs(x = "Month") +
   ggridges::geom_density_ridges(color = NA,
+    bandwidth = 16, # this controls the smoothness of the curve.
     scale = 3,          # adjust the scale to widen the ridges
     height = 0.05,      # adjust the height to increase space between ridges
-    alpha = .8,
+    alpha = .8, # adjust transpareny level of ridges 
     rel_min_height = 0.02) +
   pilot::theme_pilot( # use the oli hawkins pilot package for colour palette
     grid = "v", # maintain only the vertical lines from the backing grid 
@@ -351,11 +316,8 @@ shorebirds_filtered |>
 
 And that's it! Ridgelines are a simple and fast visualisation to use, and are a beautiful way to visualise trends in ecological data. 
 
-Keep in mind that ridgeline plots might need adjusting to visualise your data clearly. Because they emphasise the shape of the data distribution and do not separate individual points, they are useful to present broader trends, but not necessarily to assess detailed or finer scale components of your data.<!-- I see your point but I think it needs a little more. Perhaps the issue with ridgelines isn't that people want finer scale, but rather the smoothness of the curve prevents you from seeing any breaks or variation in the data. Or in other words, to make sure the curve looks nice, the plot might hide messiness in the data (at least using the default settings). Does this explanation match what you meant? If so, maybe you could play around with the way the curve looks in your second plot? A little more detail in the curve might be useful here? If this doesn't make sense, I can explain more over a call --> Be wary of potential outliers or suspicious records in your data and make sure to consider them in the cleaning process before plotting. You might find it useful to assess your data in a [beeswarm or raincloud plot](https://labs.ala.org.au/posts/2023-08-28_alternatives-to-box-plots/) first to assess for any outliers. As mentioned above be cautious of the ordering of your data and the level at which your ridges overlap so that it is not masking any other data underneath. <!-- hmmm, I think the final 3 sentences are a little too general, and I'd suggest removing -->
+Keep in mind that ridgeline plots might need adjusting to visualise your data clearly, depending on your purpose of visualisation. In the first example, the ridgelines are presented as smooth curves that prevent you from seeing substantial individual points or breaks and variation in the data. Smooth ridgeline graphs are useful to present broader trends, but not necessarily to assess detailed or finer scale components of your data. 
 
-
-
-Because it is aesthetically pleasing to use a lot of colours in these plots as well, it is important to consider that they can be easily inaccessible to colour-blind people. The [pilot](https://github.com/olihawkins/pilot) package we used here uses a colour-blind friendly palette. There are also other packages out there dedicated to generating colour-blind friendly palettes (or have in-built options) for this that are worth exploring. <!-- I think a point like this makes more sense as a footnote when you mention adjusting the palette earlier on, but maybe a little to separate from the rest of the article as the final paragraph -->
 
 <details><summary style = "color: #E06E53;">Expand for session info</summary>
 
