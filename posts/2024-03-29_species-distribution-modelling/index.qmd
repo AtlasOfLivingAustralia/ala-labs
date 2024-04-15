@@ -66,13 +66,15 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 <!------------------------ Post starts here ------------------------>
 
-Species distribution models (SDMs) offer a way to quantify relationships between biodiversity observations and environmental variables, and are widely used in biogeography, conservation biology, and macroecology. SDMs allow us to assess how suitable geographic areas are for species to survive in, which has implications for predicting range shifts of invasive or threatened species, and understanding habitat suitability under different climate change scenarios.
+Species distribution models (SDMs) offer a way to quantify relationships between biodiversity observations and environmental variables, and are widely used in biogeography, conservation biology, and macroecology. SDMs allow us to assess how suitable an area is for a species, which has implications for predicting range shifts of invasive or threatened species, and understanding habitat suitability under different climate change scenarios.
 
 The process of fitting and choosing the best model is iterative and, often, predictions across different modelling methods are stacked into one workflow. Here, we walk through the steps of building a SDM for the laughing kookaburra in a small area of New South Wales, Australia, using the [tidymodels](https://www.tidymodels.org/) and [tidysdm](https://evolecolgroup.github.io/tidysdm/). tidymodels is a collection of packages for modelling using [tidyverse principles](https://tidyverse.tidyverse.org/articles/manifesto.html), and tidysdm implements SDMs using the tidymodels framework.
 
 <!-- I'm confused. Is it typical for species distribution models to use parts of many types of models (ie, random forest, MaxEnt, GLM, etc)? I know choosing predictors and weights is iterative, but I rarely see multi-model implementations to create species distribution in the literature. I figured this was new-ish thanks to tools like tidymodels and therefore might be useful. - DK-->
 
 <!-- Yeah I'm also a little lost at this part, but that could just be a result of my limited knowledge on the methods behind selecting appropriate SDM's. I think you just need to be a little clearer on what exactly makes the process iterative before we dive in to the evidently lengthy process. Even flagging that this will become clear as we go through the steps?. Having a lengthy article isn't necessarily bad to me and I don't think you should cut any more, I'd rather have everything I need to know in front of me vs. searching rigorously through the web. You've done well to cut some already though and I think it is looking good - OT --> 
+
+<!-- I think we're all confused now. The idea of ensemble modelling has been around for a good 15 years or so, and biomod2 is probably the most popular choice for people using R. There are (I think) other tools in R that do this as well, but are not as popular. It is also possible to assemble ensembles without tools like this but I think this is also less common. I'm happy for you to remove the reference to iteration if it's confusing. I was referring to cross-validation, which is iterative in the sense that subsets of the data are used iteratively for training and fitting or testing. - SB --> 
 
 
 ::: {.callout-note collapse="true"}
@@ -251,10 +253,6 @@ To help with our model prediction, we'll also download the [BioClim variables](h
 
 A **raster** is a spatial grid of cells, where each cell contains a value representing information such as temperature or elevation. This information is often visualised by mapping colours to values in the raster (see image below). The resolution of the raster depends on the size of cells within the grid, with smaller cells corresponding to higher resolution (just like how the resolution of a television screen is determined by the number of pixels).
 
-<!--I'm not sure that having two examples here is necessary to explain what a raster is, and I wonder if it might be simpler to explain this with a subset of one of the bioclim variables they're going to download soon e.g. temp? I got confused for a moment reading this because it was a made-up example and I couldn't figure out what the values were encoding-->
-
-<!--I personally found these simple examples much easier to understand than more complex examples based on real data when getting started (though I suppose I haven't decided how beginner-level these dropdown boxes should be. I've removed the second more convoluted plot and added a caption to reiterate that the colour is determined by the value assigned to the cell. If you have a more effective way to demonstrate what a raster is using bioclim variables then you are welcome to try, but I worry it will be too much effort - DK-->
-
 ```{r}
 #| code-fold: true
 #| fig-cap: "The colour of the cell/pixel is determined by the value assigned to it"
@@ -405,6 +403,8 @@ I disagree strongly with this paper's assertion that the effects of spatial thin
 I also think that the main reason for thinning is to reduce spatial bias and autocorrelation, not make improvements to the speed of model fitting, so suggesting this may be confusing to readers (maybe?). I think there's an argument to be made for thinning by distance rather than cell size in the case of comparisons across species, but we're not doing that here so I would suggest keeping the step above and just mentioning that it's also possible to thin by minimum distance - SB
 
 Ok - DK
+
+Great! - SB
 -->
 ```
 
@@ -520,7 +520,7 @@ overlap |> gt::gt()
 
 :::
 
-Now we can use pair plots to view the relationship between each pair of variables. Variables `bio_12` and `bio_16` are very highly correlated (94%). To avoid multicollinearity in our model, we'll decide to only include `bio_12` (annual precipitation) and `bio_4` (temperature seasonality).
+Now we can use pair plots to view the relationship between each pair of variables. Variables `bio_12` and `bio_16` are very highly correlated (94%). To avoid multicollinearity in our model, we'll include only `bio_12` (annual precipitation) and `bio_4` (temperature seasonality).
 
 ```{r}
 #| code-fold: true
@@ -541,6 +541,8 @@ Here, we selected two BioClim variables that we thought were reasonable environm
 
 Dax: I think this was the fast way I wrote that I only used the tidysdm tools
 
+SB: I think I found the phrasing confusing because I didn't know what other techniques we could have used. I think the text within parentheses could either be omitted entirely or, if you think it loses too much, perhaps say something like "based on tests for collinearity (or whatever the tidysdm tools were)"?
+
 2. We've talked about collinearity but not shown readers how to check for this, and we haven't said anything about the suitability of the predictors we've chosen. Is that deliberate (i.e. length of the article)? 
 
 Dax: Well I don't really know how suitable they are, other than knowing they seem to vary between presences and absences and they are collinear with each other. These steps were removed after a previous conversation we had because I agreed they might be overkill given how long the article already is.
@@ -549,6 +551,8 @@ Dax: Well I don't really know how suitable they are, other than knowing they see
 
 -------
 I agree that at the moment this section is a bit unclear, but I don't agree with ignoring these steps completely. I feel like variable choice is one of the most crucial parts of SDM model building (simply because I imagine this is where people might face scrutiny if the model output is inaccurate or unexpected). I have tried to streamline this process and placed it in a tab. People who care can read about it, but people could also skip over it completely. I don't know if this solves the order issue you raised earlier, but 
+
+SB: I think the current version addresses the issues around clarity I raised before, so I'm happy with how it reads here. 
 -->
 ```
 -   **BIO4**: Temperature Seasonality[^6]
@@ -813,6 +817,8 @@ collect_metrics(kookaburras_models_tune) # <1>
 
 <!-- I think we can cut this - DK
 
+I agree - SB
+
 The [Boyce index]() is a common metric to assess predictions of presence-only models. We can specify to see models that ranked highest for this metric.
 
 ```{r}
@@ -853,6 +859,8 @@ autoplot(kookaburras_stacked, type = "weights")
 
 <!-- 
 We can remove this section. The stacks website covers the same content pretty well
+
+I agree - SB
 
 ::: {.callout-note collapse="true"}
 ## How do stacks work?
@@ -989,13 +997,15 @@ And there we have our predictions of our species distribution model!
 
 ## Final thoughts
 
-We hope this article has made the steps of species distribution modelling and interpretation clearer. Species distribution models remain one of the most powerful statistical tools for making inferences about species and their habitat range. tidymodels, tidysdm and tidyterra offer a useful toolset for running these models in R.
+We hope this article has made the steps of species distribution modelling and interpretation clearer. Species distribution models remain one of the most powerful statistical tools for making inferences about species and their habitat range. tidymodels, tidysdm, and tidyterra offer a useful toolset for running these models in R.
 
 Although our map performed decently under several model performance metrics, no model is perfect. For example, you can see that many of the values towards the centre of Australia have low relative habitat suitability despite quite a few kookaburra occurrences. This is a limitation likely caused by our data and our choice of predictor variable. Collecting more presence/absence data in regional areas (which isn't always easy) or adding another informative predictor could improve the predictions in those areas.
 
 **I don't entirely agree with the suggestion to collect more presence/absence data, because that's a fundamental difference in what we were trying to do here i.e. the difference between using collection and survey data for fitting SDMs. But perhaps a note on how the modelling could be improved iteratively by smth like adding more predictors/using a wider range of model types/testing different tuning parameters**
 
 <!-- You might have to walk me through why suggesting more data isn't a good suggestion. I agree with the second part but haven't gotten to it because I feel it requires a few links/references. -->
+
+<!-- I think the point I was trying to make about collecting more presence/absence data is based on thinking of this from a  research perspective, where it's expensive and/or just not possible to do any more sampling. It's almost the opposite casue/effect, where we're building a model because we can't get lots of data, versus let's get lots of data so we can build a better model. But saying it's not a good suggestion is too harsh; I'm happy for it to be one of the suggestions for improving the model. - SB -->
 
 To learn more on ALA Labs, check out our posts on [spatial bias](https://labs.ala.org.au/posts/2022-07-22_sample-bias/) and [mapping multiple overlapping species distributions](https://labs.ala.org.au/posts/2024-01-25_hex_point_maps/).
 
