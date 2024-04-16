@@ -1005,7 +1005,9 @@ Although our map performed decently under several model performance metrics, no 
 
 <!-- You might have to walk me through why suggesting more data isn't a good suggestion. I agree with the second part but haven't gotten to it because I feel it requires a few links/references. -->
 
-<!-- I think the point I was trying to make about collecting more presence/absence data is based on thinking of this from a  research perspective, where it's expensive and/or just not possible to do any more sampling. It's almost the opposite casue/effect, where we're building a model because we can't get lots of data, versus let's get lots of data so we can build a better model. But saying it's not a good suggestion is too harsh; I'm happy for it to be one of the suggestions for improving the model. - SB -->
+<!-- I think the point I was trying to make about collecting more presence/absence data is based on thinking of this from a  research perspective, where it's expensive and/or just not possible to do any more sampling. It's almost the opposite cause/effect, where we're building a model because we can't get lots of data, versus let's get lots of data so we can build a better model. But saying it's not a good suggestion is too harsh; I'm happy for it to be one of the suggestions for improving the model. - SB -->
+
+<!-- Just thinking again about how to imporve the model: do you think we need to be explicit e.g. with links/references? I was thinking we could leave it pretty broad like saying testing out different subsets of predictors and trying environmental layers at different levels of spatial resolution might improve the performance of the model, and if collecting more data is not an option then exploring other datasets that could be aggregated? - SB (again) -->
 
 To learn more on ALA Labs, check out our posts on [spatial bias](https://labs.ala.org.au/posts/2022-07-22_sample-bias/) and [mapping multiple overlapping species distributions](https://labs.ala.org.au/posts/2024-01-25_hex_point_maps/).
 
