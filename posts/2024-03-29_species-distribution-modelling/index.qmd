@@ -70,12 +70,6 @@ Species distribution models (SDMs) offer a way to quantify relationships between
 
 The process of fitting and choosing the best model is iterative and, often, predictions across different modelling methods are stacked into one workflow. Here, we walk through the steps of building a SDM for the laughing kookaburra in a small area of New South Wales, Australia, using the [tidymodels](https://www.tidymodels.org/) and [tidysdm](https://evolecolgroup.github.io/tidysdm/). tidymodels is a collection of packages for modelling using [tidyverse principles](https://tidyverse.tidyverse.org/articles/manifesto.html), and tidysdm implements SDMs using the tidymodels framework.
 
-<!-- I'm confused. Is it typical for species distribution models to use parts of many types of models (ie, random forest, MaxEnt, GLM, etc)? I know choosing predictors and weights is iterative, but I rarely see multi-model implementations to create species distribution in the literature. I figured this was new-ish thanks to tools like tidymodels and therefore might be useful. - DK-->
-
-<!-- Yeah I'm also a little lost at this part, but that could just be a result of my limited knowledge on the methods behind selecting appropriate SDM's. I think you just need to be a little clearer on what exactly makes the process iterative before we dive in to the evidently lengthy process. Even flagging that this will become clear as we go through the steps?. Having a lengthy article isn't necessarily bad to me and I don't think you should cut any more, I'd rather have everything I need to know in front of me vs. searching rigorously through the web. You've done well to cut some already though and I think it is looking good - OT --> 
-
-<!-- I think we're all confused now. The idea of ensemble modelling has been around for a good 15 years or so, and biomod2 is probably the most popular choice for people using R. There are (I think) other tools in R that do this as well, but are not as popular. It is also possible to assemble ensembles without tools like this but I think this is also less common. I'm happy for you to remove the reference to iteration if it's confusing. I was referring to cross-validation, which is iterative in the sense that subsets of the data are used iteratively for training and fitting or testing. - SB --> 
-
 
 ::: {.callout-note collapse="true"}
 ## Pros & cons of tidymodels
@@ -106,7 +100,7 @@ The process of fitting and choosing the best model is iterative and, often, pred
 -   **Learning function outputs takes time** <br> 
 [Learning what output to expect from each function, and what helper functions are available for each step takes time.]{style="font-size:.7rem;"}
 -   **Tidymodels isn't good at everything** <br>
-[Tidymodels is optimised for machine learning, but it isn't necessarily "better" than other packages like {dismo}, {lme4}, or packages for bayesian models like {tidybayes} or {brms}.]{style="font-size:.7rem;"}
+[Tidymodels is optimised for machine learning, but it isn't necessarily "better" than other packages like {dismo}, {lme4}, {biomod2}, or packages for bayesian models like {tidybayes} or {brms}.]{style="font-size:.7rem;"}
 
 :::
 
@@ -165,7 +159,7 @@ custom_bbox <- tibble(ymin = -35,
 #| echo: false
 ggplot() +
   geom_sf(data = ozmaps::ozmap_states,
-          fill = NA,
+          fill = "white",
           colour = "grey30") + 
   geom_rect(data = custom_bbox,
             aes(xmin = xmin, 
@@ -214,7 +208,9 @@ kookaburras <- galah_call() |>
 ```{r}
 #| echo: false
 ggplot() +
-  geom_sf(data = ozmaps::ozmap_states) +
+  geom_sf(data = ozmaps::ozmap_states,
+          fill = "white",
+          colour = "grey30") +
   geom_rect(data = custom_bbox,
             aes(xmin = xmin, 
                 ymin = ymin, 
@@ -392,22 +388,6 @@ ggplot() +
 ```
 :::
 
-```{=html}
-<!--
-A recent paper showed that too much thinning can decrease model performance. https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.4703
-As far as I can tell, thinning by cell is probably sufficient.
-Not sure if we should keep the next step of more thinning? It probably reduces the computational size of everything in our model (yay), but it feels like we are recommending this (booo)
-
-I disagree strongly with this paper's assertion that the effects of spatial thinning on model performance are unclear - just because the extent and type of thinning cannot be generalised across models and species does not mean the effects of thinning are unclear. There is an abundance of literature exploring this subject. If anything, this variation highlights the importance of testing different types of thinning and assessing model outputs instead of just choosing one and hoping for the best. 
-
-I also think that the main reason for thinning is to reduce spatial bias and autocorrelation, not make improvements to the speed of model fitting, so suggesting this may be confusing to readers (maybe?). I think there's an argument to be made for thinning by distance rather than cell size in the case of comparisons across species, but we're not doing that here so I would suggest keeping the step above and just mentioning that it's also possible to thin by minimum distance - SB
-
-Ok - DK
-
-Great! - SB
--->
-```
-
 
 ### Pseudo-absences
 
@@ -456,7 +436,7 @@ ggplot() +
 
 ### Extract environmental values
 
-Now that we have our presence and pseudo-absence points, the third step is to extract the environmental data for each point location in `aus` and bind the resulting values to our points data in `kookaburras_psuedoabs`. The result is a `tibble` with our points, their class, and the specific values of all 24 BioClim variables.
+Now that we have our presence and pseudo-absence points, the third step is to extract the environmental data for each point location in `aus` and bind the resulting values to our points data in `kookaburras_psuedoabs`. The result is a `tibble` with our points, their class, and the specific values of all 19 BioClim variables.
 
 ```{r}
 kookaburras_bioclim <- kookaburras_pseudoabs |> 
@@ -535,26 +515,6 @@ aus |>
 
 Here, we selected two BioClim variables that we thought were reasonable environmental predictors (using mainly data science techniques):
 
-```{=html}
-<!-- A couple of points here:  
-1. What are data science techniques? 
-
-Dax: I think this was the fast way I wrote that I only used the tidysdm tools
-
-SB: I think I found the phrasing confusing because I didn't know what other techniques we could have used. I think the text within parentheses could either be omitted entirely or, if you think it loses too much, perhaps say something like "based on tests for collinearity (or whatever the tidysdm tools were)"?
-
-2. We've talked about collinearity but not shown readers how to check for this, and we haven't said anything about the suitability of the predictors we've chosen. Is that deliberate (i.e. length of the article)? 
-
-Dax: Well I don't really know how suitable they are, other than knowing they seem to vary between presences and absences and they are collinear with each other. These steps were removed after a previous conversation we had because I agreed they might be overkill given how long the article already is.
-
-3. I wonder if it might be more straightforward for readers to follow the order of events if we simplify this section a bit. Currently, we get biological data, get all the env data, then get rid of a bunch of env data. What if we just choose a couple of env layers from the beginning, because they make sense for the biology of the species, and only download those? If you're opposed to this and want to download everything and then cull unnecessary layers, I think it might make more sense to check for collinearity and remove layers on that basis
-
--------
-I agree that at the moment this section is a bit unclear, but I don't agree with ignoring these steps completely. I feel like variable choice is one of the most crucial parts of SDM model building (simply because I imagine this is where people might face scrutiny if the model output is inaccurate or unexpected). I have tried to streamline this process and placed it in a tab. People who care can read about it, but people could also skip over it completely. I don't know if this solves the order issue you raised earlier, but 
-
-SB: I think the current version addresses the issues around clarity I raised before, so I'm happy with how it reads here. 
--->
-```
 -   **BIO4**: Temperature Seasonality[^6]
 -   **BIO12**: Annual Precipitation
 
@@ -764,19 +724,14 @@ Let's tune our models using our resampled folds (`kookaburras_cv`).
 ::: {.callout-note collapse="true"}
 ## How does tuning work?
 
-<!-- This could also be a footnote -->
-
-Tuning is the process of simulating many different ways to fit lines made by our models to our training data. The number of curves in a model's line of best fit increases as a model becomes more complex, determined by its degrees of freedom. By using different functions to set reasonable weighting parameters that penalize a model when lines curve too much, tuning optimises the model's performance by finding the balance between fitting our current training data and predicting new values correctly. For more information, check out the [tunes package Getting Started vignette](https://tune.tidymodels.org/articles/tune.html).
-
-<!-- I think I understand what you mean here, but my brain is trying to visualise it. Is there a way you can show that a models line of best fit increases as a model becomes more complex and when it curves substantially it is a negative outcome? I think what you mean is that the data that we have generated from our training data might be subject to some kind of error and to make sure it is in line with our real data we optimise it through tuning? OT  -->
-
+Tuning is the process of simulating many different ways to fit lines made by our models to our training data. The number of curves in a model's line of best fit increases as a model becomes more complex, determined by its degrees of freedom. By using different functions to set reasonable weighting parameters that penalize a model when lines curve too much, tuning optimises the model's performance by finding the balance between fitting our current training data and predicting new values correctly. For more information and a visual of this, check out the [tunes package Getting Started vignette](https://tune.tidymodels.org/articles/tune.html).
 
 :::
 
 ```{r run-the-model}
 #| warning: false
 #| message: false
-set.seed(234567) # for reproducability
+set.seed(4567) # for reproducability
 
 kookaburras_models_tune <-
   kookaburras_models |>
@@ -791,9 +746,7 @@ kookaburras_models_tune <-
 kookaburras_models_tune
 ```
 
-We can use `autoplot()` to visualise which models performed best by a set of common performance metrics for species distribution models.
-
-<!-- What exactly am I looking for here? Logically my brain is saying the models with higher metrics are better? And.. a smaller range of the total line? Also they are ranked from left to right in order or model preference? Sorry if that is intuitive it is just a bit noisy. Looks like each graph are different metrics of assessment? OT -->
+We can use `autoplot()` to visualise which models performed best by a set of common performance metrics for species distribution models. Models with higher values and smaller confidence intervals performed better.
 
 ```{r}
 #| fig-align: center
@@ -813,25 +766,6 @@ collect_metrics(kookaburras_models_tune) # <1>
 ```
 
 1.  As a general tidymodels tip, many columns with a `.` at the start of its column name can be retrieved with a `collect_` function (e.g., `collect_metrics()`, `collect_parameters()`).
-
-
-<!-- I think we can cut this - DK
-
-I agree - SB
-
-The [Boyce index]() is a common metric to assess predictions of presence-only models. We can specify to see models that ranked highest for this metric.
-
-```{r}
-rank_results(kookaburras_models_tune, rank_metric = "boyce_cont")
-```
-
-
-```{r}
-autoplot(kookaburras_models_tune, metric = "boyce_cont")
-```
-
--->
-
 
 Our tuning results show that several types of models and parameters performed quite well. Rather than choosing only one model to use for predictions, it's possible to use several as a "stacked ensemble model"! The [stacks package](https://stacks.tidymodels.org/index.html) in tidymodels let's us blend predictions of a few good candidate models (based on whatever metric you choose) to make better overall estimates[^stacks].
 
@@ -857,45 +791,6 @@ Here is a nice visual of how these two member models are weighted to inform our 
 autoplot(kookaburras_stacked, type = "weights")
 ```
 
-<!-- 
-We can remove this section. The stacks website covers the same content pretty well
-
-I agree - SB
-
-::: {.callout-note collapse="true"}
-## How do stacks work?
-
-We can get a general idea of how stacks work by going through the process of building a stack. We first initialise a stack and add candidate models to blend...
-
-```{r}
-#| warning: false
-set.seed(234567)
-
-stacks() |>
-  add_candidates(kookaburras_models_tune)
-```
-
-...then we determine the best way to blend the model predictions (and how each model is weighted in your stack)...
-
-```{r}
-stacks() |>
-  add_candidates(kookaburras_models_tune) |>
-  blend_predictions()
-```
-
-...and, finally, we fit our stacked model to the training data. After fitting our model to our training data, we can use our stack to make predictions.
-
-```{r}
-stacks() |>
-  add_candidates(kookaburras_models_tune) |> 
-  blend_predictions() |> 
-  fit_members()
-```
-:::
-
--->
-
-<!-- What was the conclusion here? That MaxEnt is the best model choice for our selected data? OT -->
 
 # Assess model
 
@@ -909,9 +804,7 @@ kookaburras_test_predictions <-
                     save_pred = TRUE))
 ```
 
-...which allows us to assess how good our model is at making the correct predictions.
-
-<!-- How good our model is overall at making predictions of where kookaburras are likely to live this time? OT -->
+...which allows us to assess how good our model is at making correct predictions of the "true" classes.
 
 ```{r}
 kookaburras_test_predictions |> 
@@ -919,8 +812,6 @@ kookaburras_test_predictions |>
 ```
 
 We can also visualise how well the model has correctly predicted the class of each point by predicting `"class"` rather than `"prob"` and mapping correct vs incorrect predictions.
-
-<!-- Oh yes, how well it is at detecting a species presence or absence (class). Same thing lol OT -->
 
 ```{r}
 #| code-fold: true
@@ -952,7 +843,7 @@ kookaburras_test_predictions_class |>
 ::: {.callout-tip collapse="true"}
 ## tidysdm wrapper functions
 
-tidysdm offers [its own wrapper function]() [`simple_ensemble()`]() to run a stack model workflow and some [helpful ways](https://evolecolgroup.github.io/tidysdm/articles/a2_tidymodels_additions.html#exploring-models-with-dalex) to assess their performance.
+tidysdm offers its own wrapper function [`simple_ensemble()`](https://evolecolgroup.github.io/tidysdm/reference/simple_ensemble.html) to run a stack model workflow and some [helpful ways](https://evolecolgroup.github.io/tidysdm/articles/a2_tidymodels_additions.html#exploring-models-with-dalex) to assess their performance.
 :::
 
 ### Final prediction
@@ -999,15 +890,9 @@ And there we have our predictions of our species distribution model!
 
 We hope this article has made the steps of species distribution modelling and interpretation clearer. Species distribution models remain one of the most powerful statistical tools for making inferences about species and their habitat range. tidymodels, tidysdm, and tidyterra offer a useful toolset for running these models in R.
 
-Although our map performed decently under several model performance metrics, no model is perfect. For example, you can see that many of the values towards the centre of Australia have low relative habitat suitability despite quite a few kookaburra occurrences. This is a limitation likely caused by our data and our choice of predictor variable. Collecting more presence/absence data in regional areas (which isn't always easy) or adding another informative predictor could improve the predictions in those areas.
+Although our model performed decently under several model performance metrics, no model is perfect. For example, you can see that many of the values towards the centre of Australia have low relative habitat suitability despite quite a few kookaburra occurrences. This is a limitation likely caused by our data and our choice of predictor variables. Testing different subsets of predictors and trying environmental layers at different levels of spatial resolution will help to improve the performance of the model. Another option (if collecting more data is not feasible) is to explore other datasets that could be aggregated to enhance the quality of training data.
 
-**I don't entirely agree with the suggestion to collect more presence/absence data, because that's a fundamental difference in what we were trying to do here i.e. the difference between using collection and survey data for fitting SDMs. But perhaps a note on how the modelling could be improved iteratively by smth like adding more predictors/using a wider range of model types/testing different tuning parameters**
-
-<!-- You might have to walk me through why suggesting more data isn't a good suggestion. I agree with the second part but haven't gotten to it because I feel it requires a few links/references. -->
-
-<!-- I think the point I was trying to make about collecting more presence/absence data is based on thinking of this from a  research perspective, where it's expensive and/or just not possible to do any more sampling. It's almost the opposite cause/effect, where we're building a model because we can't get lots of data, versus let's get lots of data so we can build a better model. But saying it's not a good suggestion is too harsh; I'm happy for it to be one of the suggestions for improving the model. - SB -->
-
-<!-- Just thinking again about how to imporve the model: do you think we need to be explicit e.g. with links/references? I was thinking we could leave it pretty broad like saying testing out different subsets of predictors and trying environmental layers at different levels of spatial resolution might improve the performance of the model, and if collecting more data is not an option then exploring other datasets that could be aggregated? - SB (again) -->
+Our model above is quite minimalist (for simplicity). If you'd like an example list of variables used in more performant models, check out [this paper](https://academic.oup.com/gigascience/article/doi/10.1093/gigascience/giae002/7619364?login=true#:~:text=prior%20to%20modeling.-,Table%C2%A01%3A,-Summary%20of%20the).
 
 To learn more on ALA Labs, check out our posts on [spatial bias](https://labs.ala.org.au/posts/2022-07-22_sample-bias/) and [mapping multiple overlapping species distributions](https://labs.ala.org.au/posts/2024-01-25_hex_point_maps/).
 
