@@ -68,9 +68,9 @@ library(htmltools)
 <!------------------------ Post starts here ------------------------>
 
 
-In ecology, it's common to investigate trends across individuals, populations, species or taxonomic groups. Although it's possible to use box plots and bar plots for this task, viewing many boxes or bars at once can become messy or crowded. These plots also display summary statistics that can mask variation and over-exaggerate existing trends. 
+In ecology, it's common to investigate trends across individuals, populations, species or taxonomic groups. Although it's possible to use box plots and bar plots for this task, viewing many boxes or bars at once can become messy or crowded. These plots also display summary statistics which can sometimes mask important elements of variation in the data and potentially over-exaggerate existing trends. 
 
-Ridgeline plots are one useful, fast type of visualisation for showing trends in ecological data, like seasonality, diurnality, population growth or decline. They are especially useful for comparing a large number of individuals, species or groups because they display density curves, rather than summary statistics. This means that variation in the data is preserved.
+Ridgeline plots are one useful, fast type of visualisation for showing trends in ecological data like seasonality, diurnality and population growth or decline. They are especially useful for comparing a large number of individuals, species or groups because they display density curves rather than summary statistics. This means that variation in the data is visibly preserved.
 
 Here, we use a ridgeline plot to quickly display the yearly seasonality of shorebirds (birds fond of tidal and estuary environments), in Pindanland, Western Australia using the [galah](https://galah.ala.org.au/R/), [ggplot2](https://ggplot2.tidyverse.org/) and [ggridges](https://wilkelab.org/ggridges/) packages. 
 
@@ -98,7 +98,7 @@ galah_config(email = "your-email@email.com")
 
 ## Download data 
 
-Shorebirds are a group with many highly migratory birds that travel large distances between breeding seasons. One species found in Pindanland, the Bar-tailed Godwit (below left), migrates once a year across the Pacific to Australia for food; that's [11,000 kilometers non-stop](https://doi.org/10.1093/condor/107.1.1)![^longtrip] Shorebird abundance, as a result, can fluctuate a lot in a given area depending on the time of year. Our goal is to display these changes in abundance by looking at how many total shorebird observations there have been on each day of the year, grouped by species. Let's download data of shorebirds in the order *Charadriiformes*. 
+Shorebirds are a group with many highly migratory birds that travel large distances between breeding seasons. One species found in Pindanland, the Bar-tailed Godwit (below left), migrates once a year across the Pacific to Australia for food; that's [11,000 kilometers non-stop](https://doi.org/10.1093/condor/107.1.1)![^longtrip] As a result shorebird abundance can fluctuate a lot in a given area depending on the time of year. Our goal is to display these changes in abundance by looking at how many total shorebird observations there have been on each day of the year, grouped by species. 
 
 [^longtrip]: This is considered one of the longest continuous journeys by any bird in the world.
 
@@ -113,6 +113,8 @@ Shorebirds are a group with many highly migratory birds that travel large distan
 ::: figure-caption
 Left: [*Limosa lapponica* (lozwoz88 CC-BY-NC 4.0 (Int)](https://biocache.ala.org.au/occurrences/357e5646-58f4-4336-96ed-cb2adb81eec9), Middle: [*Stiltia isabella* (Steve Murray CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/e7732077-891e-45b3-a284-9655ed53176e), Right: [*Cladorhynchus leucocephalus* (Blythe Nilson, iNaturalist CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/93a48a21-5c56-4955-82a7-3738884daf1e)
 :::
+
+Let's download data of shorebirds in the order *Charadriiformes*. 
 
 We are interested in downloading data from Pindanland, a subregion of the [IBRA](https://www.dcceew.gov.au/environment/land/nrs/science/ibra) bioregion Dampierland in Western Australia. To filter our data to only Pindanland, we'll do a text search for any fields in galah that contain IBRA information.
 
@@ -198,7 +200,7 @@ search_all(fields, "cl1049") |>
   search_values("Pindanland")
 ```
 
-Now we can download occurrence data of shorebirds in Pindanland by using field `cl1049` in our query. We'll further filter our query to return occurrences recorded after the year 2000, human observations (rather than museum specimens), and records identified to the species level. We'll also use a set of ALA data cleaning filters (i.e. a data *profile*) by adding `galah_apply_profile(ALA)` to return fewer erroneous records. To shrink the amount of data we return, we'll select only columns `eventDate`, `scientificName` to return. 
+Now we are able to download occurrence data of shorebirds in Pindanland by using field `cl1049` in our query. We'll further filter our query to return occurrences recorded after the year 2000, human observations (rather than museum specimens), and records identified to the species level. We'll also use a set of ALA data cleaning filters (i.e. a data *profile*) by adding `galah_apply_profile(ALA)` to return fewer erroneous records. To shrink the amount of data we return, we'll select only columns `eventDate`, `scientificName` to return. 
 
 ```{r}
 #| message: false
