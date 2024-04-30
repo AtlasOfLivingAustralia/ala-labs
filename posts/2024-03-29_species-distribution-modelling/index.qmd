@@ -68,7 +68,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 Species distribution models (SDMs) offer a way to quantify relationships between biodiversity observations and environmental variables, and are widely used in biogeography, conservation biology, and macroecology. SDMs allow us to assess how suitable an area is for a species, which has implications for predicting range shifts of invasive or threatened species, and understanding habitat suitability under different climate change scenarios.
 
-The process of fitting and choosing the best model is iterative and, often, predictions across different modelling methods are stacked into one workflow. Here, we walk through the steps of building a SDM for the laughing kookaburra in a small area of New South Wales, Australia, using the [tidymodels](https://www.tidymodels.org/) and [tidysdm](https://evolecolgroup.github.io/tidysdm/). tidymodels is a collection of packages for modelling using [tidyverse principles](https://tidyverse.tidyverse.org/articles/manifesto.html), and tidysdm implements SDMs using the tidymodels framework.
+The process of fitting and choosing the best model is iterative and, often, different modelling approaches are used to make multiple predictions that can be averaged to get a final result. Here, we walk through the steps of building a SDM for the laughing kookaburra in a small area of New South Wales, Australia, using the [tidymodels](https://www.tidymodels.org/) and [tidysdm](https://evolecolgroup.github.io/tidysdm/). tidymodels is a collection of packages for modelling using [tidyverse principles](https://tidyverse.tidyverse.org/articles/manifesto.html), and tidysdm implements SDMs using the tidymodels framework.
 
 
 ::: {.callout-note collapse="true"}
@@ -113,7 +113,7 @@ To begin, we can load some packages.
 #| message: false
 library(galah)
 library(tidyverse)
-library(tidymodels) # automatically loaded with tidysdm I think [I think I want it there anyway]
+library(tidymodels) 
 library(tidysdm) # devtools::install_github("EvolEcolGroup/tidysdm")
 library(terra)
 library(tidyterra)
@@ -229,9 +229,9 @@ ggplot() +
 ```
 :::
 
-For many of the later steps we'll need the coordinates formatted as a spatial object (i.e., `geometry`). So, let's convert our occurrence data to a spatial object (`sf`) defined by the longitude and latitude coordinates, and set the Coordinate Reference System (CRS) to EPSG:4326[^1] (WGS84).
+For many of the later steps we'll need the coordinates formatted as a spatial object (i.e., `geometry`). So, let's convert our occurrence data to a spatial object (`sf`) defined by the longitude and latitude coordinates, and set the Coordinate Reference System (CRS) to EPSG:4326[^crs] (WGS84).
 
-[^1]: ALA data is projected using [CRS EPSG:4326](https://epsg.io/4326) (the same one used by Google Earth).
+[^crs]: ALA data is projected using [CRS EPSG:4326](https://epsg.io/4326) (the same one used by Google Earth).
 
 ```{r}
 # convert to sf
@@ -345,9 +345,9 @@ Now that we have our occurrence data and environmental data, there are a few ste
 
 The first step is to remove data where many points are overlapping. The resolution of our prediction is dependent on the resolution of our environmental data. If each cell in our environmental data defines the average value of one square kilometre, even if we had kookaburra observations at a higher resolution (for example, every square *metre* of our defined area), we can only detect differences to the lowest resolution of our grid cells.
 
-So, we can **thin** our data so that there is only one observation per cell of our raster[^2]. This step reduces spatial bias and lowers the risk that autocorrelation affects final predictions of our model.
+So, we can **thin** our data so that there is only one observation per cell of our raster[^rast]. This step reduces spatial bias and lowers the risk that autocorrelation affects final predictions of our model.
 
-[^2]: It's also possible to thin data by distance rather than cell size using [`tidysdm::thin_by_dist()`](https://evolecolgroup.github.io/tidysdm/reference/thin_by_dist.html).
+[^rast]: It's also possible to thin data by distance rather than cell size using [`tidysdm::thin_by_dist()`](https://evolecolgroup.github.io/tidysdm/reference/thin_by_dist.html).
 
 ```{r}
 # thin
@@ -391,9 +391,9 @@ ggplot() +
 
 ### Pseudo-absences
 
-Our data from the ALA is presence-only data. So, the second step is to create **pseudo-absences** (also called background points) that represent the full extent of the area where kookaburras haven't been observed (yet) in our data. Importantly, these are not the same as *true* absences and this should be taken into account when interpreting results[^3].
+Our data from the ALA is presence-only data. So, the second step is to create **pseudo-absences** (also called background points) that represent the full extent of the area where kookaburras haven't been observed (yet) in our data. Importantly, these are not the same as *true* absences and this should be taken into account when interpreting results[^trueabs].
 
-[^3]: A true absence has quite a different meaning than a pseudo-absence to a species distribution model. The main difference is in the value a known absence provides compared to a simulated one for our interpretation of the results.<br><br>A *true* absence is a point where, at a specific time, an organism was not found there. Alternatively, a pseudo-absence is a point that *acts* like we haven't found an animal there, but we don't actually have data for that location! The model, however, doesn't *know* if a point represents a true absence or a psuedo-absence. It only knows the information it is given and will interpret that information using the parameters it is provided (in this way, models are a reflection of the real-world, but never a substitute).<br><br>Collecting *true* absence data is difficult, typically requiring expert knowledge, surveys with stricter methodologies, and repeated measures of the same areas over time. Pseudo-absences are much easier to collect---you simply simulate them on a computer---but they are less informative. Keep this trade-off in mind as you interpret your model's results.
+[^trueabs]: A true absence has quite a different meaning than a pseudo-absence to a species distribution model. The main difference is in the value a known absence provides compared to a simulated one for our interpretation of the results.<br><br>A *true* absence is a point where, at a specific time, an organism was not found there. Alternatively, a pseudo-absence is a point that *acts* like we haven't found an animal there, but we don't actually have data for that location! The model, however, doesn't *know* if a point represents a true absence or a psuedo-absence. It only knows the information it is given and will interpret that information using the parameters it is provided (in this way, models are a reflection of the real-world, but never a substitute).<br><br>Collecting *true* absence data is difficult, typically requiring expert knowledge, surveys with stricter methodologies, and repeated measures of the same areas over time. Pseudo-absences are much easier to collect---you simply simulate them on a computer---but they are less informative. Keep this trade-off in mind as you interpret your model's results.
 
 Let's add 3 times the number of presences to fill our grid, making sure they aren't closer than 5 km to another point like our occurrence points.
 
@@ -450,17 +450,17 @@ kookaburras_bioclim
 
 ### Select predictor variables
 
-The fourth and final step is to choose predictor variables for our model. These are variables we think explain variation in our outcome (i.e., the probability a kookaburra could live in a given location). When choosing predictor variables, it is good practice to use theory and previous research to inform what variables you choose as predictors[^4].
+The fourth and final step is to choose predictor variables for our model. These are variables we think explain variation in our outcome (i.e., the probability a kookaburra could live in a given location). When choosing predictor variables, it is good practice to use theory and previous research to inform what variables you choose as predictors[^scale].
 
-[^4]: Keep in mind that the strength of variables depends on the scale of your prediction. If you wish to make predictions at a broad-scale, variables like temperature and rainfall will likely be strong predictors, whereas if you wish to make predictions at a fine-scale, variables like food scarcity and competition might be stronger predictors for your outcome.
+[^scale]: Keep in mind that the strength of variables depends on the scale of your prediction. If you wish to make predictions at a broad-scale, variables like temperature and rainfall will likely be strong predictors, whereas if you wish to make predictions at a fine-scale, variables like food scarcity and competition might be stronger predictors for your outcome.
 
 :::{.callout-note collapse="true"}
 
 ## Choosing variables and avoiding multicollinearity
 
-In species distribution models, *multicollinearity*---high correlation between several independent variables in a model---can have unintended effects that bias predictions[^5]. Data science tools can also help refine your predictor variable choices, too, including [some functions in tidysdm](https://evolecolgroup.github.io/tidysdm/articles/a0_tidysdm_overview.html#thinning-step) that we used below.
+In species distribution models, *multicollinearity*---high correlation between several independent variables in a model---can have unintended effects that bias predictions[^models]. Data science tools can also help refine your predictor variable choices, too, including [some functions in tidysdm](https://evolecolgroup.github.io/tidysdm/articles/a0_tidysdm_overview.html#thinning-step) that we used below.
 
-[^5]: A model can only use the information it is provided to make inferences about the world. If multiple variables in a model correlate, the model can place too much weight on those values to determine the outcome! The model isn't aware of the many other environmental variables that affect the real world outcome.
+[^models]: A model can only use the information it is provided to make inferences about the world. If multiple variables in a model correlate, the model can place too much weight on those values to determine the outcome! The model isn't aware of the many other environmental variables that affect the real world outcome.
 
 A good start is to choose variables that differentiate between presences and pseudo-absences, which in the plot below are variables that have less overlap between red and blue distributions. To help choose variables with the highest non-overlapping distribution, we can decide on a percentage cut-off of 55% non-overlap, leaving us with the top 3 variables in the table below.
 
@@ -515,10 +515,10 @@ aus |>
 
 Here, we selected two BioClim variables that we thought were reasonable environmental predictors (using mainly data science techniques):
 
--   **BIO4**: Temperature Seasonality[^6]
+-   **BIO4**: Temperature Seasonality[^measure]
 -   **BIO12**: Annual Precipitation
 
-[^6]: Measured as the standard deviation of the mean monthly temperature
+[^measure]: Measured as the standard deviation of the mean monthly temperature
 
 We'll filter our point data and BioClim raster data to only include our two variables.
 
@@ -567,7 +567,7 @@ bioclim12 <- ggplot() +
                           ymax = ymax),
             colour = "grey50",
             fill = NA) +  
-  scale_fill_whitebox_c(palette = "bl_yl_rd",
+  scale_fill_whitebox_c(palette = "deep",
                         na.value = NA) +
   guides(fill = guide_colorbar(title = "Precipitation (mm)")) +
   theme_void()
@@ -669,11 +669,11 @@ purrr::walk(kookaburras_cv$splits, function(x) print(autoplot(x)))
 
 ### Define our model
 
-Next let's make our model's "recipe". This is the tidymodels term for any pre-processing steps that happen to our data before adding them to a model. A recipe includes our model formula, and any transformations or standardisations we might wish to do[^7].
+Next let's make our model's "recipe". This is the tidymodels term for any pre-processing steps that happen to our data before adding them to a model. A recipe includes our model formula, and any transformations or standardisations we might wish to do[^trans].
 
-[^7]: For example, log transformation, centring scales, setting dummy variables
+[^trans]: For example, log transformation, centring scales, setting dummy variables
 
-In our case, let's define that our model's outcome variable[^8] is the `class` of presence or absence. We'll then add our predictor variables[^9] to our model, with the formula `class ~ .`, equivalent to `class ~ bio4 + bio12`.
+In our case, let's define that our model's outcome variable is the `class` of presence or absence. We'll then add our predictor variables to our model, with the formula `class ~ .`, equivalent to `class ~ bio4 + bio12`.
 
 ```{r}
 #| column: page-inset-right
