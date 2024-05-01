@@ -1,0 +1,39 @@
+---
+title: "Jessica Fenker"
+description: |
+date: "`r Sys.Date()`"
+output: 
+  distill::distill_article:
+    highlight: pygments
+    self_contained: true
+---
+```{r, include=FALSE}
+library(htmltools)
+library(here)
+source(here("R", "functions.R"))
+```
+# Bio
+:::float-image
+```{r out.width='200px', out.extra='style="float:right; margin-left:15px; margin-right:15px; clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/jess.jpg")
+```
+Jess is an evolutionary scientist based at Atlas of Living Australia, with a postdoc on species delimitation methods and PhD on diversification at micro/macro scales. She is also affiliated with the Division of Ecology and Evolution, ANU. Jess brings her experience in R to improve the readability, data standardisation and performance of EcoCommons’ platform ecological modelling algorithms. Jess is a strong advocate for diversity in STEMM.
+```{r, echo = FALSE}
+tags$div(class = "row", style = "display: flex;",
+         
+create_button(
+  icon = "fab fa-github fa-2x",
+  url = "https://github.com/jehfenker"
+),
+create_button(
+  icon = "fas fa-globe fa-2x",
+  url = "https://jessicafenker.com/"
+),
+create_button(
+  icon = "fab fa-twitter fa-2x",
+  url = "https://twitter.com/jehzim"
+)
+)
+```
+:::
+

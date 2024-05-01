@@ -51,6 +51,9 @@ create_button(
 
 ### {{< fa newspaper >}} Posts 
 
+[An introduction to species distribution modelling using {tidysdm} & {tidymodels}](https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/)<br>
+*Species distribution modelling is a common task for ecologists in R. Here we show the fundamental steps to build, assess and use models to predict species distributions using {tidymodels} & {tidysdm}, modern packages that use tidy syntax to run and plot geospatial models.*
+
 [Combining multiple species distributions on one map with hexagons and points](https://labs.ala.org.au/posts/2024-01-25_hex_point_maps/)<br>
 *Visualising multiple species distributions in a single figure can be difficult if there are areas where ranges overlap. In this post we introduce a way to show several species distributions in an area at once using a novel twist on the commonly used hexbin map.*
 

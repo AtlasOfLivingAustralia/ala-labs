@@ -30,7 +30,7 @@
   </url>
   <url>
     <loc>https://labs.ala.org.au/posts/index.html</loc>
-    <lastmod>2024-02-12T05:33:36.738Z</lastmod>
+    <lastmod>2024-03-19T02:56:31.375Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/posts/2024-01-25_hex_point_maps/index.html</loc>
@@ -66,7 +66,7 @@
   </url>
   <url>
     <loc>https://labs.ala.org.au/index.html</loc>
-    <lastmod>2024-02-12T05:33:36.174Z</lastmod>
+    <lastmod>2024-03-19T02:56:31.246Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/about/Westgate_Martin/index.html</loc>
@@ -78,7 +78,7 @@
   </url>
   <url>
     <loc>https://labs.ala.org.au/about/Kellie_Dax/index.html</loc>
-    <lastmod>2024-02-13T06:05:58.505Z</lastmod>
+    <lastmod>2024-04-30T04:11:46.279Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/about/Buyan_Amanda/index.html</loc>
@@ -86,7 +86,7 @@
   </url>
   <url>
     <loc>https://labs.ala.org.au/about/Balasubramaniam_Shandiya/index.html</loc>
-    <lastmod>2024-02-13T06:05:58.505Z</lastmod>
+    <lastmod>2024-04-30T04:12:41.135Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/about/index.html</loc>
@@ -171,5 +171,9 @@
   <url>
     <loc>https://labs.ala.org.au/research/highlights/2024_habitat-suitability/index.html</loc>
     <lastmod>2024-04-04T23:49:13.692Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/index.html</loc>
+    <lastmod>2024-05-01T01:59:50.312Z</lastmod>
   </url>
 </urlset>

@@ -1,0 +1,57 @@
+---
+title: "Fonti Kar"
+include-after-body: _footer.html
+---
+
+```{r, include=FALSE}
+library(htmltools)
+library(here)
+source(here("R", "functions.R"))
+```
+
+### {{< fa circle-user >}} Bio 
+
+:::{.bio-row}
+:::{.bio-column-right}
+
+```{r out.width='275px', out.extra='style="display:block; margin-left:auto; margin-right:auto; clip-path: circle();"'}
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/fonti.jpg")
+```
+:::
+
+:::{.bio-column-left}
+Fonti is an evolutionary biologist wearing R developer shoes. Her interests include biostatistics, reproducible science, learning about the latest coding practices and teaching others to enjoy using R. Her work at ALA as a Data Analyst involves streamlining data cleaning workflows. 
+:::
+:::
+
+:::{.column-body style="margin-top:-20px;"}
+```{r}
+#| echo: false
+
+tags$div(class = "row", style = "display: flex;",
+         
+create_button(
+  icon = "fab fa-github fa-xl",
+  url = "https://github.com/fontikar/"
+),
+create_button(
+  icon = "fas fa-globe fa-xl",
+  url = "https://fontikar.wordpress.com/"
+),
+create_button(
+  icon = "fab fa-twitter fa-xl",
+  url = "https://twitter.com/fonti_kar"
+)
+)
+```
+:::
+
+### {{< fa newspaper >}} Posts 
+
+[Quantifying species range and overlap with fire-burned areas using concave hulls](https://labs.ala.org.au/posts/2022-10-12_quantifying-species-range/post.html)<br>
+*Calculating range overlap is an efficient way to estimate the impact of natural disasters on biodiversity. Here we'll use curated datasets to compute concave hulls to visualise the spatial distribution of Apidae (Bees) and Daviesia (Bitterpeas) and their overlap with burned areas of the Black Summer fires of 2019-2020.*
+
+[Convex and alpha hulls for conservation mapping](https://labs.ala.org.au/posts/2022-10-12_alpha-hulls/post.html)<br>
+*Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions when a species has very few existing observations. Here, we will show you how to create these spatial polygons using data from the ALA.*
+
