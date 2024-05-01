@@ -28,7 +28,9 @@ editor_options:
 library(htmltools)
 ```
 
+
 <!-- remove metadata section -->
+
 
 ```{=html}
 <style>
@@ -37,6 +39,7 @@ library(htmltools)
   }
 </style>
 ```
+
 <!-- Author card -->
 
 ::: author-card
@@ -52,15 +55,19 @@ library(htmltools)
 :::
 
 ::: author-card-image
+
 ```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg")
 ```
+
 :::
 
 ::: author-card-image
+
 ```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/shandiya.png")
 ```
+
 :::
 :::
 
@@ -108,6 +115,7 @@ The process of fitting and choosing the best model is iterative and, often, diff
 
 To begin, we can load some packages.
 
+
 ```{r}
 #| warning: false
 #| message: false
@@ -121,6 +129,7 @@ library(here)
 library(sf)
 library(ozmaps)
 ```
+
 
 # Prepare data
 
@@ -146,6 +155,7 @@ The laughing kookaburra also has one of the most recognisable bird calls. [This 
 
 We'll choose a region in New South Wales...
 
+
 ```{r}
 # define geographic region
 custom_bbox <- tibble(ymin = -35, 
@@ -154,7 +164,9 @@ custom_bbox <- tibble(ymin = -35,
                       xmax = 152.1)
 ```
 
+
 ::: aside
+
 ```{r}
 #| echo: false
 ggplot() +
@@ -171,9 +183,11 @@ ggplot() +
             fill = NA) + 
   theme_light()
 ```
+
 :::
 
 ...and download records from the ALA.
+
 
 ```{r}
 #| eval: false
@@ -204,7 +218,9 @@ kookaburras <- galah_call() |>
   atlas_occurrences()
 ```
 
+
 ::: aside
+
 ```{r}
 #| echo: false
 ggplot() +
@@ -227,11 +243,13 @@ ggplot() +
   theme_light() +
   theme(legend.position = "none")
 ```
+
 :::
 
 For many of the later steps we'll need the coordinates formatted as a spatial object (i.e., `geometry`). So, let's convert our occurrence data to a spatial object (`sf`) defined by the longitude and latitude coordinates, and set the Coordinate Reference System (CRS) to EPSG:4326[^crs] (WGS84).
 
 [^crs]: ALA data is projected using [CRS EPSG:4326](https://epsg.io/4326) (the same one used by Google Earth).
+
 
 ```{r}
 # convert to sf
@@ -239,6 +257,7 @@ kookaburras_sf <- kookaburras |>
   st_as_sf(coords = c("decimalLongitude", "decimalLatitude")) |>
   st_set_crs(4326)
 ```
+
 
 ### Download environmental data
 
@@ -248,6 +267,7 @@ To help with our model prediction, we'll also download the [BioClim variables](h
 ## What's a raster?
 
 A **raster** is a spatial grid of cells, where each cell contains a value representing information such as temperature or elevation. This information is often visualised by mapping colours to values in the raster (see image below). The resolution of the raster depends on the size of cells within the grid, with smaller cells corresponding to higher resolution (just like how the resolution of a television screen is determined by the number of pixels).
+
 
 ```{r}
 #| code-fold: true
@@ -265,7 +285,9 @@ r16 <- rast(m)
 
 plot_raster(r16)
 ```
+
 :::
+
 
 ```{=html}
 <!--
@@ -273,6 +295,7 @@ Note: This data exists in the Science & Decision Support folder on Microsoft Tea
 * ./Data/science/projects/sdm-workflows/data
 -->
 ```
+
 ```{r}
 #| eval: false
 # Download world climate data
@@ -294,7 +317,9 @@ bioclim <- terra::rast(here::here("posts",
                                   "AUS_wc2.1_30s_bio.tif"))
 ```
 
+
 To narrow our BioClim data to only within the extent of our defined bounding box, we'll create an extent object `bbox_ext`, then crop our `bioclim` layers to within `bbox_ext` and project our cropped BioClim data to the same CRS as our kookaburra occurrence points.
+
 
 ```{r}
 # Set the coordinates to our bounding box
@@ -311,9 +336,11 @@ aus <- bioclim |>
   terra::project(crs("EPSG:4326"))
 ```
 
+
 To make sure everything looks correct, let's plot one of the variables with `geom_spatraster()` from the [tidyterra package](https://dieghernan.github.io/tidyterra/)[^tidyterra].
 
 [^tidyterra]: tidyterra follows the Grammar of Graphics made popular in R by ggplot2 and allows rasters to be plotted using the same syntax. In contrast, the terra package requires users to plot using base R styling (using `plot()`).
+
 
 ```{r}
 # Download NSW map, set CRS projection
@@ -337,6 +364,7 @@ first_map
 ```
 
 
+
 # Prepare data
 
 Now that we have our occurrence data and environmental data, there are a few steps we'll complete to prepare our data for modelling.
@@ -348,6 +376,7 @@ The first step is to remove data where many points are overlapping. The resoluti
 So, we can **thin** our data so that there is only one observation per cell of our raster[^rast]. This step reduces spatial bias and lowers the risk that autocorrelation affects final predictions of our model.
 
 [^rast]: It's also possible to thin data by distance rather than cell size using [`tidysdm::thin_by_dist()`](https://evolecolgroup.github.io/tidysdm/reference/thin_by_dist.html).
+
 
 ```{r}
 # thin
@@ -363,7 +392,9 @@ tibble(
   )
 ```
 
+
 ::: aside
+
 ```{r}
 #| echo: false
 #| code-fold: true
@@ -386,6 +417,7 @@ ggplot() +
   theme_void() + 
   theme(legend.position = "none")
 ```
+
 :::
 
 
@@ -397,6 +429,7 @@ Our data from the ALA is presence-only data. So, the second step is to create **
 
 Let's add 3 times the number of presences to fill our grid, making sure they aren't closer than 5 km to another point like our occurrence points.
 
+
 ```{r}
 kookaburras_pseudoabs <- tidysdm::sample_pseudoabs(
   kookaburras_thin,
@@ -406,7 +439,9 @@ kookaburras_pseudoabs <- tidysdm::sample_pseudoabs(
 )
 ```
 
+
 ::: aside
+
 ```{r}
 #| echo: false
 #| code-fold: true
@@ -432,11 +467,13 @@ ggplot() +
   guides(fill = "none") +
   theme_void()
 ```
+
 :::
 
 ### Extract environmental values
 
 Now that we have our presence and pseudo-absence points, the third step is to extract the environmental data for each point location in `aus` and bind the resulting values to our points data in `kookaburras_psuedoabs`. The result is a `tibble` with our points, their class, and the specific values of all 19 BioClim variables.
+
 
 ```{r}
 kookaburras_bioclim <- kookaburras_pseudoabs |> 
@@ -447,6 +484,7 @@ kookaburras_bioclim <- kookaburras_pseudoabs |>
     )
 kookaburras_bioclim
 ```
+
 
 ### Select predictor variables
 
@@ -468,6 +506,7 @@ A good start is to choose variables that differentiate between presences and pse
 
 ## Plot
 
+
 ```{r}
 #| code-fold: true
 kookaburras_bioclim |>
@@ -476,6 +515,7 @@ kookaburras_bioclim |>
     starts_with("wc2.1_30s_")) |>
   plot_pres_vs_bg(class)
 ```
+
 
 ## Table
 
@@ -486,6 +526,7 @@ kookaburras_bioclim |>
   margin-bottom: 20px;
 }
 </style>
+
 
 ```{r}
 #| code-fold: true
@@ -498,9 +539,11 @@ overlap <- kookaburras_bioclim |>
 overlap |> gt::gt()
 ```
 
+
 :::
 
 Now we can use pair plots to view the relationship between each pair of variables. Variables `bio_12` and `bio_16` are very highly correlated (94%). To avoid multicollinearity in our model, we'll include only `bio_12` (annual precipitation) and `bio_4` (temperature seasonality).
+
 
 ```{r}
 #| code-fold: true
@@ -510,6 +553,7 @@ aus |>
          wc2.1_30s_bio_16) |>
   terra::pairs()
 ```
+
 
 :::
 
@@ -521,6 +565,7 @@ Here, we selected two BioClim variables that we thought were reasonable environm
 [^measure]: Measured as the standard deviation of the mean monthly temperature
 
 We'll filter our point data and BioClim raster data to only include our two variables.
+
 
 ```{r}
 # predictor variable names
@@ -586,6 +631,7 @@ bioclim4
 bioclim12
 ```
 
+
 # Fit model
 
 Tidymodels is designed to build a model workflow, train the model's performance, then test the model's ability to predict data accurately. This workflow might be slightly different to what many research scientists are used to.
@@ -595,6 +641,7 @@ In machine learning models, data is like a limited resource that we must divide 
 ### Split data
 
 The first step to allocating your "data budget" is splitting your data. We can use `initial_split()` to allocate a reasonable "data budget" into these categories (typically a 75-25% split).
+
 
 ```{r}
 # set training and testing data
@@ -606,12 +653,15 @@ kookaburras_split <-
 kookaburras_split
 ```
 
+
 Now we can save these data as separate data objects for `training()` and `testing()`.
+
 
 ```{r}
 kookaburras_train <- training(kookaburras_split)
 kookaburras_test <- testing(kookaburras_split)
 ```
+
 
 We are left with two dataframes with identical columns but different points.
 
@@ -619,15 +669,19 @@ We are left with two dataframes with identical columns but different points.
 
 ## Train
 
+
 ```{r}
 kookaburras_train |> head(5L)
 ```
 
+
 ## Test
+
 
 ```{r}
 kookaburras_test |> head(5L)
 ```
+
 
 :::
 
@@ -635,10 +689,12 @@ kookaburras_test |> head(5L)
 
 Now let's resample our training data so we can use it to optimise and evaluate our model. One way to resample is using *cross-validation*, a well-established method of resampling that randomly assigns points to analysis and assessment groups. These randomly resampled and split data sets are known as *folds*. We can use the [spatialsample package](https://spatialsample.tidymodels.org/) to create 5 v-folds with `spatial_block_cv()`, a function for resampling spatial data.
 
+
 ```{r}
 set.seed(100)
 kookaburras_cv <- spatial_block_cv(kookaburras_train, v = 5)
 ```
+
 
 `spatial_block_cv()` uses a type of resampling called *block cross-validation*, which creates a grid of "blocks" and attempts to maintain these blocked groups when resampling data points. Block cross-validation is important because spatial data is not completely random; data from neighbouring locations probably relate in some way (they aren't completely random), and block cross-validation attempts to preserve this spatial relationship. The plots below demonstrate the general process. The plot on the left shows the blocks, the animation on the right shows the resulting 5 folds.
 
@@ -646,15 +702,18 @@ kookaburras_cv <- spatial_block_cv(kookaburras_train, v = 5)
 
 :::{}
 
+
 ```{r}
 #| fig-align: center
 #| echo: false
 autoplot(kookaburras_cv)
 ```
 
+
 :::
 
 :::{}
+
 
 ```{r splits-gif}
 #| fig-align: center
@@ -662,6 +721,7 @@ autoplot(kookaburras_cv)
 #| echo: false
 purrr::walk(kookaburras_cv$splits, function(x) print(autoplot(x)))
 ```
+
 
 :::
 :::
@@ -675,6 +735,7 @@ Next let's make our model's "recipe". This is the tidymodels term for any pre-pr
 
 In our case, let's define that our model's outcome variable is the `class` of presence or absence. We'll then add our predictor variables to our model, with the formula `class ~ .`, equivalent to `class ~ bio4 + bio12`.
 
+
 ```{r}
 #| column: page-inset-right
 kookaburras_recipe <- recipe(
@@ -683,7 +744,6 @@ kookaburras_recipe <- recipe(
   )
 kookaburras_recipe
 ```
-
 
 ```{r}
 #| echo: false
@@ -694,7 +754,9 @@ prep(kookaburras_recipe) |>
   juice()
 ```
 
+
 Now we can set our workflow, which merges our formula, any data pre-processing, and specifies which models we'll use. One of the strengths of using tidymodels is that we can run several different types of models in a single [`workflow_set()`](https://workflowsets.tidymodels.org/index.html) to train and optimise them.
+
 
 ```{r}
 kookaburras_models <-
@@ -715,6 +777,7 @@ kookaburras_models <-
 kookaburras_models
 ```
 
+
 ### Fit our model
 
 Next we will determine what parameters optimise our model's performance by **tuning** our model. Tuning uses trial-and-error to figure out which type of model under what hyperparameters makes reasonable predictions.
@@ -727,6 +790,7 @@ Let's tune our models using our resampled folds (`kookaburras_cv`).
 Tuning is the process of simulating many different ways to fit lines made by our models to our training data. The number of curves in a model's line of best fit increases as a model becomes more complex, determined by its degrees of freedom. By using different functions to set reasonable weighting parameters that penalize a model when lines curve too much, tuning optimises the model's performance by finding the balance between fitting our current training data and predicting new values correctly. For more information and a visual of this, check out the [tunes package Getting Started vignette](https://tune.tidymodels.org/articles/tune.html).
 
 :::
+
 
 ```{r run-the-model}
 #| warning: false
@@ -747,7 +811,9 @@ kookaburras_models_tune
 beepr::beep(2)
 ```
 
+
 We can use `autoplot()` to visualise which models performed best by a set of common performance metrics for species distribution models. Models with higher values and smaller confidence intervals performed better.
+
 
 ```{r}
 #| fig-align: center
@@ -759,18 +825,22 @@ autoplot(kookaburras_models_tune)
 ```
 
 
+
 We can also collect each model's metrics and rank the models by performance.
+
 
 ```{r}
 # see metrics
 collect_metrics(kookaburras_models_tune) # <1>
 ```
 
+
 1.  As a general tidymodels tip, many columns with a `.` at the start of its column name can be retrieved with a `collect_` function (e.g., `collect_metrics()`, `collect_parameters()`).
 
 Our tuning results show that several types of models and parameters performed quite well. Rather than choosing only one model to use for predictions, it's possible to use several as a "stacked ensemble model"! The [stacks package](https://stacks.tidymodels.org/index.html) in tidymodels let's us blend predictions of a few good candidate models (based on whatever metric you choose) to make better overall estimates[^stacks].
 
 [^stacks]: To learn more about how putting together a stack works, check out [this helpful article on the stacks website](https://stacks.tidymodels.org/articles/basics.html#putting-together-a-stack).
+
 
 ```{r}
 #| warning: false
@@ -786,16 +856,20 @@ kookaburras_stacked <-
 kookaburras_stacked
 ```
 
+
 Here is a nice visual of how these two member models are weighted to inform our predictions.
+
 
 ```{r}
 autoplot(kookaburras_stacked, type = "weights")
 ```
 
 
+
 # Assess model
 
 Our model `kookaburras_stacked` is now ready, and we can use it to make predictions about our test data. We'll bind the predicted values to the true values of our test data...
+
 
 ```{r}
 kookaburras_test_predictions <-
@@ -805,14 +879,18 @@ kookaburras_test_predictions <-
                     save_pred = TRUE))
 ```
 
+
 ...which allows us to assess how good our model is at making correct predictions of the "true" classes.
+
 
 ```{r}
 kookaburras_test_predictions |> 
   sdm_metric_set()(truth = class, .pred_presence)
 ```
 
+
 We can also visualise how well the model has correctly predicted the class of each point by predicting `"class"` rather than `"prob"` and mapping correct vs incorrect predictions.
+
 
 ```{r}
 #| code-fold: true
@@ -841,6 +919,7 @@ kookaburras_test_predictions_class |>
   theme_void()
 ```
 
+
 ::: {.callout-tip collapse="true"}
 ## tidysdm wrapper functions
 
@@ -850,6 +929,7 @@ tidysdm offers its own wrapper function [`simple_ensemble()`](https://evolecolgr
 ### Final prediction
 
 Finally, we can use our model to predict the habitat suitability of laughing kookaburras over our area. We'll predict an entire surface of values within our `aus_filtered` area using the incredible `predict_raster()` function from tidysdm (which saves us quite a few wrangling steps to work nicely with terra).
+
 
 ```{r}
 #| fig-width: 9
@@ -885,6 +965,7 @@ ggplot() +
   )
 ```
 
+
 And there we have our predictions of our species distribution model!
 
 ## Final thoughts
@@ -905,6 +986,7 @@ Expand for session info
 
 </summary>
 
+
 ```{r, echo = FALSE}
 library(sessioninfo)
 # save the session info as an object
@@ -913,7 +995,9 @@ pkg_sesh <- session_info(pkgs = "attached")
 pkg_sesh
 ```
 
+
 </details>
+
 
 ```{r single-model}
 #| eval: false
@@ -1007,3 +1091,4 @@ prediction_present <- predict_raster(kookaburras_ensemble,
                                      c(aus_filtered,
                                        pop_density_cropped))
 ```
+
