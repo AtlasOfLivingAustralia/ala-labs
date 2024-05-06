@@ -375,7 +375,7 @@ We'll use the `lubridate::month()` function to convert the class of our `month` 
 # format months for plotting
 month_NT <- dingo_NT |>
   mutate(
-    month = month(as.numeric(month), label = TRUE) # format month
+    month = lubridate::month(as.numeric(month), label = TRUE) # format month
     )
 ```
 
