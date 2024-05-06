@@ -13,10 +13,10 @@ toc-depth: 2
 categories:
   - Eukaryota
   - Animalia
-  - Aves
+  - Plantae
   - Summaries
-  - Maps
-image: sdm-map.png
+  - R
+image: waffle-chart.png
 freeze: true
 draft: true
 editor_options: 
@@ -68,7 +68,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 Knowing what species inhabit an area is important for conservation and ecosystem management. In particular, it can help us find out how many known species are in a given area, whether each species is common or rare, and whether any species are threatened or endangered.
 
-In this post, we will use the galah, waffle and ggplot2 packages to show you how to download a list of species within the Yass Valley in 2023, cross-reference this list with state-wide conservation status lists, and visualise the number of threatened and sensitive species in the region. 
+In this post, we will use the [galah](https://galah.ala.org.au/R/), [waffle](https://github.com/hrbrmstr/waffle) and [ggplot2](https://ggplot2.tidyverse.org/) packages to show you how to download a list of species within the Yass Valley in 2023, cross-reference this list with state-wide conservation status lists, and visualise the number of threatened and sensitive species in the region. 
 
 ::: aside
 
@@ -136,7 +136,6 @@ First let's load our packages.
 library(dplyr)
 library(ggplot2)
 library(readr)
-library(tibble)
 library(sf)
 library(rmapshaper)
 library(here)
@@ -146,13 +145,13 @@ library(galah)
 To download species lists, you will also need to enter a registered email with the ALA using `galah_config()`.
 
 ```{r}
-#| echo: false
-galah_config(email = "dax.kellie@csiro.au", verbose = FALSE)
+#| eval: false
+galah_config(email = "your-email-here")
 ```
 
 ```{r}
-#| eval: false
-galah_config(email = "your-email-here")
+#| echo: false
+galah_config(email = "dax.kellie@csiro.au", verbose = FALSE)
 ```
 
 
@@ -224,21 +223,21 @@ Let's read the file into R. We will also simplify the shapefile[^simplify] using
 [^simplify]: Simplifying a shapefile removes the number of total points that draw the shape outline.
 
 ```{r}
+#| eval: false
+lga <- sf::st_read(here("LGA_2023_AUST_GDA2020.shp")) |>
+  rmapshaper::ms_simplify(keep = 0.01)
+lga
+```
+
+```{r}
 #| warning: false
 #| message: false
+#| echo: false
 lga <- sf::st_read(here("posts",
                         "data",
                         "LGA_2023",
                         "LGA_2023_AUST_GDA2020.shp"),
                    quiet = TRUE) |>
-  rmapshaper::ms_simplify(keep = 0.01)
-lga
-```
-
-
-```{r}
-#| eval: false
-lga <- sf::st_read(here("LGA_2023_AUST_GDA2020.shp")) |>
   rmapshaper::ms_simplify(keep = 0.01)
 lga
 ```
@@ -368,17 +367,19 @@ As an example, we are using the the New South Wales Conservation Status List and
 First, let's read in both lists and see what each list looks like.
 
 ```{r}
+#| eval: false
+threatened_list <- read_csv(here("path", "to", "example_TSL.csv"))
+sensitive_list <- read_csv(here("path", "to", "example_SSL.csv"))
+```
+
+```{r}
 #| echo: false
+#| warning: false
+#| message: false
 threatened_list <- read_csv(here("posts", "data", "example_TSL.csv"))
 sensitive_list <- read_csv(here("posts", "data", "example_SSL.csv"))
 ```
 
-
-```{r}
-#| eval: false
-threatened_list <- read_csv(here("example_TSL.csv"))
-sensitive_list <- read_csv(here("example_SSL.csv"))
-```
 
 Let's filter our Yass Valley species to only those that are also in our `threatened_list`. We return 23 species.
 
@@ -404,14 +405,17 @@ yass_sensitive
 
 One useful way to visualise the number of threatened and sensitive species in an area is using a waffle chart. Waffle charts are useful because they can show the total number of species (represented as individual square units) and proportions of different groups (represented by colours). 
 
-For example, we can visualse the number and proportion of species with different conservation status, along with a taxonomic breakdown of threatened/sensitive species [^4].
-
-[^4]: To create our colour palette, we used [David Nichol's website](https://davidmathlogic.com/colorblind/#%23EAEAD8-%231E88E5-%23F7E9C3-%2324DCBD-%2343006B) to help colours that are colour-blind friendly, [the ColorHexa website](https://www.colorhexa.com/43006b-to-eaead8) create a gradient between 2 colours, and [Coolors](https://coolors.co/) to adjust the colours & shades.
+For example, we can visualse the number and proportion of species with different conservation status, along with a taxonomic breakdown of threatened/sensitive species.
 
 ```{r}
 #| code-fold: true
+#| warning: false
+#| message: false
 library(waffle)
+library(showtext)
+library(glue)
 
+# Add conservation status & taxa groups plotting
 species_yass_grouped <- species_yass |>
   mutate(
     conservation_status = case_when(
@@ -428,80 +432,105 @@ species_yass_grouped <- species_yass |>
     )
   )
 
-# big overall table
-status_prop_table <- species_yass_grouped |>
+# Count number of species by conservation status
+status_table <- species_yass_grouped |>
   group_by(conservation_status) |>
   summarise(n = n()) |>
   mutate(proportion = n/sum(n)*100)
 
-# taxa breakdown table
-taxa_prop_table <- species_yass_grouped |>
+# Count number of species by taxonomic group
+taxa_table <- species_yass_grouped |>
   filter(conservation_status %in% c("Sensitive", "Threatened")) |>
   group_by(taxa_group) |>
   summarise(n = n()) |>
   mutate(proportion = n/sum(n)*100)
 
-# percent threatened
-prop_threatened_or_sensitive <- status_prop_table |>
+# Extract percentage that are threatened/sensitive species
+prop_threatened_or_sensitive <- status_table |>
   filter(conservation_status %in% c("Sensitive", "Threatened")) |>
   summarise(total = sum(proportion)) |>
   pull(total) |>
   round(2)
 
-# Waffle: Conservation Status
-p1 <- ggplot(status_prop_table) +
-  waffle::geom_waffle(
-    aes(fill = conservation_status,
-        colour = conservation_status,
-        values = n),
-    n_rows = 21,
-    height = 0.75,
-    width = 0.75,
-    size = 1) +
+# Add nicer font
+font_add_google("Roboto", "roboto")
+showtext_auto()
+
+# Plot 1 Waffle: Conservation Status
+waffle_status <- 
+  ggplot(status_table) +
+  waffle::geom_waffle(aes(fill = conservation_status,
+                          colour = conservation_status,
+                          values = n),
+                      n_rows = 21,
+                      height = 0.75,
+                      width = 0.75,
+                      size = 1) +
   scale_colour_manual(name = "Conservation\nStatus",
                     values = c("#F3E6DC", "#D89A98", "#AB423F"),
                     labels = c("No status", "Sensitive", "Threatened")) +
   scale_fill_manual(name = "Conservation\nStatus",
                     values = c("#F3E6DC", "#D89A98", "#AB423F"),
                     labels = c("No status", "Sensitive", "Threatened")) +
-  labs(subtitle = glue::glue("{prop_threatened_or_sensitive}% species in Yass Valley are threatened or sensitive species"),
+  labs(title = glue::glue("{prop_threatened_or_sensitive}% of total species in \\
+                          Yass Valley are threatened or sensitive"),
        caption = "1 square = 1 species") +
   coord_equal() + 
   theme_void() + 
   theme(legend.position = "bottom",
-        legend.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust = 0.5),
+        text = element_text(family = "roboto", lineheight = 0.5),
+        legend.title = element_text(hjust = 0.5, size = 20),
+        legend.text = element_text(size = 19),
+        plot.title = element_text(hjust = 0.5, size = 25),
+        plot.caption = element_text(size = 17),
         plot.margin = margin(0.5, 1, 0.5, 1, unit = "cm"))
 
-# Waffle: Taxonomic breakdown
-p2 <- ggplot(taxa_prop_table) +
-  waffle::geom_waffle(
-    aes(fill = taxa_group,
-        colour = taxa_group,
-        values = n),
-    n_rows = 5,
-    height = 0.75,
-    width = 0.75,
-    size = 1) +
+# Plot 2: Taxonomic breakdown
+waffle_taxa <- 
+  ggplot(taxa_table) +
+  waffle::geom_waffle(aes(fill = taxa_group,
+                          colour = taxa_group,
+                          values = n),
+                      n_rows = 5,
+                      height = 0.75,
+                      width = 0.75,
+                      size = 1) +
   scale_colour_manual(name = "Group",
-                    values = c("#567C7C", "#22352C", "#465743", "#6D714A", "#C4AC79"),
+                    values = c("#567C7C", "#6D714A", "#465743", "#22352C", "#C4AC79"),
                     labels = c("Birds", "Mammals", "Other", "Plants", "Reptiles")) +
   scale_fill_manual(name = "Group",
-                    values = c("#567C7C", "#22352C", "#465743", "#6D714A", "#C4AC79"),
+                    values = c("#567C7C", "#6D714A", "#465743", "#22352C", "#C4AC79"),
                     labels = c("Birds", "Mammals", "Other", "Plants", "Reptiles")) +
-  labs(title = "Taxonomic breakdown of threatened & sensitive species") +
+  labs(title = "Taxonomic breakdown of threatened & sensitive species",
+       caption = "1 square = 1 species") +
   coord_equal() + 
   theme_void() + 
   theme(legend.position = "bottom",
-        legend.title = element_text(hjust = 0.5),
-        plot.title = element_text(hjust = 0.5),
+        text = element_text(family = "roboto"),
+        legend.title = element_text(hjust = 0.5, size = 20),
+        legend.text = element_text(size = 19),
+        plot.title = element_text(hjust = 0.5, size = 25),
+        plot.caption = element_text(size = 17, hjust = 1),
         plot.margin = margin(0.5, 2.5, 0.5, 2.5, unit = "cm"))
+```
 
-p1
-p2
 
-# library(patchwork)
-# p1/(plot_spacer() | p2 | plot_spacer())
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| column: page
+#| fig-align: center
+#| fig-width: 12
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
+waffle_status
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+waffle_taxa
 ```
 
 
@@ -509,7 +538,7 @@ p2
 
 We hope this post has helped you understand how to download a species list for a specific area and compare it to conservation lists. It's also possible to compare species with other information like lists of migratory species or seasonal species.
 
-For other posts, check out [our beginner's guide to map species observations](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/index.html) or see [how to map distributions of invasive species](https://labs.ala.org.au/posts/2023-04-28_plotting-invasive-species/post.html).
+For other posts, check out [our beginner's guide to map species observations](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/index.html) or see [an investigation of dingo observations in the ALA](https://labs.ala.org.au/posts/2023-05-16_dingoes/).
 
 <details>
 
