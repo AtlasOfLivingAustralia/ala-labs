@@ -16,6 +16,7 @@ categories:
   - Aves
   - Summaries
   - Maps
+  - R
 image: sdm-map.png
 freeze: true
 draft: false
