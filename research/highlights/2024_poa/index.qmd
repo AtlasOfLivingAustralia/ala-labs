@@ -1,5 +1,5 @@
 ---
-title: "Pollen trails: what is causing a sneeze?"
+title: "Pollen trails: What is causing a sneeze?"
 author: "Olivia Torresan"
 date: "2024-05-23"
 title-block-banner: "#B7CD96"
@@ -66,8 +66,11 @@ Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
 <!-- Main panel description -->
 
 ::: paper-main-column
-Pollen does more than just fertilise plants - and sometimes - its' effects aren't always positive. Sinusitis, rhinitis,  asthma can all be allergy induced by pollen in the air. While generally considered comparatively mild diseases, each have a potential impact on human health; especially to those living in regions with high pollen counts. With the regularity they occur these diseases have substantial economic costs and disproportionately burden lower socioeconomic groups. Researching the spatial distribution of pollen or where it is predominantly coming from, at what times of the year, and how this may shift with localised weather and a changing climate, can help us understand how to manage the carry-on effects of living near and within vegetated areas. Van Haeftan et al. use airborne environmental DNA samples to assess what grass species are contributing to pollen levels in two Australian environments in the Brisbane area and Sydney area  (one tropical, one temperate). 
 
-They use ALA data to further compare what areas within these localised regions have the highest concentration of the found dominant grass species. They found pollen levels to be distributed across the entire calendar year more so in outer Sydney (Richmond) than closer to the city (Macquarie Park). The opposite was found in Queensland, where pollen levels varied over the year closer to the city and less so outside in the south-west. From April-May, all regions had generally higher pollen counts. *Panicoideae* and *Chloridoideae* were the most commonly identified host plant subfamilies of pollen in Brisbane and Sydney. *Chloridoideae* was more common in Queensland and *Panicoideae* was more common in Sydney. Due to Queenslands' more varied local tropical climate, pollen distribution was more dynamic through time than it was in Sydney overall.
+Pollen is essential for flowering plant reproduction, but that doesn't mean pollen is always welcomed by people with allergy-induced sinusitis, rhinitis, asthma. While generally considered mild diseases, their regularity incurs substantial economic costs that disproportionately affect lower socioeconomic groups <!-- This is cool but without context, it just makes me question why? Are lower socioeconomic groups more prone to allergies? Do they live in areas with more pollen? This might create more questions than answers. I don't think more context is necessary here, but pointing out that I'm confused haha -->. Researching the spatial distribution of pollen, where it originates, when it emerges, and how this shifts with changing climates, can help us understand how to manage the carry-on effects of living in areas with more pollen. 
+
+Van Haeftan and colleagues use airborne environmental DNA samples to assess what grass species are contributing to pollen levels in two Australian environments in the Brisbane area and Sydney area. The authors used ALA data to further compare what areas within these localised regions have the highest concentration of identified grass species. 
+
+They found that pollen counts were generally highest from April to May. The authors found pollen levels fluctuate across the entire calendar year, with more variable pollen levels in outer Sydney regions than closer to the city, whereas the opposite was true in Queensland. [*Panicoideae*](link to species page on ala) and [*Chloridoideae*](link to species page on ala) were the most commonly identified host plant subfamilies of pollen in Brisbane and Sydney. More variable local tropical climates (like in Queensland) lead pollen distribution was more dynamic through time than it was in Sydney overall.
 :::
 :::
