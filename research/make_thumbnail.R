@@ -7,11 +7,11 @@
 
 #------------ Edit these parameters for highlighted paper ---------------------#
 
-title <- "Open access habitat suitability maps of 10,633 Australian flora & fauna species"
-authors <- "Archibald et al. 2024"
-main_colour <- "#A191B2" # use an ALA colour as your main colour
-text_colour <- "#FFFFFF" # choose your own matching text colour: https://coolors.co/
-line_colour <- "#B7CD96" # choose your own matching line colour
+title <- "Weevil in, weevil out: predicting a destructive bugs' movement"
+authors <- "Hsaio & Liao 2024"
+main_colour <- "#667073" # use an ALA colour as your main colour
+text_colour <- "#222322" # choose your own matching text colour: https://coolors.co/
+line_colour <- "#003A70" # choose your own matching line colour
 
 
 # ALA colours to use as main colour
