@@ -3,7 +3,7 @@ title: "Weevil in, weevil out: Predicting the global habitat range of an invasiv
 author: "Olivia Torresan"
 date: "2024-05-28"
 title-block-banner: "#667073"
-title-block-banner-color: "#222322"
+title-block-banner-color: "#EEECEA"
 include-after-body: _footer.html
 freeze: true
 image: thumbnail.png 
@@ -68,11 +68,7 @@ Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
 
 ::: paper-main-column
 
-The Australian native weevil *Siraton internatus* has a big (!) appetite for ferns. These insects tunnel deep into a fern's roots, stem and leaves, causing affected ferns to slowly deteriorate and eventually die. Under the right conditions weevils can proliferate and infest ecosystems, causing considerable damage to ecosystem. These conditions are expected to become more frequent with climate change.
-
-<!-- It's once again a nice paragraph contexualising climate change & impacts to different groups, but I think this is a little too much for a quick summary because the scope is very broad given we are really focusing on weevils. I suggest removing for brevity. -->
-
-<!--Like most organisms they have a preference for certain habitats and climates that are expected to move globally with climate change. While some species are able to adapt to a different climate and resources with apt time and exposure, the likeliness of this happening is reduced the faster the rate to which a climatic change occurs. The movement of a potential pest species also comes with a geographic and socioeconomic shift in management responsibility. This responsibility may fall to groups who may not be adequately prepared or supported without sound knowledge of their possible movements.-->
+The Australian native weevil *Siraton internatus* has a big (!) appetite for ferns. These insects tunnel deep into a ferns' roots, stem and leaves, causing affected ferns to slowly deteriorate and eventually die. Under the right conditions weevils can proliferate and infest ecosystems, causing considerable damage. These conditions are expected to become more frequent with climate change.
 
 Hsaio & Liao used ALA occurrence data to test where *S. internatus* may move under different global climate change scenarios. 
 

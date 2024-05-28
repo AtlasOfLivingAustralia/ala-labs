@@ -7,10 +7,10 @@
 
 #------------ Edit these parameters for highlighted paper ---------------------#
 
-title <- "Weevil in, weevil out: predicting a destructive bugs' movement"
+title <- "Weevil in, weevil out: Predicting the global habitat range of an invasive weevil species"
 authors <- "Hsaio & Liao 2024"
 main_colour <- "#667073" # use an ALA colour as your main colour
-text_colour <- "#222322" # choose your own matching text colour: https://coolors.co/
+text_colour <- "#EEECEA" # choose your own matching text colour: https://coolors.co/
 line_colour <- "#003A70" # choose your own matching line colour
 
 
