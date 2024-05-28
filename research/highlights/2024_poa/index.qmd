@@ -1,7 +1,7 @@
 ---
-title: "Pollen trails: What is causing a sneeze?"
+title: "Pollen diversity gives insight into allergies"
 author: "Olivia Torresan"
-date: "2024-05-23"
+date: "2024-05-28"
 title-block-banner: "#B7CD96"
 title-block-banner-color: "#222322"
 include-after-body: _footer.html
@@ -66,13 +66,10 @@ Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
 <!-- Main panel description -->
 
 ::: paper-main-column
+Pollen is essential for flowering plant reproduction, but that doesn't mean pollen is always welcomed by people with allergy-induced sinusitis, rhinitis, asthma. Although these conditions are generally considered mild, their regularity can incur substantial costs to health sectors in Australia, with their financial impact especially pronounced for people from lower socioeconomic backgrounds seeking treatment. Researching the spatial distribution of pollen, its characteristics, where it originates, when it emerges, and how this shifts with changing climates can help us understand how to manage the carry-on effects of living in areas with more pollen.
 
-Pollen is essential for flowering plant reproduction, but that doesn't mean pollen is always welcomed by people with allergy-induced sinusitis, rhinitis, asthma. 
+Van Haeftan and colleagues used airborne environmental DNA samples to assess what grass species contribute to pollen levels in two Australian environments in near Brisbane and Sydney. The authors used ALA data to further compare what areas within these regions have the highest concentration of grass species.
 
-While generally considered mild diseases, their regularity can incur substantial costs to health sectors in Australia and their financial impact can be especially pronounced in lower socioeconomic groups seeking treatment. Researching the spatial distribution of pollen, its' characteristics, where it originates, when it emerges, and how this shifts with changing climates can help us understand how to manage the carry-on effects of living in areas with more pollen. Van Haeftan and colleagues use airborne environmental DNA samples to assess what grass species are contributing to pollen levels in two Australian environments in the Brisbane area and Sydney area. The authors used ALA data to further compare what areas within these localised regions have the highest concentration of identified grass species. 
-
-They found that pollen counts were generally highest from April to May in both areas. The authors found pollen levels fluctuate across the entire calendar year, with more variable pollen levels in outer Sydney regions than closer to the city, whereas the opposite was true in Queensland locations. *Panicoideae* and *Chloridoideae* (subfamilies of the broader 
-[Poaceae grass family](https://bie.ala.org.au/species/https://id.biodiversity.org.au/taxon/apni/51644646)) were the most commonly identified host plants of pollen in Brisbane and Sydney. More variable local tropical climates (like in Queensland) lead pollen distribution to be more dynamic through time than it was in Sydney overall.
-
+They found that pollen levels were generally highest from April to May in both areas, but that levels fluctuate across the entire calendar year. Importantly, different grasses have different peak times of airborne pollen, and the ecological composition of grasses in each area might provide nuanced insight into pollen-induced allergies. While genera from the [Poaceae grass family](#0) contribute to pollen in springtime, grass species from other families flowered from late spring to autumn.
 :::
 :::
