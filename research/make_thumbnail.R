@@ -7,7 +7,7 @@
 
 #------------ Edit these parameters for highlighted paper ---------------------#
 
-title <- "Pollen trails: what is causing a sneeze?"
+title <- "Pollen diversity gives insight into allergies"
 authors <- "Van Haeften et al. 2024"
 main_colour <- "#B7CD96" # use an ALA colour as your main colour
 text_colour <- "#222322" # choose your own matching text colour: https://coolors.co/

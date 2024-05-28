@@ -70,6 +70,6 @@ Pollen is essential for flowering plant reproduction, but that doesn't mean poll
 
 Van Haeftan and colleagues used airborne environmental DNA samples to assess what grass species contribute to pollen levels in two Australian environments in near Brisbane and Sydney. The authors used ALA data to further compare what areas within these regions have the highest concentration of grass species.
 
-They found that pollen levels were generally highest from April to May in both areas, but that levels fluctuate across the entire calendar year. Importantly, different grasses have different peak times of airborne pollen, and the ecological composition of grasses in each area might provide nuanced insight into pollen-induced allergies. While genera from the [Poaceae grass family](#0) contribute to pollen in springtime, grass species from other families flowered from late spring to autumn.
+They found that pollen levels were generally highest from April to May in both areas, but that levels fluctuate across the entire calendar year. Importantly, different grasses have different peak times of airborne pollen, and the ecological composition of grasses in each area might provide nuanced insight into pollen-induced allergies. While genera from the [Poaceae grass family](https://bie.ala.org.au/species/https://id.biodiversity.org.au/taxon/apni/51644646) contribute to pollen in springtime, grass species from other families flowered from late spring to autumn.
 :::
 :::
