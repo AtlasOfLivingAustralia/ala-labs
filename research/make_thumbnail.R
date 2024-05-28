@@ -11,7 +11,7 @@ title <- "Pollen trails: what is causing a sneeze?"
 authors <- "Van Haeften et al. 2024"
 main_colour <- "#B7CD96" # use an ALA colour as your main colour
 text_colour <- "#222322" # choose your own matching text colour: https://coolors.co/
-line_colour <- "#FFC557" # choose your own matching line colour
+line_colour <- "#2D4748" # choose your own matching line colour
 
 
 # ALA colours to use as main colour
