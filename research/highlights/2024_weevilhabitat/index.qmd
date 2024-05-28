@@ -1,24 +1,25 @@
 ---
-title: "Habitat suitability of 10,633 Australian flora & fauna species in future climates"
+title: "Weevil in, weevil out: predicting a destructive bugs' movement"
 author: "Olivia Torresan"
-date: "2024-04-05"
-title-block-banner: "#A191B2"
-title-block-banner-color: "#FFFFFF"
+date: "2024-05-23"
+title-block-banner: "#667073"
+title-block-banner-color: "#222322"
 include-after-body: _footer.html
 freeze: true
 image: thumbnail.png 
 categories:
+  - Invasive species
+  - Species distribution
+  - Biogeography
   - Climate change
-  - Conservation
-  - Citizen science
 params:
-  authors: "Archibald, C.L., Summers, D.M., Graham, E.M., Bryan, B.A."
+  authors: "Hsaio, Y., Liao J.R."
   year: 2024
-  title: "Habitat suitability maps for Australian flora and fauna under CMIP6 climate scenarios"
-  publication: "GigaScience"
-  doi: https://doi.org/10.1093/gigascience/giae002
-  image_url: https://images.ala.org.au/image/details?imageId=dffda628-bcd8-4d94-8d42-39b8d2887454
-  alt_text: Euculyptus pauciflora (Snow Gum) with snowfall 
+  title: "Predicting habitat suitability for the Australian cycad‑attacking weevil (Siraton internatus) under climate change"
+  publication: "Biological invasions"
+  doi: https://doi.org/10.1007/s10530-024-03330-5
+  image_url: https://images.ala.org.au/image/details?imageId=0a3016dd-000c-4b53-a763-2311b9cef099
+  alt_text: Close up of a cycad weevil (*Siraton internatus*), looking at the camera
 ---
 
 <!-- remove metadata section -->
@@ -38,7 +39,7 @@ params:
 ::: {.col-image layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
 <!-- add image url -->
 
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/4/5/4/7/dffda628-bcd8-4d94-8d42-39b8d2887454/original" class="rounded"/></img>
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/9/9/0/f/0a3016dd-000c-4b53-a763-2311b9cef099/original" class="rounded"/></img>
 :::
 
 </center>
@@ -46,7 +47,7 @@ params:
 ::: figure-caption
 <!-- edit caption -->
 
-[*Eucalyptus pauciflora* (Irene Proebsting CC BY 4.0)](https://images.ala.org.au/image/details?imageId=dffda628-bcd8-4d94-8d42-39b8d2887454)
+[*Siraton internatus* (John Bromilow CC BY 4.0)](https://images.ala.org.au/image/details?imageId=0a3016dd-000c-4b53-a763-2311b9cef099)
 :::
 
 ### Citation
@@ -66,10 +67,12 @@ Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
 <!-- Main panel description -->
 
 ::: paper-main-column
-Australia's environment is vast and diverse, but many large areas are difficult to monitor ecologically using on-ground surveys. As the global climate shifts, figuring out where species can find suitable habitat is a pressing issue for scientists and resource managers. Modelled data is of particular importance for decision-makers to understand how future conditions will affect available habitat of Australia's species. These data improve decision-makers' ability to plan and prioritise national- and state-level restoration and conservation initiatives.
 
-In this paper, Archibald & colleagues use species occurrence data from the Atlas of Living Australia, Queensland Museum & CSIRO along with environmental and climatic data to predict potential habitat suitability maps under different climate scenarios for 1,382 terrestrial vertebrates and 9,251 vascular plants at 5 km^2^. These climate scenarios are based on varying levels of potential emission intensities and their projected impact to temperature. 
+The Australian native weevil *Siraton internatus* has a (big!) appetite for ferns. These insects tunnel deep into a ferns root mantle, stem and leaves, causing slow dieback. Under the right conditions weevils can proliferate and infest ecosystems which can cause considerable damage to the health of native species. 
 
-The [resulting species maps and tables are openly available](http://gigadb.org/dataset/102491) for researchers and managers to improve conservation planning and species management.
+Like most organisms they have a preference for certain habitats and climates that are expected to move globally with climate change. While some species are able to adapt to a different climate and resources with apt time and exposure, the likeliness of this happening is reduced the faster the rate to which a climatic change occurs. The movement of a potential pest species also comes with a geographic and socioeconomic shift in management responsibility. This responsibility may fall to groups who may not be adequately prepared or supported without sound knowledge of their possible movements.
+
+Hsaio & Liao use ALA occurrence data to test where *S. internatus* may move under four different social climate change adaptation scenarios globally up until the year 2090. While their current known occurrence exists only in Australia, Europe and North America, this species is found to have the potential to move globally with the enabling forces of a changing climate and/or insufficient biosecurity. They find the Australian weevils' population to likely to contract from its' current range, however, their preference will likely expand in Chile and within the southern Himalaya's. With this knowledge, managers and biosecurity teams can work to prepare for a potential invasion and reinforce management measures specific to their environments under the case an invasion does occur. 
+
 :::
 :::
