@@ -7,6 +7,7 @@
 
 #------------ Edit these parameters for highlighted paper ---------------------#
 
+
 title <- "Weevil in, weevil out: Predicting the global habitat range of an invasive weevil species"
 authors <- "Hsaio & Liao 2024"
 main_colour <- "#667073" # use an ALA colour as your main colour
