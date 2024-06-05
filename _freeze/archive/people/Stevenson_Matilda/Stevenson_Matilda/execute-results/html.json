@@ -1,0 +1,15 @@
+{
+  "hash": "9cbdff43c97940300a52119cf6b01c5d",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Matilda Stevenson\"\ndescription: |\ndate: \"2024-06-05\"\noutput: \n  distill::distill_article:\n    highlight: pygments\n    self_contained: true\n---\n\n\n\n<h2>Posts</h2>\n\n<a href='https://labs.ala.org.au/posts/2022-07-22_sample-bias/'>Quantify geographic sampling bias with sampbias}</a><br><em>Human biases play a large role in the data we collect about species. Here we show a simple method to quantify the bias of roads, cities, rivers and airports on species observations of legless lizards in the Northern Territory</em><br><br>\n<a href='https://labs.ala.org.au/posts/2022-05-23-ggnewscale/'>Multiple colour scales in choropleth maps with ggnewscale}</a><br><em>Using multiple colour scales can be a great way to visually differentiate between geographic categories on a map. Here, we demonstrate this by creating a choropleth map to represent the density of plant records from the ALA across bioregions in Australia, and add multiple colour scales to differentiate marine and terrestrial records</em><br><br>\n<a href='https://labs.ala.org.au/posts/2022-05-17_3d-map/'>Download plant species data by hexagon to make a 3D hex map\\n</a><br><em>Making plots eye-catching can be useful for science communication. Here, we show how to make 3D plots in R with the `rayshader` package by visualising the number of species identified from ALA observations since 2020</em><br><br>\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -691,5 +691,68 @@
     "title": "Show seasonal species trends using a ridgeline plot",
     "section": "Footnotes",
     "text": "Footnotes\n\n\nThis is considered one of the longest continuous journeys by any bird in the world.↩︎\nThanks to leap years, our Julian dates wont be perfectly to the day, but good enough for a quick summary.↩︎\nSpecifically, we multiplied the proportion of records by month number (e.g., January = 1, December = 12) so that birds with lots of records at the end of the year return a high number, whereas birds with lots of records at the beginning of the year return a low number.↩︎"
+  },
+  {
+    "objectID": "research/highlights/2024_poa/index.html",
+    "href": "research/highlights/2024_poa/index.html",
+    "title": "Pollen diversity gives insight into allergies",
+    "section": "",
+    "text": "Paspalum dilatatum (Torbjorn von Strokirch CC BY 4.0)\n\n\nCitation\n\n\nVan Haeften, S., Campbell, B.C., Milic, A., Addison-Smith, E., Al Kouba, J., Beggs, P.J, Davies, J.M (2024) Environmental DNA analysis of airborne poaceae (grass) pollen reveals taxonomic diversity across seasons and climate zones. Environmental Research https://doi.org/10.1016/j.envres.2023.117983\n\n\n\nPage info\nPrepared by Olivia Torresan\n\n\n\n\n\nPollen is essential for flowering plant reproduction, but that doesn’t mean pollen is always welcomed by people with allergy-induced sinusitis, rhinitis, asthma. Although these conditions are generally considered mild, their regularity can incur substantial costs to health sectors in Australia, with their financial impact especially pronounced for people from lower socioeconomic backgrounds seeking treatment. Researching the spatial distribution of pollen, its characteristics, where it originates, when it emerges, and how this shifts with changing climates can help us understand how to manage the carry-on effects of living in areas with more pollen.\nVan Haeftan and colleagues used airborne environmental DNA samples to assess what grass species contribute to pollen levels in two Australian environments in near Brisbane and Sydney. The authors used ALA data to further compare what areas within these regions have the highest concentration of grass species.\nThey found that pollen levels were generally highest from April to May in both areas, but that levels fluctuate across the entire calendar year. Importantly, different grasses have different peak times of airborne pollen, and the ecological composition of grasses in each area might provide nuanced insight into pollen-induced allergies. While genera from the Poaceae grass family contribute to pollen in springtime, grass species from other families flowered from late spring to autumn."
+  },
+  {
+    "objectID": "research/highlights/2024_weevilhabitat/index.html",
+    "href": "research/highlights/2024_weevilhabitat/index.html",
+    "title": "Weevil in, weevil out: Predicting the global habitat range of an invasive weevil species",
+    "section": "",
+    "text": "Siraton internatus (John Bromilow CC BY 4.0)\n\n\nCitation\n\n\nHsaio, Y., Liao J.R. (2024) Predicting habitat suitability for the Australian cycad‑attacking weevil (Siraton internatus) under climate change. Biological invasions https://doi.org/10.1007/s10530-024-03330-5\n\n\n\nPage info\nPrepared by Olivia Torresan\n\n\n\n\n\nThe Australian native weevil Siraton internatus has a big (!) appetite for ferns. These insects tunnel deep into a ferns’ roots, stem and leaves, causing affected ferns to slowly deteriorate and eventually die. Under the right conditions weevils can proliferate and infest ecosystems, causing considerable damage. These conditions are expected to become more frequent with climate change.\nHsaio & Liao used ALA occurrence data to test where S. internatus may move under different global climate change scenarios.\nThey find that weevil habitat ranges are likely to contract in Australia, but their preferred habitat will likely expand in Chile and within the southern Himalayas. With this knowledge, managers and biosecurity teams can work to better monitor for invasive weevils in these areas and reinforce management measures if weevils are cited in these international locations in the future."
+  },
+  {
+    "objectID": "archive/people/Schwenke_Andrew/index.html",
+    "href": "archive/people/Schwenke_Andrew/index.html",
+    "title": "Andrew Schwenke",
+    "section": "",
+    "text": "Bio\n\n\n\n\n\n\n\n\n\n\n\n\n\nAndrew is an R Programmer for the ALA.\n\n\n\n\n\n\n\n\n\n\n\n Posts"
+  },
+  {
+    "objectID": "archive/people/Kar_Fonti/index.html",
+    "href": "archive/people/Kar_Fonti/index.html",
+    "title": "Fonti Kar",
+    "section": "",
+    "text": "Bio\n\n\n\n\n\n\n\n\n\n\n\n\n\nFonti is an evolutionary biologist wearing R developer shoes. Her interests include biostatistics, reproducible science, learning about the latest coding practices and teaching others to enjoy using R. Her work at ALA as a Data Analyst involves streamlining data cleaning workflows.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n Posts\nQuantifying species range and overlap with fire-burned areas using concave hulls Calculating range overlap is an efficient way to estimate the impact of natural disasters on biodiversity. Here we’ll use curated datasets to compute concave hulls to visualise the spatial distribution of Apidae (Bees) and Daviesia (Bitterpeas) and their overlap with burned areas of the Black Summer fires of 2019-2020.\nConvex and alpha hulls for conservation mapping Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions when a species has very few existing observations. Here, we will show you how to create these spatial polygons using data from the ALA."
+  },
+  {
+    "objectID": "archive/people/Fenker_Jess/Fenker_Jessica.html",
+    "href": "archive/people/Fenker_Jess/Fenker_Jessica.html",
+    "title": "Jessica Fenker",
+    "section": "",
+    "text": "Bio\n\n\n\n\n\n\n\n\n\n\nJess is an evolutionary scientist based at Atlas of Living Australia, with a postdoc on species delimitation methods and PhD on diversification at micro/macro scales. She is also affiliated with the Division of Ecology and Evolution, ANU. Jess brings her experience in R to improve the readability, data standardisation and performance of EcoCommons’ platform ecological modelling algorithms. Jess is a strong advocate for diversity in STEMM."
+  },
+  {
+    "objectID": "archive/people/Schneider_Margot/index.html",
+    "href": "archive/people/Schneider_Margot/index.html",
+    "title": "Margot Schneider",
+    "section": "",
+    "text": "Bio\n\n\n\n\n\n\n\n\n\n\n\n\n\nMargot is a graduate of the Australian National University (ANU) with a Bachelor of Science (Honours) on bushfire chemical ecology. She works to improve data quality in the ALA. Margot is a strong advocate for diversity and inclusion in the STEMM fields.\n\n\n\n\n\n\n\n\n\n\n\n Posts\nQuantifying species range and overlap with fire-burned areas using concave hulls Calculating range overlap is an efficient way to estimate the impact of natural disasters on biodiversity. Here we’ll use curated datasets to compute concave hulls to visualise the spatial distribution of Apidae (Bees) and Daviesia (Bitterpeas) and their overlap with burned areas of the Black Summer fires of 2019-2020.\nConvex and alpha hulls for conservation mapping Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions when a species has very few existing observations. Here, we will show you how to create these spatial polygons using data from the ALA."
+  },
+  {
+    "objectID": "archive/people/Stevenson_Matilda/Stevenson_Matilda.html",
+    "href": "archive/people/Stevenson_Matilda/Stevenson_Matilda.html",
+    "title": "Matilda Stevenson",
+    "section": "",
+    "text": "Posts\n\nQuantify geographic sampling bias with sampbias}Human biases play a large role in the data we collect about species. Here we show a simple method to quantify the bias of roads, cities, rivers and airports on species observations of legless lizards in the Northern Territory Multiple colour scales in choropleth maps with ggnewscale}Using multiple colour scales can be a great way to visually differentiate between geographic categories on a map. Here, we demonstrate this by creating a choropleth map to represent the density of plant records from the ALA across bioregions in Australia, and add multiple colour scales to differentiate marine and terrestrial records Download plant species data by hexagon to make a 3D hex mapMaking plots eye-catching can be useful for science communication. Here, we show how to make 3D plots in R with the rayshader package by visualising the number of species identified from ALA observations since 2020"
+  },
+  {
+    "objectID": "research/highlights/2024_pollen/index.html",
+    "href": "research/highlights/2024_pollen/index.html",
+    "title": "Pollen diversity gives insight into allergies",
+    "section": "",
+    "text": "Paspalum dilatatum (Torbjorn von Strokirch CC BY 4.0)\n\n\nCitation\n\n\nVan Haeften, S., Campbell, B.C., Milic, A., Addison-Smith, E., Al Kouba, J., Beggs, P.J, Davies, J.M (2024) Environmental DNA analysis of airborne poaceae (grass) pollen reveals taxonomic diversity across seasons and climate zones. Environmental Research https://doi.org/10.1016/j.envres.2023.117983\n\n\n\nPage info\nPrepared by Olivia Torresan\n\n\n\n\n\nPollen is essential for flowering plant reproduction, but that doesn’t mean pollen is always welcomed by people with allergy-induced sinusitis, rhinitis, asthma. Although these conditions are generally considered mild, their regularity can incur substantial costs to health sectors in Australia, with their financial impact especially pronounced for people from lower socioeconomic backgrounds seeking treatment. Researching the spatial distribution of pollen, its characteristics, where it originates, when it emerges, and how this shifts with changing climates can help us understand how to manage the carry-on effects of living in areas with more pollen.\nVan Haeftan and colleagues used airborne environmental DNA samples to assess what grass species contribute to pollen levels in two Australian environments in near Brisbane and Sydney. The authors used ALA data to further compare what areas within these regions have the highest concentration of grass species.\nThey found that pollen levels were generally highest from April to May in both areas, but that levels fluctuate across the entire calendar year. Importantly, different grasses have different peak times of airborne pollen, and the ecological composition of grasses in each area might provide nuanced insight into pollen-induced allergies. While genera from the Poaceae grass family contribute to pollen in springtime, grass species from other families flowered from late spring to autumn."
+  },
+  {
+    "objectID": "research/highlights/2024_weevil/index.html",
+    "href": "research/highlights/2024_weevil/index.html",
+    "title": "Weevil in, weevil out: Predicting the global habitat range of an invasive weevil species",
+    "section": "",
+    "text": "Siraton internatus (John Bromilow CC BY 4.0)\n\n\nCitation\n\n\nHsaio, Y., Liao J.R. (2024) Predicting habitat suitability for the Australian cycad‑attacking weevil (Siraton internatus) under climate change. Biological invasions https://doi.org/10.1007/s10530-024-03330-5\n\n\n\nPage info\nPrepared by Olivia Torresan\n\n\n\n\n\nThe Australian native weevil Siraton internatus has a big (!) appetite for ferns. These insects tunnel deep into a ferns’ roots, stem and leaves, causing affected ferns to slowly deteriorate and eventually die. Under the right conditions weevils can proliferate and infest ecosystems, causing considerable damage. These conditions are expected to become more frequent with climate change.\nHsaio & Liao used ALA occurrence data to test where S. internatus may move under different global climate change scenarios.\nThey find that weevil habitat ranges are likely to contract in Australia, but their preferred habitat will likely expand in Chile and within the southern Himalayas. With this knowledge, managers and biosecurity teams can work to better monitor for invasive weevils in these areas and reinforce management measures if weevils are cited in these international locations in the future."
   }
 ]

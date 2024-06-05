@@ -1,5 +1,7 @@
 project:
   type: website
+  render:
+    - "!archive/"
 
 website:
   title: "ALA Labs"

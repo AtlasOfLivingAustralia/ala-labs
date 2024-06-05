@@ -11,7 +11,7 @@ listing:
   categories: true
   image-height: 100%
   grid-columns: 4
-  page-size: 16
+  page-size: 40
   fields: [image]
 title-block-banner: "#E06E53"
 title-block-banner-color: body

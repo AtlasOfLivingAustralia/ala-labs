@@ -1,0 +1,15 @@
+{
+  "hash": "f4f890e8cacc383f9c34ec68a514efa8",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Margot Schneider\"\ninclude-after-body: _footer.html\n---\n\n\n\n\n### {{< fa circle-user >}} Bio \n\n:::{.bio-row}\n:::{.bio-column-right}\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/margot.jpg){width=275px style=\"display:block; margin-left:auto; margin-right:auto; clip-path: circle();\"}\n:::\n:::\n\n:::\n\n:::{.bio-column-left}\nMargot is a graduate of the Australian National University (ANU) with a Bachelor of Science (Honours) on bushfire chemical ecology. She works to improve data quality in the ALA. Margot is a strong advocate for diversity and inclusion in the STEMM fields.\n:::\n:::\n\n:::{.column-body style=\"margin-top:-20px;\"}\n\n::: {.cell}\n::: {.cell-output-display}\n\n```{=html}\n<div class=\"row\" style=\"display: flex;\"></div>\n```\n\n:::\n:::\n\n:::\n\n\n### {{< fa newspaper >}} Posts \n\n[Quantifying species range and overlap with fire-burned areas using concave hulls](https://labs.ala.org.au/posts/2022-10-12_quantifying-species-range/post.html)<br>\n*Calculating range overlap is an efficient way to estimate the impact of natural disasters on biodiversity. Here we'll use curated datasets to compute concave hulls to visualise the spatial distribution of Apidae (Bees) and Daviesia (Bitterpeas) and their overlap with burned areas of the Black Summer fires of 2019-2020.*\n\n[Convex and alpha hulls for conservation mapping](https://labs.ala.org.au/posts/2022-10-12_alpha-hulls/post.html)<br>\n*Convex hulls and alpha hulls are wonderful alternatives for visualising species distributions when a species has very few existing observations. Here, we will show you how to create these spatial polygons using data from the ALA.*\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

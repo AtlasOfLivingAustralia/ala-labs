@@ -1,0 +1,75 @@
+---
+title: "Pollen diversity gives insight into allergies"
+author: "Olivia Torresan"
+date: "2024-05-28"
+title-block-banner: "#B7CD96"
+title-block-banner-color: "#222322"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png 
+categories:
+  - Human health
+  - Biogeography
+  - Citizen science
+params:
+  authors: "Van Haeften, S., Campbell, B.C., Milic, A., Addison-Smith, E., Al Kouba, J., Beggs, P.J, Davies, J.M"
+  year: 2024
+  title: "Environmental DNA analysis of airborne poaceae (grass) pollen reveals taxonomic diversity across seasons and climate zones"
+  publication: "Environmental Research"
+  doi: https://doi.org/10.1016/j.envres.2023.117983
+  image_url: https://images.ala.org.au/image/details?imageId=26ce52fc-2eb9-4156-9a3b-dcf05a4a7d33
+  alt_text: Caterpillar grass (*Paspallum*) close-up of seeds in the wind  
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+<!-- Side panel -->
+
+::: column-page
+::: paper-side-column
+<center>
+
+::: {.col-image layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/3/3/d/7/26ce52fc-2eb9-4156-9a3b-dcf05a4a7d33/original" class="rounded"/></img>
+:::
+
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+
+[*Paspalum dilatatum* (Torbjorn von Strokirch CC BY 4.0)](https://images.ala.org.au/image/details?imageId=26ce52fc-2eb9-4156-9a3b-dcf05a4a7d33)
+:::
+
+### Citation
+
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+#### Page info
+
+Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
+:::
+
+<!-- Main panel description -->
+
+::: paper-main-column
+Pollen is essential for flowering plant reproduction, but that doesn't mean pollen is always welcomed by people with allergy-induced sinusitis, rhinitis, asthma. Although these conditions are generally considered mild, their regularity can incur substantial costs to health sectors in Australia, with their financial impact especially pronounced for people from lower socioeconomic backgrounds seeking treatment. Researching the spatial distribution of pollen, its characteristics, where it originates, when it emerges, and how this shifts with changing climates can help us understand how to manage the carry-on effects of living in areas with more pollen.
+
+Van Haeftan and colleagues used airborne environmental DNA samples to assess what grass species contribute to pollen levels in two Australian environments in near Brisbane and Sydney. The authors used ALA data to further compare what areas within these regions have the highest concentration of grass species.
+
+They found that pollen levels were generally highest from April to May in both areas, but that levels fluctuate across the entire calendar year. Importantly, different grasses have different peak times of airborne pollen, and the ecological composition of grasses in each area might provide nuanced insight into pollen-induced allergies. While genera from the [Poaceae grass family](https://bie.ala.org.au/species/https://id.biodiversity.org.au/taxon/apni/51644646) contribute to pollen in springtime, grass species from other families flowered from late spring to autumn.
+:::
+:::

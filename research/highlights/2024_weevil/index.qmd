@@ -1,0 +1,78 @@
+---
+title: "Weevil in, weevil out: Predicting the global habitat range of an invasive weevil species"
+author: "Olivia Torresan"
+date: "2024-05-28"
+title-block-banner: "#667073"
+title-block-banner-color: "#EEECEA"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png 
+categories:
+  - Invasive species
+  - Species distribution
+  - Biogeography
+  - Climate change
+params:
+  authors: "Hsaio, Y., Liao J.R."
+  year: 2024
+  title: "Predicting habitat suitability for the Australian cycad‑attacking weevil (Siraton internatus) under climate change"
+  publication: "Biological invasions"
+  doi: https://doi.org/10.1007/s10530-024-03330-5
+  image_url: https://images.ala.org.au/image/details?imageId=0a3016dd-000c-4b53-a763-2311b9cef099
+  alt_text: Close up of a cycad weevil (*Siraton internatus*), looking at the camera
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+<!-- Side panel -->
+
+::: column-page
+::: paper-side-column
+<center>
+
+::: {.col-image layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/9/9/0/f/0a3016dd-000c-4b53-a763-2311b9cef099/original" class="rounded"/></img>
+:::
+
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+
+[*Siraton internatus* (John Bromilow CC BY 4.0)](https://images.ala.org.au/image/details?imageId=0a3016dd-000c-4b53-a763-2311b9cef099)
+:::
+
+### Citation
+
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+#### Page info
+
+Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
+:::
+
+<!-- Main panel description -->
+
+::: paper-main-column
+
+The Australian native weevil *Siraton internatus* has a big (!) appetite for ferns. These insects tunnel deep into a ferns' roots, stem and leaves, causing affected ferns to slowly deteriorate and eventually die. Under the right conditions weevils can proliferate and infest ecosystems, causing considerable damage. These conditions are expected to become more frequent with climate change.
+
+Hsaio & Liao used ALA occurrence data to test where *S. internatus* may move under different global climate change scenarios. 
+
+They find that weevil habitat ranges are likely to contract in Australia, but their preferred habitat will likely expand in Chile and within the southern Himalayas. With this knowledge, managers and biosecurity teams can work to better monitor for invasive weevils in these areas and reinforce management measures if weevils are cited in these international locations in the future. 
+
+:::
+:::

@@ -1,0 +1,15 @@
+{
+  "hash": "007c11e421d0668e79a6d825bd1d27a4",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Jessica Fenker\"\ndescription: |\ndate: \"2024-06-05\"\noutput: \n  distill::distill_article:\n    highlight: pygments\n    self_contained: true\n---\n\n\n\n# Bio\n:::float-image\n\n::: {.cell}\n::: {.cell-output-display}\n![](https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/jess.jpg){width=200px style=\"float:right; margin-left:15px; margin-right:15px; clip-path: circle();\"}\n:::\n:::\n\nJess is an evolutionary scientist based at Atlas of Living Australia, with a postdoc on species delimitation methods and PhD on diversification at micro/macro scales. She is also affiliated with the Division of Ecology and Evolution, ANU. Jess brings her experience in R to improve the readability, data standardisation and performance of EcoCommons’ platform ecological modelling algorithms. Jess is a strong advocate for diversity in STEMM.\n\n::: {.cell}\n::: {.cell-output-display}\n\n```{=html}\n<div class=\"row\" style=\"display: flex;\">\n<div class=\"button-column\">\n<a href=\"https://github.com/jehfenker\" style=\"border-bottom: none\">\n<button class=\"button-2\">\n<i class=\"fab fa-github fa-2x\"></i>\n</button>\n</a>\n</div>\n<div class=\"button-column\">\n<a href=\"https://jessicafenker.com/\" style=\"border-bottom: none\">\n<button class=\"button-2\">\n<i class=\"fas fa-globe fa-2x\"></i>\n</button>\n</a>\n</div>\n<div class=\"button-column\">\n<a href=\"https://twitter.com/jehzim\" style=\"border-bottom: none\">\n<button class=\"button-2\">\n<i class=\"fab fa-twitter fa-2x\"></i>\n</button>\n</a>\n</div>\n</div>\n```\n\n:::\n:::\n\n:::\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
