@@ -10,15 +10,17 @@ format:
     self-contained: true
 freeze: true
 ---
-:::{.column-page-inset}
+:::{.column-page style="font-size:.9rem;"}
 ```{r}
 #| echo: false
 #| warning: false
 #| error: false
+#| column: page
 
 # data is all ALA used or ALA cited papers, exported from Zotero library
 
-df <- readr::read_csv("../data/ALA_cited_items_2023-12.csv", show_col_types = FALSE) |>
+df <- here::here("research", "data", "2024-06-20_publications.csv") |>
+      readr::read_csv(show_col_types = FALSE) |>
       janitor::clean_names() |>
       dplyr::filter(item_type == "journalArticle") |>
       dplyr::select(author, publication_year, title, publication_title, doi, date_added) |>
@@ -55,7 +57,8 @@ reactable::reactable(dplyr::select(df, author, publication_year, title, publicat
                        publication_year = reactable::colDef(name = "Year", 
                                                             align = "left",
                                                             minWidth = 80,
-                                                            maxWidth = 130),
+                                                            maxWidth = 130,
+                                                            defaultSortOrder = "desc"),
                        title = reactable::colDef(name = "Title", 
                                                  html = TRUE, 
                                                  minWidth = 300, 
@@ -69,7 +72,8 @@ reactable::reactable(dplyr::select(df, author, publication_year, title, publicat
                      searchable = TRUE,
                      showPageSizeOptions = TRUE,
                      pageSizeOptions = c(10, 20, 50),
-                     defaultPageSize = 10)
+                     defaultPageSize = 10
+                     )
 ```
 
 :::

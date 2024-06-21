@@ -75,13 +75,5 @@ create_team_card(
   text = "Training & Outreach Coordinator"
 )
 )
-tags$div(class = "row", # Create a row for 3 team-member cards
-create_team_card(
-  person_page = "Waite_Callum/index.html",
-  img_src = "../images/people/callum.jpg",
-  name = "Callum Waite",
-  text = "Data Analyst"
-)
-)
 ```
 
