@@ -1,9 +1,9 @@
 ---
 title: "Pining appetites:  Insects’ global impact on *Pinus radiata*"
 author: "Olivia Torresan"
-date: "2022-06-27"
-title-block-banner: "#629D28"
-title-block-banner-color: "#FFBCAD"
+date: "2023-06-27"
+title-block-banner: "#B7CD96"
+title-block-banner-color: "#222322"
 include-after-body: _footer.html
 freeze: true
 image: thumbnail.png

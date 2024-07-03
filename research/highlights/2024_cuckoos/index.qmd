@@ -1,0 +1,78 @@
+---
+title: "Selection for better imposters drives speciation in parasitic cuckoos"
+author: "Dax Kellie"
+date: "2024-07-03"
+title-block-banner: "#691C32"
+title-block-banner-color: "#EEECEA"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png 
+categories:
+  - Evolution
+  - DNA
+params:
+  authors: "Langmore, N. E., Grealy, A., Noh, H.-J., Medina, I., Skeels, A., Grant, J., Murray, K. D., Kilner, R. M., Holleley, C. E."
+  year: 2024
+  title: "Coevolution with hosts underpins speciation in brood-parasitic cuckoos"
+  publication: "Science"
+  doi: https://doi.org/10.1126/science.adj3210
+  image_url: https://images.ala.org.au/image/details?imageId=a1ef19f6-cffa-4150-a2b8-79b3f6fbec15
+  alt_text: A little bronze-cuckoo perched on a branch in the shade of a tree 
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+<!-- Side panel -->
+
+::: column-page
+::: paper-side-column
+<center>
+
+::: {.col-image layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/5/1/c/e/a1ef19f6-cffa-4150-a2b8-79b3f6fbec15/original" class="rounded"/></img>
+:::
+
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+
+[*Chalcites minutillus minutillus* (kingbrown87 CC-BY-NC 4.0 (Int))](https://images.ala.org.au/image/details?imageId=a1ef19f6-cffa-4150-a2b8-79b3f6fbec15)
+:::
+
+### Citation
+
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+#### Page info
+
+Prepared by [Dax Kellie](https://labs.ala.org.au/about/Kellie_Dax/)
+:::
+
+<!-- Main panel description -->
+
+::: paper-main-column
+
+Coevolutionary interactions are believed to be a major reason for diversification of living organisms, and why there are millions---not thousands---of species. Parasitic cuckoos, which lay eggs in other species’ nests, exploit host species as parents to raise their young. Some hosts expel imposters if they can recognise them, so cuckoos are under selection pressure to be better mimics of the broods they are in to fool their new parents. 
+
+Langmore and colleagues used a range of evidence---phylogenetic analyses of cuckoo species, genetic evidence using current and historic DNA samples, morphological evidence of divergent plumage and song, and (with the help of ALA data) spatial evidence of overlapping but distinct populations---to understand the mechanisms behind cuckoo species divergence.
+
+The authors found multiple sources of evidence to show that host defenses result in selection for better imposters, driving speciation in parasitic cuckoos. This is especially clear in species that lay eggs in a broad range of host species’ nests.
+
+This study provides rare empirical evidence that links macroevolutionary patterns (e.g. new species across geographic regions) to microevolutionary processes (e.g. drivers of genetic diversity), supporting a fundamental tenet of speciation and evolutionary theory.
+
+:::
+:::
