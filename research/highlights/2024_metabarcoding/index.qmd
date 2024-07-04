@@ -1,0 +1,77 @@
+---
+title: "eDNA metabarcoding can take snapshots of coastal biodiversity"
+author: "Dax Kellie"
+date: "2024-07-04"
+title-block-banner: "#003A70"
+title-block-banner-color: "#EEECEA"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png
+categories:
+  - DNA
+  - Biodiversity science
+params:
+  authors: "DiBattista, J. D., Fowler, A. M., Shalders, T. C., Williams, R. J., Wilkinson, S."
+  year: 2024
+  title: "Tree of life metabarcoding can serve as a biotic benchmark for shifting baselines in urbanized estuaries"
+  publication: "Environmental Research"
+  doi: https://doi.org/10.1016/j.envres.2024.119454
+  image_url: https://images.ala.org.au/image/details?imageId=22baf3bf-c04c-4444-a091-1db10bc26304
+  alt_text: Snowflake coral swaying in the ocean
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+
+<!-- Side panel -->
+
+:::{.column-page}
+
+:::{.paper-side-column}
+
+<center>
+:::{.col-image layout-ncol=1 style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/4/0/3/6/22baf3bf-c04c-4444-a091-1db10bc26304/original" class="rounded"/></img>
+:::
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+[*Carijoa* (Joanne CC-BY-NC 4.0 (Int))](https://images.ala.org.au/image/details?imageId=22baf3bf-c04c-4444-a091-1db10bc26304)
+:::
+
+### Citation
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+
+#### Page info
+Prepared by 
+[Dax Kellie](https://labs.ala.org.au/about/Kellie_Dax/)
+:::
+
+
+<!-- Main panel description -->
+
+::: {.paper-main-column}
+Sheltered coastal and estuarine ecosystems are under considerable threat from human activity and urbanization. To help understand ongoing impacts, it is useful to catalogue the aquatic diversity in an area to compare against over time.
+
+DiBattista and colleagues used Environmental DNA (eDNA) metabarcoding---also known as Tree-of-Life metabarcoding---from seawater samples to take a snapshot of species diversity and species richness in 4 distinct geomorphic habitat regions in Sydney Harbour.
+
+The authors catalogued 1427 unique taxa and 1118 aquatic taxa overall from 16 eDNA metabarcoding assays, showing how this method can be used to “benchmark” an area’s biodiversity. They found each habitat zone in Sydney Harbour had distinct community compositions of flora and fauna, with bacteria (one of the most represented groups in the study but one of the least documented groups in data repositories) a useful environmental indicator captured via this method.
+
+:::
+
+:::
+

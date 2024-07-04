@@ -8,11 +8,11 @@
 #------------ Edit these parameters for highlighted paper ---------------------#
 
 
-title <- "Selection for better imposters drives speciation in parasitic cuckoos"
-authors <- "Langmore et al. 2024"
-main_colour <- "#691C32" # use an ALA colour as your main colour
+title <- "eDNA metabarcoding can take snapshots of coastal biodiversity"
+authors <- "DiBattista et al. 2024"
+main_colour <- "#003A70" # use an ALA colour as your main colour
 text_colour <- "#EEECEA" # choose your own matching text colour: https://coolors.co/
-line_colour <- "#99A983" # choose your own matching line colour
+line_colour <- "#0E69A4" # choose your own matching line colour
 
 
 # ALA colours to use as main colour
