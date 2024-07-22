@@ -214,6 +214,53 @@ tags$div(class = "category-row",
 :::
 
 
+:::{.column-screen style="background-color:#ffffff;"}
+:::{.column-screen-inset}
+:::{.home-column-image .col-left}
+
+<center> <h1 style="color: #222322;">Books</h1>
+
+<span style = "font-style: italic;">Long-form resources by the Science & Decision Support Team</span>
+
+</center>
+
+```{r, echo = FALSE}
+tags$div(class = "category-row",
+  
+  tags$div( 
+    class = "category-column",
+    style = "width: 100%",
+    tags$a(href = "books/index.html",
+      tags$img(
+        href = "books/index.html",
+        src = "images/vectors/book-solid.svg",
+        class = "category-image honey"
+  )),
+  tags$h4(style = "text-align:center;",
+      tags$a(
+        href = "books/index.html", "Books"))
+  
+  ))
+```
+
+:::
+
+:::{.home-column-text .col-right}
+
+<center>
+<a href="https://labs.ala.org.au/books/index.html">
+
+![](books/images/covers/cleaner-shrimp_cover.png){.home-img-transparent width=45% style="border-radius:2%;"}
+
+</a>
+</center>
+
+:::
+:::
+:::
+
+***
+
 :::{.column-screen style="background-color:#fff;"}
 
 :::{.column-page}

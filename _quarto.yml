@@ -35,6 +35,8 @@ website:
           text: "All citations"
       - href: software/index.qmd
         text: "Software"
+      - href: books/index.qmd
+        text: "Books"
       - href: gallery/index.qmd
         text: "Gallery"
       - href: https://www.ala.org.au

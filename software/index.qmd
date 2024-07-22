@@ -7,7 +7,6 @@ toc: false
 format: 
   html: 
     include-after-body: _footer.html
-    css: theme.css
 freeze: true
 ---
 
@@ -19,13 +18,13 @@ freeze: true
 
 :::{.column-page layout="[1,1]" style="float:left;margin-left: auto;"}
 
-<a href="https://potions.ala.org.au/">
+<a href="https://galah.ala.org.au/">
 ![](images/hex/galah_logo.png){style="width:73%;"}
 </a>
 
 # galah
 
-{galah} is an R and Python interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It enables users to locate and download species occurrence records (observations, specimens, eDNA records, etc.), taxonomic information, or associated media such as images or sounds, and to restrict their queries to particular taxa or locations.<br> <br>
+[{galah}](https://galah.ala.org.au/) is an R and Python interface to biodiversity data hosted by the Atlas of Living Australia (ALA). It enables users to locate and download species occurrence records (observations, specimens, eDNA records, etc.), taxonomic information, or associated media such as images or sounds, and to restrict their queries to particular taxa or locations.<br> <br>
 Visit the **[{galah} website](http://galah.ala.org.au/)** to learn more about how to use {galah}<br><br>
 If you have any questions, comments, or spot any bugs, [email us](mailto:support@ala.org.au) or report an issue on the [R package GitHub page](https://github.com/AtlasOfLivingAustralia/galah-R) or the [Python package Github page](https://github.com/AtlasOfLivingAustralia/galah-python)
 
@@ -45,7 +44,7 @@ If you have any questions, comments, or spot any bugs, [email us](mailto:support
 
 # potions
 
-{potions} makes options management in R—usually edited using `base::options()` and related functions—as easy as possible. It uses a minimalist workflow to store and retrieve information with three core functions: `brew()`, `pour()` and `drain()`.<br> <br>
+[{potions}](https://potions.ala.org.au/) makes options management in R—usually edited using `base::options()` and related functions—as easy as possible. It uses a minimalist workflow to store and retrieve information with three core functions: `brew()`, `pour()` and `drain()`.<br> <br>
 Visit the **[{potions} website](https://potions.ala.org.au/)** to learn more about how to use {potions}<br><br>
 If you have any questions, comments, or spot any bugs, [email us](mailto:support@ala.org.au) or [report an issue](https://github.com/AtlasOfLivingAustralia/potions) on our GitHub page
 

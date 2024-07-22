@@ -1,0 +1,34 @@
+---
+title: "Books"
+subtitle: "Long-form resources by the Science & Decision Support Team"
+title-block-banner: "#E06E53"
+title-block-banner-color: body
+toc: false
+format: 
+  html: 
+    include-after-body: _footer.html
+freeze: true
+---
+
+<style>
+  d-title {
+    display: none;
+  }
+</style>
+
+:::{.column-page layout="[35,65]" style="margin-left: auto; margin-right: auto;"}
+
+<a href="https://cleaning-data-r.ala.org.au/">
+![](images/covers/cleaner-shrimp_cover.png){style="width:95%;margin-left: auto;margin-right: auto;"}
+</a>
+
+
+# Cleaning Biodiversity Data in R
+
+Data cleaning is a process that anyone who works with data must engage with if they want use their data to summarise, visualise or analyse something to understand a question about the world. [*Cleaning Biodiversity Data in R*](https://cleaning-data-r.ala.org.au/) is a practical guide on cleaning geo-referenced biodiversity data using R. It is a targeted resource for anyone working with or interested in answering questions using data in ecology and evolution.
+
+:::
+
+
+
+
