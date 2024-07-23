@@ -1,14 +1,13 @@
 ---
 title: "Gallery"
-subtitle: |
-  A gallery of work inspired by ALA Labs or made using <a href="https://galah.ala.org.au/">galah</a>
+subtitle: "A gallery of work inspired by ALA Labs or made using <a href='https://galah.ala.org.au/'>galah</a>"
 title-block-banner: "#E06E53"
 title-block-banner-color: body
 include-after-body: _footer.html
 format:
   html:
     toc: false
-    css: gallery.css
+    css: [gallery.css, ../theme.css]
 search: false
 execute:
   echo: false
