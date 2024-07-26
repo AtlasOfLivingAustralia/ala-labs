@@ -2,8 +2,8 @@
 title: "Historical versus current rodent distributions highlight conservation potential"
 author: "Olivia Torresan"
 date: "2024-07-26"
-title-block-banner: "#667073"
-title-block-banner-color: "#EEECEA"
+title-block-banner: "#E06E53"
+title-block-banner-color: "#FFC557"
 include-after-body: _footer.html
 freeze: true
 image: thumbnail.png 
