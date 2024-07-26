@@ -8,11 +8,11 @@
 #------------ Edit these parameters for highlighted paper ---------------------#
 
 
-title <- "eDNA metabarcoding can take snapshots of coastal biodiversity"
-authors <- "DiBattista et al. 2024"
-main_colour <- "#003A70" # use an ALA colour as your main colour
-text_colour <- "#EEECEA" # choose your own matching text colour: https://coolors.co/
-line_colour <- "#0E69A4" # choose your own matching line colour
+title <- "Historical versus current rodent distributions highlight conservation potential"
+authors <- "Smith et al. 2024"
+main_colour <- "#FFC557" # use an ALA colour as your main colour
+text_colour <- "#E06E53" # choose your own matching text colour: https://coolors.co/
+line_colour <- "#EEECEA" # choose your own matching line colour
 
 
 # ALA colours to use as main colour

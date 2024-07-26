@@ -1,0 +1,75 @@
+---
+title: "Historical versus current rodent distributions highlight conservation potential"
+author: "Olivia Torresan"
+date: "2024-07-26"
+title-block-banner: "#667073"
+title-block-banner-color: "#EEECEA"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png 
+categories:
+  - Species distribution
+  - Biogeography
+  - Conservation
+params:
+  authors: "Smith, K.J., Pierson, J.C., Evans, M.J., Gordon, I.J., Manning, A.D."
+  year: 2024
+  title: "Continental-scale identification and prioritisation of potential refugee species; a case study for rodents in Australia"
+  publication: "Ecography"
+  doi: https://doi.org/10.1111/ecog.07035
+  image_url: https://images.ala.org.au/image/details?imageId=135c7cd0-7ff8-4931-a697-1d2cfc5dd8aa
+  alt_text: Mitchell's Hopping-mouse (*Notomys mitchellii*) amongst some bark and sticks
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+<!-- Side panel -->
+
+::: column-page
+::: paper-side-column
+<center>
+
+::: {.col-image layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/a/a/8/d/135c7cd0-7ff8-4931-a697-1d2cfc5dd8aa/original" class="rounded"/></img>
+:::
+
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+
+[*Notomys mitchellii* (Adrian Uren CC BY 4.0)](https://images.ala.org.au/image/details?imageId=135c7cd0-7ff8-4931-a697-1d2cfc5dd8aa)
+:::
+
+### Citation
+
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+#### Page info
+
+Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
+:::
+
+<!-- Main panel description -->
+
+::: paper-main-column
+
+In order to manage and protect our species it is important we understand areas suitable for them to live. Geographically mapping their distribution is one way we can achieve and communicate this, though, many distribution maps often only reflect where a species has lived relatively recently; underemphasising where they have lived in the past. Some areas that a species has lived previously might be unsuitable now for a range of ecological or climatic reasons, however, there is still potential for these areas to be overlooked for successful regeneration. Without understanding historical distributions, possibly effective translocation opportunities might be avoided because they are perceived as entirely new conservation introductions.  
+
+Using species occurrence data retrieved from the Atlas of Living Australia’s galah package, Species of National Environmental Significance (SNES) data, and subfossil records spanning from the literature, Smith and colleagues (2024) produce “restoration opportunity” distribution maps for Australian native rodents.  These maps intersect historically accessed areas with bioregions (delineated areas distinguished on climate, geology, landforms and species information). Historical occupancy maps were compared through overlaying current distribution maps to identify if the species has been restricted. Areas heavily impacted by human activity were removed in efforts to then map restoration opportunity regions from these overlays. 
+
+This study both provides a rapid and reproducible assessment method for understanding a species full and complete distribution history, but also finds a widespread risk of “shifting baseline syndrome”.  That is, many rodent species were found to have differing “historical” and “modern” distributions and distorted perceptions of baseline habitats. This was the case for some rodents even categorised as “least concern” in the IUCN red list, prompting researchers and managers to holistically consider factors contributing to their survival.  
+
+:::
+:::
