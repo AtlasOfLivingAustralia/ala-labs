@@ -33,7 +33,7 @@ This site is a resource for coding projects that use data sourced from [the ALA]
 :::{.column-screen-inset}
 :::{.home-column-image .col-left}
 
-<a href="https://labs.ala.org.au/posts.html">
+<a href="https://labs.ala.org.au/posts/">
 
 ![](images/homepage/home_ala-plots.png){.home-img}
 
