@@ -19,6 +19,8 @@ params:
   doi: https://doi.org/10.1111/ecog.07035
   image_url: https://images.ala.org.au/image/details?imageId=135c7cd0-7ff8-4931-a697-1d2cfc5dd8aa
   alt_text: Mitchell's Hopping-mouse (*Notomys mitchellii*) amongst some bark and sticks
+---
+
 <!-- remove metadata section -->
 
 ```{css, echo = FALSE}
@@ -65,11 +67,11 @@ Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
 
 ::: paper-main-column
 
-In order to manage and protect our species it is important we understand areas suitable for them to live. Geographically mapping their distribution is one way we can achieve and communicate this, though, many distribution maps often only reflect where a species has lived relatively recently; underemphasising where they have lived in the past. Some areas that a species has lived previously might be unsuitable now for a range of ecological or climatic reasons, however, there is still potential for these areas to be overlooked for successful regeneration. Without understanding historical distributions, possibly effective translocation opportunities might be avoided because they are perceived as entirely new conservation introductions.  
+Species range maps rarely provide historical context of where a species' habitat range has extended in the past. Without this context, it's easy to overlook that a species may have once lived in a greater geographic range in favour of a view that the species has only ever lived in its current, restricted habitat area. This "shifting basline" view can make it difficult to identify and prioritise these now-restricted species for conservation.
 
-Using species occurrence data retrieved from the Atlas of Living Australia’s galah package, Species of National Environmental Significance (SNES) data, and subfossil records spanning from the literature, Smith and colleagues (2024) produce “restoration opportunity” distribution maps for Australian native rodents.  These maps intersect historically accessed areas with bioregions (delineated areas distinguished on climate, geology, landforms and species information). Historical occupancy maps were compared through overlaying current distribution maps to identify if the species has been restricted. Areas heavily impacted by human activity were removed in efforts to then map restoration opportunity regions from these overlays. 
+Using species occurrence data retrieved from the Atlas of Living Australia’s [galah package](LINK), Species of National Environmental Significance (SNES) data, and subfossil records spanning from the literature, Smith and colleagues (2024) produced “restoration opportunity” distribution maps for Australian native rodents.  These maps intersect historically accessed areas with bioregions (i.e. regions that reflect ecological differences in communities and ecosystems). *I don't know if the next few sentences are necessary?* Historical occupancy maps were compared through overlaying current distribution maps to identify if the species has been restricted. Areas heavily impacted by human activity were removed in efforts to then map restoration opportunity regions from these overlays. 
 
-This study both provides a rapid and reproducible assessment method for understanding a species full and complete distribution history, but also finds a widespread risk of “shifting baseline syndrome”.  That is, many rodent species were found to have differing “historical” and “modern” distributions and distorted perceptions of baseline habitats. This was the case for some rodents even categorised as “least concern” in the IUCN red list, prompting researchers and managers to holistically consider factors contributing to their survival.  
+*This first sentence might be a little grandiose for the paper (making it sound more groundbreaking than it is). You also haven't defined shifting baseline syndrome. My suggestion is to remove it* This study both provides a rapid and reproducible assessment method for understanding a species full and complete distribution history, but also finds a widespread risk of “shifting baseline syndrome”. That is, *The content from here is very good. Make this the final paragraph* many rodent species were found to have differing “historical” and “modern” distributions and distorted perceptions of baseline habitats. This was the case for some rodents even categorised as “least concern” in the IUCN red list, prompting researchers and managers to holistically consider factors contributing to their survival.  
 
 :::
 :::
