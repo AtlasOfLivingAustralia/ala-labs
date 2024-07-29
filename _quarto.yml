@@ -12,7 +12,7 @@ website:
     image: twitter-card-preview_frog-small.png
     card-style: summary_large_image
   site-url: https://labs.ala.org.au/
-  google-analytics: "UA-4355440-1"
+  margin-header: _fathom.html
   favicon: images/favicon.ico
   navbar:
     background: "#222322"
@@ -44,6 +44,12 @@ website:
         icon: ala
       - href: https://github.com/AtlasOfLivingAustralia/ala-labs
         icon: github
+  announcement:
+    icon: info-circle
+    dismissable: true
+    content: "Check out the new *Cleaning Biodiversity Data in R* book! [Click here to find out more](https://labs.ala.org.au/books/)."
+    type: light
+    position: below-navbar
 
 format:
   html:

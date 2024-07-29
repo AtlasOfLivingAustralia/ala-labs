@@ -25,7 +25,7 @@ freeze: true
 
 # Cleaning Biodiversity Data in R
 
-Data cleaning is a process that anyone who works with data must engage with if they want use their data to summarise, visualise or analyse something to understand a question about the world. [*Cleaning Biodiversity Data in R*](https://cleaning-data-r.ala.org.au/) is a practical guide on cleaning geo-referenced biodiversity data using R. It is a targeted resource for anyone working with or interested in answering questions using data in ecology and evolution.
+Data cleaning is a process that anyone who works with data must engage with if they want use their data to answer questions about the world and the environment. [*Cleaning Biodiversity Data in R*](https://cleaning-data-r.ala.org.au/) is a practical guide on cleaning geo-referenced biodiversity data using R. It is a targeted resource for anyone working with or interested in answering questions using data in ecology and evolution.
 
 :::
 
