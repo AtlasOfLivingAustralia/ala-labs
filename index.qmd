@@ -105,7 +105,7 @@ tags$div(class = "category-row",
 :::{.column-screen}
 :::{.column-screen-inset}
 :::{.home-column-image .col-right}
-<a href="https://labs.ala.org.au/research/highlights.html">
+<a href="https://labs.ala.org.au/research/highlights/">
 ![](images/homepage/home_ala-research.png){.home-img}
 </a>
 
