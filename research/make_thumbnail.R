@@ -8,18 +8,26 @@
 #------------ Edit these parameters for highlighted paper ---------------------#
 
 
-title <- "Historical versus current rodent distributions highlight conservation potential"
+title <- 'Accounting for historical habitat ranges in conservation management'
 authors <- "Smith et al. 2024"
 main_colour <- "#FFC557" # use an ALA colour as your main colour
-text_colour <- "#E06E53" # choose your own matching text colour: https://coolors.co/
-line_colour <- "#EEECEA" # choose your own matching line colour
+text_colour <- "#921D11" # choose your own matching text colour: https://coolors.co/
+line_colour <- "#FFEDCF" # choose your own matching line colour
 
 
-# ALA colours to use as main colour
-ala_colours <- c("#E06E53", "#B8573E", "#667073", "#FFC557",
-                 "#B7CD96", "#6BDAD5", "#EEECEA", "#9E9E9F",
-                 "#222322", "#003A70", "#A191B2", "#691C32")
+# ALA primary colours
+ala_p_colours <- c("#F26649", "#C44D34", "#637073")
 
+# ALA secondary colours 
+ala_s_colours <- c("#F2F2F2", "#9D9D9D", "#212121")
+
+# ALA extended colours
+
+ala_ext_colours <- c("#FFC557", "#B7CD96", "#68DAD5", "#003A70", "#A191B2", "#691C32")
+
+# ALA expanded colours 
+
+ala_exp_colours <- c("#EB9D07", "#076164", "#1B5D81", "#5B397D", "#FFEDCF", "#38613D", "#C3EDEF", "#921D11")
 
 #----------- Now run the code below to make and save thumbnail ----------------#
 
