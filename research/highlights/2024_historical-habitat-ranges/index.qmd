@@ -1,0 +1,77 @@
+---
+title: "Accounting for historical habitat ranges in conservation management"
+author: "Olivia Torresan"
+date: "2024-07-26"
+title-block-banner: "#E06E53"
+title-block-banner-color: "#FFEDC"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png 
+categories:
+  - Species distribution
+  - Biogeography
+  - Conservation
+params:
+  authors: "Smith, K.J., Pierson, J.C., Evans, M.J., Gordon, I.J., Manning, A.D."
+  year: 2024
+  title: "Continental-scale identification and prioritisation of potential refugee species: a case study for rodents in Australia"
+  publication: "Ecography"
+  doi: https://doi.org/10.1111/ecog.07035
+  image_url: https://images.ala.org.au/image/details?imageId=135c7cd0-7ff8-4931-a697-1d2cfc5dd8aa
+  alt_text: Mitchell's Hopping-mouse (*Notomys mitchellii*) amongst some bark and sticks
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+<!-- Side panel -->
+
+::: column-page
+::: paper-side-column
+<center>
+
+::: {.col-image layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/a/a/8/d/135c7cd0-7ff8-4931-a697-1d2cfc5dd8aa/original" class="rounded"/></img>
+:::
+
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+
+[*Notomys mitchellii* (Adrian Uren CC BY 4.0)](https://images.ala.org.au/image/details?imageId=135c7cd0-7ff8-4931-a697-1d2cfc5dd8aa)
+:::
+
+### Citation
+
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+#### Page info
+
+Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
+:::
+
+<!-- Main panel description -->
+
+::: paper-main-column
+
+Species range maps rarely provide historical context of where a species' full habitat range was in the past. Without this context, it's easy to overlook that a species may have once lived in a greater geographic range in favour of a view that the species has only ever lived in its current, restricted habitat area. This "shifting baseline" view can make it difficult to identify and prioritise species for conservation decisions. 
+
+Using occurrence data retrieved from the Atlas of Living Australia’s [galah package](https://galah.ala.org.au), Species of National Environmental Significance (SNES) data, and subfossil records spanning from the literature, Smith and colleagues produced “restoration opportunity” distribution maps for Australian native rodents. These maps intersected historically accessed areas with IBRA bioregions (i.e. regions that reflect ecological differences in communities and ecosystems), and were compared by overlaying current day distribution maps to identify whether each species' habitat has moved, contracted or stayed the same. 
+
+They found that many rodent species have differing historical and modern distributions, and this discrepancy has distorted perceptions of many rodents'  habitat range as healthy when they might already be restricted and vulnerable to extinction risk. The authors found this was the case for some rodents categorised as “least concern” in the [IUCN Red List](https://www.iucnredlist.org), prompting researchers and managers to holistically consider factors contributing to their survival.  
+
+:::
+:::
