@@ -12,7 +12,6 @@ website:
     image: twitter-card-preview_frog-small.png
     card-style: summary_large_image
   site-url: https://labs.ala.org.au/
-  margin-header: _fathom.html
   favicon: images/favicon.ico
   navbar:
     background: "#222322"
@@ -60,6 +59,7 @@ format:
     toc: true
     code-overflow: scroll
     linkcolor: "#B8573E"
+    include-before-body: _fathom.html
 
 freeze: true
 
