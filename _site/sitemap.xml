@@ -102,7 +102,7 @@
   </url>
   <url>
     <loc>https://labs.ala.org.au/books/index.html</loc>
-    <lastmod>2024-07-30T05:22:46.293Z</lastmod>
+    <lastmod>2024-08-02T07:17:11.998Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/posts/index.html</loc>
@@ -162,7 +162,7 @@
   </url>
   <url>
     <loc>https://labs.ala.org.au/index.html</loc>
-    <lastmod>2024-07-30T05:25:26.679Z</lastmod>
+    <lastmod>2024-08-02T07:17:12.007Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/posts/2024-05-10_ridgeline-plots/index.html</loc>
@@ -199,5 +199,9 @@
   <url>
     <loc>https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/index.html</loc>
     <lastmod>2024-05-09T06:22:26.757Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/research/highlights/2024_historical-habitat-ranges/index.html</loc>
+    <lastmod>2024-08-02T07:17:27.298Z</lastmod>
   </url>
 </urlset>
