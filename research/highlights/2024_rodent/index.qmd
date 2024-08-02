@@ -3,7 +3,7 @@ title: "Accounting for historical habitat ranges in conservation management"
 author: "Olivia Torresan"
 date: "2024-07-26"
 title-block-banner: "#E06E53"
-title-block-banner-color: "#FFC557"
+title-block-banner-color: "#FFEDC"
 include-after-body: _footer.html
 freeze: true
 image: thumbnail.png 
