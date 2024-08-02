@@ -10,9 +10,9 @@
 
 title <- 'Accounting for historical habitat ranges in conservation management'
 authors <- "Smith et al. 2024"
-main_colour <- "#FFC557" # use an ALA colour as your main colour
-text_colour <- "#921D11" # choose your own matching text colour: https://coolors.co/
-line_colour <- "#FFEDCF" # choose your own matching line colour
+main_colour <- "#F26649" # use an ALA colour as your main colour
+text_colour <- "#FFEDCF" # choose your own matching text colour: https://coolors.co/
+line_colour <- "#FFC557" # choose your own matching line colour
 
 
 # ALA primary colours
