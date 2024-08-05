@@ -2,14 +2,14 @@
 title: "Zooming in: Improving Koala monitoring with photography"
 author: "Olivia Torresan"
 date: "2023-01-03"
-title-block-banner: "#6BDAD5"
-title-block-banner-color: "#218380"
+title-block-banner: "#C3EDEF"
+title-block-banner-color: "#183A3D"
 include-after-body: _footer.html
 freeze: true
 image: thumbnail.png 
 categories:
   - Conservation
-  - Citizen Science
+  - Citizen science
 params:
   authors: "Danaher, M., Schlagloth, R., Hewson, M., & Geddes, C."
   year: 2023
