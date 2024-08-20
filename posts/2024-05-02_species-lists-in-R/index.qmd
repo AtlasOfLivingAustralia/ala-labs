@@ -316,7 +316,7 @@ search_all(lists, "New South Wales") |>
   select(species_list_uid, listType, isAuthoritative, isThreatened)
 ```
 
-We can return only species in Yass Valley on the New South Wales Conservation Status List (`dr650`) by filtering to `species_list_uid == dr650`. Our query returns 22 species.
+We can return only species in Yass Valley on the New South Wales Conservation Status List (`dr650`) by filtering to `species_list_uid == dr650`. Our query returns 31 species.
 
 ```{r}
 yass_threatened <- galah_call() |>
@@ -328,7 +328,7 @@ yass_threatened <- galah_call() |>
 yass_threatened
 ```
 
-We can do the same using the New South Wales Sensitive Species (`dr487`). Our query returns 3 species.
+We can do the same using the New South Wales Sensitive Species (`dr487`). Our query returns 5 species.
 
 ```{r}
 yass_sensitive <- galah_call() |>
@@ -381,7 +381,7 @@ sensitive_list <- read_csv(here("posts", "data", "example_SSL.csv"))
 ```
 
 
-Let's filter our Yass Valley species to only those that are also in our `threatened_list`. We return 23 species.
+Let's filter our Yass Valley species to only those that are also in our `threatened_list`. We return 31 species.
 
 ```{r}
 yass_threatened <- species_yass |>
@@ -390,7 +390,7 @@ yass_threatened <- species_yass |>
 yass_threatened
 ```
 
-We can do the same with our `sensitive_list`, which returns 3 species.
+We can do the same with our `sensitive_list`, which returns 5 species.
 
 ```{r}
 yass_sensitive <- species_yass |>
