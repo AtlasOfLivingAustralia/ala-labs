@@ -245,7 +245,7 @@ lga
 
 Now let's transform the Coordinate Reference System (CRS) of our shapefile to [EPSG](https://en.wikipedia.org/wiki/EPSG_Geodetic_Parameter_Dataset):4326 (the standard used in cartography and GPS, also known as [WGS84](https://en.wikipedia.org/wiki/World_Geodetic_System)) so that it matches the projection of our data from the ALA [^2]. 
 
-[^2]: Check out [this post](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/post.html#make-a-map) for a better explanation of what CRS is and how it affects maps.
+[^2]: Check out [this post](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/#make-a-map-1) for a better explanation of what CRS is and how it affects maps.
 
 ```{r}
 lga <- lga |>
@@ -415,7 +415,7 @@ library(waffle)
 library(showtext)
 library(glue)
 
-# Add conservation status & taxa groups plotting
+# Add conservation status & taxa groups for plotting
 species_yass_grouped <- species_yass |>
   mutate(
     conservation_status = case_when(
@@ -462,7 +462,7 @@ waffle_status <-
   waffle::geom_waffle(aes(fill = conservation_status,
                           colour = conservation_status,
                           values = n),
-                      n_rows = 21,
+                      n_rows = 17,
                       height = 0.75,
                       width = 0.75,
                       size = 1) +
@@ -491,7 +491,7 @@ waffle_taxa <-
   waffle::geom_waffle(aes(fill = taxa_group,
                           colour = taxa_group,
                           values = n),
-                      n_rows = 5,
+                      n_rows = 4,
                       height = 0.75,
                       width = 0.75,
                       size = 1) +
@@ -538,7 +538,7 @@ waffle_taxa
 
 We hope this post has helped you understand how to download a species list for a specific area and compare it to conservation lists. It's also possible to compare species with other information like lists of migratory species or seasonal species.
 
-For other posts, check out [our beginner's guide to map species observations](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/index.html) or see [an investigation of dingo observations in the ALA](https://labs.ala.org.au/posts/2023-05-16_dingoes/).
+For other posts, check out [our beginner's guide to map species observations](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/) or see [an investigation of dingo observations in the ALA](https://labs.ala.org.au/posts/2023-05-16_dingoes/).
 
 <details>
 
