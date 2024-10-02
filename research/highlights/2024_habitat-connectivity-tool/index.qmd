@@ -1,0 +1,81 @@
+---
+title: "Habitat connectivity support tool for Australian forest species"
+author: "Olivia Torresan"
+date: "2024-10-02"
+title-block-banner: "#5B397D"
+title-block-banner-color: "#FFEDCF"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png 
+categories:
+  - Biodiversity science 
+  - Species distribution
+  - Biogeography
+  - Conservation
+params:
+  authors: "Norman, P. & Mackey, B."
+  year: 2024
+  title: "A decision support tool for habitat connectivity in Australia"
+  publication: "Conservation Biology"
+  doi: https://doi.org/10.1071/PC24008
+  image_url: https://images.ala.org.au/image/details?imageId=8b0a9081-d0b0-4109-a9e1-dd9a57d1023b 
+  alt_text: White-headed pigeon (*Columba (Janthoenas) leucomela*) perched in a tree amongst purple flowers 
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+<!-- Side panel -->
+
+::: column-page
+::: paper-side-column
+<center>
+
+::: {.col-image layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/b/3/2/0/8b0a9081-d0b0-4109-a9e1-dd9a57d1023b/original" class="rounded"/></img>
+:::
+
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+
+[*Columba (Janthoenas) leucomela* (Dianne Clarke CC BY NC 4.0)](https://images.ala.org.au/image/details?imageId=8b0a9081-d0b0-4109-a9e1-dd9a57d1023b)
+
+
+:::
+
+### Citation
+
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+#### Page info
+
+Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
+:::
+
+<!-- Main panel description -->
+
+::: paper-main-column
+
+When habitat is broken up or fragmented, species are not able to use their habitat effectively. Fragments like roads and property can prevent a species from crossing to another habitable patch. Overall, larger, connected areas provide greater access to food, shelter and resources. Connected habitats also facilitate gene flow by offering a wider pool of breeding partners to species, improving genetic diversity; helping to combat disease, and reduce the risk of inbreeding in a population. It is also important to consider that a species' unique traits or behaviour can also further how “connected” a landscape is (such as how mobile a species can be), not just how physically intact it is. 
+
+Therefore, conservation managers and decision makers rely on a variety of expert information about habitat connectivity to create accurate predictions. Mapping and modelling connectivity also often requires highly specialized skills that may not always be readily available to managers or decision makers on the ground. While there has been an increase in accessible online resources that can map habitat connectivity in such a way, these are often restricted within state jurisdictions. Therefore, their capacity to be utilised for broader-scale connectivity and consider cross-border conservation priorities is limited. 
+
+Norman & Mackey (2024) use ALA data to help improve the precision of Australia-wide habitat connectivity maps for forests, and individually for select species: rainforest pigeons, gliding possums and cockatoos (glossy black in south-east-Queensland and black cockatoos in south-western WA). These maps are further adjusted with best connectivity pathways that consider movement fatigue between patches of forest, allowing clear, actionable recommendations and prioritisation zones for conservation managers and decision makers in these areas. They found some species optimum connectivity pathways to be better protected than others. 
+
+
+:::
+:::
