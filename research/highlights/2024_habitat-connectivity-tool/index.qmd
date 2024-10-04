@@ -48,8 +48,6 @@ params:
 <!-- edit caption -->
 
 [*Columba (Janthoenas) leucomela* (Dianne Clarke CC BY NC 4.0)](https://images.ala.org.au/image/details?imageId=8b0a9081-d0b0-4109-a9e1-dd9a57d1023b)
-
-
 :::
 
 ### Citation
@@ -68,14 +66,15 @@ Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
 
 <!-- Main panel description -->
 
+*I appreciate your colour matching of the flowers to the thumbnail/banner background. Very nice!*
+
 ::: paper-main-column
+When habitat is broken up or fragmented, species find it harder to use their habitat effectively. Fragmenting is common in urban areas where roads and property can prevent species from crossing to other habitable areas, ultimately separating individuals and populations. When compared to larger, connected areas, fragmented areas have lower access to food, shelter and resources, and inhibit gene flow and genetic diversity.
 
-When habitat is broken up or fragmented, species are not able to use their habitat effectively. Fragments like roads and property can prevent a species from crossing to another habitable patch. Overall, larger, connected areas provide greater access to food, shelter and resources. Connected habitats also facilitate gene flow by offering a wider pool of breeding partners to species, improving genetic diversity; helping to combat disease, and reduce the risk of inbreeding in a population. It is also important to consider that a species' unique traits or behaviour can also further how “connected” a landscape is (such as how mobile a species can be), not just how physically intact it is. 
+*This bit feels like a separate point to those above. It's interesting, but I'm unconvinced it's important enough to include*[It is also important to consider that a species' unique traits or behaviour can also further how “connected” a landscape is (such as how mobile a species can be), not just how physically intact it is.]
 
-Therefore, conservation managers and decision makers rely on a variety of expert information about habitat connectivity to create accurate predictions. Mapping and modelling connectivity also often requires highly specialized skills that may not always be readily available to managers or decision makers on the ground. While there has been an increase in accessible online resources that can map habitat connectivity in such a way, these are often restricted within state jurisdictions. Therefore, their capacity to be utilised for broader-scale connectivity and consider cross-border conservation priorities is limited. 
+Conservation managers and decision makers rely on a variety of expert information about habitat connectivity to make predictions ...*about what?*. Mapping and modelling connectivity can be complicated. While there has been an increase in accessible online resources that can help map habitat connectivity, they are often restricted within state jurisdictions *I don't think I know what this means. Are they private? Or can they not be applied outside of a specific area?*, limiting their broad utility.
 
-Norman & Mackey (2024) use ALA data to help improve the precision of Australia-wide habitat connectivity maps for forests, and individually for select species: rainforest pigeons, gliding possums and cockatoos (glossy black in south-east-Queensland and black cockatoos in south-western WA). These maps are further adjusted with best connectivity pathways that consider movement fatigue between patches of forest, allowing clear, actionable recommendations and prioritisation zones for conservation managers and decision makers in these areas. They found some species optimum connectivity pathways to be better protected than others. 
-
-
+Norman & Mackey (2024) used ALA data to help improve the precision of Australia-wide habitat connectivity maps for forests, and for select species: rainforest pigeons, gliding possums, glossy black cockatoos, and [name] black cockatoos*If you are going to write them out in parentheses anyway, might as well add them to the list. Also, are you calling them "black cockatoos" because they are non-specific in the paper? If not, maybe you can add the other common name?*. Maps were adjusted to consider movement fatigue between patches of forest, allowing clear, actionable prioritisation zones for conservation managers and decision makers. Doing so enabled the researchers to identify which connectivity pathways are beneficial for some species but not others.*This feels a little vague? Is there an useful example? Like whether removing road divisions helps...grasses or something? Might be overkill though, up to you whether you want to add*
 :::
 :::
