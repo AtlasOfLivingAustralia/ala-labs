@@ -1,0 +1,332 @@
+---
+title: "Add buffers to a shapefile in Python"
+description: |
+  Adding buffers around points is essential for species distribution models. This post shows how to add buffers with different radii around the red and green Kangaroo's Paw using Python.
+author:
+  - name: "Amanda Buyan"
+  - name: "Dax Kellie"
+date: "2023-11-23"
+title-block-banner: "#B8573E"
+include-after-body: _footer.html
+toc: true
+toc-location: left
+toc-depth: 2
+categories:
+  - Eukaryota
+  - Plantae
+  - Charophyta
+  - Commelinales
+  - Haemodoraceae 
+  - Chordata
+  - Anigozanthos
+  - Buffers
+  - Python
+#image: map_tree-frog.png
+draft: true
+freeze: true
+engine: knitr
+jupyter: python3
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| include: false
+library(htmltools)
+```
+
+<!-- remove metadata section -->
+<style>
+  #title-block-header.quarto-title-block.default .quarto-title-meta {
+      display: none;
+  }
+</style>
+
+
+
+<!-- Author card -->
+
+:::{.author-card}
+:::{.author-card-text}
+
+#### Author
+[Amanda Buyan](https://labs.ala.org.au/people/Buyan_Amanda/index.html)  
+[Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)  
+
+#### Date
+23 November 2023
+
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/amanda.jpg")
+```
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg")
+```
+:::
+
+:::
+
+<!------------------------ Post starts here ------------------------>
+
+<!--
+DK Overall feedback:
+
+OK I think this is getting pretty close, but I think it needs a second look to make sure it is communicating the ecological side of buffers as well as the code (which seems good).
+
+Buffers are used because many types of species are mobile or seasonal, and their presence/absence fluctuates depending on the time and location. So to get a more accurate estimate of what might live in a specific location, people can't just get the species observations returned in a shapefile. They also need to consider what has potential to live in an area by checking what might live just outside of the area (and therefore might be in our area at a different time in the past or future). 
+This doesn't only mean adding a circular buffer around a given area (though that is common). Sometimes it means considering biodiversity corridors, where connections to forests or rivers might offer spaces where species or populations can arrive (or exit) a given location. Importantly, depending on the types of species you are interested in capturing, the relevant buffer size might differ. For example, birds are incredibly mobile so a larger buffer might be required to capture the full diversity of birds. Other things like pollen, spores or invertebrate larvae (ie dragonfly nymphs) can be quite mobile, and can travel to new locations via wind or rivers.
+
+In other words, we are trying to get across that because each ecosystem is different, there might be some thought about what buffer size is optimal for a given investigation. The effects of this might matter if they are used for modelling, (which is mentioned in the intro but perhaps without context that's a little confusing) or even more so if they are used for area assessments prior to land development. The concepts are not difficult, but their implications might be.
+
+As a suggested structure, I think it would be good to download occurrences or species for an area using a shapefile and summarise what we get. Then we create buffers of different sizes and compare the differences in results. I'm imagining we might capture a few more endangered species and a lot more occurrence records (depending on the area or species). Those differences might be interesting to discuss. I think this does already happen in this article, but the big tables make it difficult to know what I'm meant to be seeing.
+-->
+
+
+Buffers are used in many ecological spaces.  Most notably, they are used in Species Distribution Models to extend the possible range of rare or threatened species to create a better model.<!-- I'm not sure that's exactly true? Pseudo-absences would be used for this purpose rather than a buffer --> They can also be used to capture occurrences or areas which may have been neglected by a user's original data. <!-- Again, maybe not entirely true? I would say they are there to make sure the polygon shape of a sample area doesn't accidentally omit something important, if anything -->
+
+In this post, we show how to use `{galah-python}`, `{geopandas}`, `{shapely}` and `{matplotlib}` to add a buffer to occurrences of *Kangaroo Paw*, specifically the Red and Green Kangaroo Paw.
+
+<!-- Buffers are often used for occurrences, but also species lists. Do you think we should also see if the overall number of species returned changes when the buffer size changes? Or is that adding too much detail? Alternatively, rather than choosing a single species, we could choose a taxonomic family and work with more occurrence records/species? -->
+
+# Choosing the right taxon
+
+*Kangaroo Paw* is a common name for a number of species, represented by the genus *Anigozanthos*.  They are perennial plants, native to the south-west of Western Australia.  They are unique, bird-attracting flowers which open at the apex with six claw-like structures resembling kangaroo paws, hence their name!
+
+::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/6/c/5/f/16392506-5a74-49db-a9ea-82d0a775f5c6/original" class="rounded"/></img>
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/6/a/d/a/83d1e77b-a47a-4325-a864-a78f061cada6/original" class="rounded"/></img>
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/a/1/3/5/974702ca-f7f9-43f9-a815-f702fe51531a/original" class="rounded"/></img>
+:::
+
+::: figure-caption
+Left: [*Anigozanthos manglesii* (dhfischer, iNaturalist CC-BY-NC 4.0 (Int)](https://biocache.ala.org.au/occurrences/c935c0ed-677b-4999-a8a3-9db464ee2b17), Middle: [*Anigozanthos flavidus* (pimelea, iNaturalist CC-BY 4.0 (Int))](https://biocache.ala.org.au/occurrences/403633ee-e20d-4697-aa94-4f022833c1d7), Right: [*Anigozanthos pulcherrimus* (Brigham, John, Citizen Science - ALA Website CC-BY-NC 3.0 (AU))](https://biocache.ala.org.au/occurrences/233381a1-257b-42d2-9ce4-9e1da7dc0aa3)
+:::
+
+```{python}
+#| echo: false
+#| eval: true
+import pandas as pd
+pd.set_option('display.max_columns', None)
+pd.set_option('expand_frame_repr', False)
+import galah
+galah.galah_config(email="amanda.buyan@csiro.au")
+```
+
+To begin, we will look for the number of occurrences for the genus *Anigozanthos*.  To do this, we will first start by loading `galah-python`.
+
+```{python}
+#| echo: true
+#| eval: false
+import galah
+galah.galah_config(email="your-email-here")
+```
+
+Now, we will use the `atlas_counts()` function to see a count of the number of occurrences of all species of Kangaroo's Paw in the ALA.
+
+```{python}
+galah.atlas_counts(taxa="Anigozanthos")
+```
+
+It is surprising to note that there are only 84 occurrences coming up for all species in this genus!  To ensure that we have the correct name, we will use `search_taxa()` to see if there is anything going on with this genus.
+
+```{python}
+galah.search_taxa(taxa="Anigozanthos")
+```
+
+If you scroll across to the `rank` column that is returned by this function, unfortunately, the search item that comes up for `search_taxa()` is `unranked`, which explains why we are getting very few records!  What we can do now to refine our search is add a higher order of taxonomic classification to our query.  By searching on the ALA species pages, we know that *Anigozanthos* is a genus belonging to the *Haemodoraceae* family.  `galah-python` has an argument to `search_taxa()` called `scientific_name`, which allows the user to disambiguate their query. 
+
+<!-- DK: This might be a little confusing? Maybe choose the best way to go about this and stick with that way (rather than offering multiple ways) -->
+
+Now, if we add the extra taxonomic information, we get thte following query:
+```{python}
+galah.search_taxa(scientific_name={"family": ["Haemodoraceae"],"genus": ["Anigozanthos"],"scientificName": ["Anigozanthos"]})
+```
+
+Here, if we look at the information, we can see that our `scientificName` matches the genus we want, and the rank is now listed as `genus`.  Now, if we get the total record count using this disambiguation:
+
+```{python}
+galah.atlas_counts(scientific_name={"family": ["Haemodoraceae"],"genus": ["Anigozanthos"],"scientificName": ["Anigozanthos"]})
+```
+
+Another, shorter, way to write this query is by using the `scientificName` and `scientificNameAuthorship` as the taxon name.  To test that we do get the same number of records, we can simply run
+
+```{python}
+galah.atlas_counts(taxa="Anigozanthos Labill.")
+```
+
+# Downloading occurrence records
+
+Now that we know the correct genus, we can start to download occurrence records.  Since there are ~6000 records, let's choose a smaller subset to draw buffers around.  Since a breeding program was started in 2007 by Kings Park Botanic and Garden Board to protect the Kangaroo Paw from disease and the impact of climate changes, let's only include occurrence records starting from 2007 onwards.
+
+```{python}
+galah.atlas_counts(taxa="Anigozanthos Labill.",filters="year>=2007")
+```
+
+1936 is a more manageable number.  However, there are different ways to observe a species.  Since we want to only include ones humans have observed in the wild, we will add the filter `basisOfRecord=HUMAN_OBSERVATION`
+
+```{python}
+galah.atlas_counts(taxa="Anigozanthos Labill.",filters=["year>=2007","basisOfRecord=HUMAN_OBSERVATION"])
+```
+
+Now, we can download all occurrences of all species of Kangaroo Paw and plot it on a map to do an initial check that we have all records in Kangaroo Paw's natural habitat, southwest WA.
+
+```{python}
+import geopandas as gpd
+import matplotlib.pyplot as plt
+kanga_paw_occ = galah.atlas_occurrences(taxa="Anigozanthos Labill.",filters=["year>=2007","basisOfRecord=HUMAN_OBSERVATION"])
+states = gpd.read_file("STE_2021_AUST_GDA2020.shp")
+states = states.to_crs(4326)
+ax = states.plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white", figsize = (12,6))
+plt.scatter(kanga_paw_occ['decimalLongitude'],kanga_paw_occ['decimalLatitude'], c = "red")
+```
+
+Here, we can see that the ALA has records that are outside WA, and if we want to only draw a buffer region around species in Western Australia, we will have to filter out the points in the east.  To do this, we will provide the polygon representing WA to `atlas_occurrences()` to remove the occurrences seen in the Eastern parts of Australia.
+
+```{python}
+kanga_paw_occ_pol = galah.atlas_occurrences(
+    taxa="Anigozanthos Labill.",
+    filters=["year>=2007","basisOfRecord=HUMAN_OBSERVATION"],
+    polygon = states[states["STE_NAME21"] == "Western Australia"]["geometry"][4],
+    simplify_polygon=True,
+)
+ax = states[states["STE_NAME21"] == "Western Australia"].plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white", figsize = (12,6))
+plt.scatter(kanga_paw_occ_pol['decimalLongitude'],kanga_paw_occ_pol['decimalLatitude'], c = "red")
+```
+
+Now, we have the occurrences we want.  
+
+```{python}
+galah.atlas_counts(
+    taxa="Anigozanthos Labill.",
+    filters=["year>=2007","basisOfRecord=HUMAN_OBSERVATION"],
+    polygon = states[states["STE_NAME21"] == "Western Australia"]["geometry"][4],
+    simplify_polygon=True,
+    group_by="species",
+    expand=False
+)
+```
+
+We can see that the most recorded species is *Anigozanthos manglesii*, which is the Red and Green Kangaroo Paw and the state emblem of WA.  Since there are a decent number of records, but not as many as the entire genus, let's choose to focus on the Red and Green Kangaroo Paw.
+
+```{python}
+anigozanthos_manglesii = galah.atlas_occurrences(
+    taxa = "Anigozanthos manglesii",
+    filters=["year>=2007","basisOfRecord=HUMAN_OBSERVATION"],
+    polygon = states[states["STE_NAME21"] == "Western Australia"]["geometry"][4],
+    simplify_polygon=True
+)
+```
+
+We can visualise these points to check that they are in the southwest corner of WA.
+
+```{python}
+ax = states[states["STE_NAME21"] == "Western Australia"].plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white", figsize = (12,6))
+plt.scatter(anigozanthos_manglesii['decimalLongitude'],anigozanthos_manglesii['decimalLatitude'], c = "red")
+```
+
+# Adding Buffers
+
+Now that we've got our occurrences, we can start adding buffers around these points.  To do this, we will need the `{shapely}` package in Python.  First, we will convert all of the `decimalLongitude` and `decimalLatitude` points to `Point` objects from `{shapely}`.   
+
+```{python}
+import shapely
+from shapely.geometry import Point,Polygon
+points_angiozanthos_manglesii = [Point((row['decimalLongitude'],row['decimalLatitude'])) for i,row in anigozanthos_manglesii[['decimalLongitude','decimalLatitude']].iterrows()]
+```
+
+Now that we have a list of all the points, we can add them to a `geopandas DataFrame`.  This is so we can manipulate spatial data more easily than in `pandas Dataframes`.  We will also set the Coordinate Reference System (CRS) to `EPSG:4326`, as this is the CRS of all ALA data points.
+
+```{python}
+gdf_anigozanthos_manglesii = gpd.GeoDataFrame(anigozanthos_manglesii,geometry=points_angiozanthos_manglesii)
+gdf_anigozanthos_manglesii.set_crs(epsg=4326, inplace=True)
+```
+
+Now, to add buffers of a certain radius, we have to convert our current CRS (which represents coordinates in degrees) to a CRS that represents coordinates in meters.  This is so so we can directly add buffers in meters.  For our example, we will be using `EPSG:3577`, which is Australian Albers, and a widely used CRS in Australia when one needs to use meters as a unit.  This is likely different around the world, so be sure to check what CRS is right for your area.
+
+```{python}
+gdf_anigozanthos_manglesii_meters = gdf_anigozanthos_manglesii.to_crs(3577)
+```
+
+Now, we will be creating five different buffers around our chosen points: 5km, 10km, 15km, 20km, and 25km.  For each buffer radius, we will be adding a circle of the chosen radius around each point.  We will then put them in a `geodataframe` so we can easily convert the buffers back from meters into degrees so they agree with our original points.  Then, we will perform something called a `unary_union`, which is a function in `shapely` that allows you to unify many shapes into one shape object.  We will then be storing this in a dictionary.
+
+```{python}
+buffer_shapes = {}
+buffer_lengths = {"5km": 5000, "10km": 10000,"15km": 15000,"20km": 20000,"25km": 20000}
+for length in buffer_lengths:
+  buffers = [row["geometry"].buffer(buffer_lengths[length]) for i,row in gdf_anigozanthos_manglesii_meters.iterrows()]
+  gdf_buffers = gpd.GeoSeries(buffers).set_crs(3577)
+  gdf_buffers_degrees = gdf_buffers.to_crs(4326)
+  union_buffers_degrees = shapely.unary_union(gdf_buffers_degrees)
+  buffer_shapes[length] = union_buffers_degrees
+```
+
+Now, we can finally plot the buffers!  Below is a code using the dictionary we just created to run a `for` loop over all the buffers to easily plot them, and also colour them in different colours.
+
+```{python}
+#| echo: true
+#| eval: false
+ax = states[states["STE_NAME21"] == "Western Australia"].plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white", figsize = (12,6))
+ax.set_ylim([-34,-27])
+ax.set_xlim([114,119])
+colors = ["red","orange","green","purple","black"]
+plt.scatter(anigozanthos_manglesii['decimalLongitude'],anigozanthos_manglesii['decimalLatitude'], c = "blue", s = 2)
+for i,length in enumerate(buffer_lengths):
+  for j,geom in enumerate(buffer_shapes[length].geoms):
+    if j==0:
+      plt.plot(*geom.exterior.xy,c=colors[i],lw=0.5,label=length)
+    else:
+      plt.plot(*geom.exterior.xy,c=colors[i],lw=0.5)
+plt.legend(fontsize=16)
+```
+
+```{python}
+#| column: screen-inset
+#| fig-align: center
+#| fig-height: 9
+#| fig-width: 10
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+ax = states[states["STE_NAME21"] == "Western Australia"].plot(edgecolor = "#5A5A5A", linewidth = 2.0, facecolor = "white", figsize = (24,12))
+colors = ["red","orange","green","purple","black"]
+plt.scatter(anigozanthos_manglesii['decimalLongitude'],anigozanthos_manglesii['decimalLatitude'], c = "blue", s = 6)
+for i,length in enumerate(buffer_lengths):
+  for j,geom in enumerate(buffer_shapes[length].geoms):
+    if j==0:
+      plt.plot(*geom.exterior.xy,c=colors[i],lw=1.0,label=length)
+    else:
+      plt.plot(*geom.exterior.xy,c=colors[i],lw=1.0)
+plt.legend(fontsize=16)
+ax.set_ylim([-35.5,-27]);
+ax.set_xlim([113.5,119]);
+plt.setp(ax.get_xticklabels(), visible=False);
+plt.setp(ax.get_xticklines(), visible=False);
+plt.setp(ax.get_yticklabels(), visible=False);
+plt.setp(ax.get_yticklines(), visible=False);
+plt.show();
+```
+
+# Final thoughts
+
+We hope this point has helped make the steps of adding buffers around points on a map clearer and easier.  For more advanced mapping in Python, check out our ALA Labs article on [how to map invasive species](https://labs.ala.org.au/posts/2023-04-28_plotting-invasive-species/post.html).
+
+<details><summary style = "color: #E06E53;">Expand for session info</summary>
+
+```{r, echo = FALSE}
+library(sessioninfo)
+# save the session info as an object
+pkg_sesh <- session_info(pkgs = "attached")
+# print it out
+pkg_sesh
+```
+
+</details>

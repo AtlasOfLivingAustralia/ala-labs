@@ -1,0 +1,211 @@
+---
+title: "Adding Buffers to Shapefiles"
+author: "Amanda Buyan,Dax Kellie"
+date: 2023-11-23
+format:
+  html:
+    css: style.css
+    highlight-style: tango
+draft: true
+---
+
+Adding buffers to shapefiles can be good when you are searching an area, such as a Local Government Area, a township, or a custom shapefile given to you by a researcher or client.  This is because there may be species that you are interested in that don't occur in the boundaries, but in the edges of the shape.  To capture the area around the edges, one needs to add a buffer to the shape.  In this post, we will use `galah-python`, `geopandas`, `shapely`, and `matplotlib` (for visualisation purposes) to add buffers around shapefiles, as well as get occurrences within the shape.  We will also explain what is going on when you use the `buffer` argument in `atlas_species()` and `atlas_occurrences()`.
+
+## Adding the buffer to the shapefile
+
+For those who want more control, and to understand what the `buffer` argument in `galah-python` will do to your shapefile, we will take you through step by step on how to add a buffer to your shape.  We will use the same example as we did in the [species list post](labs.ala.org.au), but this time we will add a buffer to the shape file.
+
+First, we will read in the Local Government Areas (LGAs) shapefile that we did in the previous post.  Then, we will select the Yass Valley again as our example (though users may want to select another LGA they are interested in).
+
+```{python}
+import geopandas as gpd
+LGAs_2023 = gpd.read_file("LGA_2023_AUST_GDA2020.shp")
+NSW = LGAs_2023[LGAs_2023['STE_NAME21'] == "New South Wales"]
+yass_valley_geometry = NSW[NSW['LGA_NAME23'] == "Yass Valley"]
+yass_valley_geometry.plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white", figsize = (12,5))
+```
+
+Now that we have the geometry, we can begin the process of adding a buffer region.  Adding a buffer using the `shapely` package is straightforward; however, we will have to remind ourselves of the discussion about Coordinate Reference Systems (CRSs) in the [species list post](labs.ala.org.au).  Essentially, there are many ways to represent two-dimensional coordinates on the three-dimensional earth.  The most common is in degrees latitude and degrees longitude.  Another way is to use meters, which is what we will need for this buffering exercise, as the buffers can only be added in meter units.  Those in Australia will likely use the Australian Albers CRS, which has the EPSG code 3577.  Those in other countries may wish to use something different, though the only requirement is it has to be in meters.  To change the CRS, you will need to use the `to_crs` function with the correct EPSG code.
+
+```{python}
+# import libraries you need
+import shapely
+from matplotlib import pyplot as plt
+
+# change geometry to meters
+yass_valley_geometry_meters = yass_valley_geometry.to_crs(3577)
+
+# plot results for comparison
+plt1, ax1 = plt.subplots(1,2, figsize = (10,5))
+x_deg,y_deg=yass_valley_geometry["geometry"][127].exterior.xy
+ax1[0].plot(x_deg,y_deg, color = "#5A5A5A", linewidth = 0.5)
+ax1[0].set_title("Degrees",size=12)
+x_m,y_m=yass_valley_geometry_meters["geometry"][127].exterior.xy
+ax1[1].plot(x_m,y_m, color = "#5A5A5A", linewidth = 0.5)
+ax1[1].set_title("Meters",size=12)
+plt1.suptitle("Yass Valley",size=16)
+```
+
+We can see that the shape hasn't changed, only the units in which they are represented.  Now, we will add the buffer in units of meters.  We will be adding a 10km buffer as an example.
+
+```{python}
+# add buffer
+yass_valley_geometry_meters_buffer = yass_valley_geometry_meters.buffer(10000)
+
+# visualise the object for plotting
+yass_valley_geometry_meters_buffer
+```
+
+Now, we will plot the shape to see how the buffered shapefile looks in comparison to the original shapefile.
+
+```{python}
+plt2, ax2 = plt.subplots(1,2, figsize = (10,5))
+x_deg,y_deg=yass_valley_geometry["geometry"][127].exterior.xy
+ax2[0].plot(x_deg,y_deg, color = "#5A5A5A", linewidth = 0.5)
+ax2[0].set_title("Degrees",size=12)
+x_mb,y_mb=yass_valley_geometry_meters_buffer[127].exterior.xy
+ax2[1].plot(x_mb,y_mb, color = "#5A5A5A", linewidth = 0.5)
+ax2[1].set_title("Meters With Buffer",size=12)
+plt2.suptitle("Yass Valley",size=16)
+```
+
+There is one last thing to do before we use the shapefile to get occurrences and species lists: change the Coordinate Reference System back to one that is based on degrees latitude and longitude.  To do this, we will run the `to_crs()` function again on our buffered shapefile.
+
+```{python}
+yass_valley_geometry_degrees_buffer = yass_valley_geometry_meters_buffer.to_crs(4326)
+yass_valley_geometry_degrees_buffer
+```
+
+Now, we will plot the shapes for posterity.
+
+```{python}
+plt3, ax3 = plt.subplots(1,2, figsize = (10,5))
+x_deg,y_deg=yass_valley_geometry["geometry"][127].exterior.xy
+ax3[0].plot(x_deg,y_deg, color = "#5A5A5A", linewidth = 0.5)
+ax3[0].set_title("Degrees",size=12)
+x_mb,y_mb=yass_valley_geometry_degrees_buffer[127].exterior.xy
+ax3[1].plot(x_mb,y_mb, color = "#5A5A5A", linewidth = 0.5)
+ax3[1].set_title("Degrees With Buffer",size=12)
+plt3.suptitle("Yass Valley",size=16)
+```
+
+## Getting counts, occurrences and a species list in the buffered shapefile
+
+Now that we have a buffered shapefile, we can start to get an idea of how many occurrences of species there are, where they are and a breakdown by type of species, including cross referencing this with species lists for the year 2023.  This is an exercise in case one needs to do yearly reports, but you can always add more/different filters by finding them through the lookup function `show_all()`.
+
+First, we will get an approximate count of how many counts are in the original shape versus the buffered shape.
+
+```{python}
+import galah
+galah.atlas_counts(polygon=yass_valley_geometry["geometry"][127],filters="year=2023")
+```
+
+```{python}
+import galah
+galah.atlas_counts(polygon=yass_valley_geometry_degrees_buffer[127],filters="year=2023")
+```
+
+We know that there are less than 5 millino records, so we can easily get the occurrence records of all species in the Yass Valley in the year 2023.
+
+```{python}
+galah.galah_config(email = "amanda.buyan@csiro.au")
+yass_valley_occurrences = galah.atlas_occurrences(polygon=yass_valley_geometry["geometry"][127],filters="year=2023")
+yass_valley_occurrences_buffer = galah.atlas_occurrences(polygon=yass_valley_geometry_degrees_buffer[127],filters="year=2023")
+print(yass_valley_occurrences.shape)
+print(yass_valley_occurrences_buffer.shape)
+```
+
+By printing the shape of the data frames, we can see that the number of rows corresponds to the number of counts we got using `atlas_counts()`.  
+
+Now, to show you the difference in where these occurrences are, and how much the buffer picks up around the boundaries, we will plot them side by side.
+
+```{python}
+plt3, ax3 = plt.subplots(1,2, figsize = (10,5))
+x_deg,y_deg=yass_valley_geometry["geometry"][127].exterior.xy
+ax3[0].plot(x_deg,y_deg, color = "#5A5A5A", linewidth = 0.5)
+ax3[0].scatter(yass_valley_occurrences["decimalLongitude"],yass_valley_occurrences["decimalLatitude"],color = "blue")
+ax3[0].set_title("Degrees",size=12)
+x_mb,y_mb=yass_valley_geometry_degrees_buffer[127].exterior.xy
+ax3[1].plot(x_mb,y_mb, color = "#5A5A5A", linewidth = 0.5)
+ax3[1].scatter(yass_valley_occurrences_buffer["decimalLongitude"],yass_valley_occurrences_buffer["decimalLatitude"],color = "blue")
+ax3[1].set_title("Degrees With Buffer",size=12)
+plt3.suptitle("Yass Valley",size=16)
+```
+
+To get a breakdown of what species are in the area, we can run `atlas_species()` to get the list.
+
+```{python}
+galah.atlas_species(polygon=yass_valley_geometry_degrees_buffer[127],filters="year=2023")
+```
+
+To cross reference it with the sensitive species list for NSW (see previous article for more details), we can add the argument `species_list_uid=dr650`.
+
+```{python}
+galah.atlas_species(polygon=yass_valley_geometry_degrees_buffer[127],filters=["year=2023","species_list_uid=dr650"])
+```
+
+To add the nuber of counts of each species, you can add the `counts=True` argument.
+
+```{python}
+galah.atlas_species(polygon=yass_valley_geometry_degrees_buffer[127],filters=["year=2023","species_list_uid=dr650"],counts=True)
+```
+
+Now, if you want to save this data to a file, you can use the `to_csv` function in `pandas`.
+
+```{python}
+yass_valley_species_buffer_sensitive_species = galah.atlas_species(polygon=yass_valley_geometry_degrees_buffer[127],filters=["year=2023","species_list_uid=dr650"])
+yass_valley_species_buffer_sensitive_species_counts = galah.atlas_species(polygon=yass_valley_geometry_degrees_buffer[127],filters=["year=2023","species_list_uid=dr650"],counts=True)
+yass_valley_species_buffer_sensitive_species.to_csv("yass_valley_species_buffer_sensitive_species.csv")
+yass_valley_species_buffer_sensitive_species_counts.to_csv("yass_valley_species_buffer_sensitive_species_counts.csv")
+```
+
+## Using the `buffer` argument with a shapefile
+
+If you would prefer to not add a buffer manually, but instead have `galah-python` do it for you, there is an option called `buffer`, as well as `crs_deg` and `crs_meters`.  What `galah-python` does is what we have showed in this post, but the user doesn't see it.  The main difference is that the `buffer` argument takes a number in units of kilometers, rather than meters.  Below is how you would repeat the above mapping, just using `galah-python` to do the buffering instead.  The Coordinate Reference Systems are provided for posterity and for clarity, though those are the defaults set in `galah-python`.
+
+```{python}
+import galah
+galah.atlas_counts(polygon=yass_valley_geometry["geometry"][127],filters="year=2023")
+```
+
+```{python}
+import galah
+galah.atlas_counts(polygon=yass_valley_geometry["geometry"][127],filters="year=2023",buffer=10,crs_deg=4326,crs_meters=3577)
+```
+
+We can see that 10987 and 56392 are the same counts we calculated above using our manually buffered shapefile.  Now, we can get the occurrences.
+
+```{python}
+galah.galah_config(email = "amanda.buyan@csiro.au")
+yass_valley_occurrences = galah.atlas_occurrences(polygon=yass_valley_geometry["geometry"][127],filters="year=2023")
+yass_valley_occurrences_buffer = galah.atlas_occurrences(polygon=yass_valley_geometry["geometry"][127],filters="year=2023",buffer=10,crs_deg=4326,crs_meters=3577)
+print(yass_valley_occurrences.shape)
+print(yass_valley_occurrences_buffer.shape)
+```
+
+We can see that X and Y are the same counts we calculated above using our manually buffered shapefile.  Now, we can get species lists.
+
+```{python}
+galah.atlas_species(polygon=yass_valley_geometry["geometry"][127],filters="year=2023",buffer=10,crs_deg=4326,crs_meters=3577)
+```
+
+To cross reference it with the sensitive species list for NSW (see previous article for more details), we can add the argument `species_list_uid=dr650`.
+
+```{python}
+galah.atlas_species(polygon=yass_valley_geometry["geometry"][127],buffer=10,crs_deg=4326,crs_meters=3577,filters=["year=2023","species_list_uid=dr650"])
+```
+
+To add the nuber of counts of each species, you can add the `counts=True` argument.
+
+```{python}
+galah.atlas_species(polygon=yass_valley_geometry["geometry"][127],buffer=10,crs_deg=4326,crs_meters=3577,filters=["year=2023","species_list_uid=dr650"],counts=True)
+```
+
+Now, if you want to save this data to a file, you can use the `to_csv` function in `pandas`.
+
+```{python}
+yass_valley_species_buffer_sensitive_species = galah.atlas_species(polygon=yass_valley_geometry_degrees_buffer[127],filters=["year=2023","species_list_uid=dr650"])
+yass_valley_species_buffer_sensitive_species_counts = galah.atlas_species(polygon=yass_valley_geometry_degrees_buffer[127],filters=["year=2023","species_list_uid=dr650"],counts=True)
+yass_valley_species_buffer_sensitive_species.to_csv("yass_valley_species_buffer_sensitive_species.csv")
+yass_valley_species_buffer_sensitive_species_counts.to_csv("yass_valley_species_buffer_sensitive_species_counts.csv")
+```
