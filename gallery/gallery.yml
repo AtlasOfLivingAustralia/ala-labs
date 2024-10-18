@@ -1,5 +1,11 @@
 
 - tiles:
+    - title: Animalia observations 2024
+      author: Dax Kellie
+      subtitle: R dataviz
+      href: https://www.linkedin.com/posts/atlas-of-living-australia_rstats-dataviz-activity-7242034661760139264-O60K?utm_source=share&utm_medium=member_desktop
+      code: https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2024-09-10_animalia/bubble-chart.R
+      thumbnail: images/bubbles_animalia_logo.png
     - title: Invasive species
       author: Johann Wagner, Rob Lanfear
       subtitle: Interactive Shiny app
