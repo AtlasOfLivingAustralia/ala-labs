@@ -8,11 +8,11 @@
 #------------ Edit these parameters for highlighted paper ---------------------#
 
 
-title <- 'Accounting for historical habitat ranges in conservation management'
-authors <- "Smith et al. 2024"
-main_colour <- "#F26649" # use an ALA colour as your main colour
+title <- 'Habitat connectivity support tool for Australian forest species'
+authors <- "Norman & Mackey, 2024"
+main_colour <- "#5B397D" # use an ALA colour as your main colour
 text_colour <- "#FFEDCF" # choose your own matching text colour: https://coolors.co/
-line_colour <- "#FFC557" # choose your own matching line colour
+line_colour <- "#C3EDEF" # choose your own matching line colour
 
 
 # ALA primary colours
