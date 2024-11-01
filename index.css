@@ -88,7 +88,7 @@
   /*--    --*/
   .hero-container {
     max-height: 75vh;
-    height: 66vh;
+    /*height: 66vh;*/
     display: flex;
   }
   .hero-image {
@@ -252,6 +252,28 @@ img.home-img-transparent {
   height: auto;
 }
 
+img.home-img-lens {
+  width: 100%;
+  border-style: none;
+  height: auto;
+}
+
+img.lens-logo {
+  max-width:2.8rem;
+}
+
+.vertical-center {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.heading-home {
+  font-size: 3rem;
+}
+
 /* Display the columns below each other instead of side by side on small screens */
 
 @media (max-width: 1660px) {
@@ -299,6 +321,11 @@ img.home-img-transparent {
   }
 
   img.home-img {
+  width: 100%;
+  margin-left: auto;
+  }
+
+  img.home-img-lens {
   width: 100%;
   margin-left: auto;
   }

@@ -29,6 +29,36 @@ This site is a resource for coding projects that use data sourced from [the ALA]
 
 <br>
 
+***
+
+:::{.column-screen}
+:::{.column-screen-inset}
+:::{.home-column-image .col-right}
+<a href="https://labs.ala.org.au/lens">
+![](images/homepage/lens-bubble-image.png){.home-img-lens}
+</a>
+
+:::
+
+:::{.home-column-text .col-left}
+
+<center> 
+
+<a href="https://labs.ala.org.au/lens">
+<h1 class="heading-home">ALA <img src="images/logos/lens-logo.svg" class="lens-logo"></img> Lens</h1>
+</a>
+
+<span>Dive into data using a new interactive interface for exploring ALA data. Try out new views of the ALA, designed to encourage exploration and discovery of species, data and place.</span><br><br>
+
+<span style="font-size:.7rem; color:#a7abb4;">Images (all CC-BY-NC): Kai Squires, andrewpavlov, mikegrow, kerrbrad, Matt Campbell, Toby Esplin, darcywhittaker</span>
+
+</center>
+
+:::
+:::
+:::
+
+
 :::{.column-screen style="background-color:#B8573E;"}
 :::{.column-screen-inset}
 :::{.home-column-image .col-left}
@@ -43,7 +73,7 @@ This site is a resource for coding projects that use data sourced from [the ALA]
 
 :::{.home-column-text .col-right}
 
-<center> <h1 style="color: #fff;">Posts</h1>
+<center> <h1 class="heading-home" style="color: #fff;">Posts</h1>
 <span style = "color: #fff; font-style: italic">How-to articles for solving scientific problems</span> 
 </center>
 
@@ -113,7 +143,7 @@ tags$div(class = "category-row",
 
 :::{.home-column-text .col-left}
 
-<center> <h1>Research</h1>
+<center> <h1 class="heading-home">Research</h1>
 
 <span style = "font-style: italic">Highlighting research supported by ALA data</span>
 
@@ -181,7 +211,7 @@ tags$div(class = "category-row",
 
 :::{.home-column-text .col-right}
 
-<center> <h1 style="color: #fff;">Software</h1>
+<center> <h1 class="heading-home" style="color: #fff;">Software</h1>
 
 <span style = "font-style: italic; color: #fff;">Tools supported by the Science & Decision Support Team</span>
 
@@ -218,7 +248,7 @@ tags$div(class = "category-row",
 :::{.column-screen-inset}
 :::{.home-column-image .col-left}
 
-<center> <h1 style="color: #222322;">Books</h1>
+<center> <h1 class="heading-home" style="color: #222322;">Books</h1>
 
 <span style = "font-style: italic;">Long-form resources by the Science & Decision Support Team</span>
 
