@@ -259,7 +259,7 @@ img.home-img-lens {
 }
 
 img.lens-logo {
-  max-width:2.8rem;
+  max-width:2.8rem!important;
 }
 
 .vertical-center {

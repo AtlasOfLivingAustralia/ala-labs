@@ -48,7 +48,9 @@ This site is a resource for coding projects that use data sourced from [the ALA]
 <h1 class="heading-home">ALA <img src="images/logos/lens-logo.svg" class="lens-logo"></img> Lens</h1>
 </a>
 
-<span>Dive into data using a new interactive interface for exploring ALA data. Try out new views of the ALA, designed to encourage exploration and discovery of species, data and place.</span><br><br>
+<span>Dive into data using a new interactive interface for exploring ALA data. Try out new views of the ALA, designed to encourage exploration and discovery of species, data and place.</span><br>
+
+[Designed by [Mitchell Whitelaw](https://mtchl.net/) and [Adrian Mackenzie](https://researchportalplus.anu.edu.au/en/persons/adrian-mackenzie) of the [Australian National University (ANU)](https://www.anu.edu.au/)]{style="font-face:italic;"}<br>
 
 <span style="font-size:.7rem; color:#a7abb4;">Images (all CC-BY-NC): Kai Squires, andrewpavlov, mikegrow, kerrbrad, Matt Campbell, Toby Esplin, darcywhittaker</span>
 
