@@ -1,0 +1,495 @@
+---
+title: "Adding buffers onto a shapefile"
+description: |
+  Add decription later
+author:
+  - name: "Amanda Buyan"
+  - name: "Dax Kellie"
+date: "2024-11-12"
+title-block-banner: "#B8573E"
+toc: true
+toc-location: left
+toc-depth: 2
+categories:
+  - Eukaryota
+  - Summaries
+  - Python
+# image: waffle-chart.png
+freeze: true
+engine: knitr
+jupyter: python3
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| include: false
+library(htmltools)
+```
+
+<!-- remove metadata section -->
+<style>
+  #title-block-header.quarto-title-block.default .quarto-title-meta {
+      display: none;
+  }
+</style>
+
+
+
+<!-- Author card -->
+
+:::{.author-card}
+:::{.author-card-text}
+
+#### Author
+[Amanda Buyan](https://labs.ala.org.au/people/Buyan_Amanda/index.html)  
+[Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)  
+
+#### Date
+12 February 2024
+
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/amanda.jpg")
+```
+:::
+
+:::{.author-card-image}
+```{r, out.width='120px', out.extra='style="clip-path: circle();"', echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg")
+```
+:::
+
+:::
+
+<!------------------------ Post starts here ------------------------>
+
+Buffers are a ubiquitous yet useful tool in ecology, and have many diverse applications.  One example of the usefulness of buffers is with mobile or seasonal species, as their presence/absence fluctuates depending on the time and location. Therefore, considering what might live just outside of the area, and therefore may have been observed in the area in question, gives a richer understanding of the biodiversity of an area.  Another example is area assessments prior to land development.  Determining not only what species are in the area slated for land development, but also what species directly outside the development will be affected, is important for biodiversity and wildlife considerations.
+
+Since each ecosystem is different, thought should be given about what buffer size is optimal for a given investigation. It will differ for everyone, and considerations for this include, but may not be limited to, the following:
+
+- Presence and size of biodiversity corridors
+- Number of species increasing with each buffer diameter
+- Conserved and sensitive species present
+
+In this post, we show how to use `{galah-python}`, `{geopandas}`, `{shapely}`, `{dataframe-image}` and `{matplotlib}` to add a buffer around a shapefile, specifically the Kangaroo Island national park, and how to show where conserved species are in the buffered area.
+
+# Drawing buffers around shapefile
+
+## Initial plotting of shapefile
+
+For this example, we will be using the National Parks shapefile provided by the South Australian Government (download it [here](https://data.gov.au/dataset/ds-sa-93abe05c-8f2d-4178-9135-e9aca680fb77/details?q=national%20park)).  To get started, we will read in the shapefile, show what it looks like in `{geopandas}`, and plot it.
+
+```{python}
+#| echo: true
+#| eval: false
+import geopandas as gpd
+parks = gpd.read_file("ADMIN_NationalParksWildlifeRegions_shp.zip")
+parks = parks.to_crs(4326)
+parks.plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white")
+parks
+```
+
+```{python}
+#| echo: false
+#| eval: true
+import geopandas as gpd
+import pandas as pd
+pd.set_option('display.max_columns', None)
+pd.set_option('expand_frame_repr', False)
+parks = gpd.read_file("../data/ADMIN_NationalParksWildlifeRegions_shp.zip")
+parks = parks.to_crs(4326)
+parks.plot(edgecolor = "#5A5A5A", linewidth = 1.5, facecolor = "white")
+parks
+```
+
+```{python}
+kangaroo_island = parks[parks['NPWSA_REGI'] == 'Kangaroo Island']
+kangaroo_island.plot(edgecolor = "#5A5A5A", linewidth = 1.0, facecolor = "white", figsize = (10,5))
+```
+
+## Drawing and plotting the buffers
+
+<!-- Dax: do we include a note or insert on CRSs? -->
+
+Now, we will draw all the buffers.  For drawing the buffers, this will involve converting the shapefiles between different Coordinate Reference Systems (CRSs).  The reason is that the `{shapely}` package, which is what the geometries are stored in, only draws buffers around shapes that are in meters, not degrees.  So, to draw buffers, it is necessary to perform the following steps:
+
+- convert your shape to a CRS which is measured in meters (we are using Australian Albers, EPSG:3577)
+- add the buffer (this must be in meters, so if you want to add a 1km buffer, the number passed to the `buffer()` function must be 1000)
+- convert the buffer shape back to degrees (both for plotting and for getting species lists and occurrences)
+- check to see if the buffers drawn around the shapes intersect; if they do, unify all the shapes into one or more
+
+```{python}
+# import shapely and shapes
+import shapely
+from shapely.geometry import Polygon
+
+# convert shape into meters
+kangaroo_island_meters = kangaroo_island.to_crs(3577)
+
+# create dictionaries for creating many buffers
+buffer_shapes = {}
+buffer_lengths = {"1km": 1000, "2km": 2000, "5km": 5000, "10km": 10000,"15km": 15000,"20km": 20000,"25km": 20000}
+
+# loop over the buffers to create multiple
+for length in buffer_lengths:
+  buffer = kangaroo_island_meters['geometry'].buffer(buffer_lengths[length])
+  gdf_buffers_degrees = buffer.to_crs(4326)
+  union_buffers_degrees = shapely.unary_union(gdf_buffers_degrees)
+  buffer_shapes[length] = union_buffers_degrees
+```
+
+To check that everything has been done correctly, we can plot each buffer around the original shapefile.
+
+```{python}
+#| echo: true
+#| eval: false
+# import matplotlib for plotting
+import matplotlib.pyplot as plt
+
+# set axes, colours and axis limits
+ax = parks.plot(edgecolor = "#5A5A5A", linewidth = 0.75, facecolor = "white", figsize = (10,5))
+colors = ['#531336','#620C3F','#700548','#713C7A','#726CA5','#7899D4','#99B2DF']
+ax.set_ylim([-36.75,-35])
+ax.set_xlim([135.75,139])
+
+# loop over buffers to plot them
+for i,length in enumerate(buffer_lengths):
+    if type(buffer_shapes[length]) is Polygon:
+        plt.plot(*buffer_shapes[length].exterior.xy,c=colors[i],lw=1.5,label=length)
+    else:
+      for j,geom in enumerate(buffer_shapes[length].geoms):
+        if j==0:
+          plt.plot(*geom.exterior.xy,c=colors[i],lw=1.5,label=length)
+        else:
+          plt.plot(*geom.exterior.xy,c=colors[i],lw=1.5)
+
+# add legend and remove x and y ticks 
+plt.legend()
+plt.setp(ax.get_xticklabels(), visible=False)
+plt.setp(ax.get_xticklines(), visible=False)
+plt.setp(ax.get_yticklabels(), visible=False)
+plt.setp(ax.get_yticklines(), visible=False)
+```
+
+```{python}
+#| echo: false
+#| eval: true
+# import matplotlib for plotting
+import matplotlib.pyplot as plt
+
+# set axes, colours and axis limits
+ax = parks.plot(edgecolor = "#5A5A5A", linewidth = 0.75, facecolor = "white", figsize = (10,5))
+colors = ['#531336','#620C3F','#700548','#713C7A','#726CA5','#7899D4','#99B2DF']
+ax.set_ylim([-36.75,-35]);
+ax.set_xlim([135.75,139]);
+
+# loop over buffers to plot them
+for i,length in enumerate(buffer_lengths):
+    if type(buffer_shapes[length]) is Polygon:
+        plt.plot(*buffer_shapes[length].exterior.xy,c=colors[i],lw=1.5,label=length)
+    else:
+      for j,geom in enumerate(buffer_shapes[length].geoms):
+        if j==0:
+          plt.plot(*geom.exterior.xy,c=colors[i],lw=1.5,label=length)
+        else:
+          plt.plot(*geom.exterior.xy,c=colors[i],lw=1.5)
+
+# add legend and remove x and y ticks 
+plt.legend()
+plt.setp(ax.get_xticklabels(), visible=False);
+plt.setp(ax.get_xticklines(), visible=False);
+plt.setp(ax.get_yticklabels(), visible=False);
+plt.setp(ax.get_yticklines(), visible=False);
+plt.show();
+```
+
+## Determining number of species in each buffer
+
+Now that we know we have the correct buffers, we can determine what types of species are in the buffers, and now many of each inside each buffer.  For this exercise, we are going to see how the number of birds, mammals, reptiles, plants, and all other species change as we increase the buffer size.  To do this, we will initialise a table containing all this information into a dataframe, as well as queries for `atlas_species()` for looping.
+
+```{python}
+import pandas as pd
+buffer_distances = list(buffer_lengths.keys())
+distances = ['0km'] + buffer_distances
+query_dict = {'Bird': ['Class','Aves'],
+              'Mammal': ['Class','Mammalia'],
+              'Reptile': ['Class','Reptilia'],
+              'Plant': ['Kingdom','Plantae'],
+              'Other': 'Class not in ["Aves","Mammalia","Reptilia"] and Kingdom != "Plantae"'}
+number_counts = [None for x in range(len(distances))]
+counts = pd.DataFrame({'Distance': number_counts,
+                       'Bird Species': number_counts,
+                       'Mammal Species': number_counts,
+                       'Reptile Species': number_counts,
+                       'Plant Species': number_counts,
+                       'Other Species': number_counts})
+```
+
+After initialising all these variables, we will then loop over the buffer polygons (including the original Kangaroo Island polygon) to determine the number of species found in each polygon.  The number of species will then be stored in the dataframe initialised above.
+
+```{python}
+import galah
+
+# loop over distances
+for i,d in enumerate(distances):
+
+    # set distance
+    counts.iloc[i,counts.columns.get_loc('Distance')] = d
+
+    # if i == 0, get species in original shape; if not, get one from the buffer shapes
+    if i == 0:
+        index = kangaroo_island['geometry'].index[0]
+        polygon = kangaroo_island['geometry'][index]
+    else:
+        polygon = buffer_shapes[d]
+    
+    # get species with counts
+    species = galah.atlas_species(
+        rank='species',
+        filters=["year>=2020","basisOfRecord=HUMAN_OBSERVATION"],
+        polygon = polygon
+    )
+
+    for key in query_dict.keys():
+        
+        if key != 'Other':
+            subset = species[species[query_dict[key][0]] == query_dict[key][1]]
+        else:
+            subset = species.query(query_dict[key])
+            
+        counts.iloc[i,counts.columns.get_loc('{} Species'.format(key))] = subset.shape[0]
+```
+
+Now that we have the counts, we can calculate the percentage increases for each species using the formula.
+
+(counts_final - counts_initial) / counts_final
+
+```{python}
+# copy the initial dataframe to ensure the percentage table has the same structure
+percent_increase = counts.copy()
+
+# drop the initial row (0km), as this is our initial measurement
+percent_increase = percent_increase.drop(0)
+
+# loop over each row and each column to calculate the percentage for each species and each distances
+for i,row in percent_increase.iterrows():
+    for column in percent_increase.columns:
+        if column != 'Distance':
+            percent = (float(counts.iloc[i,counts.columns.get_loc(column)]) - float(counts.iloc[i-1,counts.columns.get_loc(column)])) / float(counts.iloc[i-1,counts.columns.get_loc(column)])
+            percent_increase.iloc[i-1,percent_increase.columns.get_loc(column)] = round(percent,3)
+```
+
+After we've calculated the percentage increases, we will quickly define a `{pandas}` styler, which will add colouring to the dataframe to make the percentage increases more obvious the higher they are.
+
+```{python}
+def make_pretty(styler):
+    styler.format(precision=2)
+    styler.background_gradient(axis=None, vmin=0, vmax=0.5, cmap="YlGnBu")
+    return styler
+```
+
+Now, we will set the distances to an index, transpose the dataframe and make the dataframe pretty.
+
+```{python}
+percent_increase = percent_increase.set_index('Distance').rename_axis(None)
+percent_increase_all = percent_increase.T
+percent_increase_all.apply(pd.to_numeric).style.pipe(make_pretty) 
+```
+
+## Plotting both together
+
+Now that we've made these plots individually, we can now put them together.
+
+```{python}
+# import package for writing styled data table as image
+import dataframe_image as dfi
+
+# initialise the figure
+fig = plt.figure(figsize=(10,6))
+fig.add_subplot(121) # map
+fig.add_subplot(122) # table
+
+# separate axes for plotting
+ax1, ax2 = fig.axes
+
+# plot buffers on left-hand subplot
+parks.plot(ax=ax1,edgecolor = "#5A5A5A", linewidth = 1.0, facecolor = "white")
+colors = ['#531336','#620C3F','#700548','#713C7A','#726CA5','#7899D4','#99B2DF']
+ax1.set_ylim([-36.75,-35]);
+ax1.set_xlim([135.75,139]);
+for i,length in enumerate(buffer_lengths):
+    if type(buffer_shapes[length]) is Polygon:
+        ax1.plot(*buffer_shapes[length].exterior.xy,c=colors[i],lw=1,label=length)
+    else:
+      for j,geom in enumerate(buffer_shapes[length].geoms):
+        if j==0:
+          ax1.plot(*geom.exterior.xy,c=colors[i],lw=1,label=length)
+        else:
+          ax1.plot(*geom.exterior.xy,c=colors[i],lw=1)
+
+# adjust legend and axes
+ax1.legend(fontsize=10,loc=1)
+ax1.set_title('Buffers Kangaroo Island',size=16)
+plt.setp(ax1.get_xticklabels(), visible=False);
+plt.setp(ax1.get_xticklines(), visible=False);
+plt.setp(ax1.get_yticklabels(), visible=False);
+plt.setp(ax1.get_yticklines(), visible=False);
+
+# Hide axes on second subplot
+ax2.xaxis.set_visible(False)
+ax2.yaxis.set_visible(False)
+
+# Save styled dataframe as image
+styled_percent_increase_all = percent_increase_all.apply(pd.to_numeric).style.pipe(make_pretty)
+dfi.export(styled_percent_increase_all,'styled_percent_increase_all.png',dpi=600)
+
+# Make table image subplot on right
+img = plt.imread('styled_percent_increase_all.png')
+ax2.imshow(img,extent=(0, 100, 35, 100))
+ax2.set_title('Percentage Increase',size=16)
+
+# Adjust spacing on final image for better aesthetics
+plt.subplots_adjust(wspace=0.05)
+plt.show()
+```
+
+## Which buffer is best for our case?
+
+For plotting occurrence records, we want to capture the most species without drawing too big of a buffer, as a larger shapefile will take longer to return the queries.  In addition, then we don't ask for more information which won't be helpful.  For our case, we will be using the 20km buffer, as this will capture the most species.
+
+# Plotting occurrence records of conserved and other species onto map
+
+Now that we know which buffer we are using, we can then use that buffer and plot both conserved species, and species with no status attached to them in kangaroo island national park.  First, we need to get the conservation list for South Australia.   To do this, we will use the `search_all()` function in galah.
+
+```{python}
+galah.search_all(lists="South Australia")
+```
+
+In row 9, we can see this is the South Australian Conservation species list, and will use this list id to separate out conserved species from species with no status.  We will also exclude species from the sensitive list for now, as we are not intersted in these for this example, and they are often obscured, so while we can plot their location, this is not going to be accurate.
+
+```{python}
+#| echo: true
+#| eval: false
+galah.galah_config("your-email-here")
+occurrences_20km_conservation = galah.atlas_occurrences(
+    filters = ["year>=2020","basisOfRecord=HUMAN_OBSERVATION","species_list_uid=dr653","species_list_uid!=dr884"],
+    polygon = buffer_shapes['20km']
+)
+occurrences_20km_nostatus = galah.atlas_occurrences(
+    filters = ["year>=2020","basisOfRecord=HUMAN_OBSERVATION","species_list_uid!=dr653","species_list_uid!=dr884"],
+    polygon = buffer_shapes['20km']
+)
+```
+
+Finally, we can plot these on a map with the national park boundaries, the buffer around the national park, conserved species and species with no status
+
+```{python}
+#| echo: false
+#| eval: true
+galah.galah_config("amanda.buyan@csiro.au")
+occurrences_20km_conservation = galah.atlas_occurrences(
+    filters = ["year>=2020","basisOfRecord=HUMAN_OBSERVATION","species_list_uid=dr653","species_list_uid!=dr884"],
+    polygon = buffer_shapes['20km']
+)
+occurrences_20km_nostatus = galah.atlas_occurrences(
+    filters = ["year>=2020","basisOfRecord=HUMAN_OBSERVATION","species_list_uid!=dr653","species_list_uid!=dr884"],
+    polygon = buffer_shapes['20km']
+)
+```
+
+```{python}
+#| code-fold: true
+#| echo: true
+#| eval: false
+# set axis, as well as axis limits
+ax = parks.plot(edgecolor = "#5A5A5A", linewidth = 1.5, facecolor = "white", figsize = (24,12))
+ax.set_ylim([-36.75,-35])
+ax.set_xlim([135.5,139])
+
+# plot the buffer around the park
+plt.plot(*buffer_shapes['20km'].exterior.xy,c='#7899D4',lw=2.5,label='20km Buffer')
+
+# plot the conserved species and species with no status
+plt.scatter(occurrences_20km_nostatus['decimalLongitude'],occurrences_20km_nostatus['decimalLatitude'], c = "blue", s = 25,label='No Status')
+plt.scatter(occurrences_20km_conservation['decimalLongitude'],occurrences_20km_conservation['decimalLatitude'], c = "orange", s = 25,label='Threatened')
+
+# make the plot look prettier
+plt.legend(fontsize=20)
+plt.setp(ax.get_xticklabels(), visible=False)
+plt.setp(ax.get_xticklines(), visible=False)
+plt.setp(ax.get_yticklabels(), visible=False)
+plt.setp(ax.get_yticklines(), visible=False)
+plt.show()
+```
+
+```{python}
+#| column: screen-inset
+#| fig-align: center
+#| fig-height: 9
+#| fig-width: 10
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+ax = parks.plot(edgecolor = "#5A5A5A", linewidth = 1.5, facecolor = "white", figsize = (24,12))
+ax.set_ylim([-36.75,-35]);
+ax.set_xlim([135.5,139]);
+plt.plot(*buffer_shapes['20km'].exterior.xy,c='#7899D4',lw=2.5,label='20km Buffer')
+plt.scatter(occurrences_20km_nostatus['decimalLongitude'],occurrences_20km_nostatus['decimalLatitude'], c = "blue", s = 25,label='No Status')
+plt.scatter(occurrences_20km_conservation['decimalLongitude'],occurrences_20km_conservation['decimalLatitude'], c = "orange", s = 25,label='Threatened')
+plt.legend(fontsize=20)
+plt.setp(ax.get_xticklabels(), visible=False);
+plt.setp(ax.get_xticklines(), visible=False);
+plt.setp(ax.get_yticklabels(), visible=False);
+plt.setp(ax.get_yticklines(), visible=False);
+plt.show()
+```
+
+<!-- ```{python}
+#| column: screen-inset
+#| fig-align: center
+#| fig-height: 9
+#| fig-width: 10
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+ax = states[states["STE_NAME21"] == "Western Australia"].plot(edgecolor = "#5A5A5A", linewidth = 2.0, facecolor = "white", figsize = (24,12))
+colors = ["red","orange","green","purple","black"]
+plt.scatter(anigozanthos_manglesii['decimalLongitude'],anigozanthos_manglesii['decimalLatitude'], c = "blue", s = 6)
+for i,length in enumerate(buffer_lengths):
+  for j,geom in enumerate(buffer_shapes[length].geoms):
+    if j==0:
+      plt.plot(*geom.exterior.xy,c=colors[i],lw=1.0,label=length)
+    else:
+      plt.plot(*geom.exterior.xy,c=colors[i],lw=1.0)
+plt.legend(fontsize=16)
+ax.set_ylim([-35.5,-27]);
+ax.set_xlim([113.5,119]);
+plt.setp(ax.get_xticklabels(), visible=False);
+plt.setp(ax.get_xticklines(), visible=False);
+plt.setp(ax.get_yticklabels(), visible=False);
+plt.setp(ax.get_yticklines(), visible=False);
+plt.show();
+``` -->
+
+# Final thoughts
+
+We hope this point has helped make the steps of adding buffers a shape, as well as deciding the buffer size you need, clearer and easier.  
+
+<!-- For more advanced mapping in Python, check out our ALA Labs article on [how to map invasive species](https://labs.ala.org.au/posts/2023-04-28_plotting-invasive-species/post.html). -->
+
+<details><summary style = "color: #E06E53;">Expand for session info</summary>
+
+```{r, echo = FALSE}
+library(sessioninfo)
+# save the session info as an object
+pkg_sesh <- session_info(pkgs = "attached")
+# print it out
+pkg_sesh
+```
+
+</details>
