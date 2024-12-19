@@ -30,8 +30,8 @@ params:
 
 <!-- Side panel -->
 
-::: column-page
-::: paper-side-column
+::::::: column-page
+::::: paper-side-column
 <center>
 
 ::: {.col-image layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
@@ -60,21 +60,18 @@ htmltools::HTML(
 #### Page info
 
 Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
-:::
+:::::
 
 <!-- Main panel description -->
 
 ::: paper-main-column
+<!-- I might suggest renaming the folder to `2024_freshwater-fish` or `2024_freshwater-fish-IUCN` just to be a little more specific for our own folder naming --> 
+More than half of Australia's freshwater fish species are unique to Australia, found nowhere else in the world. This includes species like the ancient [Australian lungfish](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/38a5a409-3f58-4522-acec-61444d999bd2#overview), the the [longnose sooty grunter](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/9435389a-d9de-48ba-92a9-8302b6243654#overview), and the [spotted galaxias](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/e4d85845-3e34-4112-90a9-f954176721ec) (pictured left). 
 
-More than half of Australia's freshwater fish species are found nowhere else in the world. This includes species like the ancient [Australian lungfish](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/38a5a409-3f58-4522-acec-61444d999bd2#overview), the [spotted galaxias](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/e4d85845-3e34-4112-90a9-f954176721ec) (pictured left), and the [longnose sooty grunter](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/9435389a-d9de-48ba-92a9-8302b6243654#overview). Ecosystems that are more diverse tend to be more resilient and functional, enabling their ecosystem services to be of a higher quality. This includes vital processes like the provision of clean and fresh water. 
+Despite this diversity, conserving freshwater fish in Australia has predominantly focused on addressing pest species and disturbed stream flows, which, while important, may not effectively manage *all* at-risk fish. This study provided the first comprehensive assessment of Australian freshwater fish extinction risk using the [IUCN Red List](https://www.iucnredlist.org/). 
 
-Despite this diversity, Australia lacks a collective, comprehensive and holistic assessment of freshwater fish to inform management. Conserving freshwater fish in Australia has predominantly focused on addressing pest species and disturbed stream flows, which, while important, may not be the most effective or widespread solution for all fish at risk, according to this research. 
+Using current scientific literature and a combination of data from sources including the Atlas of Living Australia, Linterman et al. found that many Australian freshwater fish show signs that they are still in trouble, even if not formally recognized. Key threats affected introduced *and* native species (e.g., genetic diversity loss, disease, shifts to natural systems like streams). For almost half of the species listed they found that the only conservation action implemented was a noted occurrence in a protected conservation area. <!-- I don't understand how this is a conservation action? Maybe be a little more specific -->
 
-Using a combination of data from sources including the Atlas of Living Australia and reviewing the current scientific literature, the authors find that many Australian freshwater fish are indicating that they may be in trouble, yet, have not been formally recognized. Key threats to species identified were problematic introduced *and* native species, genetic diversity loss and disease, natural system modifications (including but not limited to stream flow changes) as well as climatic change and severe weather. For almost half of the species listed they found that the only conservation action implemented was a noted occurrence in a protected conservation area.  
-
-Species listings can be powerful tools to effectively engage available resources. The global [IUCN Red List](https://www.iucnredlist.org/) is one of these, with the [Threatened Species List](https://www.environment.gov.au/cgi-bin/sprat/public/publicthreatenedlist.pl?wanted=fauna) a national engagement of these concerns. Discrepancies between these lists exist, however, largely due to national criteria and judgement processes. They can also vary across states and territories in Australia.
-
-Currently, 63 freshwater fish species are listed nationally, with this study identifying a potential 35 more that fit the criteria. Many of these potential species are already identified by the IUCN Red List. A collection of species were also provided evidence in this research that their listings are suited for upgrade, but, are yet to be reflected. This research suggests that managing freshwater fishes in Australia should involve a holistic approach that considers the unique needs and requirements of multiple fishes, as well as engaging the listing system more efficiently. 
- 
+In addition to the 63 freshwater fish species currently listed as at risk to extinction, this study identified a potential 35 more. Many of these potential species are already identified by the IUCN Red List <!-- ...but are not listed within National threatened species lists? -->. A further <!-- how many --> species were found suitable for an upgraded status (e.g., sensitive to threatened) but are not yet <!-- editing tip: you can always edit out "to be" (which I did here)--> reflected. The authors conclude that the current conservation effort for Australian freshwater fish may not align with the level threat. Australia may need to update their accepted assessment of risk urgently to prevent extinction of many Australian freshwater fish species.
 :::
-:::
+:::::::
