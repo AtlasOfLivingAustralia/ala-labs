@@ -1,0 +1,76 @@
+---
+title: "Protecting Australia's freshwater fish at risk of extinction"
+author: "Olivia Torresan"
+date: "2024-11-22"
+title-block-banner: "#FFEDCF"
+title-block-banner-color: "#C44D34"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png 
+categories:
+  - Biodiversity science 
+  - Conservation
+params:
+  authors: "Lintermans, M., Lutz, M., Whiterod, N. S., Gruber, B., Hammer, M. P., Kennard, M. J., Morgan, D. L., Raadik, T. A., Unmack, P., Brooks, S., Ebner, B. C., Gilligan, D., Butler, G. L., Moore, G., Brown, C., Freeman, R., Kerezsy, A., Bice, C. M., Le Feuvre, M. C., Beatty, S., Arthington, A. H., Koehn, J., Larson, H. K., Coleman, R., Mathwin, R., Pearce, L., Tonkin, Z., Bruce, A., Espinoza, T., Kern, P., Lieschke, J. A., Martin, K., Sparks, J., Stoessel, D. J., Wedderburn, S. D., Allan, H., Clunie, P., Cockayne, B., Ellis, I., Hardie, S., Koster, W., Moy, K., Roberts, D., Schmarr, D., Sharley, J., Sternberg, D., Zukowski, S., Walsh, C., Zampatti, B., Shelley, J. J., Sayer, C., Chapple, D. G."
+  year: 2024
+  title: "Troubled waters in the land down under: Pervasive threats and high extinction risks demand urgent conservation actions to protect Australia’s native freshwater fishes"
+  publication: "Biological Conservation"
+  doi: https://doi.org/10.1016/j.biocon.2024.110843
+  image_url: https://images.ala.org.au/image/details?imageId=87284989-1402-443e-b697-c66f07f255df 
+  alt_text: Spotted galaxias (*Galaxias truttaceus*) swimming in the crisp waters of Tasmania
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+<!-- Side panel -->
+
+::::::: column-page
+::::: paper-side-column
+<center>
+
+::: {.col-image layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/f/d/5/5/87284989-1402-443e-b697-c66f07f255df/original" class="rounded"/></img>
+:::
+
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+
+[*Galaxias truttaceus* (Bruce Deagle CC BY 4.0)](https://images.ala.org.au/image/details?imageId=09750570-1501-4ca7-a2ca-ba146b18ed9b)
+:::
+
+### Citation
+
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+#### Page info
+
+Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
+:::::
+
+<!-- Main panel description -->
+
+::: paper-main-column
+More than half of Australia's freshwater fish species are unique to Australia and are found nowhere else in the world. This includes species like the ancient [Australian lungfish](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/38a5a409-3f58-4522-acec-61444d999bd2#overview), the [longnose sooty grunter](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/9435389a-d9de-48ba-92a9-8302b6243654#overview), and the [spotted galaxias](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/e4d85845-3e34-4112-90a9-f954176721ec) (pictured here).
+
+Despite this diversity, discussions on conserving freshwater fish in the last decade have focused largely on pests and disrupted streams, rather than a comprehensive understanding of the unique needs, behaviours and threats of native freshwater fish. *Galaxias*, for example, require calm and semi-isolated waterbodies like rock pools for protection from other species.
+
+To identify gaps in current threatened species assessment, Linterman et al. completed the first holistic assessment of Australian freshwater fishes and their potential risk of extinction through [IUCN Red List](https://www.iucnredlist.org/) categorisation protocols. Using current scientific literature and combined data from sources including the Atlas of Living Australia, the authors found that many Australian freshwater fish are showing signs of possible decline without any formal recognition.
+
+Currently there are 63 freshwater fish species listed as at risk of extinction nationally and across state jurisdictions, with this study identifying a potential *35* more. Many of these species are already listed on the IUCN Red List. The authors also found another 17 species are suitable for upgraded statuses (e.g., sensitive to threatened). Overall, these findings suggest that the current conservation effort for Australian freshwater fish may not align with the current level of threat, and the authors urge Australia to urgently update their risk assessment to prevent further extinction risk.
+:::
+:::::::
