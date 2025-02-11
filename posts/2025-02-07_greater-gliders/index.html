@@ -136,6 +136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#tuning-and-running-the-model" id="toc-tuning-and-running-the-model" class="nav-link" data-scroll-target="#tuning-and-running-the-model">Tuning and Running the Model</a></li>
   <li><a href="#generating-the-final-raster" id="toc-generating-the-final-raster" class="nav-link" data-scroll-target="#generating-the-final-raster">Generating the Final Raster</a></li>
   <li><a href="#finishing-up-statistical-analysis" id="toc-finishing-up-statistical-analysis" class="nav-link" data-scroll-target="#finishing-up-statistical-analysis">Finishing up: Statistical Analysis</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
 </div>
@@ -330,7 +331,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We’ll be focusing on two key variables:</p>
 <ul>
 <li>Bio1: Mean Annual Temperature</li>
-<li>Bio12: Mean Annual Precipitation</li>
+<li>Bio12: Annual Precipitation</li>
 </ul>
 <p>Greater gliders are sensitive to temperature and precipitation changes, and so these two variables are a sensible set to incorporate into our model to help understand their range.</p>
 <p>First things first, let’s download and load the two raster files.</p>
@@ -521,7 +522,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                  </code></pre>
 </div>
 </div>
-<p>Now we have a single raster with multiple layers detailing: * Elevation * Mean annual temperature (BIO1) * Mean annual precipitation (BIO12) * Extent of the 2019 bushfires * Tree cover</p>
+<p>Now we have a single raster with multiple layers detailing: * Elevation * Mean annual temperature (BIO1) * Annual precipitation (BIO12) * Extent of the 2019 bushfires * Tree cover</p>
 </section>
 <section id="thinning-our-data" class="level3">
 <h3 class="anchored" data-anchor-id="thinning-our-data">Thinning our data</h3>
@@ -827,22 +828,22 @@ glm(formula = .pred_presence ~ elevation + bio1 + bio12 + fire_extent +
 
 Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -1.032e+00  2.718e-03  -379.9   &lt;2e-16 ***
-elevation    3.643e-04  8.509e-07   428.2   &lt;2e-16 ***
-bio1         5.764e-02  1.520e-04   379.2   &lt;2e-16 ***
-bio12        1.480e-04  5.750e-07   257.4   &lt;2e-16 ***
-fire_extent -2.241e-02  1.179e-04  -190.0   &lt;2e-16 ***
-treecover    2.306e-03  2.892e-06   797.6   &lt;2e-16 ***
-fire_period  2.692e-02  2.354e-04   114.4   &lt;2e-16 ***
+(Intercept) -1.673e+00  3.970e-03  -421.4   &lt;2e-16 ***
+elevation    5.869e-04  1.243e-06   472.1   &lt;2e-16 ***
+bio1         8.918e-02  2.221e-04   401.6   &lt;2e-16 ***
+bio12        1.677e-04  8.400e-07   199.6   &lt;2e-16 ***
+fire_extent -3.480e-02  1.722e-04  -202.1   &lt;2e-16 ***
+treecover    3.563e-03  4.225e-06   843.2   &lt;2e-16 ***
+fire_period  4.721e-02  3.437e-04   137.3   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-(Dispersion parameter for gaussian family taken to be 0.01424913)
+(Dispersion parameter for gaussian family taken to be 0.03041511)
 
-    Null deviance: 60763  on 2825491  degrees of freedom
-Residual deviance: 40261  on 2825485  degrees of freedom
+    Null deviance: 131369  on 2825491  degrees of freedom
+Residual deviance:  85937  on 2825485  degrees of freedom
   (1391370 observations deleted due to missingness)
-AIC: -3992926
+AIC: -1850515
 
 Number of Fisher Scoring iterations: 2</code></pre>
 </div>
@@ -897,7 +898,7 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <td><strong>425.44</strong> - Another strong predictor. This should be considered within the context of all other variables.</td>
 </tr>
 <tr class="odd">
-<td><strong>BIO12 (Mean Annual Precipitation)</strong></td>
+<td><strong>BIO12 (Annual Precipitation)</strong></td>
 <td><strong>0.0002668</strong> - More rainfall slightly increases the predicted chance of glider presence.</td>
 <td><strong>297.31</strong> - Another positive predictor. When considered alongside tree cover and elevation, this makes sense as higher tree cover typically requires more precipitation.</td>
 </tr>
@@ -913,13 +914,24 @@ Number of Fisher Scoring iterations: 2</code></pre>
 </tr>
 <tr class="even">
 <td><strong>Fire Period (Before or After)</strong></td>
-<td><strong>0.02963</strong> - Fire period slightly influences glider presence.</td>
-<td><strong>78.99</strong> - The weakest predictor in our model, but it still plays a role in determining glider presence.</td>
+<td><strong>0.02963</strong> - Fire period slightly influences glider presence in a positive way. This is interesting, as our results indicate a slight preference for post fire sightings. This could be due to the creation of hollow bearing trees - or some other factor, or potentially skewed by our data (maybe more people were out looking for Gliders after the fires than before?)</td>
+<td><strong>78.99</strong> - It is the weakest predictor in our model, but it still plays a minor role in determining glider presence.</td>
 </tr>
 </tbody>
 </table>
-<p><summarising and="" concluding="" sentence=""></summarising></p>
 </section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>So what does our model actually say about Greater Glider distribution in South-East NSW?</p>
+<ol type="1">
+<li><p>Tree cover is critical - Tree cover is the strongest predictor of glider presence.</p></li>
+<li><p>Elevation and temperature are big predictors - Greater Gliders appear to prefer higher elevations and (relative to the surrounds) warmer annual temperatures.</p></li>
+<li><p>Rainfall plays a part - More precipitation increases the likelihood of glider presence, which is not a big surprise considering the relationship between precipitation and tree cover, and precipitation and elevation!</p></li>
+<li><p>Strong fires have a negative impact - The more extreme the fire events in the 2019 bushfire season, the less likely we were to see gliders present. Fires that are too intense can scorch and destroy the critical habitat needed by Greater Gliders, and destroy the hollow bearing trees needed for them. It is worth noting that fire can also create hollows in trees! However our model suggests that these intense fires did disrupt their habitat in a negative way.</p></li>
+<li><p>Pre vs Post fire presence - There was a slight influence of fire presence in an area. The exact nature of this requires a bit more exploring.</p></li>
+</ol>
+<p>This SDM gives us an interesting insight into the impact of the 2019 bushfires on glider distribution. It’s clear that when accounting for these other climactic variables, fire negatively impacts Glider range and habitat. This sort of modelling gives us a great starting point into deeper more nuanced analysis, and can help inform conservation planning and the impact that various environmental factors like fire have on a species range and habitat.</p>
 </section>
 
 </main>

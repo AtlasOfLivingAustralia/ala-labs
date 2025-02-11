@@ -186,8 +186,7 @@ ggplot() +
   geom_sf(data = gliders_sf, aes(color = fire_period), size = 2, alpha = 0.7) +
   scale_color_manual(values = c("pre_fire" = "blue", "post_fire" = "red")) +
   labs(title = "Greater Glider Observations (2014-2024)",
-       color = "Fire Period",
-       caption = "Blue = Pre-Fire (Before Oct 2019), Red = Post-Fire (After Oct 2019)") +
+       color = "Fire Period") +
   coord_sf(xlim = c(se_nsw_bbox$xmin, se_nsw_bbox$xmax), 
            ylim = c(se_nsw_bbox$ymin, se_nsw_bbox$ymax)) +
   theme_minimal()
@@ -316,7 +315,7 @@ To help develop an accurate species distribution model, we'll need to incorporat
 We’ll be focusing on two key variables:
 
   * Bio1: Mean Annual Temperature
-  * Bio12: Mean Annual Precipitation
+  * Bio12: Annual Precipitation
     
 Greater gliders are sensitive to temperature and precipitation changes, and so these two variables are a sensible set to incorporate into our model to help understand their range.
 
@@ -397,7 +396,7 @@ ggplot() +
 ggplot() +
   geom_spatraster(data = bio12, aes(fill = bio12)) +
   scale_fill_viridis_c() +
-  labs(title = "Mean Annual Precipitation (BIO12)",
+  labs(title = "Annual Precipitation (BIO12)",
        fill = "mm") +
   theme_minimal()
 ```
@@ -493,8 +492,9 @@ fire_extent <- fire_extent |>
 
 ggplot() +
   geom_spatraster(data = fire_extent, aes(fill = fire_extent)) +
-  scale_fill_gradientn(colors = c("blue", "yellow", "red"), na.value = NA) +
-  labs(title = "Fire Severity in SE NSW (2019-2020)",
+  scale_fill_whitebox_c(palette = "muted",
+                        na.value = NA)  +
+  labs(title = "Fire Severity in South-East NSW (2019-2020)",
        fill = "Severity") +
   theme_minimal()
 ```
@@ -528,7 +528,7 @@ summary(combined_rasters)
 Now we have a single raster with multiple layers detailing:
   * Elevation
   * Mean annual temperature (BIO1)
-  * Mean annual precipitation (BIO12)
+  * Annual precipitation (BIO12)
   * Extent of the 2019 bushfires
   * Tree cover
 
@@ -904,11 +904,24 @@ So because of our small p-values and standard errors, lets look at the estimates
 |---------------------|---------------------------------------------|--------------------|
 | **Elevation**      | **0.0006578** - Higher elevation slightly increases the chance of finding a glider. | **485.27** - A strong predictor of Glider Presence. As elevation increases, we expect the likelihood of gliders being present to rise. |
 | **BIO1 (Mean Annual Temperature)** | **0.1030** - Higher mean annual temperature increases the likelihood of glider presence (relative to other locations sampled in our region). | **425.44** - Another strong predictor. This should be considered within the context of all other variables. |
-| **BIO12 (Mean Annual Precipitation)** | **0.0002668** - More rainfall slightly increases the predicted chance of glider presence. | **297.31** - Another positive predictor. When considered alongside tree cover and elevation, this makes sense as higher tree cover typically requires more precipitation. |
+| **BIO12 (Annual Precipitation)** | **0.0002668** - More rainfall slightly increases the predicted chance of glider presence. | **297.31** - Another positive predictor. When considered alongside tree cover and elevation, this makes sense as higher tree cover typically requires more precipitation. |
 | **Fire Extent** | **-0.03244** - More extreme fire events in 2019 decrease the likelihood of glider presence. | **-172.83** - A reasonably strong negative predictor. Our model suggests that as fire severity increases, the likelihood of glider presence decreases. |
 | **Tree Cover** | **0.003676** - More tree cover increases glider presence (as expected, since they are arboreal). | **797.97** - This is the strongest predictor of Glider presence in our model. |
-| **Fire Period (Before or After)** | **0.02963** - Fire period slightly influences glider presence. | **78.99** - The weakest predictor in our model, but it still plays a role in determining glider presence. |
+| **Fire Period (Before or After)** | **0.02963** - Fire period slightly influences glider presence in a positive way. This is interesting, as our results indicate a slight preference for post fire sightings. This could be due to the creation of hollow bearing trees - or some other factor, or potentially skewed by our data (maybe more people were out looking for Gliders after the fires than before?) | **78.99** - It is the weakest predictor in our model, but it still plays a minor role in determining glider presence. |
 
 
-<Summarising and concluding sentence>
+# Conclusion
 
+So what does our model actually say about Greater Glider distribution in South-East NSW?
+
+1. Tree cover is critical - Tree cover is the strongest predictor of glider presence.
+
+2. Elevation and temperature are big predictors - Greater Gliders appear to prefer higher elevations and (relative to the surrounds) warmer annual temperatures. 
+
+3. Rainfall plays a part - More precipitation increases the likelihood of glider presence, which is not a big surprise considering the relationship between precipitation and tree cover, and precipitation and elevation!
+
+4. Strong fires have a negative impact - The more extreme the fire events in the 2019 bushfire season, the less likely we were to see gliders present. Fires that are too intense can scorch and destroy the critical habitat needed by Greater Gliders, and destroy the hollow bearing trees needed for them. It is worth noting that fire can also create hollows in trees! However our model suggests that these intense fires did disrupt their habitat in a negative way.
+
+5. Pre vs Post fire presence - There was a slight influence of fire presence in an area. The exact nature of this requires a bit more exploring.
+
+This SDM gives us an interesting insight into the impact of the 2019 bushfires on glider distribution. It's clear that when accounting for these other climactic variables, fire negatively impacts Glider range and habitat. This sort of modelling gives us a great starting point into deeper more nuanced analysis, and can help inform conservation planning and the impact that various environmental factors like fire have on a species range and habitat.
