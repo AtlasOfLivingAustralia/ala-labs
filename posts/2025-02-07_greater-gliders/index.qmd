@@ -120,11 +120,11 @@ bbox_sf <- st_as_sf(as.polygons(bbox_ext, crs = "EPSG:4326"))
 #| echo: false
 #| warning: false
 ggplot() +
-  geom_sf(data = aus, fill = "lightgray", color = "black") +
+  geom_sf(data = ozmaps::ozmap_states, fill = "lightgray", color = "black") +
   geom_sf(data = bbox_sf, fill = NA, color = "red", size = 1) +
   labs(title = "Study Area") +
-  coord_sf(xlim = c(140.1, 159.1), 
-         ylim = c(-37.5, -28.2)) +
+  coord_sf(xlim = c(145, 153), 
+         ylim = c(-38, -30)) +
   theme_minimal()
 ```
 
