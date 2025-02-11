@@ -123,8 +123,8 @@ ggplot() +
   geom_sf(data = ozmaps::ozmap_states, fill = "lightgray", color = "black") +
   geom_sf(data = bbox_sf, fill = NA, color = "red", size = 1) +
   labs(title = "Study Area") +
-  coord_sf(xlim = c(145, 153), 
-         ylim = c(-38, -30)) +
+  coord_sf(xlim = c(147.5, 152.5), 
+         ylim = c(-38, -33)) +
   theme_minimal()
 ```
 
