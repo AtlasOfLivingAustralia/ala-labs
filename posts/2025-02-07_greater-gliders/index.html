@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jarod Wright">
+<meta name="author" content="Dax Kellie">
 <meta name="dcterms.date" content="2025-02-10">
 <meta name="description" content="Bushfires etc.">
 
@@ -97,7 +98,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 <div class="quarto-category">Animalia</div>
                 <div class="quarto-category">Gliders</div>
                 <div class="quarto-category">Bush Fires</div>
-                <div class="quarto-category"></div>
                 <div class="quarto-category">Maps</div>
                 <div class="quarto-category">R</div>
               </div>
@@ -108,9 +108,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="quarto-title-meta">
 
       <div>
-      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-heading">Authors</div>
       <div class="quarto-title-meta-contents">
                <p>Jarod Wright </p>
+               <p>Dax Kellie </p>
             </div>
     </div>
       
@@ -131,7 +132,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul class="collapse">
-  <li><a href="#preparing-our-rasters" id="toc-preparing-our-rasters" class="nav-link active" data-scroll-target="#preparing-our-rasters">Preparing our rasters</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#preparing-our-rasters" id="toc-preparing-our-rasters" class="nav-link" data-scroll-target="#preparing-our-rasters">Preparing our rasters</a></li>
   <li><a href="#building-our-model" id="toc-building-our-model" class="nav-link" data-scroll-target="#building-our-model">Building our model</a></li>
   <li><a href="#tuning-and-running-the-model" id="toc-tuning-and-running-the-model" class="nav-link" data-scroll-target="#tuning-and-running-the-model">Tuning and Running the Model</a></li>
   <li><a href="#generating-the-final-raster" id="toc-generating-the-final-raster" class="nav-link" data-scroll-target="#generating-the-final-raster">Generating the Final Raster</a></li>
@@ -159,17 +161,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="author-card-text">
 <section id="author" class="level4">
 <h4 class="anchored" data-anchor-id="author">Author</h4>
-<p><a href="">Jarod Wright</a></p>
+<p>Jarod Wright<br>
+<a href="https://labs.ala.org.au/about/Kellie_Dax/index.html">Dax Kellie</a></p>
 </section>
 <section id="date" class="level4">
 <h4 class="anchored" data-anchor-id="date">Date</h4>
 <p>11 February 2025</p>
 </section>
 </div>
+<div>
+
 </div>
+<div class="row-b quarto-layout-panel" data-layout-ncol="3" style="margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto;">
+<div class="quarto-layout-row">
+<div class="author-card-image quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<p><img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/jarod.jpg" style="object-fit: cover; border-radius: 50% !important; width: 140px;"></p>
+</div>
+<div class="author-card-image quarto-layout-cell" style="flex-basis: 33.3%;justify-content: flex-start;">
+<p><img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg" style="object-fit: cover; border-radius: 50% !important; width: 140px;"></p>
+</div>
+</div>
+</div>
+</div>
+<p>:::</p>
 <!------------------------ Post starts here ------------------------>
-<p>Bushfires are a frequent and natural aspect of Australia’s ecosystems. During 2019 we experienced an exceptionally large and dangerous fire season that impacted X amount of land over Y months. The impact of this fire on native wildlife has been well documented and studied. In this post we will be exploring the impact of these fire events on the Greater Glider (Petauroides volans), an arboreal species of Glider that is coming increasingly under threat from habitat loss and climate change.</p>
-<p>To explore this impact we will be developing a species distribution model (SDM) using ALA data, tree cover data, climate data and data released by the NSW government. We will then perform a statistical analysis on this model and explore the impact of extent of fire and timing of fire on Glider Presence. For modelling, we will be developing our SDM using tidymodels, for a more in-depth look at the process of preparing and developing an SDM please check out this other fantastic ALA Labs post: <link to="" intro="" sdm="" post=""></p>
+<p>Bushfires are a frequent and natural aspect of Australia’s ecosystems. Our flora and fauna have evolved along side fire , some plants even require fire to germinate and regenerate <a href="https://www.dbca.wa.gov.au/wildlife-and-ecosystems/fire-and-environment/fire-plants-and-vegetation">source</a>. Aboriginal and Torres Strait Islander people have expertly used fire for tens of thousands of years to care for Country, managing vegetation, reducing wildfire risk, and fostering biodiversity <a href="https://www.sciencedirect.com/science/article/pii/S0016718521000233">source</a><a href="https://www.bushheritage.org.au/what-we-do/our-challenge/fire-management">source</a> This deep connection between fire and the environment continues to influence modern land management practices today. The disruption of these practices since colonisation have increased the risk of out of control bushfires due to the build up of fuel loads, and introduction of invasive plants. <a href="https://wwf.org.au/blogs/new-study-confirms-indigenous-fire-management-equals-success/">source</a></p>
+<p>In 2019-2020 we experienced one of the most catastrophic bushfire seasons on record in Australia, with approximately 19 million hectares burnt and approximatelly 3 billion animals killed or displaced by the fires. <a href="https://wwf.org.au/what-we-do/australian-bushfires/">source</a>. Over 900 species of plant and animals were severely impacted by the fires <a href="https://www.nature.com/articles/s41586-024-08174-6">source</a>. Of the 19 million hectares burnt in those fires, 12.6 million were primarily forest and bushland.</p>
+<p>In this post we will explore the impact of the 2019-2020 bushfires on a population of Greater gliders (<em>Petauroides volans</em>), an arboreal, marsupial species found all along the east coast from Australia, from Southern Queensland all the way down into Victoria. They inhabit tall, hollow bearing trees in eucalypt forests. Unfortunately they are increasingly under threat due to habitat destruction, climate change and intense bushfires. To investigate the impact the 2019/20 Bushfires had on Glider distribution in south-est NSW, we will use a species distribution model (SDM) to investigate what impact, if any, they had on the Gliders. We will then use a general linear model to statistically test whether there is a difference in greater glider observations before vs after the 2019-2020 bushfires.</p>
+<section id="background" class="level1">
+<h1>Background</h1>
+<p><em>Add brief intro of your species and maybe a fun fact. Add some photos of gliders</em> <!-- you can find the code to set this up in other articles --> The Greater Glider (<em>Petauroides volans</em>) is Australia’s largest gliding marsupial, found in tall eucalypt forests along the east coast, from Queensland to Victoria. They are an endagered nocturnal, tree-dwelling herbivore that primarily feed on eucalyptus leaves, much like the Koala! They grow up to 1m long from head to tail and glide up to 100 metres through the canopy. Gliders den in hollow bearing trees and can have multiple dens in their home range.</p>
+<div class="figure-caption">
+<p>Left: <a href="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/8/1/c/e/f1141229-d3bd-49e9-8098-a251befbec18/original"><em>Petauroides volans</em> ( Jasmine Zeleny | questagame.com CC-BY-NC 3.0 (Au))</a>, Middle: <a href="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/d/e/6/b/1c199f82-4320-459f-b2cc-34be6297b6ed/original"><em>Petauroides volans</em> (timbawden CC-BY-NC 4.0 (Int))</a>, Right: <a href="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/0/2/1/0/8a68399e-d8b9-4154-81c9-9fec68e20120/original"><em>Petauroides volans</em> (c_a_critter CC-BY-NC 4.0 (Au))</a></p>
+</div>
 <p>To begin, we can load some packages.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(galah)</span>
@@ -187,7 +211,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="downloading-greater-glider-data" class="level3">
 <h3 class="anchored" data-anchor-id="downloading-greater-glider-data">Downloading Greater Glider Data</h3>
-<p>First lets prepare all the regional data. We’re going to be focusing on a region of South-East NSW. We will set up a bounding box and pull in a map of Aus for later rendering and working with our rasters.</p>
+<p>We’re going to be focusing on a region of South-East NSW. Let’s establish a bounding box around our area and pull in a map of Australia for later rendering and working with our rasters.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -197,7 +221,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Now lets download Greater Glider records from 2014-2024 inside of our bounding box we created earlier. These records will be supplied by ALA. We will use that 4 year buffer period for either side of the fires to inform our investigation later. We will also add a new column in that will allow us to to see if a Glider record was seen before or after the fires.</p>
+<p>Now lets download Greater Glider records in a 10-year time period (2014-2024) which captures observations of greater gliders before and after the 2019-2020 bushfires.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">galah_config</span>(<span class="at">email =</span> <span class="st">"your-email-here"</span>) <span class="co"># Registered ALA email</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -207,127 +231,166 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">&gt;=</span> <span class="dv">2014</span> <span class="sc">&amp;</span> year <span class="sc">&lt;=</span> <span class="dv">2024</span>) <span class="sc">|&gt;</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_apply_profile</span>(ALA) <span class="sc">|&gt;</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">galah_geolocate</span>(se_nsw_bbox, <span class="at">type =</span> <span class="st">"bbox"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_occurrences</span>()</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Classify each glider record as pre or post fire</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Up to and including October 2019 is pre-burnt, all after that are post fire (Not exact)</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>gliders <span class="ot">&lt;-</span> gliders <span class="sc">|&gt;</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fire_period =</span> <span class="fu">if_else</span>(eventDate <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2019-10-31"</span>), <span class="st">"pre_fire"</span>, <span class="st">"post_fire"</span>))</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an sf object so we can draw it later</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>gliders_sf <span class="ot">&lt;-</span> gliders <span class="sc">|&gt;</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_crs</span>(<span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">atlas_occurrences</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>We will also add a new column in that will allow us to to see if a Glider record was seen before or after the fires.</p>
+<p>The 26th of October 2019 has been selected as the cut-off as it marks the date when the 2019 bushfires intensified significantly. On this date a lightning strike ignited the Gospers Mountain fire in New South Wales, which became one of the largest forest fires from a single ignition point in Australia’s history, ultimately burning approximately 444,000 hectares. This period also saw the emergence of other significant fires, such as those near Port Macquarie, underscoring the escalation of bushfire activity during this time. By selecting October 2019, we aim to capture the onset of these major fire events to assess their impact on the Greater Glider populations effectively</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Classify each glider record as pre or post fire</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Up to and including October 2019 is pre-burnt, all after that are post fire</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>gliders <span class="ot">&lt;-</span> gliders <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fire_period =</span> <span class="fu">if_else</span>(eventDate <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2019-10-26"</span>), <span class="st">"pre_fire"</span>, <span class="st">"post_fire"</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an sf object so we can draw it later</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>gliders_sf <span class="ot">&lt;-</span> gliders <span class="sc">|&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"decimalLongitude"</span>, <span class="st">"decimalLatitude"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_crs</span>(<span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s have a quick look at our records to see what we’re working with so far.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> aus, <span class="at">fill =</span> <span class="st">"lightgray"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> gliders_sf, <span class="fu">aes</span>(<span class="at">color =</span> fire_period), <span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"pre_fire"</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">"post_fire"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Greater Glider Observations (2014-2024)"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Fire Period"</span>) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(se_nsw_bbox<span class="sc">$</span>xmin, se_nsw_bbox<span class="sc">$</span>xmax), </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">ylim =</span> <span class="fu">c</span>(se_nsw_bbox<span class="sc">$</span>ymin, se_nsw_bbox<span class="sc">$</span>ymax)) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Now we’ve got a nice dataset of Greater Glider observations over a period of time in the area we’re interested with, classified by pre or post fire. Now, we’ll start pulling in our raster data to help build up our model.</p>
 </section>
+</section>
 <section id="preparing-our-rasters" class="level1">
 <h1>Preparing our rasters</h1>
-<p>This post will make heavy use of raster files, which are essentially grids of spatial data (each pixel has a value representing the information we’re interested in). If you would like to know more about rasters, I encourage you to check out the SDM post as it goes into great detail on rasters. <a href="https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/">An introduction to species distribution modelling using {tidysdm} &amp; {tidymodels}</a></p>
-<p>We will be performing a series of modifications to each raster throughout this post; cropping them to our region of interest, making sure they are all in the same projection and then resampling to make them have the same resolution. This process is slightly repetitive but when working with spatial data for modelling, it is critical to have the rasters in the same dimensions, resolution and projection. Without matching these, we can’t match pixel values exactly between each layer!</p>
+<p>TThis post will make heavy use of raster files<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>We’ll be downloading several raster layers in order to create a robust model for Greater Gliders. Greater glider distribution is largely determined by availability of suitable habitat (tree cover and hollow bearing trees), elevation and climate data (precipitation and temperature). We will be downloading layers to supply each of these to the model to develop a reasonable prediction surface of Glider habitat. From this we will be able to reasonably investigate the impact that the bushfires had on predicted glider presence.</p>
+<p>We will be downloading <a href="https://glad.umd.edu/dataset/global-2010-tree-cover-30-m">tree cover layers</a>, <a href="https://github.com/USEPA/elevatr">elevation layers</a>, <a href="https://chelsa-climate.org/">climate layers</a> and <a href="https://datasets.seed.nsw.gov.au/dataset/fire-extent-and-severity-mapping-fesm-2019-20">fire extent layers</a>. <!-- You need to briefly introduce the raster layers you are going to download and why they matter. It would be great if you linked to some research that backs up your choices (eg this is usually used in models of gliders [link to article(s)]) --></p>
+<section id="raster-preparation-steps" class="level3">
+<h3 class="anchored" data-anchor-id="raster-preparation-steps">Raster Preparation steps</h3>
+<p>For each raster, we will perform a common series of modifications; cropping them to our region of interest, making sure they are all in the same projection and then resampling to make them have the same resolution.</p>
+<p>This process is slightly repetitive, but when working with spatial data for modelling, it is critical that rasters are in the same dimensions, resolution and projection. Otherwise, the raster pixels won’t align with each other!</p>
+<p>Because of the repetitive nature I won’t be detailing the exact steps for each raster (except where they deviate) and will instead lay out the common steps here:</p>
+<ul>
+<li>Rename the layers to something more sensible</li>
+<li>Crop them to match our region</li>
+<li>Mask out the ocean (since Greater Gliders are not great swimmers)</li>
+<li>Resample them to match our elevation raster resolution</li>
+</ul>
+</section>
 <section id="download-elevation-raster" class="level3">
 <h3 class="anchored" data-anchor-id="download-elevation-raster">Download Elevation Raster</h3>
 <p>The first raster we’ll be grabbing is an elevation raster for our defined region, fortunately for us the <code>{elevatr}</code> package provides us with the handy <code>get_elev_raster()</code> function. When we call it we pass in our bounding box from earlier and get elevation data (in metres) back for our region!</p>
 <p>Since we’ll be using multiple rasters in this post, we need to establish a “main” raster: one that defines our coordinate reference system (CRS) and resolution. The elevation raster has the coarsest resolution, so we’ll use it as our reference for aligning all other rasters.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the base elevation data</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>elevation_data <span class="ot">&lt;-</span> <span class="fu">get_elev_raster</span>(<span class="at">locations =</span> bbox_sf, <span class="at">z =</span> <span class="dv">9</span>, <span class="at">prj =</span> <span class="st">"EPSG:4326"</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the ocean elevations as Greater Gliders are not strong swimmers</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>elevation_aligned <span class="ot">&lt;-</span> elevation_data <span class="sc">|&gt;</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">mask</span>(aus)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># elevation_aligned is now a RasterLayer, so lets turn it back into a SpatRaster</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>elevation_aligned <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(elevation_aligned)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure that it's in our desired projection</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>elevation_aligned <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">project</span>(elevation_aligned, <span class="st">"EPSG:4326"</span>)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop it down to our bounding box</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>elevation_aligned <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(elevation_aligned, bbox_ext)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># This column is different everytime, but it's always of the format file&lt;UID&gt;</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># So we'll just rename it to elevation for simplicities sake</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>colname <span class="ot">&lt;-</span> <span class="fu">names</span>(elevation_aligned)</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(elevation_aligned) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(elevation_aligned), </span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                                            colname, </span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">"elevation"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the elevation raster</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>elevation_data <span class="ot">&lt;-</span> <span class="fu">get_elev_raster</span>(<span class="at">locations =</span> bbox_sf, <span class="at">z =</span> <span class="dv">9</span>, <span class="at">prj =</span> <span class="st">"EPSG:4326"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Masking allows us to remove raster information outside of the range we pass into</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># the mask function. For our model we will use the land boundaries of Australia</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>elevation_aligned <span class="ot">&lt;-</span> elevation_data <span class="sc">|&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">mask</span>(aus)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># elevation_aligned is now a RasterLayer, so lets turn it back into a SpatRaster</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>elevation_aligned <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(elevation_aligned)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure that it's in our desired projection</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>elevation_aligned <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">project</span>(elevation_aligned, <span class="st">"EPSG:4326"</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop it down to our bounding box</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>elevation_aligned <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(elevation_aligned, bbox_ext)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># This column is different everytime, but it's always of the format file&lt;UID&gt;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># So we'll just rename it to elevation for simplicities sake</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>colname <span class="ot">&lt;-</span> <span class="fu">names</span>(elevation_aligned)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(elevation_aligned) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(elevation_aligned), </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>                                            colname, </span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">"elevation"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="download-tree-cover-data" class="level3">
 <h3 class="anchored" data-anchor-id="download-tree-cover-data">Download Tree Cover Data</h3>
 <p>Next we’ll be downloading our tree cover data. This dataset is in the form of a percentage (0 = no cover, 100 = complete tree cover). Because our data set crosses over two regions, we will be stitching together two rasters that cover central NSW to the east coast, and we will then crop them down to our area of focus.</p>
+<p>This tree cover data is satellite data from 2010 by Hansen et al, full details can be found <a href="https://glad.umd.edu/dataset/global-2010-tree-cover-30-m">here</a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://glad.umd.edu/Potapov/TCC_2010/treecover2010_30S_140E.tif"</span>, <span class="at">destfile=</span><span class="st">"treecover2010_30S_140E.tif"</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://glad.umd.edu/Potapov/TCC_2010/treecover2010_30S_150E.tif"</span>, <span class="at">destfile=</span><span class="st">"treecover2010_30S_150E.tif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://glad.umd.edu/Potapov/TCC_2010/treecover2010_30S_140E.tif"</span>, <span class="at">destfile=</span><span class="st">"treecover2010_30S_140E.tif"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://glad.umd.edu/Potapov/TCC_2010/treecover2010_30S_150E.tif"</span>, <span class="at">destfile=</span><span class="st">"treecover2010_30S_150E.tif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now that we have the files, let’s clean up the layer names, crop them to our study area, and merge them into one seamless raster.</p>
+<p>Now that we have the files, let’s perform our common steps for tidying up the rasters.</p>
+<!-- You are smartly cropping these layers and then deleting the larger files. I think you need a little description in the text to explain this because it is good practice -->
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the raster</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tree_cover_rast_150e_2010 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"treecover2010_30S_150E.tif"</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the names of the layers in the raster</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(tree_cover_rast_150e_2010)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># In this case we have one layer, and it's titled "Layer_1", which is not very helpful. So we'll change that to a more suitable name</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(tree_cover_rast_150e_2010) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(tree_cover_rast_150e_2010), </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                                                    <span class="st">"Layer_1"</span>, </span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                                                    <span class="st">"treecover"</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># See the change has worked</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(tree_cover_rast_150e_2010)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's repeat the process for the 140E raster</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>tree_cover_rast_140e_2010 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"treecover2010_30S_140E.tif"</span>)</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(tree_cover_rast_140e_2010)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(tree_cover_rast_140e_2010) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(tree_cover_rast_140e_2010), </span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                                                    <span class="st">"Layer_1"</span>, </span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                                                    <span class="st">"treecover"</span>)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(tree_cover_rast_140e_2010)</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop our raster files to our bounding box extent</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>tree_cover_rast_150e_2010 <span class="ot">&lt;-</span> tree_cover_rast_150e_2010 <span class="sc">|&gt;</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">crop</span>(bbox_ext)</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>tree_cover_rast_140e_2010 <span class="ot">&lt;-</span> tree_cover_rast_140e_2010 <span class="sc">|&gt;</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">crop</span>(bbox_ext)</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge the two rasters into a single raster</span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>tree_cover_2010 <span class="ot">&lt;-</span> <span class="fu">merge</span>(tree_cover_rast_140e_2010, tree_cover_rast_150e_2010)</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="co"># We can now safely delete the first two raster files to save memory</span></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(tree_cover_rast_140e_2010)</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(tree_cover_rast_150e_2010)</span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Resample our tree cover to the resolution of the elevation data</span></span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>tree_cover_2010 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">resample</span>(tree_cover_2010, elevation_aligned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the raster</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>tree_cover_rast_150e_2010 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"treecover2010_30S_150E.tif"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the names of the layers in the raster</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(tree_cover_rast_150e_2010)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># In this case we have one layer, and it's titled "Layer_1", which is not very helpful. So we'll change that to a more suitable name</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(tree_cover_rast_150e_2010) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(tree_cover_rast_150e_2010), </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                                                    <span class="st">"Layer_1"</span>, </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                                                    <span class="st">"treecover"</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># See the change has worked</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(tree_cover_rast_150e_2010)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's repeat the process for the 140E raster</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>tree_cover_rast_140e_2010 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"treecover2010_30S_140E.tif"</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(tree_cover_rast_140e_2010)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(tree_cover_rast_140e_2010) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(tree_cover_rast_140e_2010), </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>                                                    <span class="st">"Layer_1"</span>, </span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>                                                    <span class="st">"treecover"</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(tree_cover_rast_140e_2010)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop our raster files to our bounding box extent</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>tree_cover_rast_150e_2010 <span class="ot">&lt;-</span> tree_cover_rast_150e_2010 <span class="sc">|&gt;</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">crop</span>(bbox_ext)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>tree_cover_rast_140e_2010 <span class="ot">&lt;-</span> tree_cover_rast_140e_2010 <span class="sc">|&gt;</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">crop</span>(bbox_ext)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge the two rasters into a single raster</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>tree_cover_2010 <span class="ot">&lt;-</span> <span class="fu">merge</span>(tree_cover_rast_140e_2010, tree_cover_rast_150e_2010)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Resample our tree cover to the resolution of the elevation data</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>tree_cover_2010 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">resample</span>(tree_cover_2010, elevation_aligned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Best practice: When working with spatial data we tend to use up a lot of memory! That’s a big reason why we are performing these cropping steps, so that we can use up the least amount of memory necessary to get our model to function. Because of this, after we have stitched our two rasters into our composite <code>tree_cover_2010</code> raster, we can safely delete the other two as we will no longer require them.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We can now safely delete the first two raster files to save memory</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(tree_cover_rast_140e_2010)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(tree_cover_rast_150e_2010)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s take a quick look at our tree cover map!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data =</span> tree_cover_2010, <span class="fu">aes</span>(<span class="at">fill =</span> treecover)) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>() <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Tree Cover in South-East NSW"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Tree Cover (%)"</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>At this stage, we have an elevation raster and a tree cover raster, both cropped to the same study area and using the same projection. We only now need to do the same for our climate rasters, and our fire extent raster!</p>
 </section>
 <section id="download-climate-rasters" class="level3">
 <h3 class="anchored" data-anchor-id="download-climate-rasters">Download Climate Rasters</h3>
-<p>To help develop an accurate species distribution model, we’ll need to incorporate climate data. We’ll be using climate projections from CHELSA, specifically the UKESM1-0-LL SSP3-7.9 model for 2011-2040. This dataset provides bioclimatic variables at a reasonable resolution, making it a great choice for our analysis.</p>
+<p>We’ll be using climate projections from CHELSA, specifically the UKESM1-0-LL SSP3-7.9 model for 2011-2040. This dataset provides bioclimatic variables at a reasonable resolution, making it a great choice for our analysis.</p>
 <p>We’ll be focusing on two key variables:</p>
 <ul>
 <li>Bio1: Mean Annual Temperature</li>
@@ -336,69 +399,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Greater gliders are sensitive to temperature and precipitation changes, and so these two variables are a sensible set to incorporate into our model to help understand their range.</p>
 <p>First things first, let’s download and load the two raster files.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download our two raster files</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://os.zhdk.cloud.switch.ch/chelsav2/GLOBAL/climatologies/2011-2040/UKESM1-0-LL/ssp370/bio/CHELSA_bio1_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif"</span>,              <span class="at">destfile=</span><span class="st">"CHELSA_bio1_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif"</span>, <span class="at">mode=</span><span class="st">"wb"</span>)  </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://os.zhdk.cloud.switch.ch/chelsav2/GLOBAL/climatologies/2011-2040/UKESM1-0-LL/ssp370/bio/CHELSA_bio12_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif"</span>,               <span class="at">destfile=</span><span class="st">"CHELSA_bio12_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif"</span>, <span class="at">mode=</span><span class="st">"wb"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download our two raster files</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://os.zhdk.cloud.switch.ch/chelsav2/GLOBAL/climatologies/2011-2040/UKESM1-0-LL/ssp370/bio/CHELSA_bio1_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif"</span>,              <span class="at">destfile=</span><span class="st">"CHELSA_bio1_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif"</span>, <span class="at">mode=</span><span class="st">"wb"</span>)  </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="st">"https://os.zhdk.cloud.switch.ch/chelsav2/GLOBAL/climatologies/2011-2040/UKESM1-0-LL/ssp370/bio/CHELSA_bio12_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif"</span>,               <span class="at">destfile=</span><span class="st">"CHELSA_bio12_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif"</span>, <span class="at">mode=</span><span class="st">"wb"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load our bio1 raster</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>bio1 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"CHELSA_bio1_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif"</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>bio12 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"CHELSA_bio12_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load our bio1 raster</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>bio1 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"CHELSA_bio1_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>bio12 <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"CHELSA_bio12_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Just like we did with the tree cover data, we need to do the following to clean up these rasters:</p>
-<ul>
-<li>Rename the layers to something more sensible</li>
-<li>Crop them to match our region</li>
-<li>Mask out the ocean (since Greater Gliders are not great swimmers)</li>
-<li>Resample them to match our elevation raster resolution</li>
-</ul>
+<p>We will now do the same steps as before to clean up our rasters</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop to our bounding box extent</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>bio1 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(bio1, bbox_ext)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mask out the oceans</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>bio1 <span class="ot">&lt;-</span> <span class="fu">mask</span>(bio1, aus)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the name, and replace the horrible large name with something short and sweet</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(bio1)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(bio1) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(bio1),</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"CHELSA_bio1_2011-2040_ukesm1-0-ll_ssp370_V.2.1"</span>, </span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"bio1"</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Check to make sure our name is updated properly</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(bio1)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Resample our bioclim variable to the resolution of the elevation raster</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>bio1 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">resample</span>(bio1, elevation_aligned)</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># And it's always a good idea to plot a raster to check it's all loaded correctly</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat for our BIO12 raster</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>bio12 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(bio12, bbox_ext)</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>bio12 <span class="ot">&lt;-</span> <span class="fu">mask</span>(bio12, aus)</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(bio12)</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(bio12) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(bio12),  </span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"CHELSA_bio12_2011-2040_ukesm1-0-ll_ssp370_V.2.1"</span>, </span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"bio12"</span>)</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(bio12)</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>bio12 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">resample</span>(bio12, elevation_aligned)</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(bio12)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crop to our bounding box extent</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>bio1 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(bio1, bbox_ext)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mask out the oceans</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>bio1 <span class="ot">&lt;-</span> <span class="fu">mask</span>(bio1, aus)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the name, and replace the horrible large name with something short and sweet</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(bio1)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(bio1) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(bio1),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"CHELSA_bio1_2011-2040_ukesm1-0-ll_ssp370_V.2.1"</span>, </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"bio1"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Resample our bioclim variable to the resolution of the elevation raster</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>bio1 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">resample</span>(bio1, elevation_aligned)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co"># And it's always a good idea to plot a raster to check it's all loaded correctly</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Repeat for our BIO12 raster</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>bio12 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(bio12, bbox_ext)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>bio12 <span class="ot">&lt;-</span> <span class="fu">mask</span>(bio12, aus)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(bio12)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(bio12) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(bio12),  </span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"CHELSA_bio12_2011-2040_ukesm1-0-ll_ssp370_V.2.1"</span>, </span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"bio12"</span>)</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>bio12 <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">resample</span>(bio12, elevation_aligned)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Let’s have a quick look at our climate rasters.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-15-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-17-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -409,8 +462,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="download-our-fire-extent-raster">Download our Fire Extent Raster</h3>
 <section id="prepare-fire-extent-raster" class="level4">
 <h4 class="anchored" data-anchor-id="prepare-fire-extent-raster">Prepare Fire Extent Raster</h4>
-<p>To assess the impact of the 2019-2020 Black Summer Bushfires, we need a raster that maps burnt areas across NSW for that period. The NSW Government’s Fire Extent and Severity Mapping (FESM) dataset provides this information: <a href="https://datasets.seed.nsw.gov.au/dataset/fire-extent-and-severity-mapping-fesm-2019-20">Fire Extent and Severity Mapping (FESM) 2019/20</a>.</p>
+<!-- Ok, this is a big but important section here. I think it might be best to provide an initial description of what you will need to do. Eg "We need to download a fire extent and severity map, it contains information about burnt area. It's huge, so we'll need to do a few things: Convert it to a class R can work with, crop and convert it to the same projection as our other layers, then align it with the other layers and remove the ocean because gliders don't live in the ocean -->
+<!-- Again, you need to provide a link and description of how someone might get this dataset themselves and, to be nice to people, how big it is and how long it will take to download and then load into R -->
+<p>To assess the impact of the 2019-2020 Black Summer Bushfires, we need a raster that maps burnt areas across NSW for that period. The NSW Government’s Fire Extent and Severity Mapping (FESM) dataset provides this information, detailing the extent and severity of burnt areas across the state.</p>
+<p>The dataset is available here: <a href="https://datasets.seed.nsw.gov.au/dataset/fire-extent-and-severity-mapping-fesm-2019-20">Fire Extent and Severity Mapping (FESM) 2019/20</a>.</p>
 <p>We will download the FESM v3-data in IMG and TIFF format, then extract the .tif file to our working directory.</p>
+<p><strong>Note</strong>: While the download itself is only several hundred megabytes, uncompressed the .tif file is very large (10.3 GB) so please keep this in mind before downloading!</p>
+</section>
+<section id="processing-the-fire-raster" class="level4">
+<h4 class="anchored" data-anchor-id="processing-the-fire-raster">Processing the fire raster</h4>
+<p>This raster is <em>HUGE</em>, way bigger than we need. To save processing time and memory, we will be cropping and reducing it down just to our desired range. Unlike our previous rasters, this dataset is NOT in WGS84 and so we will need to transform it a little differently to our previous rasters:</p>
+<ol type="1">
+<li>Create a SpatExtent that matches our study area</li>
+<li>Reproject that extent to the projection of our fire map.</li>
+<li>Create a bounding box of that extent in that projection.</li>
+<li>Crop our fire extent raster in that projection.</li>
+<li>Reproject the now cropped fire extent raster to the WGS84.</li>
+</ol>
+<p>These steps allow us to skip a lot of the processing time needed to reproject the <em>entire</em> raster into WGS84 and then cropping down, instead cropping and then reprojecting.</p>
+<!-- Maybe you can pop this information in a dropdown table? It's great detail, but the level of detail isn't essential for the final interpretation -->
 <p>The dataset categorises fire severity using the following range of values:</p>
 <ul>
 <li>0 - unburnt (0% canopy and understory burnt)</li>
@@ -420,73 +490,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>4 - High (&gt; 90% canopy scorched, &lt;50% canopy consumed)</li>
 <li>5 - Extreme (&gt;50% canopy biomass consumed)</li>
 </ul>
-</section>
-<section id="processing-the-fire-raster" class="level4">
-<h4 class="anchored" data-anchor-id="processing-the-fire-raster">Processing the fire raster</h4>
-<p>This raster is <em>HUGE</em>, way bigger than we need, and so in the interest of time, we will be cropping and reducing it down just to our desired range a little differently to our previous rasters.</p>
-<p>This raster is NOT in the WGS84 projection, so we are going to be doing the following steps:</p>
-<ol type="1">
-<li>Create a SpatExtent</li>
-<li>Reproject that to the extent of our fire map.</li>
-<li>Create a bounding box of that extent in that projection.</li>
-<li>Crop our fire extent raster in that projection.</li>
-<li>Reproject the now cropped fire extent raster to the WGS84.</li>
-</ol>
-<p>These steps allow us to skip a lot of the processing time needed to reproject the <em>entire</em> raster into WGS84 and then cropping down, instead cropping and then reprojecting.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the raster</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"cvmsre_NSW_20192020_ag1l0.tif"</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># We are going to make our extent a polygon polygon first</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>bbox_ext_vect <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">as.polygons</span>(bbox_ext, <span class="at">crs =</span> <span class="st">"EPSG:4326"</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Reproject the bounding box to the same projection of fire_extent</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>bbox_ext_vect_proj <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">project</span>(bbox_ext_vect, <span class="fu">crs</span>(fire_extent))</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an extent of that bbox projection</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>bbox_ext_proj <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">ext</span>(bbox_ext_vect_proj)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#  Crop fire_extent using the reprojected bbox</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(fire_extent, bbox_ext_proj)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Reproject our fire extent to WGS84</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">project</span>(fire_extent, <span class="st">"EPSG:4326"</span>)</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Then crop again to align it with our other raster files</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(fire_extent, bbox_ext)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the raster</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"cvmsre_NSW_20192020_ag1l0.tif"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># We are going to make our extent a polygon polygon first</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>bbox_ext_vect <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">as.polygons</span>(bbox_ext, <span class="at">crs =</span> <span class="st">"EPSG:4326"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Reproject the bounding box to the same projection of fire_extent</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>bbox_ext_vect_proj <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">project</span>(bbox_ext_vect, <span class="fu">crs</span>(fire_extent))</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an extent of that bbox projection</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>bbox_ext_proj <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">ext</span>(bbox_ext_vect_proj)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#  Crop fire_extent using the reprojected bbox</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(fire_extent, bbox_ext_proj)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Reproject our fire extent to WGS84</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">project</span>(fire_extent, <span class="st">"EPSG:4326"</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Then crop again to align it with our other raster files</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(fire_extent, bbox_ext)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now that we’ve reduced this very large raster down, we will repeat similar steps to before:</p>
-<ul>
-<li>Rename the raster layer</li>
-<li>Resample to match the elevation rasters resolution</li>
-<li>Round out the values</li>
-<li>Mask out the ocean regions</li>
-</ul>
+<p>Now that we’ve reduced this very large raster down, all we need to do is rename the layer, resample to our desired resolution and then mask out the oceans.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(fire_extent) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(fire_extent), </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="st">"Layer_1"</span>, </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="st">"fire_extent"</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Resample and round</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">resample</span>(fire_extent, elevation_aligned)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> <span class="fu">round</span>(fire_extent)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Mask out the ocean</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> fire_extent <span class="sc">|&gt;</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    terra<span class="sc">::</span><span class="fu">mask</span>(aus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(fire_extent) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(fire_extent), </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="st">"Layer_1"</span>, </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="st">"fire_extent"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Resample and round</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">resample</span>(fire_extent, elevation_aligned)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> <span class="fu">round</span>(fire_extent)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Mask out the ocean</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>fire_extent <span class="ot">&lt;-</span> fire_extent <span class="sc">|&gt;</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    terra<span class="sc">::</span><span class="fu">mask</span>(aus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>With all that done, lets have a look:</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Finally we are just going to add one more column to our glider observations, which will get the extent of the fire severity for the 2019 Bushfires at the location that glider was recorded at:</p>
+<p>Finally, we will add a new column to our Greater Glider observation dataset, in which we will record the fire severity category at each glider’s recorded location.</p>
+<p>To achieve this, we will extract the fire severity values from the processed fire extent raster at the coordinates where Greater Gliders were observed.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>gliders_sf<span class="sc">$</span>burnt <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(fire_extent, <span class="fu">vect</span>(gliders_sf), <span class="at">ID =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>gliders_sf<span class="sc">$</span>burnt <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(fire_extent, <span class="fu">vect</span>(gliders_sf), <span class="at">ID =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we have all our rasters ready to go, we can begin the modelling process!</p>
 </section>
@@ -497,12 +550,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If you’re new to species distribution modeling (SDM) or want a deeper dive into the details, I highly recommend checking out this other fantastic ALA labs post that dives into the nitty gritty for each step: <a href="https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/">An introduction to species distribution modelling using {tidysdm} &amp; {tidymodels}</a>. This post is focused more with working with rasters, applying them to use in an SDM and exploring the output of the model statistically.</p>
 <section id="combining-our-rasters" class="level3">
 <h3 class="anchored" data-anchor-id="combining-our-rasters">Combining our rasters</h3>
-<p>First things first, we need to combine all the raster datasets we’ve prepared so far. This will allow our model to extract environmental values at each Greater Glider occurrence (or absence).</p>
+<p>To begin we need to combine all the raster datasets we’ve prepared so far. This will allow our model to extract environmental values at each Greater Glider occurrence (or absence).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>combined_rasters <span class="ot">&lt;-</span> <span class="fu">c</span>(elevation_aligned, bio1, bio12, fire_extent, tree_cover_2010)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure we have valid values in our columns</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(combined_rasters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>combined_rasters <span class="ot">&lt;-</span> <span class="fu">c</span>(elevation_aligned, bio1, bio12, fire_extent, tree_cover_2010)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Make sure we have valid values in our columns</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(combined_rasters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   elevation           bio1           bio12         fire_extent   
  Min.   :-274.0   Min.   : 6.35   Min.   : 468.9   Min.   :0.00   
@@ -522,91 +575,85 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                  </code></pre>
 </div>
 </div>
-<p>Now we have a single raster with multiple layers detailing: * Elevation * Mean annual temperature (BIO1) * Annual precipitation (BIO12) * Extent of the 2019 bushfires * Tree cover</p>
+<p>Now we have a single raster with multiple layers detailing:</p>
+<ul>
+<li>Elevation</li>
+<li>Mean annual temperature (BIO1)</li>
+<li>Annual precipitation (BIO12)</li>
+<li>Extent of the 2019 bushfires</li>
+<li>Tree cover</li>
+</ul>
 </section>
 <section id="thinning-our-data" class="level3">
 <h3 class="anchored" data-anchor-id="thinning-our-data">Thinning our data</h3>
 <p>Since raster cells have a fixed resolution, we want to avoid multiple glider observations within a single cell (because multiple observations below this level won’t matter anyway). We’ll use <code>{tidysdm}</code>’s <code>thin_by_cell()</code> function to make sure only one glider record exists per raster grid cell.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># see results of thinning</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>gliders_thin <span class="ot">&lt;-</span> tidysdm<span class="sc">::</span><span class="fu">thin_by_cell</span>(gliders_sf, </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">raster =</span> combined_rasters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># see results of thinning</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>gliders_thin <span class="ot">&lt;-</span> tidysdm<span class="sc">::</span><span class="fu">thin_by_cell</span>(gliders_sf, </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">raster =</span> combined_rasters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="pseudo-absences-and-accurate-prepost-fire-columns" class="level3">
 <h3 class="anchored" data-anchor-id="pseudo-absences-and-accurate-prepost-fire-columns">Pseudo-absences and Accurate Pre/Post-Fire Columns</h3>
 <p>What we currently have is a list of actual observations. Unfortunately in SDM we don’t often have true absence data to work with, just records of actual observations. To work around this, we will generate a bunch of pseudo-absences based off our combined raster.</p>
-<p>We will then allocate 50% of the pseudo absence records as being pre-fire and 50% as being post-fire. This is because we don’t have a pre vs post fire period raster, which is what the sample_pseudoabs function uses to generate the potential pseudo-absences, but we would still like to incorporate that factor into our model.</p>
-<p>After we’ve done that, we will then restore the pre and post-fire values for our actual observations in the dataset.</p>
+<!-- The below bit is important - it defines the major variable you are concerned with in your GLM. I think you need to explain *why* you are doing this split. From memory, it's because you need to have absence information for both before and after, so you randomly sample 50% of your pseudo-absences categorise them into before/after so your model can make a spatial prediction in both scenarios. Try to make this explanation clear. -->
+<p>To ensure we can effectively assess the impact of the 2019–2020 Black Summer Bushfires on Greater Glider presence using a GLM later, we need to include both presence and absence data. However, a key challenge is that we do not have a separate raster defining pre- and post-fire habitat suitability, which is typically what the sample_pseudoabs() function would use to generate pseudo-absence locations.</p>
+<p>To address this, we will randomly allocate 50% of the pseudo-absence records as pre-fire and 50% as post-fire. This artificial split ensures that our model has pseudo-absence data in both time periods, allowing us to analyze the spatial distribution of gliders before and after the fires</p>
+<p>After we’ve generated the records, we will then restore the pre and post-fire values for our actual observations in the dataset.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the pseudoabsence records</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>gliders_pseudoabs <span class="ot">&lt;-</span> tidysdm<span class="sc">::</span><span class="fu">sample_pseudoabs</span>(</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  gliders_thin,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">nrow</span>(combined_rasters), </span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">raster =</span> combined_rasters,</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="fu">c</span>(<span class="st">"dist_min"</span>, <span class="fu">km2m</span>(<span class="dv">5</span>)))</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the number of rows so we can generate random categories</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>n_pseudo <span class="ot">&lt;-</span> <span class="fu">nrow</span>(gliders_pseudoabs)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate random categories for our pseudoabsences</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>pseudo_categories <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"pre_fire"</span>, <span class="st">"post_fire"</span>), <span class="at">size =</span> n_pseudo, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the real categories from our original data</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>real_categories <span class="ot">&lt;-</span> gliders_thin <span class="sc">|&gt;</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(fire_period) <span class="sc">|&gt;</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">class =</span> <span class="st">"presence"</span>)</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Put the pseudo categories into our pseudoabsences</span></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>gliders_pseudoabs <span class="ot">&lt;-</span> gliders_pseudoabs <span class="sc">|&gt;</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fire_period =</span> pseudo_categories)</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the tree cover, elevation values and climate values at the pseudoabs points</span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>gliders_events <span class="ot">&lt;-</span> gliders_pseudoabs <span class="sc">|&gt;</span> </span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(</span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    terra<span class="sc">::</span><span class="fu">extract</span>(combined_rasters,</span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>                   gliders_pseudoabs,</span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ID =</span> <span class="cn">FALSE</span>))</span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Join the real fire_period category from the original records to overwrite our fake ones</span></span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>gliders_events <span class="ot">&lt;-</span> gliders_events <span class="sc">|&gt;</span></span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_join</span>(real_categories <span class="sc">|&gt;</span> <span class="fu">select</span>(fire_period), <span class="at">left =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fire_period =</span> <span class="fu">coalesce</span>(fire_period.y, fire_period.x)) <span class="sc">|&gt;</span>  <span class="co"># Overwrite only if match found</span></span>
-<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>fire_period.x, <span class="sc">-</span>fire_period.y)  <span class="co"># Remove redundant columns</span></span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove any NA records </span></span>
-<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>gliders_events <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(gliders_events)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the pseudoabsence records</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>gliders_pseudoabs <span class="ot">&lt;-</span> tidysdm<span class="sc">::</span><span class="fu">sample_pseudoabs</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  gliders_thin,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">nrow</span>(combined_rasters), </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">raster =</span> combined_rasters,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="fu">c</span>(<span class="st">"dist_min"</span>, <span class="fu">km2m</span>(<span class="dv">5</span>)))</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the number of rows so we can generate random categories</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>n_pseudo <span class="ot">&lt;-</span> <span class="fu">nrow</span>(gliders_pseudoabs)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate random categories for our pseudoabsences</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>pseudo_categories <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"pre_fire"</span>, <span class="st">"post_fire"</span>), <span class="at">size =</span> n_pseudo, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the real categories from our original data</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>real_categories <span class="ot">&lt;-</span> gliders_thin <span class="sc">|&gt;</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(fire_period) <span class="sc">|&gt;</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">class =</span> <span class="st">"presence"</span>)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Put the pseudo categories into our pseudoabsences</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>gliders_pseudoabs <span class="ot">&lt;-</span> gliders_pseudoabs <span class="sc">|&gt;</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fire_period =</span> pseudo_categories)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the tree cover, elevation values and climate values at the pseudoabs points</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>gliders_events <span class="ot">&lt;-</span> gliders_pseudoabs <span class="sc">|&gt;</span> </span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    terra<span class="sc">::</span><span class="fu">extract</span>(combined_rasters,</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>                   gliders_pseudoabs,</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ID =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Join the real fire_period category from the original records to overwrite our fake ones</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>gliders_events <span class="ot">&lt;-</span> gliders_events <span class="sc">|&gt;</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_join</span>(real_categories <span class="sc">|&gt;</span> <span class="fu">select</span>(fire_period), <span class="at">left =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fire_period =</span> <span class="fu">coalesce</span>(fire_period.y, fire_period.x)) <span class="sc">|&gt;</span>  <span class="co"># Overwrite only if match found</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>fire_period.x, <span class="sc">-</span>fire_period.y)  <span class="co"># Remove redundant columns</span></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove any NA records </span></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>gliders_events <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(gliders_events)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s now have a look at our predictor variables and see how they correlate to one another. Then we will select our predictor variables to filter out all the other records in our data frame. We will then turn our pre/post fire column into a numeric value for our modelling and statitical analysis later.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the effect of each variable on both presence and pseudoabsence records </span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>gliders_events <span class="sc">|&gt;</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_pres_vs_bg</span>(class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Look at the names in our data frame and select the winners</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(gliders_events)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "class"       "geometry"    "elevation"   "bio1"        "bio12"      
-[6] "fire_extent" "treecover"   "fire_period"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>predictor_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"elevation"</span>, <span class="st">"bio1"</span>, <span class="st">"bio12"</span>, <span class="st">"fire_extent"</span>, <span class="st">"treecover"</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Add in class and fire-period</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>gliders_filtered <span class="ot">&lt;-</span> </span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  gliders_events <span class="sc">|&gt;</span> </span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(<span class="fu">c</span>(predictor_vars, <span class="st">"class"</span>, <span class="st">"fire_period"</span>)))</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Change fire period into a numeric value </span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>gliders_filtered <span class="ot">&lt;-</span> gliders_filtered <span class="sc">|&gt;</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fire_period =</span> <span class="fu">if_else</span>(fire_period <span class="sc">==</span> <span class="st">"post_fire"</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>))</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>gliders_filtered<span class="sc">$</span>fire_period <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(gliders_filtered<span class="sc">$</span>fire_period)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select our predictor variables</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>predictor_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"elevation"</span>, <span class="st">"bio1"</span>, <span class="st">"bio12"</span>, <span class="st">"fire_extent"</span>, <span class="st">"treecover"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Select all the columns we're interested in</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>gliders_filtered <span class="ot">&lt;-</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  gliders_events <span class="sc">|&gt;</span> </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(<span class="fu">c</span>(predictor_vars, <span class="st">"class"</span>, <span class="st">"fire_period"</span>)))</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Change fire period into a numeric value </span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>gliders_filtered <span class="ot">&lt;-</span> gliders_filtered <span class="sc">|&gt;</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fire_period =</span> <span class="fu">if_else</span>(fire_period <span class="sc">==</span> <span class="st">"post_fire"</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>gliders_filtered<span class="sc">$</span>fire_period <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(gliders_filtered<span class="sc">$</span>fire_period)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -614,112 +661,229 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Tuning and Running the Model</h1>
 <p>Now that we’ve cleaned and prepared our data and generated our pseudoabsence data, we’re ready to start modelling!</p>
 <p>Rather than using a single mdoel, we’ll be training multiple models, investigating their relative performance, and then combining them into an ensemble model that will help make our final prediction a bit more robust.</p>
-<p>Again if you’d like more information on the finer details of Species Distribution MOdelling using <code>{tidysdm}</code> and <code>{tidymodels}</code>, check out this ALA labs post: <a href="https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/">An introduction to species distribution modelling using {tidysdm} &amp; {tidymodels}</a>.</p>
 <section id="training-and-testing" class="level3">
 <h3 class="anchored" data-anchor-id="training-and-testing">Training and testing</h3>
-<p>Firstly let’s split our glider presence/pseudoabsence data into training and testing datasets. Then to improve our model, we’ll use spatial block cross-validation to try and prevent our model from overfitting.</p>
+<p>Firstly let’s split our glider presence/pseudoabsence data into training and testing datasets. This allows us to train the model on one subset of the data, while evaluating it’s performance on the other subset of the data. In order to improve our model and try and prevent overfitting, we’ll use spatial block cross-validation. Spatial block cross validation divides the sudy area into spatial blocks and ensures our model is tested on spatially independent data, making it’s predictions more general.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set training and testing data</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create training and testing datasets</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>gliders_split <span class="ot">&lt;-</span> </span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  gliders_filtered <span class="sc">|&gt;</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">initial_split</span>()</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>gliders_split</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>gliders_train <span class="ot">&lt;-</span> <span class="fu">training</span>(gliders_split)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>gliders_train</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>gliders_test <span class="ot">&lt;-</span> <span class="fu">testing</span>(gliders_split)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>gliders_test</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform Cross validation</span></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>gliders_cv <span class="ot">&lt;-</span> <span class="fu">spatial_block_cv</span>(gliders_train, <span class="at">v =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set training and testing data</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create training and testing datasets</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>gliders_split <span class="ot">&lt;-</span> </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  gliders_filtered <span class="sc">|&gt;</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">initial_split</span>()</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>gliders_split</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;Training/Testing/Total&gt;
+&lt;5885/1962/7847&gt;</code></pre>
 </div>
-<p>Now we’re going to create a new recipe for our model, this essentially will explain how our variables are used in the model.</p>
-<p>We will be calculating the effect each variable has on the likelihood presence and absence, so our model knows what are the predictor variables: <code>elevation</code>, <code>bio1</code>, <code>bio12</code>, <code>treecover</code>, <code>fire_extent</code> and <code>fire_period</code>.</p>
-<p>and what is the response variable: <code>class</code> which is either presence, or absence.</p>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>gliders_train <span class="ot">&lt;-</span> <span class="fu">training</span>(gliders_split)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>gliders_train</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 5885 features and 7 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 148.5 ymin: -37.49949 xmax: 150.8293 ymax: -35.00099
+Geodetic CRS:  WGS 84
+# A tibble: 5,885 × 8
+   elevation  bio1 bio12 fire_extent treecover class     fire_period
+       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;int&gt;     &lt;dbl&gt; &lt;fct&gt;           &lt;dbl&gt;
+ 1       234  14.7  793.           3 82.5      pseudoabs          -1
+ 2      1033  11.4  775.           0 88.3      presence           -1
+ 3      1164  11.0  777.           0  0.000154 pseudoabs           1
+ 4       268  14.5 1059.           0 89.9      pseudoabs          -1
+ 5       424  13.4 1070.           0 89.7      pseudoabs          -1
+ 6       468  14.5  828.           4 83.4      pseudoabs          -1
+ 7       771  11.9  749.           0  0        pseudoabs           1
+ 8       725  12.9  973.           0  3.00     pseudoabs          -1
+ 9       298  14.4 1008.           0 70.6      pseudoabs          -1
+10      1101  10.9  846.           0 84.3      presence            1
+# ℹ 5,875 more rows
+# ℹ 1 more variable: geometry &lt;POINT [°]&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>gliders_test <span class="ot">&lt;-</span> <span class="fu">testing</span>(gliders_split)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>gliders_test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 1962 features and 7 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 148.5 ymin: -37.49949 xmax: 150.7988 ymax: -35.00343
+Geodetic CRS:  WGS 84
+# A tibble: 1,962 × 8
+   elevation  bio1 bio12 fire_extent treecover class    fire_period
+       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;       &lt;int&gt;     &lt;dbl&gt; &lt;fct&gt;          &lt;dbl&gt;
+ 1      1049 11.3   749.           0      81.8 presence          -1
+ 2      1011 10.3  1033.           0      89.9 presence          -1
+ 3       949 11.8   782.           4      88.4 presence           1
+ 4      1060 11.1   831.           0      86.5 presence           1
+ 5      1101  9.94  915.           0      89.4 presence          -1
+ 6      1065 10.1  1071.           0      90   presence           1
+ 7      1203 10.1  1162.           0      78.3 presence           1
+ 8      1040 11.2   882.           5      85.4 presence           1
+ 9        73 16.9   929.           0      43.7 presence           1
+10      1044 11.3   850.           0      80.2 presence           1
+# ℹ 1,952 more rows
+# ℹ 1 more variable: geometry &lt;POINT [°]&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform Cross validation</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>gliders_cv <span class="ot">&lt;-</span> <span class="fu">spatial_block_cv</span>(gliders_train, <span class="at">v =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we’re going to create a new recipe for our model, this will explain how our response variable <code>class</code> (presence or absence) is effected by each predictor variable (<code>elevation</code>, <code>bio1</code>, <code>bio12</code>, <code>treecover</code>, <code>fire_extent</code> and <code>fire_period</code>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>gliders_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  gliders_train, </span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> class <span class="sc">~</span> elevation <span class="sc">+</span> bio1 <span class="sc">+</span> bio12 <span class="sc">+</span> treecover <span class="sc">+</span> fire_extent <span class="sc">+</span> fire_period</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>gliders_recipe</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>gliders_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  gliders_train, </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> class <span class="sc">~</span> elevation <span class="sc">+</span> bio1 <span class="sc">+</span> bio12 <span class="sc">+</span> treecover <span class="sc">+</span> fire_extent <span class="sc">+</span> fire_period</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Rather than relying on a single model, we’ll train up four and compare their performance. These models are: 1. Generalised Linear MOdel 2. Random Forest 3. Gradient Boosting Machine 4. Maximum entropy</p>
+<p>Rather than relying on a single model, we’ll train up four and compare their performance. These models are:</p>
+<ol type="1">
+<li>Generalised Linear Model</li>
+<li>Random Forest</li>
+<li>Gradient Boosting Machine</li>
+<li>Maximum entropy</li>
+</ol>
 <p>We will later build an ensemble of the best models</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>gliders_models <span class="ot">&lt;-</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create the workflow_set</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow_set</span>(</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">preproc =</span> <span class="fu">list</span>(<span class="at">default =</span> gliders_recipe), <span class="co"># Use the same recipe for all</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">models =</span> <span class="fu">list</span>(</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">glm =</span> <span class="fu">sdm_spec_glm</span>(),        <span class="co"># Generalised Linear Model</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">rf =</span> <span class="fu">sdm_spec_rf</span>(),          <span class="co"># Radom Forest</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">gbm =</span> <span class="fu">sdm_spec_boost_tree</span>(), <span class="co"># Gradient Boosting Machine</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">maxent =</span> <span class="fu">sdm_spec_maxent</span>()   <span class="co"># Maximum Entropy</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">cross =</span> <span class="cn">TRUE</span> <span class="co"># make all possible combinations</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">option_add</span>(<span class="at">control =</span> <span class="fu">control_ensemble_grid</span>())</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>gliders_models</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>gliders_models <span class="ot">&lt;-</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create the workflow_set</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow_set</span>(</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">preproc =</span> <span class="fu">list</span>(<span class="at">default =</span> gliders_recipe), <span class="co"># Use the same recipe for all</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">models =</span> <span class="fu">list</span>(</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">glm =</span> <span class="fu">sdm_spec_glm</span>(),        <span class="co"># Generalised Linear Model</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">rf =</span> <span class="fu">sdm_spec_rf</span>(),          <span class="co"># Radom Forest</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">gbm =</span> <span class="fu">sdm_spec_boost_tree</span>(), <span class="co"># Gradient Boosting Machine</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">maxent =</span> <span class="fu">sdm_spec_maxent</span>()   <span class="co"># Maximum Entropy</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">cross =</span> <span class="cn">TRUE</span> <span class="co"># make all possible combinations</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">option_add</span>(<span class="at">control =</span> <span class="fu">control_ensemble_grid</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now we’ll tune our models using the cross validation blocks we generated earlier.</p>
+<p>Now we’ll tune our models using the cross validation blocks we generated earlier. This step helps us find the best model parameters by testing different variations and selecting the ones that perform best. We expect to see:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">9999</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Tune the model using cross validation</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>gliders_models_tune <span class="ot">&lt;-</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  gliders_models <span class="sc">|&gt;</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow_map</span>(<span class="st">"tune_grid"</span>,</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">resamples =</span> gliders_cv, </span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">grid =</span> <span class="dv">6</span>,                   <span class="co"># number of tuning iterations</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">metrics =</span> <span class="fu">sdm_metric_set</span>(), <span class="co"># Evaluate model performance</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">verbose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">control =</span> stacks<span class="sc">::</span><span class="fu">control_stack_grid</span>()</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>gliders_models_tune</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(gliders_models_tune)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># See Metrics</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(gliders_models_tune)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">98765</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">9999</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Tune the model using cross validation</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>gliders_models_tune <span class="ot">&lt;-</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  gliders_models <span class="sc">|&gt;</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow_map</span>(<span class="st">"tune_grid"</span>,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">resamples =</span> gliders_cv,     <span class="co"># Use our cross-validation blocks for tuning</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">grid =</span> <span class="dv">6</span>,                   <span class="co"># number of tuning iterations</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">metrics =</span> <span class="fu">sdm_metric_set</span>(), <span class="co"># Evaluate model performance</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">verbose =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">control =</span> stacks<span class="sc">::</span><span class="fu">control_stack_grid</span>()</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There are existing options that are being modified
+    default_glm: 'control'
+    default_rf: 'control'
+    default_gbm: 'control'
+    default_maxent: 'control'</code></pre>
 </div>
-<p>Because we are using a collection of models, we can use stacks to combine the best models into an ensemble model that will help improve accuracy and generalisation.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>gliders_stacked <span class="ot">&lt;-</span> </span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stacks</span>() <span class="sc">|&gt;</span>                                <span class="co"># initialize the model stack</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_candidates</span>(gliders_models_tune) <span class="sc">|&gt;</span> <span class="co">#  Add the tuned models</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">blend_predictions</span>() <span class="sc">|&gt;</span>                     <span class="co"># Blend their predictions</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_members</span>()                              <span class="co"># Fit the final model</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># View the stacked model</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>gliders_stacked</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualise each models contribution</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(gliders_stacked, <span class="at">type =</span> <span class="st">"weights"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>i   No tuning parameters. `fit_resamples()` will be attempted</code></pre>
 </div>
-<p>We can then evaluate it’s performance:</p>
+<div class="cell-output cell-output-stderr">
+<pre><code>i 1 of 4 resampling: default_glm</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ 1 of 4 resampling: default_glm (351ms)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>i 2 of 4 tuning:     default_rf</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>i Creating pre-processing data to finalize unknown parameter: mtry</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ 2 of 4 tuning:     default_rf (29.5s)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>i 3 of 4 tuning:     default_gbm</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>i Creating pre-processing data to finalize unknown parameter: mtry</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ 3 of 4 tuning:     default_gbm (2m 1s)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>i 4 of 4 tuning:     default_maxent</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>✔ 4 of 4 tuning:     default_maxent (2m 36.3s)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(gliders_models_tune)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># See Metrics</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(gliders_models_tune)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 54 × 9
+   wflow_id    .config      preproc model .metric .estimator  mean     n std_err
+   &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+ 1 default_glm Preprocesso… spatia… logi… boyce_… binary     0.892     5  0.0381
+ 2 default_glm Preprocesso… spatia… logi… roc_auc binary     0.870     5  0.0291
+ 3 default_glm Preprocesso… spatia… logi… tss_max binary     0.625     5  0.0577
+ 4 default_rf  Preprocesso… spatia… rand… boyce_… binary     0.894     5  0.0591
+ 5 default_rf  Preprocesso… spatia… rand… roc_auc binary     0.932     5  0.0170
+ 6 default_rf  Preprocesso… spatia… rand… tss_max binary     0.751     5  0.0436
+ 7 default_rf  Preprocesso… spatia… rand… boyce_… binary     0.931     5  0.0271
+ 8 default_rf  Preprocesso… spatia… rand… roc_auc binary     0.935     5  0.0187
+ 9 default_rf  Preprocesso… spatia… rand… tss_max binary     0.763     5  0.0491
+10 default_rf  Preprocesso… spatia… rand… boyce_… binary     0.912     5  0.0276
+# ℹ 44 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">98765</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Because we are using a collection of models, we can use stacks to combine the best models into an ensemble model that will help improve accuracy and generalisation. We will see a plot at the end detailing how much each model is contributing to the ensemble.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict probability of presence</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>gliders_test_predictions <span class="ot">&lt;-</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  gliders_test <span class="sc">%&gt;%</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">predict</span>(gliders_stacked, ., </span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">type =</span> <span class="st">"prob"</span>, </span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">save_pred =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate performance</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>gliders_test_predictions <span class="sc">|&gt;</span> </span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sdm_metric_set</span>()(<span class="at">truth =</span> class, .pred_presence)</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>gliders_test_predictions_class <span class="ot">&lt;-</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  gliders_test <span class="sc">%&gt;%</span></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">predict</span>(gliders_stacked, ., </span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>                    <span class="at">type =</span> <span class="st">"class"</span>, </span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>                    <span class="at">save_pred =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>gliders_stacked <span class="ot">&lt;-</span> </span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stacks</span>() <span class="sc">|&gt;</span>                                <span class="co"># initialize the model stack</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_candidates</span>(gliders_models_tune) <span class="sc">|&gt;</span> <span class="co">#  Add the tuned models</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">blend_predictions</span>() <span class="sc">|&gt;</span>                     <span class="co"># Blend their predictions</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_members</span>()                              <span class="co"># Fit the final model</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualise each models contribution</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(gliders_stacked, <span class="at">type =</span> <span class="st">"weights"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now that we have our stacked ensemble model, it’s time to see how well it performs on unseen test data. This step helps us validate the model’s accuracy and assess how well it generalizes to new observations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict probability of presence </span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>gliders_test_predictions <span class="ot">&lt;-</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  gliders_test <span class="sc">%&gt;%</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">predict</span>(gliders_stacked, ., </span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">type =</span> <span class="st">"prob"</span>, </span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">save_pred =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate performance</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>gliders_test_predictions <span class="sc">|&gt;</span> </span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sdm_metric_set</span>()(<span class="at">truth =</span> class, .pred_presence)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  .metric    .estimator .estimate
+  &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt;
+1 boyce_cont binary         0.982
+2 roc_auc    binary         0.968
+3 tss_max    binary         0.830</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Give a final classification</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>gliders_test_predictions_class <span class="ot">&lt;-</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  gliders_test <span class="sc">%&gt;%</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">predict</span>(gliders_stacked, ., </span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">type =</span> <span class="st">"class"</span>, </span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">save_pred =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -727,77 +891,65 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Generating the Final Raster</h1>
 <p>Now we’ve got a trained and tested model, we can now <em>almost</em> finally make our predictions!</p>
 <p>THe last step we need to do is create a pseudo “fire-period” raster. We need this raster because our model only evaluates the impact of <code>fire_period</code> on the glider records, we didn’t have the need a raster of fire_period previously, however because we are producing a final raster, we <em>DO</em> need a raster that we can sample from in order to produce that prediction.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an empty raster with the same dimensions as our combined raster</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>presence_raster <span class="ot">&lt;-</span> <span class="fu">rast</span>(combined_rasters, <span class="at">nlyr =</span> <span class="dv">1</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(presence_raster) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "lyr1"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">values</span>(presence_raster) <span class="ot">&lt;-</span> <span class="cn">NA</span> </span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename the layer for clarity</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(presence_raster) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(presence_raster), </span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">"lyr1"</span>, </span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">"fire_period"</span>)</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(presence_raster)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "fire_period"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert glider observations into a vector to be sampled</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>gliders_vect <span class="ot">&lt;-</span> <span class="fu">vect</span>(gliders_filtered)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Rasterize the fire period from the glider points</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>fire_period_raster <span class="ot">&lt;-</span> <span class="fu">rasterize</span>(gliders_vect, presence_raster, <span class="at">field =</span> <span class="st">"fire_period"</span>, <span class="at">fun =</span> <span class="st">"first"</span>)</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(fire_period_raster) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(fire_period_raster), </span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"first"</span>, </span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"fire_period"</span>)</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign pre/post values to the cells</span></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>fire_period_raster[<span class="fu">is.na</span>(fire_period_raster) <span class="sc">&amp;</span> (fire_extent <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> fire_extent <span class="sc">==</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">1</span> <span class="co"># Pre-fire</span></span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>fire_period_raster[<span class="fu">is.na</span>(fire_period_raster) <span class="sc">&amp;</span> <span class="sc">!</span>(fire_extent <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> fire_extent <span class="sc">==</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># Post-fire</span></span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Add this fire period raster into our raster stack</span></span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>combined_rasters <span class="ot">&lt;-</span> <span class="fu">c</span>(combined_rasters, fire_period_raster)</span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(combined_rasters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "elevation"   "bio1"        "bio12"       "fire_extent" "treecover"  
-[6] "fire_period"</code></pre>
-</div>
+<div class="cell" data-messages="false">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an empty raster with the same dimensions as our combined raster</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>presence_raster <span class="ot">&lt;-</span> <span class="fu">rast</span>(combined_rasters, <span class="at">nlyr =</span> <span class="dv">1</span>)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">values</span>(presence_raster) <span class="ot">&lt;-</span> <span class="cn">NA</span> </span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename the layer for clarity</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(presence_raster) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(presence_raster), </span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">"lyr1"</span>, </span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">"fire_period"</span>)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert glider observations into a vector to be sampled</span></span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>gliders_vect <span class="ot">&lt;-</span> <span class="fu">vect</span>(gliders_filtered)</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Rasterize the fire period from the glider points</span></span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>fire_period_raster <span class="ot">&lt;-</span> <span class="fu">rasterize</span>(gliders_vect, presence_raster, <span class="at">field =</span> <span class="st">"fire_period"</span>, <span class="at">fun =</span> <span class="st">"first"</span>)</span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(fire_period_raster) <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(<span class="fu">names</span>(fire_period_raster), </span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"first"</span>, </span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>                                          <span class="st">"fire_period"</span>)</span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign pre/post values to the cells</span></span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>fire_period_raster[<span class="fu">is.na</span>(fire_period_raster) <span class="sc">&amp;</span> (fire_extent <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> fire_extent <span class="sc">==</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">1</span> <span class="co"># Pre-fire</span></span>
+<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>fire_period_raster[<span class="fu">is.na</span>(fire_period_raster) <span class="sc">&amp;</span> <span class="sc">!</span>(fire_extent <span class="sc">==</span> <span class="dv">0</span> <span class="sc">|</span> fire_extent <span class="sc">==</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># Post-fire</span></span>
+<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Add this fire period raster into our raster stack</span></span>
+<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a>combined_rasters <span class="ot">&lt;-</span> <span class="fu">c</span>(combined_rasters, fire_period_raster)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we are finally ready to perform our final prediction!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform our final prediction!</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>prediction_present <span class="ot">&lt;-</span> <span class="fu">predict_raster</span>(gliders_stacked, </span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                                     combined_rasters, </span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">type =</span> <span class="st">"prob"</span>,</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">wopt =</span> <span class="fu">list</span>(<span class="at">steps=</span><span class="dv">32</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform our final prediction!</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>prediction_present <span class="ot">&lt;-</span> <span class="fu">predict_raster</span>(gliders_stacked, </span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>                                     combined_rasters, </span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">type =</span> <span class="st">"prob"</span>,</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">wopt =</span> <span class="fu">list</span>(<span class="at">steps=</span><span class="dv">32</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="the-final-plot" class="level3">
 <h3 class="anchored" data-anchor-id="the-final-plot">The final plot</h3>
 <p>Now let’s plot it, and have a look at our map detailing habitat suitability for our gliders!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data =</span> prediction_present, </span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">aes</span>(<span class="at">fill =</span> .pred_presence)) <span class="sc">+</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_whitebox_c</span>(<span class="at">palette =</span> <span class="st">"viridi"</span>,</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">na.value =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_colorbar</span>(<span class="at">title=</span><span class="st">"Relative</span><span class="sc">\n</span><span class="st">Habitat</span><span class="sc">\n</span><span class="st">Suitability"</span>)) <span class="sc">+</span></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Predicted Suitable Habitat for Greater Gliders"</span>, <span class="at">subtitle =</span> <span class="st">"Elevation, tree cover, mean annual temp, fire events, annual precipitation and fire period."</span>) <span class="sc">+</span></span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  pilot<span class="sc">::</span><span class="fu">theme_pilot</span>(<span class="at">grid=</span><span class="st">"hv"</span>) <span class="sc">+</span></span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data =</span> prediction_present, </span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">aes</span>(<span class="at">fill =</span> .pred_presence)) <span class="sc">+</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_whitebox_c</span>(<span class="at">palette =</span> <span class="st">"viridi"</span>,</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">na.value =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_colorbar</span>(<span class="at">title=</span><span class="st">"Relative</span><span class="sc">\n</span><span class="st">Habitat</span><span class="sc">\n</span><span class="st">Suitability"</span>)) <span class="sc">+</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Predicted Suitable Habitat for Greater Gliders"</span>, <span class="at">subtitle =</span> <span class="st">"Elevation, tree cover, mean annual temp, fire events, annual precipitation and fire period."</span>) <span class="sc">+</span></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>  pilot<span class="sc">::</span><span class="fu">theme_pilot</span>(<span class="at">grid=</span><span class="st">"hv"</span>) <span class="sc">+</span></span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>&lt;SpatRaster&gt; resampled to 500556 cells.</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -808,18 +960,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Finishing up: Statistical Analysis</h1>
 <p>Now let’s investigate the relative effect that each variable had on the final prediction raster:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join the prediction raster and our other rasters</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>final_raster <span class="ot">&lt;-</span> <span class="fu">c</span>(prediction_present, combined_rasters)</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(final_raster)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct a GLM </span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>lm <span class="ot">&lt;-</span> <span class="fu">glm</span>(.pred_presence <span class="sc">~</span> elevation <span class="sc">+</span> bio1 <span class="sc">+</span> bio12 <span class="sc">+</span> fire_extent <span class="sc">+</span> treecover <span class="sc">+</span> fire_period, <span class="at">data =</span> final_raster)</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] ".pred_presence"  ".pred_pseudoabs" "elevation"       "bio1"           
-[5] "bio12"           "fire_extent"     "treecover"       "fire_period"    </code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join the prediction raster and our other rasters</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>final_raster <span class="ot">&lt;-</span> <span class="fu">c</span>(prediction_present, combined_rasters)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct a GLM </span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>lm <span class="ot">&lt;-</span> <span class="fu">glm</span>(.pred_presence <span class="sc">~</span> elevation <span class="sc">+</span> bio1 <span class="sc">+</span> bio12 <span class="sc">+</span> fire_extent <span class="sc">+</span> treecover <span class="sc">+</span> fire_period, <span class="at">data =</span> final_raster)</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -828,97 +974,37 @@ glm(formula = .pred_presence ~ elevation + bio1 + bio12 + fire_extent +
 
 Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -1.520e+00  4.090e-03  -371.5   &lt;2e-16 ***
-elevation    5.378e-04  1.281e-06   419.9   &lt;2e-16 ***
-bio1         8.056e-02  2.288e-04   352.1   &lt;2e-16 ***
-bio12        1.722e-04  8.654e-07   199.0   &lt;2e-16 ***
-fire_extent -3.773e-02  1.775e-04  -212.6   &lt;2e-16 ***
-treecover    3.510e-03  4.353e-06   806.3   &lt;2e-16 ***
-fire_period  5.513e-02  3.543e-04   155.6   &lt;2e-16 ***
+(Intercept) -1.404e+00  4.143e-03  -338.8   &lt;2e-16 ***
+elevation    5.161e-04  1.297e-06   397.8   &lt;2e-16 ***
+bio1         7.404e-02  2.318e-04   319.5   &lt;2e-16 ***
+bio12        1.636e-04  8.766e-07   186.7   &lt;2e-16 ***
+fire_extent -4.292e-02  1.798e-04  -238.8   &lt;2e-16 ***
+treecover    3.596e-03  4.409e-06   815.6   &lt;2e-16 ***
+fire_period  6.837e-02  3.588e-04   190.5   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-(Dispersion parameter for gaussian family taken to be 0.03228143)
+(Dispersion parameter for gaussian family taken to be 0.03312368)
 
-    Null deviance: 136867  on 2825491  degrees of freedom
-Residual deviance:  91211  on 2825485  degrees of freedom
+    Null deviance: 142449  on 2825491  degrees of freedom
+Residual deviance:  93590  on 2825485  degrees of freedom
   (1391370 observations deleted due to missingness)
-AIC: -1682250
+AIC: -1609475
 
 Number of Fisher Scoring iterations: 2</code></pre>
 </div>
 </div>
 <section id="breaking-down-the-stats" class="level3">
 <h3 class="anchored" data-anchor-id="breaking-down-the-stats">Breaking down the stats</h3>
-<p>This output can be a bit confusing, so lets break it down and analyse each to make more sense.</p>
-<ol type="1">
-<li><strong>P-values</strong></li>
-</ol>
-<p>Normally when analysing the output of a GLM we’d start with a p-value, which tells us the probability that the effect we’re seeing is because of random chance. But because we chose these variables for our model, their p-values are of course going to be very small. We already know they’re influencing glider distribution, so they don’t tell us too much</p>
-<ol start="2" type="1">
-<li><strong>Estimates</strong></li>
-</ol>
-<p>Next let’s look at estimate, estimate tells us how much each variable increases or decreases the likelihood of finding a glider:</p>
+<!-- These are great notes, excellent. But I think it's a little too much for a casual reader. What are the main takeaways you learn from you model? Which variables are you looking at primarily, and what does the output tell you? Are the effects big or small? Is that what you expected? How might you interpret this? Try to choose a takeaway message for the reader, rather than presenting them with all the information. You can include some of it, but you probably don't need all of it -->
+<p>This output can be a bit confusing, so let’s look at the key takeaways:</p>
+<p>The estimate tells us how much each variable increases or decreases the likelihood of finding a glider:</p>
 <ul>
 <li>Positive estimate: Higher values of this variable <strong>increase</strong> the likelihood of glider presence.</li>
 <li>Negative estimate: Higher values of this variable <strong>decrease</strong> the likelihood of glider presence.</li>
 <li>Larger absolute values mean a stronger influence.</li>
 </ul>
-<ol start="3" type="1">
-<li><strong>Standard Error</strong></li>
-</ol>
-<p>Now we have standard error, standard error tells us how much uncertainty there is in the estimate. Because we have very low standard errors for all our variables, we can say that there isn’t much variability in our estimates, and we can be quite confident in them.</p>
-<ol start="4" type="1">
-<li><strong>Effect size (t value)</strong></li>
-</ol>
-<p>For our GLM, this t-value is the effect size, and it tells us how strong each variable is on the final prediction. The absolute value of the effect size tells us it’s strength, and whether it’s positive or negative tells us whether or not it’s associated with increased glider predicition chance, or decreased glider prediction chance.</p>
-<p>So because of our small p-values and standard errors, lets look at the estimates and effect sizes and draw some conclusions about what our model says each variable is contributing to the distribution of Greater Gliders:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 24%">
-<col style="width: 52%">
-<col style="width: 23%">
-</colgroup>
-<thead>
-<tr class="header">
-<th><strong>Variable</strong></th>
-<th><strong>Estimate</strong></th>
-<th><strong>Effect Size (t)</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Elevation</strong></td>
-<td><strong>0.0006578</strong> - Higher elevation slightly increases the chance of finding a glider.</td>
-<td><strong>485.27</strong> - A strong predictor of Glider Presence. As elevation increases, we expect the likelihood of gliders being present to rise.</td>
-</tr>
-<tr class="even">
-<td><strong>BIO1 (Mean Annual Temperature)</strong></td>
-<td><strong>0.1030</strong> - Higher mean annual temperature increases the likelihood of glider presence (relative to other locations sampled in our region).</td>
-<td><strong>425.44</strong> - Another strong predictor. This should be considered within the context of all other variables.</td>
-</tr>
-<tr class="odd">
-<td><strong>BIO12 (Annual Precipitation)</strong></td>
-<td><strong>0.0002668</strong> - More rainfall slightly increases the predicted chance of glider presence.</td>
-<td><strong>297.31</strong> - Another positive predictor. When considered alongside tree cover and elevation, this makes sense as higher tree cover typically requires more precipitation.</td>
-</tr>
-<tr class="even">
-<td><strong>Fire Extent</strong></td>
-<td><strong>-0.03244</strong> - More extreme fire events in 2019 decrease the likelihood of glider presence.</td>
-<td><strong>-172.83</strong> - A reasonably strong negative predictor. Our model suggests that as fire severity increases, the likelihood of glider presence decreases.</td>
-</tr>
-<tr class="odd">
-<td><strong>Tree Cover</strong></td>
-<td><strong>0.003676</strong> - More tree cover increases glider presence (as expected, since they are arboreal).</td>
-<td><strong>797.97</strong> - This is the strongest predictor of Glider presence in our model.</td>
-</tr>
-<tr class="even">
-<td><strong>Fire Period (Before or After)</strong></td>
-<td><strong>0.02963</strong> - Fire period slightly influences glider presence in a positive way. This is interesting, as our results indicate a slight preference for post fire sightings. This could be due to the creation of hollow bearing trees - or some other factor, or potentially skewed by our data (maybe more people were out looking for Gliders after the fires than before?)</td>
-<td><strong>78.99</strong> - It is the weakest predictor in our model, but it still plays a minor role in determining glider presence.</td>
-</tr>
-</tbody>
-</table>
+<p>The effect size (t-value) tells us how strong each variable is on the final prediction. The absolute value of the effect size tells us it’s strength, and whether it’s positive or negative tells us whether or not it’s associated with increased glider predicition chance, or decreased glider prediction chance.</p>
 </section>
 </section>
 <section id="conclusion" class="level1">
@@ -928,13 +1014,90 @@ Number of Fisher Scoring iterations: 2</code></pre>
 <li><p>Tree cover is critical - Tree cover is the strongest predictor of glider presence.</p></li>
 <li><p>Elevation and temperature are big predictors - Greater Gliders appear to prefer higher elevations and (relative to the surrounds) warmer annual temperatures.</p></li>
 <li><p>Rainfall plays a part - More precipitation increases the likelihood of glider presence, which is not a big surprise considering the relationship between precipitation and tree cover, and precipitation and elevation!</p></li>
-<li><p>Strong fires have a negative impact - The more extreme the fire events in the 2019 bushfire season, the less likely we were to see gliders present. Fires that are too intense can scorch and destroy the critical habitat needed by Greater Gliders, and destroy the hollow bearing trees needed for them. It is worth noting that fire can also create hollows in trees! However our model suggests that these intense fires did disrupt their habitat in a negative way.</p></li>
-<li><p>Pre vs Post fire presence - There was a slight influence of fire presence in an area. The exact nature of this requires a bit more exploring.</p></li>
 </ol>
-<p>This SDM gives us an interesting insight into the impact of the 2019 bushfires on glider distribution. It’s clear that when accounting for these other climactic variables, fire negatively impacts Glider range and habitat. This sort of modelling gives us a great starting point into deeper more nuanced analysis, and can help inform conservation planning and the impact that various environmental factors like fire have on a species range and habitat.</p>
+<p>But from our research we alraedy had some idea of these, so let’s look at the variables we’re actually interested in, fire!</p>
+<p>Severe fires have a negative impact in glider distribution - The more extreme the fire events in the 2019 bushfire season, the less likely we were to see gliders present. Fires that are too intense can scorch and destroy the critical habitat needed by Greater Gliders</p>
+<p>The pre vs post-fire effect is interesting. We saw a slight increase in post-fire glider presence in our model. This could be due to a number of factors, perhaps new tree hollows were formed in the fires, perhaps there increased survey efforts, or surviving gliders being more visible due to reduced canopy cover, or even just more data entering into the ALA</p>
+<p>This model gives us a solid look at how Greater Gliders were affected by the 2019 fires. While fires can sometimes create tree hollows, our model suggests that severe fires disrupted habitat more than they helped. This kind of modeling is super useful for conservation planning, helping us predict which areas need protection or restoration.</p>
+<details>
+<summary style="color: #E06E53;">
+Expand for session info
+</summary>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.4.2 (2024-10-31 ucrt)
+ os       Windows 11 x64 (build 22631)
+ system   x86_64, mingw32
+ ui       RTerm
+ language (EN)
+ collate  English_Australia.utf8
+ ctype    English_Australia.utf8
+ tz       Australia/Sydney
+ date     2025-02-13
+ pandoc   3.2 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package       * version date (UTC) lib source
+ broom         * 1.0.7   2024-09-26 [1] CRAN (R 4.4.2)
+ dials         * 1.3.0   2024-07-30 [1] CRAN (R 4.4.2)
+ dplyr         * 1.1.4   2023-11-17 [1] CRAN (R 4.4.2)
+ elevatr       * 0.99.0  2023-09-12 [1] CRAN (R 4.4.2)
+ forcats       * 1.0.0   2023-01-29 [1] CRAN (R 4.4.2)
+ galah         * 2.1.0   2024-11-19 [1] CRAN (R 4.4.2)
+ geodata       * 0.6-2   2024-06-10 [1] CRAN (R 4.4.2)
+ ggplot2       * 3.5.1   2024-04-23 [1] CRAN (R 4.4.2)
+ glmnet        * 4.1-8   2023-08-22 [1] CRAN (R 4.4.2)
+ here          * 1.0.1   2020-12-13 [1] CRAN (R 4.4.2)
+ htmltools     * 0.5.8.1 2024-04-04 [1] CRAN (R 4.4.2)
+ infer         * 1.0.7   2024-03-25 [1] CRAN (R 4.4.2)
+ lubridate     * 1.9.4   2024-12-08 [1] CRAN (R 4.4.2)
+ Matrix        * 1.7-1   2024-10-18 [2] CRAN (R 4.4.2)
+ maxnet        * 0.1.4   2021-07-09 [1] CRAN (R 4.4.2)
+ modeldata     * 1.4.0   2024-06-19 [1] CRAN (R 4.4.2)
+ ozmaps        * 0.4.5   2021-08-03 [1] CRAN (R 4.4.2)
+ parsnip       * 1.2.1   2024-03-22 [1] CRAN (R 4.4.2)
+ purrr         * 1.0.2   2023-08-10 [1] CRAN (R 4.4.2)
+ ranger        * 0.17.0  2024-11-08 [1] CRAN (R 4.4.2)
+ readr         * 2.1.5   2024-01-10 [1] CRAN (R 4.4.2)
+ recipes       * 1.1.0   2024-07-04 [1] CRAN (R 4.4.2)
+ rsample       * 1.2.1   2024-03-25 [1] CRAN (R 4.4.2)
+ scales        * 1.3.0   2023-11-28 [1] CRAN (R 4.4.2)
+ sessioninfo   * 1.2.2   2021-12-06 [1] CRAN (R 4.4.2)
+ sf            * 1.0-19  2024-11-05 [1] CRAN (R 4.4.2)
+ spatialsample * 0.6.0   2024-10-02 [1] CRAN (R 4.4.2)
+ stacks        * 1.0.5   2024-07-22 [1] CRAN (R 4.4.2)
+ stringr       * 1.5.1   2023-11-14 [1] CRAN (R 4.4.2)
+ terra         * 1.8-10  2025-01-14 [1] CRAN (R 4.4.2)
+ tibble        * 3.2.1   2023-03-20 [1] CRAN (R 4.4.2)
+ tidymodels    * 1.2.0   2024-03-25 [1] CRAN (R 4.4.2)
+ tidyr         * 1.3.1   2024-01-24 [1] CRAN (R 4.4.2)
+ tidysdm       * 0.9.5   2024-06-23 [1] CRAN (R 4.4.2)
+ tidyterra     * 0.6.2   2025-01-08 [1] CRAN (R 4.4.2)
+ tidyverse     * 2.0.0   2023-02-22 [1] CRAN (R 4.4.2)
+ tune          * 1.2.1   2024-04-18 [1] CRAN (R 4.4.2)
+ workflows     * 1.1.4   2024-02-19 [1] CRAN (R 4.4.2)
+ workflowsets  * 1.1.0   2024-03-21 [1] CRAN (R 4.4.2)
+ xgboost       * 1.7.8.1 2024-07-24 [1] CRAN (R 4.4.2)
+ yardstick     * 1.3.1   2024-03-21 [1] CRAN (R 4.4.2)
+
+ [1] C:/Users/wri211/AppData/Local/R/win-library/4.4
+ [2] C:/Program Files/R/R-4.4.2/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</details>
 </section>
 
-</main>
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Rasters are grids of spatial data, where each pixel contains a value representing the information we’re interested in. <a href="https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/#download-environmental-data">Check out this baisc example</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
