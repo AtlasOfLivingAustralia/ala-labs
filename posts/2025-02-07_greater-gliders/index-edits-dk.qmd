@@ -1,0 +1,912 @@
+---
+title: "Model impacts of fire on a tree-dwelling species using species distribution modelling and GLM"
+description: |
+  Bushfires etc.
+author:
+  - name: "Jarod Wright"
+  - name: "Dax Kellie"
+date: "2025-02-10"
+title-block-banner: "#B8573E"
+toc: true
+toc-location: left
+toc-depth: 2
+categories:
+  - Eukaryota
+  - Animalia
+  - Gliders
+  - Bush Fires
+  - Maps
+  - R
+image: sdm-map.png
+freeze: true
+draft: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| include: false
+library(htmltools)
+```
+
+<!-- remove metadata section -->
+
+<style>
+  #title-block-header.quarto-title-block.default .quarto-title-meta {
+      display: none;
+  }
+</style>
+
+<!-- Author card -->
+
+:::{.author-card}
+:::{.author-card-text}
+
+#### Author
+Jarod Wright  
+[Dax Kellie](https://labs.ala.org.au/about/Kellie_Dax/index.html)  
+
+#### Date
+10 February 2024
+
+:::
+
+:::{.row-b layout-ncol="3" style="margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto;"}
+
+:::{.author-card-image style="width: auto; height: 120px; margin-right: auto !important;"}
+<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/jarod.jpg" style="object-fit: cover; border-radius: 50% !important; width: 140px;"></img>
+
+:::
+
+:::{.author-card-image style="width: auto; height: 120px; margin-right: auto;"}
+<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg" style="object-fit: cover; border-radius: 50% !important; width: 140px;"></img>
+
+:::
+
+:::
+:::
+
+
+
+:::
+
+<!------------------------ Post starts here ------------------------>
+
+Bushfires are a frequent and natural phenomenon in Australia’s ecosystems. <!-- Add a sentence with examples of evidence of the first statement --> However, the 2019-2020 summer bushfire season was one of the most catastrophic fires on record in Australia, with [examples] <!-- eg 19,000 hectares burnt and an estimated 3 million animals killed --> . [The impact of this fire on native wildlife has been well documented and studied.] <!-- In general, try to avoid sentences like the previous one. Provide some numbers or some evidence to demonstrate what has been found, even if it's brief -->  
+
+<!-- You haven't quite logically made it to the next sentence yet where you present what you are doing. You are still missing the "why". Perhaps mentioning how much forest area was burnt in Australia, and particularly around the area you chose. Then mentioning that tree-dwelling species were likely impacted by such a large loss, and saying something about what knowing the impacts is useful for (eg knowing the extent of displacement from a major fire event for conservation) -->
+
+In this post we will explore the impact of the 2019-2020 bushfires on a population of Greater gliders (*Petauroides volans*), an arboreal, marsupial species found [general description of broad habitat range]. To do so, we will use a species distribution model (SDM) to understand how the habitat range of greater gliders may have shifted. Then we will use a general linear model to statistically test whether there is a difference in greater glider observations before vs after the 2019-2020 bushfires.
+
+
+
+To begin, we can load some packages.
+
+```{r}
+#| warning: false
+#| output: false
+library(galah)
+library(tidyverse)
+library(tidymodels) 
+library(tidysdm) # devtools::install_github("EvolEcolGroup/tidysdm")
+library(terra)
+library(tidyterra)
+library(here)
+library(sf)
+library(ozmaps)
+library(elevatr)
+library(geodata)
+library(stacks)
+```
+
+
+
+### Download data
+
+*Add brief intro of your species and maybe a fun fact. Add some photos of gliders*
+
+<!-- you can find the code to set this up in other articles -->
+
+We're going to be focusing on a region of South-East NSW. Let's establish a bounding box around our area and pull in a map of Australia for later rendering and working with our rasters.
+
+```{r}
+#| warning: false
+#| output: false
+#| echo: false
+# define geographic region
+se_nsw_bbox <- tibble(
+  ymin = -37.5,
+  ymax = -35,
+  xmin = 148.5,
+  xmax = 151
+)
+# Create a terra extent for modifying the rasters later on
+bbox_ext <- terra::ext(
+  c(se_nsw_bbox[["xmin"]], 
+    se_nsw_bbox[["xmax"]], 
+    se_nsw_bbox[["ymin"]], 
+    se_nsw_bbox[["ymax"]]
+  ))
+
+# Get an outline of Australia
+aus <- ozmaps::ozmap_country
+
+# Create an sf object of our bounding box
+bbox_sf <- st_as_sf(as.polygons(bbox_ext, crs = "EPSG:4326"))
+
+```
+
+Now lets download Greater Glider records in a 10-year time period (2014-2024) which captures observations of greater gliders before and after the 2019-2020 bushfires. 
+
+```{r}
+#| eval: false
+galah_config(email = "your-email-here", verbose = FALSE) 
+
+
+gliders <- galah_call() |>
+  identify("Petauroides volans") |>
+  filter(year >= 2014 & year <= 2024) |>
+  galah_apply_profile(ALA) |>
+  galah_geolocate(se_nsw_bbox, type = "bbox") |>
+  atlas_occurrences()
+```
+
+```{r}
+#| warning: false
+#| output: false
+#| echo: false
+galah_config(email = "jarod.wright@csiro.au") # Registered ALA email
+
+# Collect all greater glider records between 2014 and 2024 for the region we defined
+gliders <- galah_call() |>
+  identify("Petauroides volans") |>
+  filter(year >= 2014 & year <= 2024) |>
+  galah_apply_profile(ALA) |>
+  galah_geolocate(se_nsw_bbox, type = "bbox") |>
+  atlas_occurrences()
+```
+
+We will also add a new column called `fire_period` which categorises each observation as pre- or post-fire. 
+
+<!-- Why did you choose that date? Is that the first day of the fires? If memory serves, I remember the fires being particularly harsh through the Christmas holiday break. It might be better to choose a slightly later date? Maybe add a little tidbit (even as a footnote) about why you chose that date. -->
+
+```{r}
+# Classify each glider record as pre or post fire
+# Up to and including October 2019 is pre-burnt, all after that are post fire
+gliders <- gliders |>
+  mutate(fire_period = if_else(eventDate <= as.Date("2019-10-31"), "pre_fire", "post_fire"))
+
+# Create an sf object so we can draw it later
+gliders_sf <- gliders |>
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude")) |>
+  st_set_crs(4326)
+
+```
+
+
+Now we’ve got a nice dataset of Greater Glider observations over a period of time in the area we're interested with, classified by pre or post fire. Now, we’ll start pulling in our raster data to help build up our model.
+
+# Prepare rasters
+
+This post will make heavy use of raster files[^rasters]. <!-- You already have a lot to get through and this description exists elsewhere, so I've put the description of a raster in a footnote --> 
+
+<!-- You need to briefly introduce the raster layers you are going to download and why they matter. It would be great if you linked to some research that backs up your choices (eg this is usually used in models of gliders [link to article(s)]) -->
+
+For each raster, we will perform a series of modifications; cropping them to our region of interest, making sure they are all in the same projection and then resampling to make them have the same resolution. This process is slightly repetitive, but when working with spatial data for modelling, it is critical that rasters are in the same dimensions, resolution and projection. Otherwise, the raster pixels won't align with each other!
+
+[^rasters]: Rasters are grids of spatial data, where each pixel contains a value representing the information we're interested in. [Check out this baisc example](https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/#download-environmental-data).
+
+
+
+### Elevation raster
+
+The first raster we'll grab is an elevation raster for our defined region, fortunately for us the `{elevatr}` package provides us with the handy `get_elev_raster()` function. When we call it we pass in our bounding box from earlier and get elevation data (in metres) back for our region!
+
+Since we’ll be using multiple rasters in this post, we need to establish a "main" raster: one that defines our coordinate reference system (CRS) and resolution. The elevation raster has the coarsest resolution, so we'll use it as our reference for aligning all other rasters.
+
+```{r}
+#| warning: false
+#| output: false
+# Download the base elevation data
+elevation_data <- get_elev_raster(locations = bbox_sf, z = 9, prj = "EPSG:4326")
+
+# Remove the ocean elevations as Greater Gliders are not strong swimmers
+elevation_aligned <- elevation_data |>
+  terra::mask(aus)
+
+# elevation_aligned is now a RasterLayer, so lets turn it back into a SpatRaster
+elevation_aligned <- terra::rast(elevation_aligned)
+
+# Ensure that it's in our desired projection
+elevation_aligned <- terra::project(elevation_aligned, "EPSG:4326")
+
+# Crop it down to our bounding box
+elevation_aligned <- terra::crop(elevation_aligned, bbox_ext)
+
+# This column is different everytime, but it's always of the format file<UID>
+# So we'll just rename it to elevation for simplicities sake
+colname <- names(elevation_aligned)
+names(elevation_aligned) <- str_replace_all(names(elevation_aligned), 
+                                            colname, 
+                                            "elevation")
+
+```
+
+
+### Tree cover raster
+
+Next we'll be downloading our tree cover data. This dataset is in the form of a percentage (0 = no cover, 100 = complete tree cover). Because our data set crosses over two regions, we will be stitching together two rasters that cover central NSW to the east coast, and we will then crop them down to our area of focus.
+
+<!-- This is awesome how you've made these into smaller files for our uses. You need to put a description and a link in the text to where you got this data from so other people can get it too --> 
+
+```{r}
+#| eval: false
+
+download.file("https://glad.umd.edu/Potapov/TCC_2010/treecover2010_30S_140E.tif", destfile="treecover2010_30S_140E.tif")
+
+download.file("https://glad.umd.edu/Potapov/TCC_2010/treecover2010_30S_150E.tif", destfile="treecover2010_30S_150E.tif")
+
+```
+
+Now that we have the files, let's clean up the layer names, crop them to our study area, and merge them into one seamless raster.
+
+<!-- You are smartly cropping these layers and then deleting the larger files. I think you need a little description in the text to explain this because it is good practice -->
+
+```{r}
+#| warning: false
+#| output: false
+# Load the raster
+tree_cover_rast_150e_2010 <- rast("treecover2010_30S_150E.tif")
+
+# Check the names of the layers in the raster
+names(tree_cover_rast_150e_2010)
+
+# In this case we have one layer, and it's titled "Layer_1", which is not very helpful. So we'll change that to a more suitable name
+names(tree_cover_rast_150e_2010) <- str_replace_all(names(tree_cover_rast_150e_2010), 
+                                                    "Layer_1", 
+                                                    "treecover")
+
+# See the change has worked
+names(tree_cover_rast_150e_2010)
+
+# Let's repeat the process for the 140E raster
+tree_cover_rast_140e_2010 <- rast("treecover2010_30S_140E.tif")
+
+names(tree_cover_rast_140e_2010)
+names(tree_cover_rast_140e_2010) <- str_replace_all(names(tree_cover_rast_140e_2010), 
+                                                    "Layer_1", 
+                                                    "treecover")
+names(tree_cover_rast_140e_2010)
+
+
+# Crop our raster files to our bounding box extent
+tree_cover_rast_150e_2010 <- tree_cover_rast_150e_2010 |>
+  terra::crop(bbox_ext)
+tree_cover_rast_140e_2010 <- tree_cover_rast_140e_2010 |>
+  terra::crop(bbox_ext)
+
+
+# Merge the two rasters into a single raster
+tree_cover_2010 <- merge(tree_cover_rast_140e_2010, tree_cover_rast_150e_2010)
+
+# We can now safely delete the first two raster files to save memory
+rm(tree_cover_rast_140e_2010)
+rm(tree_cover_rast_150e_2010)
+
+# Resample our tree cover to the resolution of the elevation data
+tree_cover_2010 <- terra::resample(tree_cover_2010, elevation_aligned)
+```
+
+### Climate rasters
+
+To help develop an accurate species distribution model, we'll need to incorporate climate data. We’ll be using climate projections from CHELSA, specifically the UKESM1-0-LL SSP3-7.9 model for 2011-2040. This dataset provides bioclimatic variables at a reasonable resolution, making it a great choice for our analysis.
+
+We’ll be focusing on two key variables:
+
+  * Bio1: Mean Annual Temperature
+  * Bio12: Mean Annual Precipitation
+    
+Greater gliders are sensitive to temperature and precipitation changes, and so these two variables are a sensible set to incorporate into our model to help understand their range.
+
+First things first, let's download and load the two raster files.
+
+```{r}
+#| eval: false
+
+# Download our two raster files
+download.file("https://os.zhdk.cloud.switch.ch/chelsav2/GLOBAL/climatologies/2011-2040/UKESM1-0-LL/ssp370/bio/CHELSA_bio1_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif",              destfile="CHELSA_bio1_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif", mode="wb")  
+
+download.file("https://os.zhdk.cloud.switch.ch/chelsav2/GLOBAL/climatologies/2011-2040/UKESM1-0-LL/ssp370/bio/CHELSA_bio12_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif",               destfile="CHELSA_bio12_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif", mode="wb") 
+```
+
+```{r}
+
+# Load our bio1 raster
+bio1 <- rast("CHELSA_bio1_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif")
+bio12 <- rast("CHELSA_bio12_2011-2040_ukesm1-0-ll_ssp370_V.2.1.tif")
+
+```
+
+<!-- How about moving this kind of information earlier, and then you only need to say "we will do the same steps to clean the data as with the tree cover raster -->
+
+Just like we did with the tree cover data, we need to do the following to clean up these rasters: 
+
+  * Rename the layers to something more sensible
+  * Crop them to match our region
+  * Mask out the ocean (since Greater Gliders are not great swimmers)
+  * Resample them to match our elevation raster resolution
+
+```{r}
+#| warning: false
+#| output: false
+#| 
+# Crop to our bounding box extent
+bio1 <- terra::crop(bio1, bbox_ext)
+# Mask out the oceans
+bio1 <- mask(bio1, aus)
+
+# Check the name, and replace the horrible large name with something short and sweet
+names(bio1)
+names(bio1) <- str_replace_all(names(bio1),
+                               "CHELSA_bio1_2011-2040_ukesm1-0-ll_ssp370_V.2.1", 
+                               "bio1")
+
+# Check to make sure our name is updated properly
+names(bio1)
+
+# Resample our bioclim variable to the resolution of the elevation raster
+bio1 <- terra::resample(bio1, elevation_aligned)
+
+# And it's always a good idea to plot a raster to check it's all loaded correctly
+plot(bio1)
+
+# Repeat for our BIO12 raster
+bio12 <- terra::crop(bio12, bbox_ext)
+bio12 <- mask(bio12, aus)
+
+names(bio12)
+names(bio12) <- str_replace_all(names(bio12),  
+                                "CHELSA_bio12_2011-2040_ukesm1-0-ll_ssp370_V.2.1", 
+                                "bio12")
+names(bio12)
+
+bio12 <- terra::resample(bio12, elevation_aligned)
+
+plot(bio12)
+
+```
+
+Now our climate rasters are ready to use, and we only need to incorporate the fire extent raster.
+
+
+### Fire extent raster
+
+#### Prepare Fire Extent Raster
+
+<!-- Ok, this is a big but important section here. I think it might be best to provide an initial description of what you will need to do. Eg "We need to download a fire extent and severity map, it contains information about burnt area. It's huge, so we'll need to do a few things: Convert it to a class R can work with, crop and convert it to the same projection as our other layers, then align it with the other layers and remove the ocean because gliders don't live in the ocean -->
+
+<!-- Again, you need to provide a link and description of how someone might get this dataset themselves and, to be nice to people, how big it is and how long it will take to download and then load into R -->
+
+To assess the impact of the 2019-2020 Black Summer Bushfires, we need a raster that maps burnt areas across NSW for that period. The NSW Government’s Fire Extent and Severity Mapping (FESM) dataset provides this information: [Fire Extent and Severity Mapping (FESM) 2019/20](https://datasets.seed.nsw.gov.au/dataset/fire-extent-and-severity-mapping-fesm-2019-20). 
+
+We will download the FESM v3-data in IMG and TIFF format, then extract the .tif file to our working directory. 
+
+The dataset categorises fire severity into six categories, from unburnt to Extreme, using the following range of values:
+
+<!-- Maybe you can pop this information in a dropdown table? It's great detail, but the level of detail isn't essential for the final interpretation -->
+
+  * 0 - unburnt (0% canopy and understory burnt)
+  * 1 - Reserved (Experimental category, is not used in raster right now)
+  * 2 - Low (> 10% burnt understory, >90% green canopy)
+  * 3 - Moderate (20-90% canopy scorch)
+  * 4 - High (> 90% canopy scorched, <50% canopy consumed)
+  * 5 - Extreme (>50% canopy biomass consumed)
+
+#### Processing the fire raster
+
+This raster is *HUGE*, way bigger than we need, and so in the interest of time, we will be cropping and reducing it down just to our desired range a little differently to our previous rasters. 
+
+This raster is NOT in the WGS84 projection, so we are going to be doing the following steps:
+
+  1. Create a SpatExtent
+  2. Reproject that to the extent of our fire map.
+  3. Create a bounding box of that extent in that projection.
+  4. Crop our fire extent raster in that projection.
+  5. Reproject the now cropped fire extent raster to the WGS84.
+
+These steps allow us to skip a lot of the processing time needed to reproject the *entire* raster into WGS84 and then cropping down, instead cropping and then reprojecting.
+
+  
+```{r}
+#| warning: false
+#| output: false
+#Load the raster
+fire_extent <- rast("cvmsre_NSW_20192020_ag1l0.tif")
+
+# Convert to a polygon
+bbox_ext_vect <- terra::as.polygons(bbox_ext, crs = "EPSG:4326")
+
+# Reproject the bounding box to the same projection of fire_extent
+bbox_ext_vect_proj <- terra::project(bbox_ext_vect, crs(fire_extent))
+
+# Create an extent of that bbox projection
+bbox_ext_proj <- terra::ext(bbox_ext_vect_proj)
+
+#  Crop fire_extent using the reprojected bbox
+fire_extent <- terra::crop(fire_extent, bbox_ext_proj)
+
+# Reproject our fire extent to WGS84
+fire_extent <- terra::project(fire_extent, "EPSG:4326")
+
+# Then crop again to align it with our other raster files
+fire_extent <- terra::crop(fire_extent, bbox_ext)
+
+# Plot it to make sure we've done it all correctly!
+plot(fire_extent)
+
+```
+
+Now that we've reduced this very large raster down, we will repeat similar steps to before: 
+
+<!-- This is a little confusing because when I read this it *feels like* you have already done some of these steps before. A simpler description of what these steps are for at the start of the section might help make it clearer why you do this -->
+
+  * Rename the raster layer
+  * Resample to match the elevation rasters resolution
+  * Round out the values
+  * Mask out the ocean regions
+
+```{r}
+#| warning: false
+#| output: false
+names(fire_extent) <- str_replace_all(names(fire_extent), 
+                                      "Layer_1", 
+                                      "fire_extent")
+
+# Resample and round
+fire_extent <- terra::resample(fire_extent, elevation_aligned)
+fire_extent <- round(fire_extent)
+
+# Mask out the ocean
+fire_extent <- fire_extent |>
+    terra::mask(aus)
+```
+
+Finally we are just going to add one more column to our glider observations, which will get the extent of the fire severity for the 2019 Bushfires at the location that glider was recorded at:
+
+<!-- Perhaps a little clearer description here. I think you are extracting information of fire severity that overlaps with the coordinates where gliders are observed? -->
+
+```{r}
+
+gliders_sf$burnt <- terra::extract(fire_extent, vect(gliders_sf), ID = FALSE)
+```
+
+
+Now we have all our rasters ready to go, we can begin the modelling process!
+
+# Building our model
+
+If you're new to species distribution modeling (SDM) or want a deeper dive into the details, I highly recommend checking out this other fantastic ALA labs post that dives into the nitty gritty for each step: [An introduction to species distribution modelling using {tidysdm} & {tidymodels}](https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/). This post is focused more with working with rasters, applying them to use in an SDM and exploring the output of the model statistically.
+
+
+### Combining our rasters
+
+First things first, <!-- This might be a little *too* casual of a start haha --> we need to combine all the raster datasets we've prepared so far. This will allow our model to extract environmental values at each Greater Glider occurrence (or absence).
+```{r}
+#| warning: false
+combined_rasters <- c(elevation_aligned, bio1, bio12, fire_extent, tree_cover_2010)
+
+# Make sure we have valid values in our columns
+summary(combined_rasters)
+```
+
+We now we have a single raster with multiple layers detailing:
+  * Elevation
+  * Mean annual temperature (BIO1)
+  * Mean annual precipitation (BIO12)
+  * Fire extent of the 2019-2020 bushfires
+  * Tree cover
+
+### Thinning our data
+
+Since raster cells have a fixed resolution, we want to avoid multiple glider observations within a single cell (because multiple observations below this level won't matter anyway). We’ll use `{tidysdm}`'s `thin_by_cell()` function to make sure only one glider record exists per raster grid cell.
+
+```{r}
+#| warning: false
+#| output: false
+# see results of thinning
+gliders_thin <- tidysdm::thin_by_cell(gliders_sf, 
+                                      raster = combined_rasters)
+
+```
+
+### Pseudo-absences and Accurate Pre/Post-Fire Columns
+
+The data of greater gliders records where gliders have occurred (presence). Species distribution models also require information of about where gliders *have not* occurred (absences). This allows models to determine how differences between variables predict whether a glider occurs or not. The majority of ALA data is presence-only, so instead we can create *pseudo-absences*---background points that our model can use for building predictions---to help inform our model.
+
+<!-- The below bit is important - it defines the major variable you are concerned with in your GLM. I think you need to explain *why* you are doing this split. From memory, it's because you need to have absence information for both before and after, so you randomly sample 50% of your pseudo-absences categorise them into before/after so your model can make a spatial prediction in both scenarios. Try to make this explanation clear. -->
+
+We will then allocate 50% of the pseudo absence records as being pre-fire and 50% as being post-fire. This is because we don't have a pre vs post fire period raster, which is what the sample_pseudoabs function uses to generate the potential pseudo-absences, but we would still like to incorporate that factor into our model.
+
+After we've done that, we will then restore the pre and post-fire values for our actual observations in the dataset.
+
+```{r}
+#| warning: false
+#| output: false
+# Generate the pseudoabsence records
+gliders_pseudoabs <- tidysdm::sample_pseudoabs(
+  gliders_thin,
+  n = 3 * nrow(combined_rasters), 
+  raster = combined_rasters,
+  method = c("dist_min", km2m(5)))
+
+# Calculate the number of rows so we can generate random categories
+n_pseudo <- nrow(gliders_pseudoabs)
+
+# Generate random categories for our pseudoabsences
+pseudo_categories <- sample(c("pre_fire", "post_fire"), size = n_pseudo, replace = TRUE)
+
+# Get the real categories from our original data
+real_categories <- gliders_thin |>
+  select(fire_period) |>
+  mutate(class = "presence")
+
+# Put the pseudo categories into our pseudoabsences
+gliders_pseudoabs <- gliders_pseudoabs |>
+  mutate(fire_period = pseudo_categories)
+
+# Extract the tree cover, elevation values and climate values at the pseudoabs points
+gliders_events <- gliders_pseudoabs |> 
+  bind_cols(
+    terra::extract(combined_rasters,
+                   gliders_pseudoabs,
+                   ID = FALSE))
+
+# Join the real fire_period category from the original records to overwrite our fake ones
+gliders_events <- gliders_events |>
+  st_join(real_categories |> select(fire_period), left = TRUE) |>
+  mutate(fire_period = coalesce(fire_period.y, fire_period.x)) |>  # Overwrite only if match found
+  select(-fire_period.x, -fire_period.y)  # Remove redundant columns
+
+
+# Remove any NA records 
+gliders_events <- na.omit(gliders_events)
+```
+
+Let's now have a look at our predictor variables and see how they correlate to one another. Then we will select our predictor variables to filter out all the other records in our data frame. We will then turn our pre/post fire column into a numeric value for our modelling and statitical analysis later.
+
+```{r}
+
+# Plot the effect of each variable on both presence and pseudoabsence records 
+gliders_events |>
+  plot_pres_vs_bg(class)
+
+# Look at the names in our data frame and select the winners
+names(gliders_events)
+predictor_vars <- c("elevation", "bio1", "bio12", "fire_extent", "treecover")
+
+# Add in class and fire-period
+gliders_filtered <- 
+  gliders_events |> 
+  select(all_of(c(predictor_vars, "class", "fire_period")))
+
+# Change fire period into a numeric value 
+gliders_filtered <- gliders_filtered |>
+  mutate(fire_period = if_else(fire_period == "post_fire", 1, -1))
+gliders_filtered$fire_period <- as.numeric(gliders_filtered$fire_period)
+
+```
+
+# Tuning and Running the Model
+Now that we've cleaned and prepared our data and generated our pseudoabsence data, we're ready to start modelling!
+
+Rather than using a single mdoel, we'll be training multiple models, investigating their relative performance, and then combining them into an ensemble model that will help make our final prediction a bit more robust.
+
+<!-- You have mentioned this link a few times throughout, and I think it might be better to mention it once earlier when you begin creating your model. Then you descriptions can be under the assumption that people can learn about modelling there. Instead, you can make your descriptions about *why* you are doing each step, rather than defining what they are each time. You are already doing this in a lot of places, but you can do it even more -->
+
+Again if you'd like more information on the finer details of Species Distribution MOdelling using `{tidysdm}` and `{tidymodels}`, check out this ALA labs post: [An introduction to species distribution modelling using {tidysdm} & {tidymodels}](https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/).
+
+
+### Training and testing
+
+<!-- generally, be sure to explain what the output shows and (when useful) what that means for your decisions -->
+
+Firstly let's split our glider presence/pseudoabsence data into training and testing datasets. Then to improve our model, we'll use spatial block cross-validation to try and prevent our model from overfitting.
+
+```{r}
+#| warning: false
+#| output: false
+# set training and testing data
+set.seed(100)
+
+# Create training and testing datasets
+gliders_split <- 
+  gliders_filtered |>
+  initial_split()
+gliders_split
+
+gliders_train <- training(gliders_split)
+gliders_train
+gliders_test <- testing(gliders_split)
+gliders_test
+
+# Perform Cross validation
+gliders_cv <- spatial_block_cv(gliders_train, v = 5)
+```
+
+Now we're going to create a new recipe for our model, this essentially will explain how our variables are used in the model.
+
+We will be calculating the effect each variable has on the likelihood presence and absence, so our model knows what are the predictor variables: `elevation`, `bio1`, `bio12`, `treecover`, `fire_extent` and `fire_period`.
+
+and what is the response variable: `class` which is either presence, or absence.
+```{r}
+#| warning: false
+#| output: false
+gliders_recipe <- recipe(
+  gliders_train, 
+  formula = class ~ elevation + bio1 + bio12 + treecover + fire_extent + fire_period
+)
+gliders_recipe
+
+```
+
+Rather than relying on a single model, we'll train up four and compare their performance. These models are:
+  1. Generalised Linear MOdel
+  2. Random Forest
+  3. Gradient Boosting Machine
+  4. Maximum entropy
+
+We will later build an ensemble of the best models
+```{r}
+#| warning: false
+#| output: false
+
+gliders_models <-
+  # create the workflow_set
+  workflow_set(
+    preproc = list(default = gliders_recipe), # Use the same recipe for all
+    models = list(
+      glm = sdm_spec_glm(),        # Generalised Linear Model
+      rf = sdm_spec_rf(),          # Radom Forest
+      gbm = sdm_spec_boost_tree(), # Gradient Boosting Machine
+      maxent = sdm_spec_maxent()   # Maximum Entropy
+    ),
+    cross = TRUE # make all possible combinations
+  ) |>
+  option_add(control = control_ensemble_grid())
+
+gliders_models
+```
+
+Now we'll tune our models using the cross validation blocks we generated earlier.
+```{r}
+#| warning: false
+#| output: false
+set.seed(9999)
+
+# Tune the model using cross validation
+gliders_models_tune <-
+  gliders_models |>
+  workflow_map("tune_grid",
+               resamples = gliders_cv, 
+               grid = 6,                   # number of tuning iterations
+               metrics = sdm_metric_set(), # Evaluate model performance
+               verbose = TRUE,
+               control = stacks::control_stack_grid()
+  )
+
+gliders_models_tune
+
+autoplot(gliders_models_tune)
+
+# See Metrics
+collect_metrics(gliders_models_tune)
+
+set.seed(98765)
+
+```
+
+Because we are using a collection of models, we can use stacks to combine the best models into an ensemble model that will help improve accuracy and generalisation.
+
+```{r}
+#| warning: false
+#| output: false
+
+gliders_stacked <- 
+  stacks() |>                                # initialize the model stack
+  add_candidates(gliders_models_tune) |> #  Add the tuned models
+  blend_predictions() |>                     # Blend their predictions
+  fit_members()                              # Fit the final model
+
+# VIew the stacked model
+gliders_stacked
+
+# Visualise each models contribution
+autoplot(gliders_stacked, type = "weights")
+```
+
+We can then evaluate it's performance:
+
+```{r}
+#| warning: false
+#| output: false
+
+# Predict probability of presence
+gliders_test_predictions <-
+  gliders_test %>%
+  bind_cols(predict(gliders_stacked, ., 
+                    type = "prob", 
+                    save_pred = TRUE))
+
+# Evaluate performance
+gliders_test_predictions |> 
+  sdm_metric_set()(truth = class, .pred_presence)
+
+gliders_test_predictions_class <-
+  gliders_test %>%
+  bind_cols(predict(gliders_stacked, ., 
+                    type = "class", 
+                    save_pred = TRUE))
+
+```
+
+
+# Generating the Final Raster
+
+Now we've got a trained and tested model, we can now *almost* finally make our predictions!
+
+THe last step we need to do is create a pseudo "fire-period" raster. We need this raster because our model only evaluates the impact of `fire_period` on the glider records, we didn't have the need a raster of fire_period previously, however because we are producing a final raster, we *DO* need a raster that we can sample from in order to produce that prediction.
+
+```{r}
+
+
+# Create an empty raster with the same dimensions as our combined raster
+presence_raster <- rast(combined_rasters, nlyr = 1)
+names(presence_raster) 
+values(presence_raster) <- NA 
+
+# Rename the layer for clarity
+names(presence_raster) <- str_replace_all(names(presence_raster), 
+                                              "lyr1", 
+                                              "fire_period")
+names(presence_raster)
+
+
+# Convert glider observations into a vector to be sampled
+gliders_vect <- vect(gliders_filtered)
+
+# Rasterize the fire period from the glider points
+fire_period_raster <- rasterize(gliders_vect, presence_raster, field = "fire_period", fun = "first")
+names(fire_period_raster) <- str_replace_all(names(fire_period_raster), 
+                                          "first", 
+                                          "fire_period")
+
+
+# Assign pre/post values to the cells
+fire_period_raster[is.na(fire_period_raster) & (fire_extent == 0 | fire_extent == 1)] <- -1 # Pre-fire
+fire_period_raster[is.na(fire_period_raster) & !(fire_extent == 0 | fire_extent == 1)] <- 1  # Post-fire
+
+
+# Add this fire period raster into our raster stack
+combined_rasters <- c(combined_rasters, fire_period_raster)
+
+names(combined_rasters)
+
+```
+
+Now we are finally ready to perform our final prediction!
+```{r}
+#| warning: false
+#| output: false
+
+# Perform our final prediction!
+prediction_present <- predict_raster(gliders_stacked, 
+                                     combined_rasters, 
+                                     type = "prob",
+                                     wopt = list(steps=32))
+
+```
+
+### The final plot
+Now let's plot it, and have a look at our map detailing habitat suitability for our gliders!
+```{r}
+#| warning: false
+#| output: true
+ggplot() +
+  geom_spatraster(data = prediction_present, 
+                  aes(fill = .pred_presence)) +
+  scale_fill_whitebox_c(palette = "viridi",
+                        na.value = NA) +
+  guides(fill = guide_colorbar(title="Relative\nHabitat\nSuitability")) +
+  labs(title="Predicted Suitable Habitat for Greater Gliders", subtitle = "Elevation, tree cover, mean annual temp, fire events, annual precipitation and fire period.") +
+  pilot::theme_pilot(grid="hv") +
+  theme(
+    legend.text = element_text(hjust = 0.5)) +
+  theme_minimal()
+```
+
+
+# Finishing up: Statistical Analysis
+Now let's investigate the relative effect that each variable had on the final prediction raster:
+
+```{r}
+#| eval: false
+# Join the prediction raster and our other rasters
+final_raster <- c(prediction_present, combined_rasters)
+names(final_raster)
+# Construct a GLM 
+lm <- glm(.pred_presence ~ elevation + bio1 + bio12 + fire_extent + treecover + fire_period, data = final_raster)
+summary(lm)
+
+
+```
+
+```{r}
+#| echo: false
+# Join the prediction raster and our other rasters
+final_raster <- c(prediction_present, combined_rasters)
+names(final_raster)
+# Construct a GLM 
+lm <- glm(.pred_presence ~ elevation + bio1 + bio12 + fire_extent + treecover + fire_period, data = final_raster)
+summary(lm)
+
+
+```
+
+
+### Breaking down the stats
+
+<!-- These are great notes, excellent. But I think it's a little too much for a casual reader. What are the main takeaways you learn from you model? Which variables are you looking at primarily, and what does the output tell you? Are the effects big or small? Is that what you expected? How might you interpret this? Try to choose a takeaway message for the reader, rather than presenting them with all the information. You can include some of it, but you probably don't need all of it -->
+
+This output can be a bit confusing, so lets break it down and analyse each to make more sense.
+
+1. **P-values**
+
+  Normally when analysing the output of a GLM we'd start with a p-value, which tells us the probability that the effect we're seeing is because of random chance. But because we chose these variables for our model, their p-values are of course going to be very small. We already know they're influencing glider distribution, so they don't tell us too much
+
+2. **Estimates**
+
+  Next let’s look at estimate, estimate tells us how much each variable increases or decreases the likelihood of finding a glider:
+
+  * Positive estimate: Higher values of this variable **increase** the likelihood of glider presence.
+  * Negative estimate: Higher values of this variable **decrease** the likelihood of glider presence.
+  * Larger absolute values mean a stronger influence.
+
+
+3. **Standard Error**
+
+Now we have standard error, standard error tells us how much uncertainty there is in the estimate. Because we have very low standard errors for all our variables, we can say that there isn’t much variability in our estimates, and we can be quite confident in them.
+  
+4. **Effect size (t value)**
+
+  For our GLM, this t-value is the effect size, and it tells us how strong each variable is on the final prediction. The absolute value of the effect size tells us it’s strength, and whether it’s positive or negative tells us whether or not it’s associated with increased glider predicition chance, or decreased glider prediction chance.
+
+So because of our small p-values and standard errors, lets look at the estimates and effect sizes and draw some conclusions about what our model says each variable is contributing to the distribution of Greater Gliders:
+
+| **Variable**        | **Estimate**                                  | **Effect Size (t)** |
+|---------------------|---------------------------------------------|--------------------|
+| **Elevation**      | **0.0006578** - Higher elevation slightly increases the chance of finding a glider. | **485.27** - A strong predictor of Glider Presence. As elevation increases, we expect the likelihood of gliders being present to rise. |
+| **BIO1 (Mean Annual Temperature)** | **0.1030** - Higher mean annual temperature increases the likelihood of glider presence (relative to other locations sampled in our region). | **425.44** - Another strong predictor. This should be considered within the context of all other variables. |
+| **BIO12 (Mean Annual Precipitation)** | **0.0002668** - More rainfall slightly increases the predicted chance of glider presence. | **297.31** - Another positive predictor. When considered alongside tree cover and elevation, this makes sense as higher tree cover typically requires more precipitation. |
+| **Fire Extent** | **-0.03244** - More extreme fire events in 2019 decrease the likelihood of glider presence. | **-172.83** - A reasonably strong negative predictor. Our model suggests that as fire severity increases, the likelihood of glider presence decreases. |
+| **Tree Cover** | **0.003676** - More tree cover increases glider presence (as expected, since they are arboreal). | **797.97** - This is the strongest predictor of Glider presence in our model. |
+| **Fire Period (Before or After)** | **0.02963** - Fire period slightly influences glider presence. | **78.99** - The weakest predictor in our model, but it still plays a role in determining glider presence. |
+
+
+# Final thoughts
+
+<Summarising and concluding sentence>
+
+
+
+<details><summary style = "color: #E06E53;">Expand for session info</summary>
+
+```{r, echo = FALSE}
+#| warning: false
+library(sessioninfo)
+# save the session info as an object
+pkg_sesh <- session_info(pkgs = "attached")
+# print it out
+pkg_sesh
+```
+
+</details>
