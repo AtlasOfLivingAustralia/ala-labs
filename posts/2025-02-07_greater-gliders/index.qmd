@@ -1,11 +1,11 @@
 ---
-title: "Modelling the Impact of fire on the Southern Greater Glider"
+title: "Modelling the impact of fire on the Southern Greater Glider"
 description: |
-  Major fire events impact flora and fauna, particularly those that dwell in areas where fire dramatically alters the livable habitat area. Here we investigate how greater gliders, a tree-dwelling marsupial species, were impacted by the 2019-2020 bush fires using {tidymodels} and {tidysdm}.
+  Major fire events impact flora and fauna, particularly those that dwell in areas where fire dramatically alters the livable habitat area. Here we investigate how greater gliders, a tree-dwelling marsupial species, were impacted by the 2019-2020 bushfires using {tidymodels} and {tidysdm}.
 author:
   - name: "Jarod Wright"
   - name: "Dax Kellie"
-date: "2025-02-10"
+date: "2025-04-02"
 title-block-banner: "#B8573E"
 toc: true
 toc-location: left
@@ -14,12 +14,11 @@ categories:
   - Eukaryota
   - Animalia
   - Marsupialia
-  - Bush fires
+  - Bushfires
   - Maps
   - R
   - Species Distribution Modelling
-  
-image: sdm-map.png
+image: gliders-map.png
 freeze: true
 draft: true
 editor_options: 
@@ -53,7 +52,7 @@ Jarod Wright\
 
 #### Date
 
-11 February 2025
+2 April 2025
 :::
 
 ::::: {.row-b layout-ncol="3" style="margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto;"}
@@ -551,7 +550,7 @@ fire_extent_cropped <- rast(here("posts",
                          "fire_extent",
                          "cvmsre_NSW_20192020_ag1l0.tif"))
 
-fire_extent <- rast(here("posts", "2025-02-07_greater-gliders", "cvmsre_NSW_20192020_ag1l0.tif"))
+# fire_extent <- rast(here("posts", "2025-02-07_greater-gliders", "cvmsre_NSW_20192020_ag1l0.tif"))
 ```
 
 ```{r}
@@ -563,7 +562,19 @@ fire_extent <- rast("cvmsre_NSW_20192020_ag1l0.tif")
 This file is pretty huge *and* it's in the wrong projection, which we can see under `coord. ref` when we view the object. Our desired CRS is `WGS84`/`EPSG:4326` but this raster is projected using CRS `GDA_94_Lambert`, which affects the extent and coordinates.
 
 ```{r}
+#| eval: false
 fire_extent
+```
+
+```
+class       : SpatRaster 
+dimensions  : 103386, 107910, 1  (nrow, ncol, nlyr)
+resolution  : 9.993738, 9.993738  (x, y)
+extent      : 8857447, 9935872, 4022290, 5055502  (xmin, xmax, ymin, ymax)
+coord. ref. : GDA94_NSW_Lambert 
+source      : cvmsre_NSW_20192020_ag1l0.tif 
+color table : 1 
+name        : Layer_1 
 ```
 
 This poses an issue for us. Reprojecting the entire file to `WGS84` (like we have for other rasters) will take up a lot of processing time and memory if we do this reprojection as a first step.
@@ -573,6 +584,7 @@ To save time and memory, let's use an alternative method of cropping first and r
 First let's convert our bounding box `bbox_ext`, convert it to a polygon and reproject that polygon to use the CRS of `fire_extent`.
 
 ```{r}
+#| eval: false
 # Convert bbox to polygon with new projection that matches fire_extent
 bbox_ext_gda94 <- bbox_ext |> 
   terra::as.polygons(
@@ -581,6 +593,14 @@ bbox_ext_gda94 <- bbox_ext |>
   terra::project(fire_extent)  # reproject crs to match fire_extent
 
 bbox_ext_gda94
+```
+
+```
+ class       : SpatVector 
+ geometry    : polygons 
+ dimensions  : 1, 0  (geometries, attributes)
+ extent      : 9432876, 9664886, 4021704, 4305054  (xmin, xmax, ymin, ymax)
+ coord. ref. : GDA94_NSW_Lambert 
 ```
 
 Now we can use our new bounding box `bbox_ext_gda94` to crop `fire_extent` to our study area, then reproject it to our desired CRS `WGS84`. When complete, you'll notice the `extent` and `coord. ref.` or `fire_extent_cropped` have changed to match our expected bounding box and CRS.
@@ -1115,7 +1135,8 @@ ggplot() +
   guides(fill = guide_colorbar(
     title = "Relative\nHabitat\nSuitability")
     ) +
-  labs(title = "Predicted distribution of greater gliders") +
+  labs(title = "Predicted distribution of greater gliders",
+       subtitle = "Southeast New South Wales") +
   pilot::theme_pilot(grid="hv") +
   theme(
     legend.text = element_text(hjust = 0.5)
@@ -1124,7 +1145,7 @@ ggplot() +
 
 As we used pseudo-absences rather than true absences, it's best to interpret the map as showing us the relative habitat suitability for greater gliders across the area (as opposed to a true distribution of where greater gliders occur). The highest habitat suitability for greater gliders appears to be along the middle forest area where most of our greater glider observations were located (which makes sense), along with a few larger areas in the upper and lower west, and near the upper coastline.
 
-# Bushfire impact
+# Impact of fire
 
 As the second part of our investigation, we wanted to know whether the 2019/2020 bushfires had an impact on greater gliders. Our hypothesis was that there are *fewer* greater glider occurrences after the fire, and a driver of this effect is that *an area was burnt* during the 2019/2020 bushfires.
 
