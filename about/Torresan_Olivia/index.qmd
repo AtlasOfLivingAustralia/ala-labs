@@ -42,6 +42,9 @@ create_button(
 
 ### {{< fa newspaper >}} Posts 
 
+[Show seasonal species trends using a ridgeline plot](https://labs.ala.org.au/posts/2024-05-10_ridgeline-plots/)<br>
+*Displaying ecological trends of many species or groups at once can sometimes appear messy or crowded. In this post we show how ridgeline plots are a useful way to show trends in seasonality by displaying observations of migratory bird species over the year using {ggridges}.*
+
 [Counting points in multipolygon shapefiles for choropleth mapping](https://labs.ala.org.au/posts/2023-01-12_counting-points-in-shapefiles/)<br>
 *Choropleth maps are an excellent way to visualise numbers of observations in each region. When using point data, calculating the number of points in each polygon can be difficult when using shapefiles. Here we demonstrate how to extract and summarise the number of points in each polygon within a shapefile to create a choropleth map.*
 

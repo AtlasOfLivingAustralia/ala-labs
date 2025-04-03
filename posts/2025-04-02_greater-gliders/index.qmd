@@ -1271,9 +1271,11 @@ test |>
   plot(show_boxplots = FALSE)
 ```
 
+We can also see the partial effects of our model, which show how the model is fitting each individual effect. Here we can appreciate the model's complexity, as each variable has its own non-linear fitted line!
+
 ```{r}
-#| eval: false
-#| echo: false
+#| warning: false
+#| message: false
 model_profile(test, 
               type = "partial", 
               variables = c("burnt", "fire_period", "treecover", "temp_bio1", "precip_bio12", "elevation")
