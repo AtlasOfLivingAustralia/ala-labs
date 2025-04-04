@@ -1167,69 +1167,58 @@ As we used pseudo-absences rather than true absences, it's best to interpret the
 
 As the second part of our investigation, we wanted to know whether the 2019/2020 bushfires had an impact on greater gliders. Our hypothesis was that there are *fewer* greater glider occurrences after the fire, and a driver of this effect is that *an area was burnt* during the 2019/2020 bushfires.
 
-To see the more traditional statistical test results (e.g., estimates, test statistics, p-values), we'll have to extract them from our Generalised Linear Model (GLM) which we ran over our tuning process. 
+To see the more traditional statistical test results (e.g., estimates, test statistics, p-values), we *could* extract them from our Generalised Linear Model (GLM) which we ran over our tuning process. These types of summary statistics are easier to interpret, but they might not be the best option for us to use. 
 
 :::{.callout-note collapse="true"}
-##### Why do we have to use GLM results?
+##### Why can't we use GLM results?
 Generalised Linear Models fit a straight line of best-fit to the data. As a result, it's possible to return a coefficient that estimates the slope of the line and some test statistics about each variable's importance in the model.
 
 Other models we've run like Maxent and Random Forest models are a little different, though. They use weights to "penalize" a model to get a better fitted line; one that isn't just straight, but shaped and curved to better fit the data. This shaped, squiggly line can be represented by a unique equation, not just a coefficient of slope. When asked to return results for models like these, tidymodels returns penalty values (*lambda*) used by the model, not a summary of statistics and *p* values. 
 
-We have to use other packages (like vip and DALEX) to assess more complex types of models like our complete `gliders_stacked` model.
+We have to use other packages (like {vip} and {DALEX}) to assess more complex types of models like our complete `gliders_stacked` model.
 :::
 
-### Retrieve GLM results
+To see what we mean, let's have a look at our GLM results. Before we see them, let's remind ourselves what we are expecting to see given our hypothesis:
 
-Our tuning process earlier identified which workflows (model + parameters) worked best for our data, saved in `gliders_models_tune`. We can use `rank_results()` to see which ones performed best based on the Boyce Continuous Index.
+-   Fewer occurrences after the fire. This should appear as a significant, positive `fire_period` coefficient.
+-   Fewer occurrences in burnt areas. This should appear as a significant, positive `burnt` coefficient.
+-   An interaction between fire period and burnt area, because burnt areas after fire will have very few records[^multiply].
 
-```{r}
-# Return the models that performed best
-gliders_models_tune |>
-  rank_results(
-    rank_metric = "boyce_cont",
-    select_best = TRUE
-  )
-```
-
-To use the GLM candidate model, we need to extract that model's workflow (which includes the recipe and any case weights or hyperparameters assigned through the tuning process).
+[^multiply]: To the extent that the combination of an area being `burnt` and `post_fire` might multiply the effect when together.
 
 ```{r}
+#| code-fold: true
+# See the models that performed best
+# gliders_models_tune |>
+#   rank_results(
+#     rank_metric = "boyce_cont",
+#     select_best = TRUE
+#   )
+
+# extract best glm model
 best_model <- gliders_models_tune |> 
   extract_workflow(id = "default_glm")
 
-best_model
-```
-
-Then we can use this `best_model` to fit our complete `gliders_filtered` data.
-
-```{r}
-# best_fit <- fit_best(gliders_models_tune |> filter(wflow_id == "default_glm"), metric = "boyce_cont")
+# use best glm to fit complete `gliders_filtered` data
 fitted <- 
   best_model |> 
-  # finalize_workflow(best_fit) |>
   fit(data = gliders_filtered)
 
-fitted
-```
-
-Before we see the results, let's remind ourselves what we are expecting to see given our hypothesis:
-
--   Fewer occurrences after the fire. This should appear as a significant, negative `fire_period` coefficient.
--   Fewer occurrences in burnt areas. This should appear as a significant, negative `burnt` coefficient.
--   An interaction between fire period and burnt area, because burnt areas after fire will have very few records. This should appear as a significant, negative coefficient.
-
-Let's view our model's results! We can return them using `broom::tidy()`.
-
-```{r}
+# see results
 fitted |>
   broom::tidy()
 ```
 
-:::{.callout-note collapse="true"}
 
-##### Use DALEX
+When running a model on this many data points, it's generally expected that most variables will be significant. It's easier to look at the size of the effect (i.e. `statistic`) and the estimate & standard error to figure out the direction and certainty of that estimate. The estimates are a little confusing here due to the model using `presence` as the reference level---higher numbers are a stronger prediction of *absence*.
+
+A quick first impression tells us that `fire_period` and `burnt` variables are significant but relatively weak predictors. You might also notice that some variables like `elevation` are very significant in the model but have tiny estimate coefficients. Let's use DALEX to help us understand how this is possible.
+
+### Use DALEX
 
 If we want to understand more about our more complex stacked model, we can use the [DALEXtra package](https://modeloriented.github.io/DALEX/). DALEX[^8] is a model-agnostic tool for assessing complex models.
+
+[^8]: DALEX stands for mo**D**el **A**gnostic **L**anguage for **E**xploration and e**X**planation. It may be one of the strangest acronyms of all time.
 
 ```{r}
 #| warning: false
@@ -1261,7 +1250,7 @@ test <- explain_tidymodels(gliders_stacked,
                            y = class_revised)
 ```
 
-Let's see which parts of our model had the greatest importance for predicting the outcome. You'll notice that the results looks similar to the results of our GLM.
+Let's see which parts of our model had the greatest importance for predicting the outcome. You'll notice these results look similar to the results of our GLM.
 
 ```{r}
 #| warning: false
@@ -1271,7 +1260,7 @@ test |>
   plot(show_boxplots = FALSE)
 ```
 
-We can also see the partial effects of our model, which show how the model is fitting each individual effect. Here we can appreciate the model's complexity, as each variable has its own non-linear fitted line!
+We can also see the partial effects of our model, which show how the model is fitting each individual variable effect. Here we can appreciate the model's complexity, as each variable has its own non-linear fitted line! DALEX can return many other helpful summaries to check model performance and results. [See more here](https://bookdown.org/gaetan_lovey/data_analytics/dalex.html).
 
 ```{r}
 #| warning: false
@@ -1283,25 +1272,18 @@ model_profile(test,
   plot()
 ```
 
-DALEX can return many other helpful summaries to check model performance and results. [See more here](https://bookdown.org/gaetan_lovey/data_analytics/dalex.html).
-:::
-
-[^8]: DALEX stands for mo**D**el **A**gnostic **L**anguage for **E**xploration and e**X**planation. It may be one of the strangest acronyms of all time.
 
 Overall, our results seem to show that fire does have an effect, but it's a relatively small effect on greater glider occurrences.
-
-When running a model on this many data points, it's generally expected that most variables will be significant. It's easier to look at the size of the effect (i.e. `statistic`) and the estimate & standard error to figure out the direction and certainty of that estimate. The estimates are a little confusing here due to the model using `presence` as the reference level---higher numbers are a stronger prediction of *absence*.
 
 Here we can see a few things:
 
 -   Tree cover and elevation are excellent predictors of greater gliders, which makes sense given they live in trees in alpine regions.
 -   The negative estimate of `fire_period` suggests that there are more records of greater gliders after the fires than before[^afterfires]. This is probably due to the growing number of records each year in the ALA (though the effect is relatively small).
--   The positive estimate of `burnt` suggests fewer records in burnt areas[^burntareas]. However, the effect is pretty small.
+-   The slight positive estimate of `burnt` suggests fewer records in burnt areas[^burntareas]. However, the effect is pretty small.
 
 [^afterfires]: Based on how our variable is coded, a negative coefficient means that *before* fires, there is a higher likelihood of *absence*.
 
 [^burntareas]: Based on how our variable is coded, a positive coefficient means that in *burnt areas*, there is a higher likelihood of *absence*.
-
 
 
 # Final thoughts
