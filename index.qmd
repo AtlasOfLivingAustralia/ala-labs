@@ -23,13 +23,20 @@ library(htmltools)
 source("R/functions.R")
 ```
 
+:::{.column-screen}
+:::{.column-body}
+
 # Welcome to ALA Labs
 
 This site is a resource for coding projects that use data sourced from [the ALA](https://ala.org.au/). We hope that users will find interesting content, whether their focus is ecological modelling, data visualisation, or simply investigating the natural world through a digital lens. Enjoy!
 
 <br>
 
+:::
+:::
+
 ***
+
 
 :::{.column-screen}
 :::{.column-screen-inset}
