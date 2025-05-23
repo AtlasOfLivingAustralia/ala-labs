@@ -9,7 +9,7 @@
 
 
 title <- "Selecting tree species for wetland restoration"
-authors <- "Canning A.D. 2025"
+authors <- "Canning, 2025"
 main_colour <- "#C3EDEF" # use an ALA colour as your main colour
 text_colour <- "#212121" # choose your own matching text colour: https://coolors.co/
 line_colour <- "#921D11" # choose your own matching line colour

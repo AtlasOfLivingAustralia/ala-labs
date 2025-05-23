@@ -18,7 +18,7 @@ params:
   publication: "Ecological Restoration"
   doi: https://doi.org/10.1111/rec.14375
   image_url: https://images.ala.org.au/image/details?imageId=9f245984-b05c-4776-a9a7-099a296cbf6b
-  alt_text: Weeping Tea-tree (*Leptospermum brachyandrum*) inflorescence, showing white and pink flowerheads 
+  alt_text: Weeping Tea-tree (*Leptospermum brachyandrum*) inflorescence, showing white and pink flowers 
 ---
 
 
@@ -69,14 +69,13 @@ Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
 ::: paper-main-column
 Wetlands are some of the most ecologically diverse and productive ecosystems on the planet. They help provide food, filter water, protect from floods, sequester carbon, and even provide timber for construction. However, many wetlands in Australia have degraded or have been drained for development.
 
-As our appreciation grows of the importance of wetlands, the challenge also grows to identify suitable areas and key species to plant for successful restoration. This challenge is especially pressing in regions like the Greater Barrier Reef catchment area, identified as a priority region that supports the health of the adajcent World Heritage listed reef.
+As our appreciation grows of the importance of wetlands, the challenge also grows to identify suitable areas and key species to plant for successful restoration. This challenge is especially pressing in regions like the [Greater Barrier Reef catchment area](https://www.reefplan.qld.gov.au/reef-regions) which supports the health of a World Heritage listed coral reef.
 
-<!-- Regardless of whether the study had a wide scope, it didn't make much sense to not mention the scope of the final results that you would discuss until the final paragraph. I've mentioned the Great Barrier Reef earlier to make that logical jump easier for the reader -->
+This study aimed to address this problem by identifying suitable tree species able to be planted in existing or potential wetland regions across Australia, considering their differences in climate, soil and water availability. Areas with high development rates or agricultural versatility were removed, as these were considered generally undesirable to restore. 
 
-This study aimed to address this problem by identifying suitable tree species able to be planted in existing or potential wetland regions across Australia, considering their differences in climate, soil and water availability.
+For the Great Barrier Reef catchment, 2,230 land parcels (0.2ha each in size) were able to be identified as highly suitable for potential wetland restoration (i.e. 4.5 square kilometers total). The most widely suitable species across all identified parcels in this region were found to be: [*Melaleuca trichostachya*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2893230), [*Melaleuca bracteata*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/taxon/apni/51428982), [*Leptospermum brachyandrum*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2905062), [*Melaleuca viridiflora*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2892415), [*Ventilago viminalis*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2891320), [*Aegiceras corniculatum*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2913346), and [*Avicennia marina*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2899921). 
 
-This research found that for the Great Barrier Reef catchment, 2,230 land parcels <!-- What is a land parcel? Can you use a different phrase? Or even say an overall area size? --> were identified as suitable for potential wetland restoration. An average of 9 water-tolerant tree species were predicted to be suitable at these locations. The most widely suitable species across all identified parcels in the GBRC region were found to be: [*Melaleuca trichostachya*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2893230), [*Melaleuca bracteata*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/taxon/apni/51428982), [*Leptospermum brachyandrum*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2905062), [*Melaleuca viridiflora*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2892415), [*Ventilago viminalis*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2891320), [*Aegiceras corniculatum*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2913346), and [*Avicennia marina*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2899921). <!-- So...there were 9 species but here you've listed 7? That doesn't quite line-up. Either say these species were the most important or just mention like 3 as examples -->
+These findings will help restoration teams make more informed decisions on what areas to prioritise for wetland regeneration, and what species of tree might have a higher likelihood to survive over time.
 
-<!-- This is missing a final sentence about what someone might do with this list of species, or why this finding is valuable -->
 :::
 :::::::
