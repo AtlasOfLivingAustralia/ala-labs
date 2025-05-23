@@ -1,0 +1,78 @@
+---
+title: "Selecting tree species for wetland restoration"
+author: "Olivia Torresan"
+date: "2025-05-23"
+title-block-banner: "#C3EDEF" 
+title-block-banner-color: "#212121"
+include-after-body: _footer.html
+freeze: true
+image: thumbnail.png 
+categories:
+  - Biodiversity science 
+  - Conservation
+  - Ecology
+params:
+  authors: "Canning, Adam D."
+  year: 2025
+  title: "Scoping the suitability of water-tolerant species of trees for swamp restorations across Australia and its Great Barrier Reef catchment"
+  publication: "Ecological Restoration"
+  doi: https://doi.org/10.1111/rec.14375
+  image_url: https://images.ala.org.au/image/details?imageId=9f245984-b05c-4776-a9a7-099a296cbf6b
+  alt_text: Spotted galaxias (*Galaxias truttaceus*) swimming in the crisp waters of Tasmania
+---
+
+<!-- remove metadata section -->
+
+```{css, echo = FALSE}
+#title-block-header.quarto-title-block.default .quarto-title-meta {
+    display: none;
+}
+```
+
+<!-- Side panel -->
+
+::::::: column-page
+::::: paper-side-column
+<center>
+
+::: {.col-image layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
+<!-- add image url -->
+
+<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/b/6/f/b/9f245984-b05c-4776-a9a7-099a296cbf6b/original" class="rounded"/></img>
+:::
+
+</center>
+
+::: figure-caption
+<!-- edit caption -->
+
+[*Leptospermum brachyandrum* (Russell Cumming CC BY NC 4.0)](https://images.ala.org.au/image/details?imageId=9f245984-b05c-4776-a9a7-099a296cbf6b)
+:::
+
+### Citation
+
+```{r}
+#| echo: false
+htmltools::HTML(
+  glue::glue("{params$authors} ({params$year}) {params$title}. <em>{params$publication}</em> <a href='{params$doi}' target='_blank'>{params$doi}</a>")
+)
+```
+
+#### Page info
+
+Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
+:::::
+
+<!-- Main panel description -->
+
+::: paper-main-column
+Wetlands are some of the most ecologically diverse and productive ecosystems on the planet. They help provide us with food, filter water, aid in flood protection (water retention through root systems), sequester carbon, and even provide timber for construction. However, many wetlands in Australia have slowly degraded or have been drained for development. 
+
+As there is now a growing understanding of the importance of restoring wetlands, identifying suitable areas of land and the “best” species of tree to plant to restore them is becoming a key challenge. This study aimed to address this problem by identifying suitable tree species able to be planted in existing or "potential" wetland regions across Australia, considering their differences in climate, soil and water availability. Not all drained or degraded wetlands are considered readily suitable or desirable for restoration, such as those with urban development or highly versatile agricultural soils. Therefore, parcels of land within these categories were removed from this analysis. 
+
+Out of the 125 identified Australian water-tolerant species, 105 species had enough data to be effectively modelled. The results were then discussed within a more focused scope of the Great Barrier Reef catchment (GBRC) area, which is identified as a priority region that supports the health of the adjacent World Heritage listed reef. 
+
+For the Great Barrier Reef catchment, 2,230 land parcels were identified as suitable for potential wetland restoration. An average of 9 water-tolerant tree species were predicted to be suitable at these locations. The most widely suitable species across all identified parcels in the GBRC region were found to be: [*Melaleuca trichostachya*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2893230), [*Melaleuca bracteata*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/taxon/apni/51428982), [*Leptospermum brachyandrum*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2905062), [*Melaleuca viridiflora*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2892415), [*Ventilago viminalis*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2891320), [*Aegiceras corniculatum*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2913346), and [*Avicennia marina*](https://bie.ala.org.au/species/https://id.biodiversity.org.au/node/apni/2899921).
+
+:::
+:::::::
