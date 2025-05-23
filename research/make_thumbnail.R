@@ -8,11 +8,11 @@
 #------------ Edit these parameters for highlighted paper ---------------------#
 
 
-title <- "Protecting Australia's freshwater fish at risk of extinction"
-authors <- "Linterman et al. 2024"
-main_colour <- "#FFEDCF" # use an ALA colour as your main colour
-text_colour <- "#C44D34" # choose your own matching text colour: https://coolors.co/
-line_colour <- "#EB9D07" # choose your own matching line colour
+title <- "Selecting tree species for wetland restoration"
+authors <- "Canning, 2025"
+main_colour <- "#C3EDEF" # use an ALA colour as your main colour
+text_colour <- "#212121" # choose your own matching text colour: https://coolors.co/
+line_colour <- "#921D11" # choose your own matching line colour
 
 
 # ALA primary colours
