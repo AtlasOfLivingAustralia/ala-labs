@@ -18,8 +18,9 @@ params:
   publication: "Ecological Restoration"
   doi: https://doi.org/10.1111/rec.14375
   image_url: https://images.ala.org.au/image/details?imageId=9f245984-b05c-4776-a9a7-099a296cbf6b
-  alt_text: Spotted galaxias (*Galaxias truttaceus*) swimming in the crisp waters of Tasmania
+  alt_text: Weeping Tea-tree (*Leptospermum brachyandrum*) inflorescence, showing white and pink flowerheads 
 ---
+
 
 <!-- remove metadata section -->
 
