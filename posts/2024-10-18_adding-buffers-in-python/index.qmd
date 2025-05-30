@@ -1,23 +1,25 @@
 ---
-title: "Why buffers matter when looking for sensitive species"
+title: "Add buffers to a shapefile"
 description: |
-  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to add a buffer to a shapefile using {shapely} and {geopandas}, then use {galah-python} to get obfuscated locations of the sensitive species Stuttering Frog in the area. We then show how to visualise this information using {matplotlib}.
-author:
+  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to add a buffer to a shapefile using {shapely} and {geopandas}. Then we use {galah-python} and {matplotlib} to demonstrate how data points that have been obfustcated (obscured by reducing their precision) may affect the size of a buffer in order to representatively capture species in the area.
   - name: "Amanda Buyan"
   - name: "Dax Kellie"
-date: "2024-11-12"
+date: "2025-05-30"
 title-block-banner: "#B8573E"
 toc: true
 toc-location: left
 toc-depth: 2
 categories:
   - Eukaryota
+  - Animalia
+  - Amphibia
   - Summaries
   - Python
 # image: waffle-chart.png
 freeze: true
 engine: knitr
 jupyter: python3
+draft: true
 editor_options: 
   chunk_output_type: console
 ---
@@ -66,17 +68,19 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 <!------------------------ Post starts here ------------------------>
 
-Buffers are a ubiquitous yet useful tool in ecology, as they allow us to take into account a species' movements and the influence of its surrounding environment. Considering the wildlife living just outside of the area, which may have been observed in the area in question, gives a richer understanding of the biodiversity of an area.  This is especially pertinent in area assessments prior to land development.  Determining not only what species are in the area slated for land development, but also what species directly outside the development will be affected, is important for biodiversity and wildlife considerations.  
+Ecological data is often used to understand what species are found in a given location. This information is a frequent requirement for conservation monitoring, and for environmental impact assessment prior to land development. A common method for this task is to use a **buffer**, an outward boundary around a given area location. Adding a buffer helps to capture all the species affected in an area of interest, including those that have been observed just outside an area and might live in or be affected by our area of interest.
 
-One consideration for area assessments is what sensitive species are in a place being considered for development.  In the ALA, a sensitive species' exact location is obfuscated according to each state's specifications, which includes factors like limited habitat range, rarity and desirability.  This allows individuals to determine if something sensitive has been seen in the area, but protect the species in question from being actively sought out.
+Choosing a buffer size, however, can be tougher than it seems. Individual organisms move, either over the course of a day or an entire season (e.g., migration, perennial growth), so species' lifecycles and behaviours may determine the size of our final buffer. A more difficult challenge occurs when species are considered sensitive or endangered. These species' exact point locations are often obfuscated (generalised in precision) to keep these species safe. This added innaccuracy again affects our final decision on buffer size.
 
-In this post, we discuss and show how carefully considering the size of your buffers can affect the detection of sensitive species in the area and lead to a more complete area assessment.  This will be using `{galah-python}`, `{geopandas}`, `{shapely}`, and `{matplotlib}` to add a buffer around a shapefile, specifically the Mid-western Local Government Area, and show how different buffer sizes capture the areas where Stuttering Frogs have been spotted.
+In this post, we'll show how to add a buffer around a shapefile with `{geopandas}`, `{shapely}` and `{matplotlib}`<!-- links to these package websites?-->. Then we will use `{galah-python}` to download data of Stuttering frogs (*scientific name here*<!-- please add -->) to demonstrate how the size of a buffer can affect the detection of sensitive species in an area.
 
-# Drawing buffers around shapefile
+# Draw a buffer
 
-## Initial plotting of shapefile
+For our example, our area of interest is Mid-Western, a Local Government Area (LGA) in Western Australia. We'll first need to get a shapefile of our area, which we can get by downloading a [shapefile of all LGAs from the Australian Bureau of Statistics](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files). Download the zip file of "Local Government Areas - 2024", then place the zip file in your local directory and unzip it.
 
-For this example, we will be using the Local Government Areas (LGAs) shapefile provided by the Australian Bureau of Statistics (download it at the Digital Boundary Files page [here](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files)).  To get started, we will read in the shapefile and show what it looks like in `{geopandas}`.
+<!-- can you provide a small map of where this is like we have in other labs posts? See here:  https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/#download-observations-->
+
+We can then read in the shapefile and show what it looks like in `{geopandas}`.
 
 ```{python}
 #| echo: true
@@ -97,16 +101,37 @@ lgas = gpd.read_file("../data/LGA_2024_AUST_GDA2020.zip")
 lgas.head()
 ```
 
-Now we will be selecting the `GeoDataFrame` row denoting the Mid-western LGA, and plot its shape using `{matplotlib}`.  This functionality is built into both `{pandas}` and `{geopandas}` for straightforward plotting of `GeoDataFrame` data.
+Next let's filter our `lgas` object to only Mid-Western and plot its shape using `{matplotlib}`. Conveniently, this functionality is built into both `{pandas}` and `{geopandas}` for straightforward plotting of `GeoDataFrame` data.
 
 ```{python}
 midwestern = lgas[lgas['LGA_NAME24'] == 'Mid-Western']
 midwestern.plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white")
 ```
 
-## Creating Different Buffers
+<!-- 
+Dax: 
+I'm not sure people are going to find this section particularly useful to the target audience. You haven't showed people how to make one buffer, but rather how to make many of them! Probably overkill without showing the simple task first. Can you make the 'many-buffers' plot a final example and hide the code in a folded chunk using `#| code-fold: true`? I am also debating whether it's necessary at all given the sensitive species example is meant to show a similar but more complex concept. 
 
-Now, we will create different sized buffers.  This will involve converting the shapefiles between different Coordinate Reference Systems (CRSs).
+It might also be useful to show how to use a buffer to do one or both of these things:
+ (A) Filter point observations to only those in your buffered area
+ (B) Use a buffered shapefile with `galah_geolocate()` + `atlas_species()` (though this option is far less accurate, and probably doesn't capture plants and inverts accurately, so maybe it's the least important)
+-->
+
+## Comparing buffer size
+
+Now, we will create different sized buffers.  This will involve converting the shapefiles between different Coordinate Reference Systems (CRS).
+
+<!-- 
+Thanks to our beginners post on maps, we can just link to our explanation of what CRS is rather than constantly re-explain it. Here's an example of how I usually link to it:
+
+Check our [this section of a previous ALA Labs post](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/#make-a-map) for a more complete explanation of what a CRS is.
+
+----
+
+I also suggest adding the CRS information below in a footnote, like we've done previously here:
+https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/#:~:text=set%20the%20Coordinate%20Reference%20System%20(CRS)%20to%20EPSG%3A43261%20(WGS84)
+
+-->
 
 :::callout-note
 Coordinate Reference Systems (CRSs) is a two-dimensional representation of three-dimensional coordinates.  A modern application is navigation using a GPS, which takes into account the curvature of the Earth to give you an accurate idea of your location.  The ALA uses the same CRS as modern GPSs, which is EPSG:4326 (also known as WGS84).  Keeping this is mind is crucial when using a shapefile to download data from the ALA.
@@ -214,7 +239,17 @@ plt.setp(ax.get_yticklines(), visible=False);
 plt.show();
 ```
 
-# Downloading records of Giant Barred Frog
+# Sensitive species
+
+Next, let's see an example of how buffer size affects our ability to detect sensitive species accurately.
+
+#### Obfuscation
+
+<!-- 
+I don't think at any point we really demonstrate what "obfuscation" means, both at a data level, and at a spatial level (ie on a map). Would you be able to explain here that obfuscation is
+-->
+
+## Download data
 
 The Stuttering Frog (*Mixophyes balbus*) is large Australian species of frog fhat inhabits temperate and sub-tropical rainforest and wet sclerophyll forest.  They have a brown back and a yellow underbelly, with a light blue iris that diffuses into gold above the pupil.  Another characteristic is a dark head stripe that starts before the nostril as a triangle, goes through the eye, and finishes over the shoulder. 
 
@@ -260,7 +295,7 @@ stuttering_frogs_midwestern = galah.atlas_occurrences(
 )
 ```
 
-As mentioned before, sensitive species are obfuscated in the ALA by an amount specified by the state it is found. Thankfully, the ALA has up-to-date sensitive species list from each state and territory.  You can find out these values in `{galah-python}`.  First, however, we have to find the ID of the New South Wales sensitive species list.
+Sensitive species in the ALA are obfuscated by an amount specified by the state it is found. Thankfully, the ALA has up-to-date sensitive species list from each state and territory.  You can find out these values in `{galah-python}`.  First, however, we have to find the ID of the New South Wales sensitive species list.
 
 ```{python}
 galah.search_all(lists="New South Wales")
@@ -268,7 +303,7 @@ galah.search_all(lists="New South Wales")
 
 As we can see from above, the list denoting New South Wales sensitive species has the ID `dr487`.  We can use that as our field in either the `show_values()` function or the `search_values()` function.  Since we are only looking for the Stuttering Frog, we are going to use `search_values()`, though you can download the entire sensitive list using the `show_values()` function.
 
-:::callout-note
+:::{.callout-note collapse="true"}
 `show_values()` is normally used for searching fields to narrow your query.  However, you can also use it to show what species are in a particular list on the ALA.  
 :::
 
@@ -277,6 +312,8 @@ galah.search_values(field='dr487',value='Mixophyes balbus',lists=True,include_st
 ```
 
 Now, we know that in New South Wales, *Mixophyes balbus* is obfuscated to a 10km radius.  This does not mean that the center of the point is where the species has been spotted; it instead means that the species has been spotted somewhere in that 10km radius.  Therefore, it is best to represent them as circles with radii 10km.  What we will do is remove the records without coordinates, convert our occurrences dataframe to a `GeoDataFrame`, and add a radius of 10km on each point.
+
+<!-- Phew this is a lot of code and code comments. I always find that for explanatory posts, this is a little overwhelming for beginners. Are you able to break this up into sections and explain the general steps? I had to do this a lot in Jarod's post if you are looking for an example-->
 
 ```{python}
 # drop entries without coordinates, as well as duplicates
@@ -317,9 +354,11 @@ Now that we have added the 10km radius to all the points, let's plot it to see w
 stuttering_frogs_midwestern_gdf_buffer_degrees.plot(facecolor='orange',alpha=0.15,linewidth=1.0, edgecolor='orange')
 ```
 
-# Plotting both together
+## Map
 
 Finally, we can plot all of the buffers and points to see how the addition of a buffer can include relevant points in your spatial search.
+
+<!-- This is a serious amount of code, and it includes a loop. I imagine people who read this post might want to know how to do a single basic plot first and foremost, then more expert coders might want to try this hectic dataviz. Maybe it's best to fold this code chunk and just explain what it shows (something that I think is missing here). What do you think is the best buffer size given this example here? Does it depend on what species we care about? Would an Impact Assessment for an industry project have a different buffer size to a conservation project? (you don't necessarily have to answer all of these, but I imagine these are the questions someone might have. We can talk about this if you aren't exactly sure of the answer) -->
 
 ```{python}
 #| echo: true
