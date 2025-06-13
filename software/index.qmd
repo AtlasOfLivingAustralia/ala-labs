@@ -44,7 +44,9 @@ If you have any questions, comments, or spot any bugs, [email us](mailto:support
 
 # galaxias
 
-Under development and coming soon...
+[{galaxias}](https://galaxias.ala.org.au/) is an R and Python interface designed to simplify the process of converting biodiversity data into Darwin Core Archives (DwCA), facilitating data submission to infrastructures such as the Atlas of Living Australia (ALA) or the Global Biodiversity Information Facility (GBIF).<br> <br>
+Visit the **[{galaxias} website](http://galaxias.ala.org.au/)** to learn more.<br><br>
+If you have any questions, comments, or spot any bugs, [email us](mailto:support@ala.org.au) or report an issue on the [R package GitHub page](https://github.com/AtlasOfLivingAustralia/galaxias) or the [Python package Github page](https://github.com/AtlasOfLivingAustralia/galaxias-python)
 
 :::
 
@@ -82,7 +84,7 @@ If you have any questions, comments, or spot any bugs, [email us](mailto:support
 
 # delma
 
-[{delma}](https://delma.ala.org.au/) is an R package for converting metadata statements written in R Markdown or Quarto markdown to [Ecological Metadata Language](https://eml.ecoinformatics.org/) (EML). EML is a common framework for describing ecological datasets so they can be shared and reused. delma supports users to write metadata statements in R Markdown or Quarto markdown for greater transparency and ease-of-use, then convert them to EML for efficient transfer.<br> <br>
+[{delma}](https://delma.ala.org.au/) is an R and Python package for converting metadata statements written in R Markdown or Quarto markdown to [Ecological Metadata Language](https://eml.ecoinformatics.org/) (EML). EML is a common framework for describing ecological datasets so they can be shared and reused. delma supports users to write metadata statements in markdown, R Markdown or Quarto markdown for greater transparency and ease-of-use, then convert them to EML for efficient transfer.<br> <br>
 Visit the **[{delma} website](https://delma.ala.org.au/)** to learn more.<br><br>
 If you have any questions, comments, or spot any bugs, [email us](mailto:support@ala.org.au) or report an issue on the [R package GitHub page](https://github.com/AtlasOfLivingAustralia/delma) or the [Python package Github page](https://github.com/AtlasOfLivingAustralia/delma-python)
 
