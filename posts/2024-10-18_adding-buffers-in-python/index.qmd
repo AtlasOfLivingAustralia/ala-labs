@@ -1,7 +1,7 @@
 ---
 title: "Add buffers to a shapefile"
 description: |
-  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to add a buffer to a shapefile using {shapely} and {geopandas}. Then we use {galah-python} and {matplotlib} to demonstrate how data points that have been obfuscated (obscured by reducing their precision) may affect the size of the buffer needed in order to confidently capture species in the area.
+  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to add a buffer to a shapefile using {shapely} and {geopandas}. Then we use {galah-python} and {matplotlib} to demonstrate how data points that have been obfuscated (obscured by reducing their precision) may affect the buffer size required to confidently capture species in the area.
   - name: "Amanda Buyan"
   - name: "Dax Kellie"
 date: "2025-05-30"
@@ -68,7 +68,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 <!------------------------ Post starts here ------------------------>
 
-Ecological data is often used to understand what species are found in a given location. This information is a frequent requirement for conservation monitoring, and for environmental impact assessment prior to land development. A common method for this task is to use a **buffer**, an outward boundary around a given area location. Adding a buffer helps to capture all the species in an area, including those that have been observed just outside the area but might live in, or be affected by that area.
+Ecological data is often used to understand what species are found in a given location, especially for conservation monitoring and environmental impact assessment prior to land development. A common method for this task is to use a **buffer**, an outward boundary around a given area location. Adding a buffer helps to capture all the species in an area, including those that have been observed just outside the area and probably live there, too.
 
 Choosing a buffer size, however, can be tougher than it seems. Individual organisms move, either over the course of a day or an entire season (e.g. migration, perennial growth), so species' lifecycles and behaviours may determine the size of our final buffer. A more difficult challenge occurs when species are considered sensitive or endangered. These species' exact point locations are often obfuscated (aka their location is made less precise) to keep these species safe. This added imprecision will again affect our final decision on buffer size.
 
@@ -76,7 +76,7 @@ In this post, we'll show how to add a buffer around a shapefile with [{geopandas
 
 # Draw a buffer
 
-For our example, our area of interest is Mid-Western, a Local Government Area (LGA) in New South Wales. We'll first need to get a shapefile of our area, which we can get by downloading a [shapefile of all LGAs from the Australian Bureau of Statistics](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files). Download the zip file of "Local Government Areas - 2024", then place the zip file in your local directory. We can then read in the shapefile and show what it looks like using {geopandas}.
+For this example, our area of interest is Mid-Western, a Local Government Area (LGA) in New South Wales. We'll first need to download a shapefile of our area, which we can get by downloading a [shapefile of all LGAs from the Australian Bureau of Statistics](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files) and filtering to our area. Download the zip file of "Local Government Areas - 2024", then place the zip file in your local directory. We can then read in the shapefile and show what it looks like using {geopandas}.
 
 ::: aside
 
@@ -88,9 +88,9 @@ For those unfamiliar with Australian geography, the LGA of Mid-Western is locate
 import geopandas as gpd
 import matplotlib
 import matplotlib.pyplot as plt
-# lgas = gpd.read_file("../data/LGA_2024_AUST_GDA2020.zip")
+lgas = gpd.read_file("../data/LGA_2024_AUST_GDA2020.zip")
 # this needs to be changed
-lgas = gpd.read_file("/Users/buy003/Documents/GitHub/ala-labs/posts/2024-10-18_adding-buffers-in-python/LGA_2024_AUST_GDA2020.zip")
+# lgas = gpd.read_file("/Users/buy003/Documents/GitHub/ala-labs/posts/2024-10-18_adding-buffers-in-python/LGA_2024_AUST_GDA2020.zip")
 ax = lgas[lgas['STE_NAME21'] == 'New South Wales'].plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white")
 a = lgas[lgas['LGA_NAME24'] == 'Mid-Western'].plot(ax=ax,facecolor='#00008b')
 a = ax.axis('off')
@@ -104,6 +104,8 @@ plt.show()
 #| echo: true
 #| eval: false
 import geopandas as gpd
+import shapely
+from shapely.geometry import Polygon
 lgas = gpd.read_file("LGA_2024_AUST_GDA2020.zip")
 lgas.head()
 ```
@@ -113,38 +115,35 @@ lgas.head()
 #| eval: true
 import geopandas as gpd
 import pandas as pd
+import shapely
+from shapely.geometry import Polygon
 pd.set_option('display.max_columns', None)
 pd.set_option('expand_frame_repr', False)
-lgas = gpd.read_file("./LGA_2024_AUST_GDA2020.zip")
+lgas = gpd.read_file("../data/LGA_2024_AUST_GDA2020.zip")
 lgas.head()
 ```
 
-Now, we will create a 5km buffer.  This will involve converting the shapefiles between different Coordinate Reference Systems (CRS)[^crs].
+Then we'll filter to Mid-Western.
+
+```{python}
+# Filter to midwestern
+midwestern = lgas[lgas['LGA_NAME24'] == 'Mid-Western']
+```
+
+
+Now, we will create a 5 km buffer around Mid-Western, as we are looking at a relatively small area. To do this, we'll need to convert the shapefiles between different Coordinate Reference Systems (CRS)[^crs] to allow us to draw our buffer. 
+
+First, we'll reproject our polygon `midwestern` to a CRS measured in metres, like Australian Albers (`EPSG:3577`). Then we can create a buffer in metres around `midwestern`. Finally, we'll reproject `midwestern` match the CRS of the data we intend to use, `EPSG:4326`[^ala-crs], and unify any intersecting shapes.
 
 [^crs]: Check out [this section of a previous ALA Labs post](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/#make-a-map) for a more complete explanation of what a CRS is.
-
-We want to draw our buffers in metres, as we are looking at a relatively small area. To do this, we will complete the following steps for a range of buffers:
-
-- Project our polygon `midwestern` using a CRS measured in metres, like Australian Albers (`EPSG:3577`)
-- Create a buffer in metres around `midwestern`
-- Reproject our polygon `midwestern` and buffer to the CRS of the data we intend to use, `EPSG:4326`[^ala-crs]
-- Unify any shapes that overlap into one (shapes will be unified if they intersect)
 
 [^ala-crs]: ALA data is projected using [CRS EPSG:4326](https://epsg.io/4326) (the same one used by Google Earth).
 
 ```{python}
-# packages
-import shapely
-from shapely.geometry import Polygon
-
-# get midwestern lga into its own variable
-midwestern = lgas[lgas['LGA_NAME24'] == 'Mid-Western']
-
 # reproject to Australian Albers CRS
 midwestern_metres = midwestern.to_crs(3577)
 
-# loop over each buffer length to create the buffer
-# then, reproject and unify any overlapping shapes
+# create buffer, reproject, unify any overlapping shapes
 buffer_5km = midwestern_metres['geometry'].buffer(5000)
 buffer_5km_degrees = buffer_5km.to_crs(4326)
 union_buffer_5km_degrees = shapely.unary_union(buffer_5km_degrees)
@@ -161,37 +160,30 @@ import matplotlib.pyplot as plt
 # set initial shapefile as axis
 ax = midwestern.plot(edgecolor = "black", linewidth = 2.0, facecolor = "white")
 
-# loop over buffers and plot on the same axis as original shapefile
+# plot buffer on same axis as original shapefile
 plt.plot(*union_buffer_5km_degrees.exterior.xy,c='#00008b',lw=2.0,label=length)
-
-# remove axis to make plot look prettier
-ax.axis('off')
+ax.axis('off') # remove axis to make plot look prettier
 ```
 
 ```{python}
 #| echo: false
 #| eval: true
-# import matplotlib for plotting
 import matplotlib.pyplot as plt
 
 # set initial shapefile as axis
 ax = midwestern.plot(edgecolor = "black", linewidth = 2.0, facecolor = "white")
 
-# loop over buffers and plot on the same axis as original shapefile
+# plot buffer on same axis as original shapefile
 a = plt.plot(*union_buffer_5km_degrees.exterior.xy,c='#00008b',lw=2.0,label='5km')
-
-# remove axis
-a = ax.axis('off')
+a = ax.axis('off') # remove axis to make plot look prettier
 plt.show();
 ```
 
-Now that we've drawn our buffer around the Mid-Western LGA, let's go over the role of obfuscation with sensitive species.
+Now that we've drawn our buffer around the Mid-Western LGA, let's discuss how data obfuscation affects our ability to detect sensitive species.
 
 # Obfuscation and why it's important for sensitive species
 
-When we talk about a record being obfuscated, we mean that the coordinate location of this record has been obscured.  There are several ways to obscure a record's location, though the most common common way is to reduce the number of decimals, and therefore the points's precision, in latitude and longitude coordinates. <!-- Dax, I'm unsure if it is the most common way - thoughts? --> This is illustrated in the figure below: as the decimal points are removed, the data shifts to a more 'grid-like' representation of the data.  
-
-![](obfuscation.gif)
+When we talk about a record being **obfuscated**, we mean that the coordinate location of this record has been obscured in some way.  There are several methods to obscure a record's location. One of the more straightforward methods is to reduce the number of decimals in the record's lat/lon coordinates, lowering the point's precision. This figure below illustrates this; as the decimal points are removed, the data appears more 'grid-like' as the data loses resolution.  
 
 ```{python}
 #| echo: true
@@ -204,7 +196,7 @@ from IPython.display import display, Javascript
 # use below if you are running in jupyter notebook
 %matplotlib ipympl
 
-# create dataframe of points for plotting purposes
+# create dataframe of points
 points = pd.DataFrame({
     'orig_long': [149.9153,149.9181,149.9204,149.9233,149.9101,149.9258,149.9121,149.9163,
                   149.9295,149.9175,149.9287,149.9236,149.9109,149.9091,149.9113,149.9211,
@@ -214,7 +206,7 @@ points = pd.DataFrame({
                  -33.3541,-33.3633,-33.3799,-33.3833,-33.3423]
 })
 
-# make columns rounded to 3 and 2 decimal places
+# Round to 3 and 2 decimal places
 for i in range(3,1,-1):
     points['round{}_long'.format(i)] = points['orig_long'].round(i)
     points['round{}_lat'.format(i)] = points['orig_lat'].round(i)
@@ -249,15 +241,27 @@ ani = animation.FuncAnimation(fig=fig, func=update, frames=3, interval=1000, rep
 ani.save('obfuscation.gif')
 ```
 
-When data is sent to data infrastructures like the [Atlas of Living Australia](ala.org.au), obfuscation of species records is performed in accordance with the state or territory the species is located.  This is typically obscured to distances of 1km, 10km or 50km of a species' original location[^witheld]. Alternatively, iNaturalist pre-obfuscates data at a 30km resolution prior to sharing data with the Atlas of Living Australia.
+![](obfuscation.gif)
+
+When data is sent to data infrastructures like the [Atlas of Living Australia](ala.org.au), obfuscation of species records is performed in accordance with the state or territory the species is located, typically to distances of 1km, 10km or 50km from a species' original location[^witheld]. 
 
 [^witheld]: Some records, if the species is very sensitive, may be witheld altogether.
 
-How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. Reducing the number of decimals in longitude/latitude coordinates tends to appear as if points were snapped onto a grid, as point precision is lost (see the figure above). The *true* location of the point, however, might be anywhere in a 5km radius. Where *exactly* the point was depends on how the point was rounded, and so it's equally possible that a point could 
+::: aside
+Alternatively, iNaturalist pre-obfuscates data at a 30km resolution prior to sharing data with the Atlas of Living Australia.
+:::
 
-- Appear inside a specified area when its true location is outside the area (left), 
-- Appear inside a specified area when its true location is in the area (middle, the ideal) 
-- Appear outside a specified area when its true location is inside the area (right) 
+How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. The *true* location of the point might be anywhere in its defined radius, and its the new obscured location point will depend which direction the decimal was rounded (and by how many decimal points its resolution has been reduced). It's equally possible that an obfuscated record could be located
+
+1.  Inside a specified area when its true location is outside the area (left), 
+2.  Inside a specified area when its true location is inside the area (middle) 
+3.  Outside a specified area when its true location is inside the area (right) 
+
+<!--
+Dax: Sorry Amanda, but I'm once again going to suggest a slight change on this to make the example a little more realistic. The example here is true, but where things aren't quite right is in your example, the true data point is always in the centre of the radius. This isn't actually what happens, and this example we have a little more control because we are only illustrating one point in each map.
+
+So, could you instead put the yellow radius in a certain section of your map and *don't move it*. Instead, move the two dots inside the radius to suit each of our three scenarios. This will help people get their heads around how the points in the radius could literally end up anywhere!
+-->
 
 ```{python}
 #| echo: false
@@ -298,7 +302,9 @@ fig.legend(handles, labels, loc=(0.4,0.2))
 plt.show()
 ```
 
-In ecological assessment, it is generally better to capture more than less due to species' interactions with their broader ecosystems (outside of our human-defined boundaries). Therefore, the goal we are trying to achieve by using a buffer is to realistically estimate how many species are influenced by the health of our defined area, especially sensitive species.
+Thanks to obfuscation, we can't know which of these three scenarios might be true for our individual record!
+
+The main takeaway is that obfuscation makes it harder to know that you are accurately capturing all the species in a defined area. In ecological assessment, it's generally better to capture more rather than less because species interact with their broader ecosystems (outside of our human-defined boundaries). Therefore, the goal *we* are trying to achieve by using a buffer is to realistically estimate how many species are influenced by the health of our defined area, not just what has been observed within a predefined boundary.
 
 # Example: The stuttering frog
 
@@ -322,15 +328,12 @@ Middle: [*Mixophyes balbus* (liznoble CC-BY-NC 4.0 (Int))](https://biocache.ala.
 Right: [*Mixophyes balbus* (lachlan_harriman CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/b37f6a21-2841-439a-9b25-e9073a3fedb6)
 :::
 
-## Download data
+### Download data
 
-Let's download occurrence records of stuttering frogs in a bounding box that encompasses an area slightly larger than the Mid-Western LGA.  
+Let's download occurrence records of stuttering frogs in a bounding box that encompasses an area slightly larger than the Mid-Western LGA[^bbox]. We will also include a column with the distance each record's location has been obfuscated, `generalisationInMetres`.
 
-::: aside
+[^bbox]: Downloading all occurrence records using a bounding box *then* filtering the records to fit a shapefile can be a quicker way to subset records (rather than waiting for the API to process a more complex shapefile polygon shape). You can find a more in-depth article on this [here](https://galah.ala.org.au/Python/galah_user_guide/Spatial_Filtering.html#spatial-filtering).
 
-Downloading all occurrence records using a bounding box for your shapefile, then filtering the records afterwards, can be a quicker way to subset records, rather than waiting for the API to process your shapefile.  A more in-depth article on this in Python exists here: https://galah.ala.org.au/Python/galah_user_guide/Spatial_Filtering.html#spatial-filtering
-
-:::
 
 ```{python}
 #| echo: true
@@ -338,11 +341,12 @@ Downloading all occurrence records using a bounding box for your shapefile, then
 import galah
 import shapely
 galah.galah_config(email="<your-email-address>")
-#                              xmin,  ymin,  xmax,   ymax
+#                              xmin,  ymin,  xmax,  ymax
 bbox_midwestern = shapely.box(148.5, -33.6, 151.1, -31.6)
 frogs = galah.atlas_occurrences(
     taxa='Mixophyes balbus',
-    bbox=bbox_midwestern
+    bbox=bbox_midwestern,
+    fields=["basic","generalisationInMetres"]
 )
 frogs
 ```
@@ -356,48 +360,44 @@ galah.galah_config(email="amanda.buyan@csiro.au")
 bbox_midwestern = shapely.box(148.5, -33.6, 151.1, -31.6)
 frogs = galah.atlas_occurrences(
     taxa='Mixophyes balbus',
-    bbox=bbox_midwestern
-)
-frogs
-```
-
-## Add a radius around points
-
-Previously, we mentioned that sensitive records can be obfuscated to different radii, depending on the state or territory the species occurs in.  To get this information, the ALA has a field called `generalisationInMetres`, which will give you the distance a particular species' decimal location should be obfuscated.
-
-```{python}
-frogs = galah.atlas_occurrences(
-    taxa='Mixophyes balbus',
     bbox=bbox_midwestern,
     fields=["basic","generalisationInMetres"]
 )
 frogs
 ```
 
-Now that we have this information, we can consider the uncertainty around these points.  As we mentioned above, the most common method of obfuscation is to remove decimal points, so the obfuscation of a species may not be exactly 10km.  However, a point is not sufficient to represent this uncertainty.  Therefore, we will be drawing circles around these points to better represent what is happening with sensitive species' location.  To do this, we will be removing any points that do not have coordinate locations, as well as removing points with the same latitude and longitude.  We will then convert the `pandas` `DataFrame` to a `GeoDataFrame`, which involves specifying the CRS (in this case, what Google Earth uses), as well as the `geometry`.  **Note that these points are not duplicates, but are obfuscated enough that they look like duplicates.**
+### How buffer size affects species detection
 
-::: aside
+Let's try visualising the uncertainty around these points. The `generalisationInMetres` column shows that each frog record is obscured by 10 km (10,000 m). To make this more clear, we'll draw a radius around each point. This isn't a perfect representation of obfuscation---the true location could be anywhere inside 10 km, not directly in the middle of each circle---but it gives an idea. 
 
-Every `GeoDataFrame` has to have a `geometry` column specified.
+<!--
+Dax: From this point to the Final Thoughts section, treat it like another example (like you did above), where the code is in a folded code chunk. 
+On a reread, I've realised the end goal of this article isn't to show people how to make 6 maps with these radius-points around them, the goal is to show people to then download data with galah and filtering to inside the buffer size they decided on.
 
-:::
+So, as it is now, this is yet another wonderful example, but it feels like we didn't finish what we promised at the start (show people how to use a buffer to understand what species are in a location) because we never downloaded all the data in the area and summarised it.
+
+Could you please rephrase this as an example, meaning any description of code can be deleted. Then could you please do this in a final section (I've added a header)
+-->
+
+<!-- you can remove the text below -->
+To do this, we'll remove any duplicate records[^duplicates] and records missing a location, then convert our `DataFrame` to a spatial `GeoDataFrame` projected to CRS `4326`[^crs_again].
+
+[^duplicates]: Confusingly, these points might not be *actual* duplicates---they just appear that way because their obfuscated locations now overlap on the same point. Their true locations, however, may be in different places.
+
+[^crs_again]: Again, this is the CRS ALA data is projected to. 
 
 ```{python}
-# drop entries without coordinates, as well as duplicates
+# drop duplicates and NAs
 frogs_set = frogs.drop_duplicates(subset=['decimalLatitude','decimalLongitude']).dropna().reset_index(drop=True)
 
-# change the pandas dataframe into a GeoDataFrame
+# convert to GeoDataFrame
 frogs_set_gdf = gpd.GeoDataFrame(
     frogs_set, 
     geometry=gpd.points_from_xy(frogs_set.decimalLongitude, frogs_set.decimalLatitude), 
     crs="EPSG:4326"
 )
-```
 
-Now we can add a buffer radius of 10km (10,000m) around each point. What we will be doing is similar to the previous section about drawing buffers, in that we will be converting our `GeoDataFrame` to a CRS that is represented in meters, and drawing a buffer (in this instance, around a point, rather than a Polygon).  However, since we are interested in keeping all the information about the points, and not just the buffer shapes, we will have to create a separate column titled `buffer`, and then tell the `GeoDataFrame` that we want the `buffer` column to be our new `geometry`.
-
-```{python}
-# change points to metres to add buffer
+# Reproject to CRS that uses metres to add buffer
 frogs_set_gdf_metres = frogs_set_gdf.to_crs(3577)
 
 # add a buffer column to the same dataframe
@@ -405,36 +405,28 @@ frogs_set_gdf_metres['buffer'] = None
 for i,row in frogs_set_gdf_metres.iterrows():
     frogs_set_gdf_metres.loc[i,'buffer'] = row["geometry"].buffer(frogs_set_gdf_metres.loc[i,'generalisationInMetres'])
 
-# set the CRS again so GeoPandas knows what CRS the buffer column is in
-frogs_set_gdf_metres = frogs_set_gdf_metres.set_crs(3577)
-
-# remove geometry column and replace with the buffered points
+# replace `geometry` column with buffered points
 del(frogs_set_gdf_metres['geometry'])
 frogs_set_gdf_metres = frogs_set_gdf_metres.rename(columns={'buffer': 'geometry'})
 
-# set the CRS again so GeoPandas knows what CRS the geometry column is in
+# define that buffered points are in CRS 3577, then convert back to CRS 4326
 frogs_set_gdf_metres = frogs_set_gdf_metres.set_crs(3577)
-
-# change the points back to EPSG:4326 for parity with shape file
 frogs_set_gdf_degrees = frogs_set_gdf_metres.to_crs(4326)
 ```
 
+<!-- you can remove this sentence too -->
 Our individual points are now replaced as circles with a radius of 10km.
+
+<!-- I don't think you need to display this separate plot anymore - just the one below (which is the complete example) -->
 
 ```{python}
 frogs_set_gdf_degrees.plot(facecolor='orange',alpha=0.15,linewidth=1.0, edgecolor='orange')
 ```
 
-## How buffer size affects species detection
-
-Let's consider how different buffer sizes impact our ability to detect sensitive species.  Below, we've created six buffers of increasing size around Midwestern. The stuttering frog observations are *just* outside of our area; without a buffer this frog species would go undetected, but with a 30km buffer we would detect several observations. Which should we choose?
-
-Given the size of our area of interest, we'd likely choose a buffer between 5-15km. 
-
-Although a larger buffer of 25-30km captures more species records, there is a risk that our buffer also captures too many species --- more than are realistically interacting with our area. When we draw our buffer, considering things like topography, river systems, and nutrient gradients might help us determine how big our buffer should practically be.  Ultimately, buffer size will depend on the question we trying to answer, whether that's for research, monitoring, conservation or environmental impact assessment prior to development.
+Let's consider how different buffer sizes impact our ability to detect sensitive species.  Below, we've created six buffers of increasing size around Mid-Western. The stuttering frog observations are *just* outside of our area; without a buffer this frog species would go undetected, but with a 30km buffer we would detect several observations. Which should we choose?
 
 ```{python}
-#| echo: true
+#| echo: false
 #| eval: false
 #| code-fold: true
 fig,ax = plt.subplots(2,3,figsize=(15,10))
@@ -514,8 +506,11 @@ for i in range(len(ax)):
 
 
 ```{python}
-#| echo: false
+#| echo: true
 #| eval: true
+#| warning: false
+#| message: false
+#| error: false
 fig,ax = plt.subplots(2,3,figsize=(15,10))
 extra = 0
 
@@ -594,9 +589,20 @@ for i in range(len(ax)):
 plt.show();
 ```
 
+Given the size of our area of interest, we'd likely choose a buffer between 5-15km. 
+
+Although a larger buffer of 25-30km captures more species records, there is a risk that our buffer also captures too many species --- more than are realistically interacting with our area. When we draw our buffer, considering other factors like topography, river systems, and nutrient gradients might help us determine how big our buffer should practically be.
+
+# Download data in our buffered area
+
+<!-- 
+Dax:
+Here you can download records in your buffer however way is most efficient. Then you can summarise and visualise them on a map (density point map + summary table of species? Maybe in 2 tabs?). Doing this will help the article feel complete :)
+-->
+
 # Final thoughts
 
-We hope this post has helped you understand how to draw buffers around a shape, as well as the importance of considering buffer size when determining sensitive/threatened species in an area.
+We hope this post has helped you understand how to draw buffers around a shape, as well as the importance of considering buffer size when determining sensitive/threatened species in an area. Ultimately, buffer size will depend on the question we are trying to answer, whether that's for research, monitoring, conservation or environmental impact assessment prior to development.
 
 For other Python posts, check out [our beginner’s guide to map species observations](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/) or see [how to cross reference a species list with a conservation list](https://labs.ala.org.au/posts/2024-02-12_species-lists/).
 
