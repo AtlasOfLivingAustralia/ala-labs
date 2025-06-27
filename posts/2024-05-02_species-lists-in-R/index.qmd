@@ -10,13 +10,16 @@ title-block-banner: "#B8573E"
 toc: true
 toc-location: left
 toc-depth: 2
+filters:
+   - lightbox
+lightbox: auto
 categories:
   - Eukaryota
   - Animalia
   - Plantae
   - Summaries
   - R
-image: waffle-chart.png
+image: waffle_yass.png
 freeze: true
 draft: true
 editor_options: 
@@ -66,7 +69,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 <!------------------------ Post starts here ------------------------>
 
-Knowing what species inhabit an area is important for conservation and ecosystem management. In particular, it can help us find out how many known species are in a given area, whether each species is common or rare, and whether any species are threatened or endangered.
+Knowing what species inhabit an area is important for conservation and ecosystem management. In particular, it can help us find how many known species are in a given area, and whether any species are threatened or endangered.
 
 In this post, we will use the [galah](https://galah.ala.org.au/R/), [waffle](https://github.com/hrbrmstr/waffle) and [ggplot2](https://ggplot2.tidyverse.org/) packages to show you how to download a list of species within the Yass Valley in 2023, cross-reference this list with state-wide conservation status lists, and visualise the number of threatened and sensitive species in the region. 
 
@@ -101,7 +104,7 @@ arrows <-
 map_highlight <- ggplot() + 
   geom_sf(data = lga_wgs84,
           fill = "white",
-          colour = "grey90") +
+          colour = "grey65") +
   geom_sf(data = yass_wgs84, 
           fill = "#E06E53",
           colour = "#E06E53")
@@ -121,16 +124,30 @@ map_highlight +
 
 # Download a list of species
 
-There are two ways to narrow a download query to return information for a specific region:  
+There are two ways to narrow a download to return information for a specific region:  
 
-  * Using fields available in galah (downloaded from the ALA)
+  * Using galah (`fields` are downloaded from the ALA)
   * Using a shapefile
   
-The method you choose depends on whether the region you wish to return species for is already within galah, or whether you require a list for a more specific area defined by a shapefile.
+The method you choose depends on whether the region you wish to return species for is already in galah, or whether you wish to filter for a more specific area defined by a shapefile.
 
-First let's load our packages.
+Let's first load our packages. To download species lists, you will also need to enter a registered email with the ALA using `galah_config()`.
 
 ```{r}
+#| eval: false
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(sf)
+library(rmapshaper)
+library(here)
+library(galah)
+
+galah_config(email = "your-email-here")
+```
+
+```{r}
+#| echo: false
 #| warning: false
 #| message: false
 library(dplyr)
@@ -140,72 +157,61 @@ library(sf)
 library(rmapshaper)
 library(here)
 library(galah)
-```
-
-To download species lists, you will also need to enter a registered email with the ALA using `galah_config()`.
-
-```{r}
-#| eval: false
-galah_config(email = "your-email-here")
-```
-
-```{r}
-#| echo: false
 galah_config(email = "dax.kellie@csiro.au", verbose = FALSE)
 ```
 
 
 ::: {.panel-tabset .nav-pills}
 
-# Fields in galah
+# galah
 
-## Search for fields in galah
+### Search for fields
 
-To find which fields and layers exist within galah to help us narrow our query, we can use the `search_all()` function. Let's do a text search to find what fields contain information on "Local Government Areas".
+To find what exists in galah to help us narrow our query, we can use the `search_all()` function to search for available fields. A **field** in galah refers to a column or layer stored in a living atlas. Let's do a text search to find what fields contain information on "Local Government Areas".
 
 ```{r}
 search_all(fields, "Local Government Areas")
 ```
 
-The field `cl10923`[^1] appears to contain the most recent data (from 2018). We can preview what values are *within* the field `cl10923` using `show_values()`.
-
-```{r}
-search_all(fields, "cl10923") |>
-  show_values()
-```
-
-There are lots of Local Government Areas! To check that Yass Valley is included, we can do a text search for values that match "YASS VALLEY".
+The field `cl11170`[^1] contains the most recent available data (from 2023). We can preview what values are *within* field `cl11170` using `show_values()`.
 
 [^1]: Each spatial layer has a two letter code, along with a number to identify it. The abbreviations are as follows:
   * `cl` = contextual layer (i.e. boundaries of LGAs, Indigenous Protected Areas, States/Territories etc.)  
-  * `10923` = number associated with the spatial layer in the atlas
+  * `11170` = number associated with the spatial layer in the atlas
 
 ```{r}
-search_all(fields, "cl10923") |>
-  search_values("YASS VALLEY")
+search_all(fields, "cl11170") |>
+  show_values()
+```
+
+There are lots of Local Government Areas! To check whether Yass Valley is included, we can do a text search for values that match "yass".
+
+```{r}
+search_all(fields, "cl11170") |>
+  search_values("yass")
 ```
 
 
-## Download data
+### Download data
 
-Using the `field` and `category` returned above, we can now build our query. We begin our query with `galah_call()` and filter our query to only Yass Valley in the year 2023. We then specify we wish to return a species list by ending our query with `atlas_species()`. 
+Using the `field` and `value` returned above, we can now build our query. We begin our query with `galah_call()` and filter to only Yass Valley in the year 2024. We then specify we wish to return a species list by ending our query with `atlas_species()`. 
 
 ```{r}
 species_yass <- galah_call() |>
-  filter(cl10923 == "YASS VALLEY COUNCIL",
-         year == 2023) |>
+  filter(cl11170 == "Yass Valley",
+         year == 2024) |>
   atlas_species()
 
 species_yass
 ```
 
-It's also possible to group by each species and return the observations counts by ending our query with `atlas_counts()`.
+It's also possible to group by `scientificName` (genus + species name) and return the observations counts by ending our query with `atlas_counts()`.
 
 ```{r}
 species_counts <- galah_call() |>
-  filter(cl10923 == "YASS VALLEY COUNCIL",
-         year == 2023) |>
-  group_by(species) |>
+  filter(cl11170 == "Yass Valley",
+         year == 2024) |>
+  group_by(scientificName) |>
   atlas_counts()
 
 species_counts
@@ -214,7 +220,7 @@ species_counts
 
 # External shapefile
 
-## Download shapefile
+### Download shapefile
 
 To retrieve the spatial outline of Yass Valley, let's download the latest Local Government Areas data from the [Australian Bureau of Statistics Digital Boundary files page](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files). Find "Local Government Areas - 2023 - Shapefile" and click "Download ZIP". Save the zip folder in your current directory and unzip it.
 
@@ -243,7 +249,7 @@ lga
 ```
 
 
-Now let's transform the Coordinate Reference System (CRS) of our shapefile to [EPSG](https://en.wikipedia.org/wiki/EPSG_Geodetic_Parameter_Dataset):4326 (the standard used in cartography and GPS, also known as [WGS84](https://en.wikipedia.org/wiki/World_Geodetic_System)) so that it matches the projection of our data from the ALA [^2]. 
+Now let's transform our shapefile to use the Coordinate Reference System (CRS) [EPSG](https://en.wikipedia.org/wiki/EPSG_Geodetic_Parameter_Dataset):4326 (the standard used in cartography and GPS, also known as [WGS84](https://en.wikipedia.org/wiki/World_Geodetic_System)) so that it matches the projection of our data from the ALA [^2]. 
 
 [^2]: Check out [this post](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/#make-a-map-1) for a better explanation of what CRS is and how it affects maps.
 
@@ -252,7 +258,7 @@ lga <- lga |>
   st_transform(crs = 4326)
 ```
 
-Next we can filter our shapefile to only Yass Valley. The column `LGA_NAME23` contains area names, and we can filter our data frame to only rows where `LGA_NAME23` is equal to `Yass Valley`. We are left with a single polygon shape of Yass Valley.
+Next we'll filter our shapefile to Yass Valley. The column `LGA_NAME23` contains area names, and we can filter our data frame to only rows where `LGA_NAME23` is equal to `Yass Valley`. We are left with a single polygon shape of Yass Valley.
 
 ```{r}
 yass_valley <- lga |>
@@ -261,26 +267,26 @@ yass_valley <- lga |>
 yass_valley
 ```
 
-## Download data
+### Download data
 
-Now that `yass_valley` contains our LGA shape, we can build our query. Once again, we'll begin our query with `galah_call()` and filter to only records from 2023. We can also specify we want records within our `yass_valley` shapefile with `galah_geolocate()`. We then specify we wish to return a species list by ending our query with `atlas_species()`.
+Now that `yass_valley` contains our LGA shape, we can build our query. Once again, we'll begin with `galah_call()` and filter to only records from 2024. We can specify that we want records within our `yass_valley` shapefile with `galah_geolocate()`. We then specify we wish to return a species list by ending our query with `atlas_species()`.
 
 ```{r}
 species_yass <- galah_call() |>
-  filter(year == 2023) |>
+  filter(year == 2024) |>
   galah_geolocate(yass_valley) |>
   atlas_species()
 
 species_yass
 ```
 
-It's also possible to group by each species and return the observations counts by ending our query with `atlas_counts()`.
+It's also possible to group by `scientificName` (genus + species name) and return the observations counts by ending our query with `atlas_counts()`.
 
 ```{r}
 species_counts <- galah_call() |>
-  filter(year == 2023) |>
+  filter(year == 2024) |>
   galah_geolocate(yass_valley) |>
-  group_by(species) |>
+  group_by(scientificName) |>
   atlas_counts()
 
 species_counts
@@ -288,66 +294,65 @@ species_counts
 
 :::
 
+
 # Cross-reference with threatened and sensitive species lists
 
-Next we will compare our Yass valley species list with several state-wide conservation status lists of threatened and sensitive species. We can retrieve lists of threatened and sensitive species in one of two ways: <br>
+Next we'll compare our Yass valley species list with several state-wide conservation status lists of threatened and sensitive species. We can retrieve lists of threatened and sensitive species in one of two ways: <br>
 
-  - Use the lists available in the Atlas of Living Australia<br>
+  - Use lists available in the Atlas of Living Australia<br>
   - Use your own list
 
-Both use the same method of matching species names in our Yass Valley list to species names in official conservation status lists. However, there is a slightly different workflow between using galah and using an externally downloaded list. Choose from the options below to use either method.
+Both use the same method of matching species names in our Yass Valley list to species names in official conservation status lists. However, there's a slightly different workflow between using galah and using an externally downloaded list. Choose from the options below to use either method.
 
 ::: {.panel-tabset .nav-pills}
 
 # Using lists in the ALA
 
-We can use galah to access lists that are available on the Atlas of Living Australia to compare to our Yass Valley species list. 
-
-Yass Valley is within the state of New South Wales, so let's do a text search for "New South Wales" to see what state-specific lists are available.
+We can use galah to access lists that are available on the Atlas of Living Australia. Yass Valley is within the state of New South Wales, so let's search for "New South Wales" to see what state-specific lists are available.
 
 ```{r}
 search_all(lists, "New South Wales")
 ```
 
-Two lists are returned, and both appear relevant. With the help of some additional columns returned by `search_all()`—`listType`, `isAuthoritative` and `isThreatened`—we can learn more about which list suits our needs best. Although both lists are authoritative, only one list (`dr650`) contains threatened species whereas the other `dr487` contains sensitive species. 
+Two lists are returned, and both appear relevant. With the help of some additional columns returned by `search_all()`—`listType`, `isAuthoritative` and `isThreatened`—we can learn more about which list suits our needs best. Although both lists are authoritative, only one list (`dr650`) contains threatened species whereas the other (`dr487`) contains sensitive species. 
 
 ```{r}
 search_all(lists, "New South Wales") |>
   select(species_list_uid, listType, isAuthoritative, isThreatened)
 ```
 
-We can return only species in Yass Valley on the New South Wales Conservation Status List (`dr650`) by filtering to `species_list_uid == dr650`. Our query returns 31 species.
+Let's filter to only return species on the New South Wales Conservation Status List (`dr650`) by adding `species_list_uid == dr650` to our filter.
 
 ```{r}
 yass_threatened <- galah_call() |>
   galah_filter(species_list_uid == dr650,
-               year == 2023) |>
+               year == 2024) |>
   galah_geolocate(yass_valley) |>
   atlas_species()
 
 yass_threatened
 ```
 
-We can do the same using the New South Wales Sensitive Species (`dr487`). Our query returns 5 species.
+We can do the same using the New South Wales Sensitive Species (`dr487`).
 
 ```{r}
 yass_sensitive <- galah_call() |>
   galah_filter(species_list_uid == dr487,
-               year == 2023) |>
+               year == 2024) |>
   galah_geolocate(yass_valley) |>
   atlas_species()
 
 yass_sensitive
 ```
 
-To return the count of species records, we can group by `species` and end our query with `atlas_counts()`
+To return the record counts of each species, we can group by `scientificName` and end our query with `atlas_counts()`
 
 ```{r}
 yass_sensitive_counts <- galah_call() |>
   galah_filter(species_list_uid == dr487,
-               year == 2023) |>
+               year == 2024) |>
   galah_geolocate(yass_valley) |>
-  galah_group_by(species) |>
+  galah_group_by(scientificName) |>
   atlas_counts()
 
 yass_sensitive_counts
@@ -356,9 +361,7 @@ yass_sensitive_counts
 
 # Using external lists
 
-We can use our own conservation status lists from an external source to compare to our Yass Valley species list. 
-
-As an example, we are using the the New South Wales Conservation Status List and the New South Wales Sensitive Species List[^3].
+We can use our own conservation status lists from an external source to compare to our Yass Valley species list. As an example, we are using the the New South Wales Conservation Status List and the New South Wales Sensitive Species List[^3].
 
 {{< downloadthis ../data/example_TSL.csv label="Download Conservation Status List" icon=database-fill-down type=info class=data-button >}} {{< downloadthis ../data/example_SSL.csv label="Download Sensitive Species List" icon=database-fill-down type=info class=data-button >}}
 
@@ -381,7 +384,7 @@ sensitive_list <- read_csv(here("posts", "data", "example_SSL.csv"))
 ```
 
 
-Let's filter our Yass Valley species to only those that are also in our `threatened_list`. We return 31 species.
+Let's filter our Yass Valley species to only those on our `threatened_list`.
 
 ```{r}
 yass_threatened <- species_yass |>
@@ -390,7 +393,7 @@ yass_threatened <- species_yass |>
 yass_threatened
 ```
 
-We can do the same with our `sensitive_list`, which returns 5 species.
+We can do the same with our `sensitive_list`.
 
 ```{r}
 yass_sensitive <- species_yass |>
@@ -401,9 +404,47 @@ yass_sensitive
 
 :::
 
+## Add status information to a list with galah
+
+As of galah version 2.1.2, we can also use `show_values()` to add conservation status columns to our species list. By adding the argument `all_fields = TRUE`, we can add any columns stored in the ALA from the original list. For conservation lists like the New South Wales Conservation Status List, this includes columns like `status`, `sourceStatus` and `IUCN_Status`.
+
+```{r}
+#| message: false
+#| warning: false
+list_with_status <- search_all(lists, "dr650") |>
+  show_values(all_fields = TRUE)
+
+list_with_status |>
+  # reposition cols
+  select(status, sourceStatus, IUCN_equivalent_status, 
+         scientificName, everything()) 
+```
+
+This can be handy if we want to join this with other information like record counts.
+
+```{r}
+# get record counts for each species on the NSW Conservation Status list
+yass_counts <- galah_call() |>
+  galah_filter(species_list_uid == dr650,
+               cl11170 == "Yass Valley",
+               year == 2024) |>
+  galah_group_by(scientificName) |>
+  atlas_counts()
+
+yass_counts
+
+# join status information to counts
+yass_counts |>
+  left_join(list_with_status |> 
+              select(status, scientificName), # choose columns
+            join_by(scientificName == scientificName))
+```
+
+
+
 # Visualise species conservation status
 
-One useful way to visualise the number of threatened and sensitive species in an area is using a waffle chart. Waffle charts are useful because they can show the total number of species (represented as individual square units) and proportions of different groups (represented by colours). 
+A useful way to visualise the number of threatened and sensitive species in an area is with a waffle chart. Waffle charts are great because they display the total number of species (represented as individual square units) and proportions of different groups (represented by colours). 
 
 For example, we can visualse the number and proportion of species with different conservation status, along with a taxonomic breakdown of threatened/sensitive species.
 
@@ -414,6 +455,7 @@ For example, we can visualse the number and proportion of species with different
 library(waffle)
 library(showtext)
 library(glue)
+library(marquee)
 
 # Add conservation status & taxa groups for plotting
 species_yass_grouped <- species_yass |>
@@ -436,7 +478,7 @@ species_yass_grouped <- species_yass |>
 status_table <- species_yass_grouped |>
   group_by(conservation_status) |>
   summarise(n = n()) |>
-  mutate(proportion = n/sum(n)*100)
+  mutate(proportion = n/sum(n)|> round(2))
 
 # Count number of species by taxonomic group
 taxa_table <- species_yass_grouped |>
@@ -457,61 +499,64 @@ font_add_google("Roboto", "roboto")
 showtext_auto()
 
 # Plot 1 Waffle: Conservation Status
+title <- marquee_glue(
+"Of {sum(status_table$n) |> scales::comma()} species in Yass Valley, <br>
+{status_table$proportion[3] |> scales::percent(.1)} are {#AB423F **threatened**}, \\
+{status_table$proportion[2] |> scales::percent(.1)} are {#D89A98 **sensitive**}, and <br>
+{status_table$proportion[1] |> scales::percent(.1)} have {#E0BEA4 **no status**}"
+)
+
+legend_order <- c("Threatened", "Sensitive", "No status")
+
 waffle_status <- 
-  ggplot(status_table) +
-  waffle::geom_waffle(aes(fill = conservation_status,
-                          colour = conservation_status,
-                          values = n),
-                      n_rows = 17,
-                      height = 0.75,
-                      width = 0.75,
+  ggplot() +
+  waffle::geom_waffle(data = status_table |>
+                        # reorder for better plotting
+                        mutate(
+                          conservation_status = forcats::fct_relevel(
+                            conservation_status, legend_order
+                            )) |>
+                        arrange(match(conservation_status, legend_order)),
+                      aes(fill = conservation_status,
+                          values = n/2),
+                      colour = "white",
+                      n_rows = 15,
                       size = 1) +
-  scale_colour_manual(name = "Conservation\nStatus",
-                    values = c("#F3E6DC", "#D89A98", "#AB423F"),
-                    labels = c("No status", "Sensitive", "Threatened")) +
   scale_fill_manual(name = "Conservation\nStatus",
-                    values = c("#F3E6DC", "#D89A98", "#AB423F"),
+                    values = c("#AB423F", "#D89A98", "#F3E6DC"),
                     labels = c("No status", "Sensitive", "Threatened")) +
-  labs(title = glue::glue("{prop_threatened_or_sensitive}% of total species in \\
-                          Yass Valley are threatened or sensitive"),
-       caption = "1 square = 1 species") +
+  labs(title = title,
+       caption = marquee_glue("1 {cli::symbol$square_small_filled} = 2 species")) +
   coord_equal() + 
   theme_void() + 
-  theme(legend.position = "bottom",
+  theme(legend.position = "none",
         text = element_text(family = "roboto", lineheight = 0.5),
-        legend.title = element_text(hjust = 0.5, size = 20),
-        legend.text = element_text(size = 19),
-        plot.title = element_text(hjust = 0.5, size = 25),
-        plot.caption = element_text(size = 17),
-        plot.margin = margin(0.5, 1, 0.5, 1, unit = "cm"))
+        plot.title = element_marquee(hjust = 0.5, size = 14, family = "roboto"),
+        plot.caption = element_marquee(size = 12),
+        plot.margin = margin(0, 1, 0, 1, unit = "cm"))
 
 # Plot 2: Taxonomic breakdown
 waffle_taxa <- 
   ggplot(taxa_table) +
   waffle::geom_waffle(aes(fill = taxa_group,
-                          colour = taxa_group,
                           values = n),
+                      colour = "white",
                       n_rows = 4,
-                      height = 0.75,
-                      width = 0.75,
                       size = 1) +
-  scale_colour_manual(name = "Group",
-                    values = c("#567C7C", "#6D714A", "#465743", "#22352C", "#C4AC79"),
-                    labels = c("Birds", "Mammals", "Other", "Plants", "Reptiles")) +
   scale_fill_manual(name = "Group",
                     values = c("#567C7C", "#6D714A", "#465743", "#22352C", "#C4AC79"),
                     labels = c("Birds", "Mammals", "Other", "Plants", "Reptiles")) +
-  labs(title = "Taxonomic breakdown of threatened & sensitive species",
-       caption = "1 square = 1 species") +
+  labs(title = marquee_glue("Taxonomic breakdown of threatened & sensitive species"),
+       caption = marquee_glue("1 {cli::symbol$square_small_filled} = 1 species")) +
   coord_equal() + 
   theme_void() + 
   theme(legend.position = "bottom",
         text = element_text(family = "roboto"),
         legend.title = element_text(hjust = 0.5, size = 20),
-        legend.text = element_text(size = 19),
-        plot.title = element_text(hjust = 0.5, size = 25),
-        plot.caption = element_text(size = 17, hjust = 1),
-        plot.margin = margin(0.5, 2.5, 0.5, 2.5, unit = "cm"))
+        legend.text = element_text(size = 18),
+        plot.title = element_marquee(hjust = 0.5, size = 14, margin = margin(b=5), family = "roboto"),
+        plot.caption = element_marquee(size = 12, hjust = 1),
+        plot.margin = margin(0.5, 1, 0.5, 1, unit = "cm"))
 ```
 
 
@@ -521,7 +566,7 @@ waffle_taxa <-
 #| message: false
 #| column: page
 #| fig-align: center
-#| fig-width: 12
+#| fig-width: 10
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
 waffle_status
 ```
