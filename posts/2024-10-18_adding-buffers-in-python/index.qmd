@@ -72,7 +72,7 @@ Ecological data is often used to understand what species are found in a given lo
 
 Choosing a buffer size, however, can be tougher than it seems. Individual organisms move, either over the course of a day or an entire season (e.g. migration, perennial growth), so species' lifecycles and behaviours may determine the size of our final buffer. A more difficult challenge occurs when species are considered sensitive or endangered. These species' exact point locations are often obfuscated (aka their location is made less precise) to keep these species safe. This added imprecision will again affect our final decision on buffer size.
 
-In this post, we'll show how to add a buffer around a shapefile with [{geopandas}](https://geopandas.org/en/stable/), [{shapely}](https://shapely.readthedocs.io/en/stable/) and [{matplotlib}](https://matplotlib.org/). Then we will use [{galah-python}](galah.ala.org.au/Python) to download data of Stuttering frogs (*Mixophyes balbus*) to demonstrate how the size of a buffer can affect the detection of sensitive species in an area.
+In this post, we'll show how to add a buffer around a shapefile with [{geopandas}](https://geopandas.org/en/stable/), [{shapely}](https://shapely.readthedocs.io/en/stable/) and [{matplotlib}](https://matplotlib.org/). Then we will use [{galah-python}](galah.ala.org.au/Python) to download data of Stuttering frogs (*Mixophyes balbus*) to demonstrate how the size of a buffer can affect the detection of sensitive species in an area.  Lastly, we will use [{scipy}](https://docs.scipy.org/doc/scipy/#) and [{matplotlib}](https://matplotlib.org/) to show the effect of buffers on detecting threatened species in an area.
 
 # Draw a buffer
 
@@ -89,10 +89,8 @@ import geopandas as gpd
 import matplotlib
 import matplotlib.pyplot as plt
 lgas = gpd.read_file("../data/LGA_2024_AUST_GDA2020.zip")
-# this needs to be changed
-# lgas = gpd.read_file("/Users/buy003/Documents/GitHub/ala-labs/posts/2024-10-18_adding-buffers-in-python/LGA_2024_AUST_GDA2020.zip")
-ax = lgas[lgas['STE_NAME21'] == 'New South Wales'].plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white")
-a = lgas[lgas['LGA_NAME24'] == 'Mid-Western'].plot(ax=ax,facecolor='#00008b')
+ax = lgas[lgas['STE_NAME21'] == 'New South Wales'].plot(edgecolor="#292C26", linewidth=0.5, facecolor="white")
+a = lgas[lgas['LGA_NAME24'] == 'Mid-Western'].plot(ax=ax, facecolor='#358BA5')
 a = ax.axis('off')
 plt.show()
 ```
@@ -126,7 +124,6 @@ lgas.head()
 Then we'll filter to Mid-Western.
 
 ```{python}
-# Filter to midwestern
 midwestern = lgas[lgas['LGA_NAME24'] == 'Mid-Western']
 ```
 
@@ -158,10 +155,10 @@ Let's plot our 5km buffer on a map.
 import matplotlib.pyplot as plt
 
 # set initial shapefile as axis
-ax = midwestern.plot(edgecolor = "black", linewidth = 2.0, facecolor = "white")
+ax = midwestern.plot(edgecolor="#292C26", linewidth = 2.0, facecolor="white")
 
 # plot buffer on same axis as original shapefile
-plt.plot(*union_buffer_5km_degrees.exterior.xy,c='#00008b',lw=2.0,label=length)
+plt.plot(*union_buffer_5km_degrees.exterior.xy, c='#358BA5', lw=2.0, label=length)
 ax.axis('off') # remove axis to make plot look prettier
 ```
 
@@ -171,10 +168,10 @@ ax.axis('off') # remove axis to make plot look prettier
 import matplotlib.pyplot as plt
 
 # set initial shapefile as axis
-ax = midwestern.plot(edgecolor = "black", linewidth = 2.0, facecolor = "white")
+ax = midwestern.plot(edgecolor="#292C26", linewidth=2.0, facecolor="white")
 
 # plot buffer on same axis as original shapefile
-a = plt.plot(*union_buffer_5km_degrees.exterior.xy,c='#00008b',lw=2.0,label='5km')
+a = plt.plot(*union_buffer_5km_degrees.exterior.xy, c='#358BA5', lw=2.0, label='5km')
 a = ax.axis('off') # remove axis to make plot look prettier
 plt.show();
 ```
@@ -215,21 +212,21 @@ for i in range(3,1,-1):
 fig,ax = plt.subplots(1,2)
 
 # create dictionary for columns - will be easier to use in update function
-column_labels = {0: ['orig_long','orig_lat'], 
-                 1: ['round3_long','round3_lat'], 
-                 2: ['round2_long','round2_lat']}
+column_labels = {0: ['orig_long', 'orig_lat'], 
+                 1: ['round3_long', 'round3_lat'], 
+                 2: ['round2_long', 'round2_lat']}
 
 # create function to update each frame in animation 
 def update(frame):
     
     # first, create a table on the left-hand side of the figure - remove previous plots and change labels
     ax[0].clear()
-    ax[0].table(cellText=points[column_labels[frame]].values,colLabels=['Latitude','Longitude'],loc='center')
+    ax[0].table(cellText=points[column_labels[frame]].values, colLabels=['Latitude','Longitude'],loc='center')
     ax[0].axis('off')
 
     # create scatterplot of points
     ax[1].clear()
-    ax[1].scatter(points[column_labels[frame][0]],points[column_labels[frame][1]],c='purple')
+    ax[1].scatter(points[column_labels[frame][0]], points[column_labels[frame][1]], c='#5A2A57', alpha=0.5)
     ax[1].get_xaxis().set_visible(False)
     ax[1].get_yaxis().set_visible(False)
 
@@ -257,12 +254,6 @@ How this affects our ability to know the true location of a species in an area i
 2.  Inside a specified area when its true location is inside the area (middle) 
 3.  Outside a specified area when its true location is inside the area (right) 
 
-<!--
-Dax: Sorry Amanda, but I'm once again going to suggest a slight change on this to make the example a little more realistic. The example here is true, but where things aren't quite right is in your example, the true data point is always in the centre of the radius. This isn't actually what happens, and this example we have a little more control because we are only illustrating one point in each map.
-
-So, could you instead put the yellow radius in a certain section of your map and *don't move it*. Instead, move the two dots inside the radius to suit each of our three scenarios. This will help people get their heads around how the points in the radius could literally end up anywhere!
--->
-
 ```{python}
 #| echo: false
 #| eval: true
@@ -270,26 +261,26 @@ So, could you instead put the yellow radius in a certain section of your map and
 fig,ax = plt.subplots(1,3)
 from shapely.geometry import Point
 
-orig_points = {0: [149.9,-33.3], 1: [149.9,-32.5], 2: [150.1,-32.7]}
-obf_points = {0: [149.8,-33], 1: [149.9,-32.7], 2: [150.5,-32.7]}
+orig_points = {0: [150.2,-33], 1: [149.9,-32.5], 2: [150.1,-32.7]}
+obf_points = {0: [149.8,-32.8], 1: [149.9,-32.7], 2: [150.5,-32.7]}
 titles = {0: '1', 1: '2', 2: '3'}
-    
+
+# create buffer around point
+point = gpd.GeoDataFrame({'geometry': Point([150.1,-32.7])}, index=[0]).set_crs(4326)
+point_metres = point.to_crs(3577)
+buffered_point = point_metres['geometry'].buffer(50000)
+buffered_point_degrees = buffered_point.to_crs(4326)
+
 for i in range(len(ax)):
 
     # plot initial shape and point
-    a = midwestern.plot(ax=ax[i],edgecolor = "grey", linewidth = 2.0, facecolor = "None", alpha = 1, figsize = (12,6))
+    a = midwestern.plot(ax=ax[i], edgecolor="#292C26", linewidth=2.0, facecolor="None", alpha=1, figsize=(12,6))
 
-    # add demonstration points
-    a = ax[i].plot(orig_points[i][0], orig_points[i][1],'o',c='black',label='original')
+    buffered_point_degrees.plot(ax=ax[i], edgecolor=None, linewidth=2.0, facecolor='orange', alpha = 0.15)
     
-    # create buffer around point
-    point = gpd.GeoDataFrame({'geometry': Point(orig_points[i])},index=[0]).set_crs(4326)
-    point_metres = point.to_crs(3577)
-    buffered_point = point_metres['geometry'].buffer(50000)
-    buffered_point_degrees = buffered_point.to_crs(4326)
-    buffered_point_degrees.plot(ax=ax[i],edgecolor=None,linewidth=2.0, facecolor='orange',alpha = 0.15)
-
-    a = ax[i].plot(obf_points[i][0], obf_points[i][1],'o',c='purple',label='obfuscated', alpha = 0.5)
+    # add demonstration points
+    a = ax[i].plot(orig_points[i][0], orig_points[i][1], 'o', c='black', label='original')
+    a = ax[i].plot(obf_points[i][0], obf_points[i][1], 'o', c='#5A2A57', label='obfuscated', alpha = 0.5)
     
     # set axis limits and remove numbers for better visualisation
     a = ax[i].set_title(titles[i])
@@ -368,25 +359,12 @@ frogs
 
 ### How buffer size affects species detection
 
-Let's try visualising the uncertainty around these points. The `generalisationInMetres` column shows that each frog record is obscured by 10 km (10,000 m). To make this more clear, we'll draw a radius around each point. This isn't a perfect representation of obfuscation---the true location could be anywhere inside 10 km, not directly in the middle of each circle---but it gives an idea. 
-
-<!--
-Dax: From this point to the Final Thoughts section, treat it like another example (like you did above), where the code is in a folded code chunk. 
-On a reread, I've realised the end goal of this article isn't to show people how to make 6 maps with these radius-points around them, the goal is to show people to then download data with galah and filtering to inside the buffer size they decided on.
-
-So, as it is now, this is yet another wonderful example, but it feels like we didn't finish what we promised at the start (show people how to use a buffer to understand what species are in a location) because we never downloaded all the data in the area and summarised it.
-
-Could you please rephrase this as an example, meaning any description of code can be deleted. Then could you please do this in a final section (I've added a header)
--->
-
-<!-- you can remove the text below -->
-To do this, we'll remove any duplicate records[^duplicates] and records missing a location, then convert our `DataFrame` to a spatial `GeoDataFrame` projected to CRS `4326`[^crs_again].
-
-[^duplicates]: Confusingly, these points might not be *actual* duplicates---they just appear that way because their obfuscated locations now overlap on the same point. Their true locations, however, may be in different places.
-
-[^crs_again]: Again, this is the CRS ALA data is projected to. 
+Let's consider how different buffer sizes impact our ability to detect sensitive species.  Below, we've created six buffers of increasing size around Mid-Western, with a radius of 10km drawn around each unique point representing the stuttering frog. This isn't a perfect representation of obfuscation---the true location could be anywhere inside 10 km, not directly in the middle of each circle---but it gives an idea. The stuttering frog observations are *just* outside of our area; without a buffer this frog species would go undetected, but with a 30km buffer we would detect several observations. Which should we choose?
 
 ```{python}
+#| echo: true
+#| eval: false
+#| code-fold: true
 # drop duplicates and NAs
 frogs_set = frogs.drop_duplicates(subset=['decimalLatitude','decimalLongitude']).dropna().reset_index(drop=True)
 
@@ -412,29 +390,14 @@ frogs_set_gdf_metres = frogs_set_gdf_metres.rename(columns={'buffer': 'geometry'
 # define that buffered points are in CRS 3577, then convert back to CRS 4326
 frogs_set_gdf_metres = frogs_set_gdf_metres.set_crs(3577)
 frogs_set_gdf_degrees = frogs_set_gdf_metres.to_crs(4326)
-```
 
-<!-- you can remove this sentence too -->
-Our individual points are now replaced as circles with a radius of 10km.
-
-<!-- I don't think you need to display this separate plot anymore - just the one below (which is the complete example) -->
-
-```{python}
-frogs_set_gdf_degrees.plot(facecolor='orange',alpha=0.15,linewidth=1.0, edgecolor='orange')
-```
-
-Let's consider how different buffer sizes impact our ability to detect sensitive species.  Below, we've created six buffers of increasing size around Mid-Western. The stuttering frog observations are *just* outside of our area; without a buffer this frog species would go undetected, but with a 30km buffer we would detect several observations. Which should we choose?
-
-```{python}
-#| echo: false
-#| eval: false
-#| code-fold: true
+# start plot
 fig,ax = plt.subplots(2,3,figsize=(15,10))
 extra = 0
 
 # initialise buffer data for visualisation
 buffer_shapes = {}
-buffer_lengths = {"5km": 5000, "10km": 10000,"15km": 15000,"20km": 20000,"25km": 25000,"30km": 30000}
+buffer_lengths = {"5km": 5000, "10km": 10000, "15km": 15000, "20km": 20000, "25km": 25000, "30km": 30000}
 buffer_distances = list(buffer_lengths.keys())
 
 # get shapefile into Australian Albers CRS
@@ -454,7 +417,7 @@ for i in range(len(ax)):
 
         # plot frogs as circles on map for reference
         frogs_set_gdf_degrees.plot(
-            ax=ax[i][j],facecolor='#d4af37',alpha=0.5,linewidth=2.0, edgecolor='#d4af37',label='label'
+            ax=ax[i][j], facecolor='#d4af37', alpha=0.5, linewidth=2.0, edgecolor='#d4af37', label='label'
         ) 
 
         # if this is the first subplot, there is no buffer, so you only draw the original shape and species counts
@@ -462,13 +425,13 @@ for i in range(len(ax)):
 
             # there is no buffer; plot the original shape file
             ax[i][j].set_title("No Buffer",fontsize=14)
-            midwestern.plot(ax=ax[i][j],edgecolor = "black", linewidth = 2.0, facecolor = "None")
+            midwestern.plot(ax=ax[i][j], edgecolor="#292C26", linewidth=2.0, facecolor="None")
 
             # get number of unique points within original shape 
             points = [(x,y) for x,y in zip(frogs_set_gdf_degrees["decimalLongitude"],frogs_set_gdf_degrees["decimalLatitude"]) if shapely.contains_xy(midwestern['geometry'][74],x,y)]
             count = len(points)
             
-            ax[i][j].text(150.2,-31.85,'Count={}'.format(count),fontsize=12,color='#6E260E')
+            ax[i][j].text(150.2, -31.85, 'Count={}'.format(count), fontsize=12, color='#6E260E')
 
         # else, draw the buffer around the original shape and include species counts
         else:
@@ -478,17 +441,17 @@ for i in range(len(ax)):
             
             # set title and plot original shape
             ax[i][j].set_title("{} Buffer".format(buffer),fontsize=14)
-            midwestern.plot(ax=ax[i][j],edgecolor = "black", linewidth = 2.0, facecolor = "None", alpha = 1)
+            midwestern.plot(ax=ax[i][j], edgecolor="#292C26", linewidth=2.0, facecolor="None", alpha=1)
 
             # get number of unique points within buffered shape 
             points = [(x,y) for x,y in zip(frogs_set_gdf_degrees["decimalLongitude"],frogs_set_gdf_degrees["decimalLatitude"]) if shapely.contains_xy(buffer_shapes[buffer],x,y)]
             count = len(points)
             
             # add number of counts to graph for reference
-            ax[i][j].text(150.2,-31.85,'Count={}'.format(count),fontsize=12,color='#6E260E')
+            ax[i][j].text(150.2, -31.85, 'Count={}'.format(count), fontsize=12, color='#6E260E')
             
             # draw buffer on plot
-            ax[i][j].plot(*buffer_shapes[buffer].exterior.xy,c='#00008b',lw=2.0,label=buffer)
+            ax[i][j].plot(*buffer_shapes[buffer].exterior.xy, c='#358BA5', lw=2.0, label=buffer)
                 
         # change limits of graph and set whitespace for better looking plot
         ax[i][j].set_ylim([-33.75,-31.7])
@@ -506,11 +469,35 @@ for i in range(len(ax)):
 
 
 ```{python}
-#| echo: true
+#| echo: false
 #| eval: true
-#| warning: false
-#| message: false
-#| error: false
+# drop duplicates and NAs
+frogs_set = frogs.drop_duplicates(subset=['decimalLatitude','decimalLongitude']).dropna().reset_index(drop=True)
+
+# convert to GeoDataFrame
+frogs_set_gdf = gpd.GeoDataFrame(
+    frogs_set, 
+    geometry=gpd.points_from_xy(frogs_set.decimalLongitude,frogs_set.decimalLatitude), 
+    crs="EPSG:4326"
+)
+
+# Reproject to CRS that uses metres to add buffer
+frogs_set_gdf_metres = frogs_set_gdf.to_crs(3577)
+
+# add a buffer column to the same dataframe
+frogs_set_gdf_metres['buffer'] = None
+for i,row in frogs_set_gdf_metres.iterrows():
+    frogs_set_gdf_metres.loc[i,'buffer'] = row["geometry"].buffer(frogs_set_gdf_metres.loc[i,'generalisationInMetres'])
+
+# replace `geometry` column with buffered points
+del(frogs_set_gdf_metres['geometry'])
+frogs_set_gdf_metres = frogs_set_gdf_metres.rename(columns={'buffer': 'geometry'})
+
+# define that buffered points are in CRS 3577, then convert back to CRS 4326
+frogs_set_gdf_metres = frogs_set_gdf_metres.set_crs(3577)
+frogs_set_gdf_degrees = frogs_set_gdf_metres.to_crs(4326)
+
+# start plots
 fig,ax = plt.subplots(2,3,figsize=(15,10))
 extra = 0
 
@@ -544,10 +531,9 @@ for i in range(len(ax)):
 
             # there is no buffer; plot the original shape file
             a = ax[i][j].set_title("No Buffer",fontsize=14)
-            midwestern.plot(ax=ax[i][j],edgecolor = "black", linewidth = 2.0, facecolor = "None")
+            midwestern.plot(ax=ax[i][j],edgecolor = "#292C26", linewidth = 2.0, facecolor = "None")
 
-            # get count of 
-            # points = [(x,y) for x,y in zip(lorikeet_brisbane["decimalLongitude"], lorikeet_brisbane["decimalLatitude"]) if shapely.contains_xy(park["geometry"],x,y)]
+            # get count of frogs in midwestern
             points = [(x,y) for x,y in zip(frogs_set_gdf_degrees["decimalLongitude"],frogs_set_gdf_degrees["decimalLatitude"]) if shapely.contains_xy(midwestern['geometry'][74],x,y)]
             count = len(points)
             
@@ -561,7 +547,7 @@ for i in range(len(ax)):
             
             # set title and plot original shape
             a = ax[i][j].set_title("{} Buffer".format(buffer),fontsize=14)
-            midwestern.plot(ax=ax[i][j],edgecolor = "black", linewidth = 2.0, facecolor = "None", alpha = 1)
+            midwestern.plot(ax=ax[i][j],edgecolor = "#292C26", linewidth = 2.0, facecolor = "None", alpha = 1)
 
             # get raw number of sensitive species, drop duplicates and records without lat/long
             points = [(x,y) for x,y in zip(frogs_set_gdf_degrees["decimalLongitude"],frogs_set_gdf_degrees["decimalLatitude"]) if shapely.contains_xy(buffer_shapes[buffer],x,y)]
@@ -571,7 +557,7 @@ for i in range(len(ax)):
             a = ax[i][j].text(150.2,-31.85,'Count={}'.format(count),fontsize=12,color='#6E260E')
             
             # draw buffer on plot
-            a = ax[i][j].plot(*buffer_shapes[buffer].exterior.xy,c='#00008b',lw=2.0,label=buffer)
+            a = ax[i][j].plot(*buffer_shapes[buffer].exterior.xy,c='#358BA5',lw=2.0,label=buffer)
                 
         # change limits of graph and set whitespace for better looking plot
         a = ax[i][j].set_ylim([-33.75,-31.7])
@@ -593,12 +579,193 @@ Given the size of our area of interest, we'd likely choose a buffer between 5-15
 
 Although a larger buffer of 25-30km captures more species records, there is a risk that our buffer also captures too many species --- more than are realistically interacting with our area. When we draw our buffer, considering other factors like topography, river systems, and nutrient gradients might help us determine how big our buffer should practically be.
 
-# Download data in our buffered area
+# Download data for EPBC Act threatened species in our buffered area
 
-<!-- 
-Dax:
-Here you can download records in your buffer however way is most efficient. Then you can summarise and visualise them on a map (density point map + summary table of species? Maybe in 2 tabs?). Doing this will help the article feel complete :)
--->
+Now that we have considered how adding buffers to an area might affect sensitive or threatened species, we can download data for this region and compare how many threatened species we detect with and without a buffer.  First, we are going to draw a 15km buffer around the Midwestern LGA, and then draw a bounding box around this buffer.  We will then query by this bounding box, as it is more efficient to query in `galah-python` using a bounding box.
+
+```{python}
+#| echo: true
+#| eval: false
+# make a 15km buffer
+buffer = midwestern_metres['geometry'].buffer(15000)
+gdf_buffers_degrees = buffer.to_crs(4326)
+buffer_15km = shapely.unary_union(gdf_buffers_degrees)
+
+# get bounding box around buffer for efficient querying
+bds = buffer_15km.bounds
+bbox_midwestern = shapely.box(bds[0],bds[1],bds[2],bds[3])
+
+# get all species within the bounding box from the ALA
+galah.galah_config(email='<your-email@example.com>')
+species = galah.atlas_occurrences(
+    bbox=bbox_midwestern
+)
+species.shape
+```
+
+```{python}
+#| echo: false
+#| eval: true
+buffer = midwestern_metres['geometry'].buffer(15000)
+gdf_buffers_degrees = buffer.to_crs(4326)
+buffer_15km = shapely.unary_union(gdf_buffers_degrees)
+
+# get bounding box around buffer for efficient querying
+bds = buffer_15km.bounds
+bbox_midwestern = shapely.box(bds[0],bds[1],bds[2],bds[3])
+
+# get all species within the bounding box from the ALA
+galah.galah_config(email='amanda.buyan@csiro.au')
+species = galah.atlas_occurrences(
+    bbox=bbox_midwestern
+)
+species.shape
+```
+
+We can see that that is a lot of occurrences seen in the area!  Since we are only interested in those mentioned in the EPBC Act, we will now filter out species that don't have a conservation status, as well as add statuses, using the `merge` function in `pandas`.  We will also be using a new feature of `show_values()`, called `all_fields`, which now allows users to download a full species list, including the status of the species. 
+
+```{python}
+# get all species on the epbc list, as well as their statuses
+epbc_list = galah.show_values(field='dr656',lists=True,all_fields=True)
+
+# merge the epbc list with your extant species list to get only threatened species
+threat_species = pd.merge(species,epbc_list[['scientificName','status']],on='scientificName')
+```
+
+After narrowing our occurrences by the EPBC Act, we will now look at our two sets of data (using only the Midwestern shapefile or using the 15km buffered shapefile), and determine how many unique species of each status were found in each shape.
+
+```{python}
+# get species into a GeoDataFrame for straightforward spatial filtering
+threat_species_gdf = gpd.GeoDataFrame(
+    threat_species, 
+    geometry=gpd.points_from_xy(threat_species.decimalLongitude, threat_species.decimalLatitude), 
+    crs="EPSG:4326"
+)
+
+# first, get number of species within midwestern
+midwestern = midwestern.to_crs(4326)
+species_mw = threat_species[threat_species_gdf.geometry.within(midwestern['geometry'][74])]
+
+# get all species within a 15km buffer
+threat_species_15km = threat_species[threat_species_gdf.geometry.within(buffer_15km)]
+
+# set dictionary for getting number of species sorted by status
+num_species_mid = {x:0 for x in list(set(species_mw['status']))}
+```
+
+Now, we can determine the number of unique species for each status within either the Midwestern shape or the 15km buffered shapefile.
+
+```{python}
+# loop over each key and get the number of unique species for each status in Midwestern
+for key in num_species_mid:
+    temp = species_mw[species_mw['status'] == key]
+    num_species_mid[key] = len(list(set(temp['scientificName'])))
+
+# sort the species from most to least
+num_species_mid_sorted = dict(sorted(num_species_mid.items(), key=lambda item: item[1]))
+
+# set dictionary for getting number of species sorted by status
+num_species_buff = {x:0 for x in list(set(threat_species_15km['status']))}
+
+# loop over each key and get the number of unique species for each status in buffered region
+for key in num_species_buff:
+    temp = threat_species_15km[threat_species_15km['status'] == key]
+    num_species_buff[key] = len(list(set(temp['scientificName'])))
+
+# sort the buffered species from most to least
+num_species_buff_sorted = dict(sorted(num_species_buff.items(), key=lambda item: item[1]))
+```
+
+To create our final plot, we will first calculate the density of occurrence points in space.  This will help determine if there are any 'hotspots', i.e. if there are overlapping occurrence points within the same point in space.  What this will also show is if there is any potential to miss threatened species.
+
+```{python}
+# import scipy for point density
+import numpy as np
+from scipy.stats import gaussian_kde
+
+### KDE Chart ###
+# put your lat/longs into numpy arrays for point ensity
+x = np.array(threat_species_15km['decimalLongitude'])
+y = np.array(threat_species_15km['decimalLatitude'])
+
+# Calculate the point density
+xy = np.vstack([x,y])
+z = gaussian_kde(xy)(xy)
+
+# sort from lowest to highest for plotting
+idx = z.argsort()
+x, y, z = x[idx], y[idx], z[idx]
+```
+
+After all of this analysis, we are now ready to create our final plot!
+
+```{python}
+#| echo: true
+#| eval: false
+# create color map
+cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", ["white","#62A769", "#52AA5E", "#5A2A57"])
+
+# create plot
+fig, ax = plt.subplots(1,2,figsize=(14,7))
+
+# bar chart 
+h, n = 0.4, np.arange(len(num_species_mid_sorted.keys()))
+ax[0].set_yticks(range(len(num_species_mid_sorted.keys())), labels=num_species_mid_sorted.keys())
+ax[0].barh(n + h/2, num_species_mid_sorted.values(), height=h, color='#292C26', label='Midwestern')
+ax[0].barh(n - h/2, num_species_buff_sorted.values(), height=w, color='#358BA5', label='Buffer')
+ax[0].legend()
+ax[0].set_xlabel('Number of Unique Species')
+ax[0].set_aspect(aspect=12, anchor=(0,0.89))
+
+# density map
+cax = ax[1].scatter(x, y, c=z, s=50, cmap=cmap)
+ax[1].plot(*midwestern['geometry'][74].exterior.xy,c='#292C26',lw=2)
+ax[1].plot(*buffer_15km.exterior.xy,c='#358BA5',lw=2)
+plt.colorbar(cax, orientation='horizontal', ticks=[], label='Number of Overlapping Points', anchor=(0,2.3))
+plt.axis('off')
+plt.suptitle('Threatened Species in Mid-Western and Surrounds', fontsize=24, y=0.93)
+ax[1].set_aspect(aspect='equal', anchor='C')
+```
+
+```{python}
+#| column: page
+#| fig-align: center
+#| out-width: 9in
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
+#| lightbox: 
+#|   group: final-plot
+
+# create color map
+cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", ["white","#62A769", "#52AA5E", "#5A2A57"])
+
+# create plot
+fig, ax = plt.subplots(1,2,figsize=(14,7))
+
+# bar chart 
+h, n = 0.4, np.arange(len(num_species_mid_sorted.keys()))
+a = ax[0].set_yticks(range(len(num_species_mid_sorted.keys())), labels=num_species_mid_sorted.keys())
+a = ax[0].barh(n + h/2, num_species_mid_sorted.values(), height=h, color='#292C26', label='Midwestern')
+a = ax[0].barh(n - h/2, num_species_buff_sorted.values(), height=h, color='#358BA5', label='Buffer')
+a = ax[0].legend()
+a = ax[0].set_xlabel('Number of Unique Species')
+a = ax[0].set_aspect(aspect=12, anchor=(0,0.89))
+
+cax = ax[1].scatter(x, y, c=z, s=50, cmap=cmap)
+a = ax[1].plot(*midwestern['geometry'][74].exterior.xy, c='#292C26', lw=2)
+a = ax[1].plot(*buffer_15km.exterior.xy, c='#358BA5', lw=2)
+a = plt.colorbar(cax, orientation='horizontal', ticks=[], label='Number of Overlapping Points', anchor=(0,2.3))
+a = plt.axis('off')
+a = plt.suptitle('Threatened Species in Mid-Western and Surrounds', fontsize=24, y=0.93)
+a = ax[1].set_aspect(aspect='equal', anchor='C')
+a = plt.savefig('final_plot.png')
+plt.show();
+```
+
+What we can see here is that without the buffer we added, we would have missed quite a large number of threatened species, including a hotspot in the lower right-hand corner of the map.
 
 # Final thoughts
 
