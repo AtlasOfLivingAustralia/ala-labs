@@ -40,9 +40,10 @@ library(htmltools)
   }
 </style>
 ```
+
 <!-- Author card -->
 
-::: author-card
+:::::: author-card
 ::: author-card-text
 #### Author
 
@@ -65,17 +66,16 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/amanda.jpg")
 ```
 :::
-:::
+::::::
 
 <!------------------------ Post starts here ------------------------>
 
-Knowing what species inhabit an area is important for conservation and ecosystem management. In particular, it can help us find how many known species are in a given area, and whether any species are threatened or endangered.
+Knowing what species inhabit an area is important for conservation and ecosystem management. In particular, it can help us find how many known species are in a given area, and whether any species are vulnerable or endangered.
 
-In this post, we will use the [galah](https://galah.ala.org.au/R/), [waffle](https://github.com/hrbrmstr/waffle) and [ggplot2](https://ggplot2.tidyverse.org/) packages to show you how to download a list of species within the Yass Valley in 2023, cross-reference this list with state-wide conservation status lists, and visualise the number of threatened and sensitive species in the region. 
+In this post, we will present two options, one using the [galah](https://galah.ala.org.au/R/) package, the other using an external shapefile and list, which you will be able to choose. Using either workflow, we will show you how to download a list of species within a Local Government Area, cross-reference this list with a state conservation status list, and visualise the number of threatened species in the region with [waffle](https://github.com/hrbrmstr/waffle) and [ggplot2](https://ggplot2.tidyverse.org/).
 
 ::: aside
-
-For those unfamiliar with Australian geography, Yass Valley is located here:
+For those unfamiliar with Australian geography, Shoalhaven is located here:
 
 ```{r}
 #| echo: false
@@ -89,23 +89,23 @@ library(ggplot2)
 lga_wgs84 <- ozmap_data(data = "abs_lga") |> 
   sf::st_transform(4326)
 
-yass_wgs84 <- ozmap_data(data = "abs_lga") |>
-  dplyr::filter(stringr::str_detect(NAME, "Yass")) |>
+sh_wgs84 <- ozmap_data(data = "abs_lga") |>
+  dplyr::filter(stringr::str_detect(NAME, "Shoalhaven")) |>
   sf::st_transform(4326)
 
 #create the start and end points of the label arrow
 arrows <- 
   tibble(
     x1 = c(154),
-    x2 = c(149),
+    x2 = c(151.2),
     y1 = c(-40),
-    y2 = c(-36))
+    y2 = c(-35.2))
 
 map_highlight <- ggplot() + 
   geom_sf(data = lga_wgs84,
           fill = "white",
           colour = "grey65") +
-  geom_sf(data = yass_wgs84, 
+  geom_sf(data = sh_wgs84, 
           fill = "#E06E53",
           colour = "#E06E53")
 
@@ -116,20 +116,10 @@ map_highlight +
     arrow = arrow(length = unit(0.08, "inch")), 
     linewidth = 1.5,
     color = "gray10", 
-    curvature = -0.3) + 
-  annotate("text", x = 157, y = -41, label = "Yass Valley", size = 10) 
+    curvature = 0.3) + 
+  annotate("text", x = 157, y = -41, label = "Shoalhaven", size = 10) 
 ```
-
 :::
-
-# Download a list of species
-
-There are two ways to narrow a download to return information for a specific region:  
-
-  * Using galah (`fields` are downloaded from the ALA)
-  * Using a shapefile
-  
-The method you choose depends on whether the region you wish to return species for is already in galah, or whether you wish to filter for a more specific area defined by a shapefile.
 
 Let's first load our packages. To download species lists, you will also need to enter a registered email with the ALA using `galah_config()`.
 
@@ -138,6 +128,7 @@ Let's first load our packages. To download species lists, you will also need to 
 library(dplyr)
 library(ggplot2)
 library(readr)
+library(readxl)
 library(sf)
 library(rmapshaper)
 library(here)
@@ -153,6 +144,7 @@ galah_config(email = "your-email-here")
 library(dplyr)
 library(ggplot2)
 library(readr)
+library(readxl)
 library(sf)
 library(rmapshaper)
 library(here)
@@ -160,14 +152,19 @@ library(galah)
 galah_config(email = "dax.kellie@csiro.au", verbose = FALSE)
 ```
 
+Choose which method you would like to view:
 
-::: {.panel-tabset .nav-pills}
+-   galah (using `fields` downloaded from the Atlas of Living Australia)
+-   Downloaded shapefile + species list
 
+The method you choose depends on whether the region or list you wish to return species for is already in galah, or whether you wish to filter for a more specific area defined by a shapefile or list.
+
+::::: {.panel-tabset .nav-pills}
 # galah
 
 ### Search for fields
 
-To find what exists in galah to help us narrow our query, we can use the `search_all()` function to search for available fields. A **field** in galah refers to a column or layer stored in a living atlas. Let's do a text search to find what fields contain information on "Local Government Areas".
+To find what exists in galah to help us narrow our query, we can use `search_all()` to search for available fields. A **field** in galah refers to a column or layer stored in a living atlas. Let's do a text search to find what fields contain information on "Local Government Areas".
 
 ```{r}
 search_all(fields, "Local Government Areas")
@@ -175,58 +172,140 @@ search_all(fields, "Local Government Areas")
 
 The field `cl11170`[^1] contains the most recent available data (from 2023). We can preview what values are *within* field `cl11170` using `show_values()`.
 
-[^1]: Each spatial layer has a two letter code, along with a number to identify it. The abbreviations are as follows:
-  * `cl` = contextual layer (i.e. boundaries of LGAs, Indigenous Protected Areas, States/Territories etc.)  
-  * `11170` = number associated with the spatial layer in the atlas
-
 ```{r}
 search_all(fields, "cl11170") |>
   show_values()
 ```
 
-There are lots of Local Government Areas! To check whether Yass Valley is included, we can do a text search for values that match "yass".
+There are lots of Local Government Areas! To check whether Shoalhaven is included, we can do a text search for values that match "shoalhaven".
 
 ```{r}
 search_all(fields, "cl11170") |>
-  search_values("yass")
+  search_values("shoalhaven")
 ```
-
 
 ### Download data
 
-Using the `field` and `value` returned above, we can now build our query. We begin our query with `galah_call()` and filter to only Yass Valley in the year 2024. We then specify we wish to return a species list by ending our query with `atlas_species()`. 
+Using the `field` and `value` returned above, we can now build our query. We begin our query with `galah_call()` and filter to only Shoalhaven in the year 2024. We then specify we wish to return a species list by ending our query with `atlas_species()`.
 
 ```{r}
-species_yass <- galah_call() |>
-  filter(cl11170 == "Yass Valley",
+species_shoal <- galah_call() |>
+  filter(cl11170 == "Shoalhaven",
          year == 2024) |>
   atlas_species()
 
-species_yass
+species_shoal
 ```
 
-It's also possible to group by `scientificName` (genus + species name) and return the observations counts by ending our query with `atlas_counts()`.
+It's also possible to group by `scientificName` (the name of the lowest taxonomic rank an observation is identified) and return the observation counts by ending our query with `atlas_counts()`. This is a more reliable method of returning all species names in a given area because `scientificName` includes species and subspecies.
 
 ```{r}
-species_counts <- galah_call() |>
-  filter(cl11170 == "Yass Valley",
+galah_call() |>
+  filter(cl11170 == "Shoalhaven",
          year == 2024) |>
   group_by(scientificName) |>
   atlas_counts()
+```
 
-species_counts
+### Cross-reference with threatened species lists
+
+Next we'll compare our Shoalhaven species list `species_shoal` with a state-wide conservation status. We can use galah to access lists that are available on the Atlas of Living Australia. Shoalhaven is within the state of New South Wales, so let's search for "New South Wales" to see what state-specific lists are available.
+
+```{r}
+search_all(lists, "New South Wales")
+```
+
+Two lists are returned, and both appear relevant. With the help of some additional columns returned by `search_all()`—`listType`, `isAuthoritative` and `isThreatened`—we can learn more about which list suits our needs best. Although both lists are authoritative, only one list (`dr650`) contains threatened species whereas the other (`dr487`) contains sensitive species.
+
+```{r}
+search_all(lists, "New South Wales") |>
+  select(species_list_uid, listType, isAuthoritative, isThreatened)
+```
+
+By specifying the Conservation Status list ID `dr650` and using `show_values()`, we can download the complete species list.
+
+```{r}
+search_all(lists, "dr650") |> 
+  show_values()
+```
+
+As of galah version 2.1.2, we can also use `show_values()` to add conservation status columns to our species list. By adding the argument `all_fields = TRUE`, we can add any columns stored in the ALA from the original list. For conservation lists, this includes columns like `status`, `sourceStatus` and `IUCN_Status`.
+
+```{r}
+#| message: false
+#| warning: false
+nsw_threatened <- search_all(lists, "dr650") |>
+  show_values(all_fields = TRUE)
+
+nsw_threatened |>
+  # reposition cols
+  select(status, sourceStatus, IUCN_equivalent_status, 
+         scientificName, everything()) 
+```
+
+Adding status info can be handy if we want to join this with other information like record counts.
+
+```{r}
+# get record counts for each species on the NSW Conservation Status list
+threatened_counts <- galah_call() |>
+  galah_filter(species_list_uid == dr650,
+               cl11170 == "Shoalhaven",
+               year == 2024) |>
+  galah_group_by(scientificName) |>
+  atlas_counts()
+
+threatened_counts
+
+# join counts to status information
+# threatened_counts_joined <- 
+  threatened_counts |> 
+  left_join(nsw_threatened,
+            join_by(scientificName == scientificName)) |>
+  # reposition cols
+  select(scientificName, count, status, commonName, everything())
+
+# threatened_counts_joined |>
+#   filter(is.na(status))
 ```
 
 
-# External shapefile
+To return species on the New South Wales Conservation Status List (`dr650`), all we have to do is add `species_list_uid == dr650` as a filter to our query.
+
+```{r}
+threatened <- galah_call() |>
+  galah_filter(cl11170 == "Shoalhaven",
+               year == 2024,
+               species_list_uid == dr650) |>
+  atlas_species()
+
+threatened
+```
+
+
+Note that status information is not included in the query above, but can be added in the same way we added this status information to `threatened_counts`.
+
+```{r}
+# select status columns, join status information
+threatened_status <- 
+  nsw_threatened |>
+  select(scientificName, status, sourceStatus, IUCN_equivalent_status) |> 
+  right_join(threatened,
+            join_by(scientificName == species_name)) |>
+  # reposition cols
+  select(scientificName, status, sourceStatus, everything())
+
+threatened_status
+```
+
+
+
+# Shapefile + list
 
 ### Download shapefile
 
 To retrieve the spatial outline of Yass Valley, let's download the latest Local Government Areas data from the [Australian Bureau of Statistics Digital Boundary files page](https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3/jul2021-jun2026/access-and-downloads/digital-boundary-files). Find "Local Government Areas - 2023 - Shapefile" and click "Download ZIP". Save the zip folder in your current directory and unzip it.
 
-Let's read the file into R. We will also simplify the shapefile[^simplify] using `ms_simplify()` from the [rmapshaper package](https://andyteucher.ca/rmapshaper/) because complex shapefiles can sometimes cause problems with sending queries to the ALA.
-
-[^simplify]: Simplifying a shapefile removes the number of total points that draw the shape outline.
+Let's read the file into R. We will also simplify the shapefile[^2] using `ms_simplify()` from the [rmapshaper package](https://andyteucher.ca/rmapshaper/) because complex shapefiles can sometimes cause problems with sending queries to the ALA.
 
 ```{r}
 #| eval: false
@@ -248,203 +327,239 @@ lga <- sf::st_read(here("posts",
 lga
 ```
 
-
-Now let's transform our shapefile to use the Coordinate Reference System (CRS) [EPSG](https://en.wikipedia.org/wiki/EPSG_Geodetic_Parameter_Dataset):4326 (the standard used in cartography and GPS, also known as [WGS84](https://en.wikipedia.org/wiki/World_Geodetic_System)) so that it matches the projection of our data from the ALA [^2]. 
-
-[^2]: Check out [this post](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/#make-a-map-1) for a better explanation of what CRS is and how it affects maps.
+Now let's transform our shapefile to use the Coordinate Reference System (CRS) [EPSG](https://en.wikipedia.org/wiki/EPSG_Geodetic_Parameter_Dataset):4326 (the standard used in cartography and GPS, also known as [WGS84](https://en.wikipedia.org/wiki/World_Geodetic_System)) so that it matches the projection of our data from the ALA [^3].
 
 ```{r}
 lga <- lga |>
   st_transform(crs = 4326)
 ```
 
-Next we'll filter our shapefile to Yass Valley. The column `LGA_NAME23` contains area names, and we can filter our data frame to only rows where `LGA_NAME23` is equal to `Yass Valley`. We are left with a single polygon shape of Yass Valley.
+Next we'll filter our shapefile to Yass Valley. The column `LGA_NAME23` contains area names, and we can filter our data frame to only rows where `LGA_NAME23` is equal to `Shoalhaven`. We are left with a single polygon shape of Shoalhaven.
 
 ```{r}
-yass_valley <- lga |>
-  filter(LGA_NAME23 == "Yass Valley")
+shoalhaven_sf <- lga |>
+  filter(LGA_NAME23 == "Shoalhaven")
 
-yass_valley
+shoalhaven_sf
 ```
 
 ### Download data
 
-Now that `yass_valley` contains our LGA shape, we can build our query. Once again, we'll begin with `galah_call()` and filter to only records from 2024. We can specify that we want records within our `yass_valley` shapefile with `galah_geolocate()`. We then specify we wish to return a species list by ending our query with `atlas_species()`.
+Now that `yass_valley` contains our LGA shape, we can build our query. Once again, we'll begin with `galah_call()` and filter to only records from 2024. We can specify that we want records within `shoalhaven_sf` using `geolocate()`. We then specify we wish to return a species list by ending our query with `atlas_species()`.
 
 ```{r}
-species_yass <- galah_call() |>
+species_shoal <- galah_call() |>
   filter(year == 2024) |>
-  galah_geolocate(yass_valley) |>
+  geolocate(shoalhaven_sf) |>
   atlas_species()
 
-species_yass
+species_shoal
 ```
 
 It's also possible to group by `scientificName` (genus + species name) and return the observations counts by ending our query with `atlas_counts()`.
 
 ```{r}
-species_counts <- galah_call() |>
+counts <- galah_call() |>
   filter(year == 2024) |>
-  galah_geolocate(yass_valley) |>
+  geolocate(shoalhaven_sf) |>
   group_by(scientificName) |>
   atlas_counts()
 
-species_counts
+counts
 ```
 
+# Use external list
+
+We can use our own conservation status lists from an external source to compare to our Yass Valley species list. As an example, we are using the the New South Wales Conservation Status List downloaded from the [NSW Bionet Atlas website](https://atlas.bionet.nsw.gov.au/UI_Modules/ATLAS_/AtlasSearch.aspx)[^4].
+
+::: {.callout-note collapse="true"}
+#### Options to download list
+
+We downloaded this list on 2025/07/08. To download a the complete NSW threatened species list, we selected the following options:
+
+-   Which species or group? *All entities*
+-   Legal status? *Select records that fall under one or more categories* ➝ *Threatened NSW*
+-   What area? *Entire area*
+-   Period of records? *All records*
+-   Status? *Valid records only*
 :::
 
+{{< downloadthis ../data/nsw_threatened.csv label="Download Conservation Status List" icon=database-fill-down type=info class=data-button >}}
 
-# Cross-reference with threatened and sensitive species lists
-
-Next we'll compare our Yass valley species list with several state-wide conservation status lists of threatened and sensitive species. We can retrieve lists of threatened and sensitive species in one of two ways: <br>
-
-  - Use lists available in the Atlas of Living Australia<br>
-  - Use your own list
-
-Both use the same method of matching species names in our Yass Valley list to species names in official conservation status lists. However, there's a slightly different workflow between using galah and using an externally downloaded list. Choose from the options below to use either method.
-
-::: {.panel-tabset .nav-pills}
-
-# Using lists in the ALA
-
-We can use galah to access lists that are available on the Atlas of Living Australia. Yass Valley is within the state of New South Wales, so let's search for "New South Wales" to see what state-specific lists are available.
-
-```{r}
-search_all(lists, "New South Wales")
-```
-
-Two lists are returned, and both appear relevant. With the help of some additional columns returned by `search_all()`—`listType`, `isAuthoritative` and `isThreatened`—we can learn more about which list suits our needs best. Although both lists are authoritative, only one list (`dr650`) contains threatened species whereas the other (`dr487`) contains sensitive species. 
-
-```{r}
-search_all(lists, "New South Wales") |>
-  select(species_list_uid, listType, isAuthoritative, isThreatened)
-```
-
-Let's filter to only return species on the New South Wales Conservation Status List (`dr650`) by adding `species_list_uid == dr650` to our filter.
-
-```{r}
-yass_threatened <- galah_call() |>
-  galah_filter(species_list_uid == dr650,
-               year == 2024) |>
-  galah_geolocate(yass_valley) |>
-  atlas_species()
-
-yass_threatened
-```
-
-We can do the same using the New South Wales Sensitive Species (`dr487`).
-
-```{r}
-yass_sensitive <- galah_call() |>
-  galah_filter(species_list_uid == dr487,
-               year == 2024) |>
-  galah_geolocate(yass_valley) |>
-  atlas_species()
-
-yass_sensitive
-```
-
-To return the record counts of each species, we can group by `scientificName` and end our query with `atlas_counts()`
-
-```{r}
-yass_sensitive_counts <- galah_call() |>
-  galah_filter(species_list_uid == dr487,
-               year == 2024) |>
-  galah_geolocate(yass_valley) |>
-  galah_group_by(scientificName) |>
-  atlas_counts()
-
-yass_sensitive_counts
-```
-
-
-# Using external lists
-
-We can use our own conservation status lists from an external source to compare to our Yass Valley species list. As an example, we are using the the New South Wales Conservation Status List and the New South Wales Sensitive Species List[^3].
-
-{{< downloadthis ../data/example_TSL.csv label="Download Conservation Status List" icon=database-fill-down type=info class=data-button >}} {{< downloadthis ../data/example_SSL.csv label="Download Sensitive Species List" icon=database-fill-down type=info class=data-button >}}
-
-[^3]: These are the same two lists that you can access in galah, available from the Atlas of Living Australia. Keep in mind that if you use an external list, data cleaning may be required before matching species names.
-
-First, let's read in both lists and see what each list looks like.
+Save the downloaded `.xls` file in your working directory. We'll read in our `.xls` file, which we have renamed to `nsw_threatened.xls`.
 
 ```{r}
 #| eval: false
-threatened_list <- read_csv(here("path", "to", "example_TSL.csv"))
-sensitive_list <- read_csv(here("path", "to", "example_SSL.csv"))
+nsw_threatened_list <- readxl::read_excel(here("path", "to", "nsw_threatened.xls"), 
+                                      skip = 3) # skip first 3 rows
 ```
 
 ```{r}
 #| echo: false
 #| warning: false
 #| message: false
-threatened_list <- read_csv(here("posts", "data", "example_TSL.csv"))
-sensitive_list <- read_csv(here("posts", "data", "example_SSL.csv"))
+nsw_threatened_list <- readxl::read_excel(here("posts", "data", "nsw_threatened.xlsx"), skip = 3)
+# sensitive_list <- read_csv(here("posts", "data", "example_SSL.csv"))
 ```
 
+::: {.callout-tip collapse="true"}
+#### libxls error
 
-Let's filter our Yass Valley species to only those on our `threatened_list`.
+It's possible you might receive the following error.
+
+```         
+Error:
+  filepath: [path-to-file]
+  libxls error: Unable to open file
+```
+
+This relates to a formatting issue preventing `read_xls()` from reading the file correctly, which seems related to the way BioNet saves its files. To fix this issue, open the list file on your computer, then re-save the file as a `.xlsx` document (File ➝ Save As ➝ select file format`.xlsx` ➝ Save). Then you can use `read_excel()` to read the new file in.
 
 ```{r}
-yass_threatened <- species_yass |>
-  filter(species_name %in% yass_threatened$species_name)
-
-yass_threatened
+#| eval: false
+nsw_threatened_list <- readxl::read_excel(here("path", "to", "nsw_threatened.xlsx"), 
+                                      skip = 3) # skip first 3 rows
 ```
+:::
 
-We can do the same with our `sensitive_list`.
+### Cross-reference with threatened species lists
+
+First we'll clean the column names to make them easier to use in R using the amazing function `janitor::clean_names()`. We also need to remove the `^` that precedes some names on the list.
 
 ```{r}
-yass_sensitive <- species_yass |>
-  filter(species_name %in% yass_sensitive$species_name)
+nsw_threatened_list <- nsw_threatened_list |>
+  janitor::clean_names() |>
+  mutate(
+    scientific_name = stringr::str_remove_all(scientific_name, "\\^")
+  )
 
-yass_sensitive
+nsw_threatened_list
 ```
+
+
+Now we can filter our Shoalhaven list to only those that match names in `nsw_threatened_list`.
+
+```{r}
+threatened_filter <- species_shoal |>
+  filter(species_name %in% threatened_list$scientific_name)
+
+threatened_filter
+```
+
+To preserve status information, instead we can join `species_shoal` and `nsw_threatened_list` dataframes, which will retain columns while still filtering results.
+
+```{r}
+threatened_joined <- species_shoal |>
+  left_join(
+    threatened_list |>
+      select(scientific_name, common_name, nsw_status, comm_status),
+    join_by(species_name == scientific_name)
+  ) |>
+  filter(!is.na(nsw_status))
+
+threatened_joined
+```
+
+::: {.callout-tip collapse="true"}
+
+#### Species with more than one status
+
+Species lists from BioNet Atlas can sometimes return both species and specific populations of the same species with their own conservation status, respectively. When matching species names, this means there can be multiple matches for the same species. For example, there are seperate conservation statuses assigned to the Yellow bellied glider and a Yellow bellied glider population in the Bago Plateau. 
+
+```{r}
+#| code-fold: true
+threatened_joined |>
+  filter(species_name == "Petaurus australis") |>
+  select(species_name, common_name, nsw_status)
+```
+
+These multiple statuses explain why there are several more rows when we join dataframes (`threatened_joined`) compared to when we filter by species names (`threatened_filter`).
 
 :::
 
-## Add status information to a list with galah
+::: {.callout-warning collapse="true"}
+#### Names matching
 
-As of galah version 2.1.2, we can also use `show_values()` to add conservation status columns to our species list. By adding the argument `all_fields = TRUE`, we can add any columns stored in the ALA from the original list. For conservation lists like the New South Wales Conservation Status List, this includes columns like `status`, `sourceStatus` and `IUCN_Status`.
+You'll notice that fewer species are returned when using an externally downloaded list than using galah. This difference is due to differences in scientific names between those on the BioNet Atlas and those on the ALA. Names mismatches are a risk when using external species lists. Additional work is usually needed to avoid unexpected mismatches. The _Cleaning Biodiversity Data in R_ book details [some methods for finding name synonyms](https://cleaning-data-r.ala.org.au/3_ecological-cleaning/taxonomic-validation.html#checking-for-synonyms), but amending taxonomic names can be difficult. 
 
-```{r}
-#| message: false
-#| warning: false
-list_with_status <- search_all(lists, "dr650") |>
-  show_values(all_fields = TRUE)
+When ALA ingests data, it matches those data to the ALA's taxonomic backbone, with the goal of minimising name mismatches. We recommend using galah because it makes names matching easier. However, not all lists exist on the ALA, so some tasks will require matching to externally downloaded lists.
 
-list_with_status |>
-  # reposition cols
-  select(status, sourceStatus, IUCN_equivalent_status, 
-         scientificName, everything()) 
-```
+:::
 
-This can be handy if we want to join this with other information like record counts.
+To use this list for summarising or plotting, it might be useful to add to `threatened_joined` status information for each species as vulnerable, endangered, critically endangered or extinct. To add this info, we'll extract the first value of `nsw_status` by removing everything after the first comma and save that value in `nsw_status_extracted`. Then we'll recode these values[^statuscode] and save them in `nsw_status_simple`. 
+
+[^statuscode]: We can double check status information by viewing the species list in Excel and clicking on links in the `info` column. This is handy for double checking species status codes or learning more about each species and status.
 
 ```{r}
-# get record counts for each species on the NSW Conservation Status list
-yass_counts <- galah_call() |>
-  galah_filter(species_list_uid == dr650,
-               cl11170 == "Yass Valley",
-               year == 2024) |>
-  galah_group_by(scientificName) |>
-  atlas_counts()
+threatened_clean <- yass_threatened_joined |>
+  mutate(
+    nsw_status_extracted = stringr::str_remove_all(nsw_status, "\\,.*"),
+    nsw_status_simple = case_match(
+      nsw_status_extracted,
+      "V" ~ "Vulnerable",
+      c("E1", "E2", "E3") ~ "Endangered",
+      c("E4A") ~ "Critically Endangered",
+      c("E4") ~ "Extinct",
+      .default = nsw_status_extracted
+    )
+  )
 
-yass_counts
-
-# join status information to counts
-yass_counts |>
-  left_join(list_with_status |> 
-              select(status, scientificName), # choose columns
-            join_by(scientificName == scientificName))
+threatened_clean |>
+  # re-position cols
+  select(nsw_status, nsw_status_extracted, nsw_status_simple, species_name, everything())
 ```
 
 
+:::::
+
+[^1]: Each spatial layer has a two letter code, along with a number to identify it. The abbreviations are as follows: 
+\* `cl` = contextual layer (i.e. boundaries of LGAs, Indigenous Protected Areas, States/Territories etc.)\
+\* `11170` = number associated with the spatial layer in the atlas
+
+[^2]: Simplifying a shapefile removes the number of total points that draw the shape outline.
+
+[^3]: Check out [this post](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/#make-a-map-1) for a better explanation of what CRS is and how it affects maps.
+
+[^4]: On a related note, it's possible to download a list specifically for Shoalhaven on the BioNet Atlas website. However, results from BioNet will be matched BioNet records only. As a result, fewer species will be identifed compared to the ALA, which matches NSW BioNet data *as well as* data from other sources.
+
+Whichever method you've followed, you will have ended up with very similar datasets containing threatened species and their status.
+
+<!-- Visualise dataframes? -->
+
+We can save our dataframe as a csv file (in this example we are saving our data from galah)
+
+```{r}
+#| eval: false
+write.csv(threatened_status,
+          here("path", "to", "file-name.csv"))
+```
+
+
+Let's also summarise this data visually.
 
 # Visualise species conservation status
 
-A useful way to visualise the number of threatened and sensitive species in an area is with a waffle chart. Waffle charts are great because they display the total number of species (represented as individual square units) and proportions of different groups (represented by colours). 
+```{r}
+threatened_status |>
+  ggplot() +
+  geom_bar(
+    mapping = aes(x = status)
+  )
+
+threatened_status |>
+  filter(is.na(status))
+
+nsw_threatened |>
+  filter(scientificName == "Miniopterus orianae")
+
+nsw_threatened |>
+  filter(stringr::str_detect(commonName, "Bat")) |>
+  select(name, commonName, scientificName, rank)
+
+```
+
+
+A useful way to visualise the number of threatened and sensitive species in an area is with a waffle chart. Waffle charts are great because they display the total number of species (represented as individual square units) and proportions of different groups (represented by colours).
 
 For example, we can visualse the number and proportion of species with different conservation status, along with a taxonomic breakdown of threatened/sensitive species.
 
@@ -543,7 +658,7 @@ waffle_taxa <-
                       colour = "white",
                       n_rows = 4,
                       size = 1) +
-  scale_fill_manual(name = "Group",
+  scale_fill_manual(name = "",
                     values = c("#567C7C", "#6D714A", "#465743", "#22352C", "#C4AC79"),
                     labels = c("Birds", "Mammals", "Other", "Plants", "Reptiles")) +
   labs(title = marquee_glue("Taxonomic breakdown of threatened & sensitive species"),
@@ -558,7 +673,6 @@ waffle_taxa <-
         plot.caption = element_marquee(size = 12, hjust = 1),
         plot.margin = margin(0.5, 1, 0.5, 1, unit = "cm"))
 ```
-
 
 ```{r}
 #| echo: false
@@ -577,7 +691,6 @@ waffle_status
 #| message: false
 waffle_taxa
 ```
-
 
 # Final thoughts
 
@@ -602,6 +715,3 @@ pkg_sesh
 ```
 
 </details>
-
-
-
