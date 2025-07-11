@@ -361,10 +361,12 @@ frogs
 
 Let's consider how different buffer sizes impact our ability to detect sensitive species.  Below, we've created six buffers of increasing size around Mid-Western, with a radius of 10km drawn around each unique point representing the stuttering frog. This isn't a perfect representation of obfuscation---the true location could be anywhere inside 10 km, not directly in the middle of each circle---but it gives an idea. The stuttering frog observations are *just* outside of our area; without a buffer this frog species would go undetected, but with a 30km buffer we would detect several observations. Which should we choose?
 
+<!-- I think you can delete this chunk
+
 ```{python}
-#| echo: true
+#| echo: false
 #| eval: false
-#| code-fold: true
+#| code-fold: false
 # drop duplicates and NAs
 frogs_set = frogs.drop_duplicates(subset=['decimalLatitude','decimalLongitude']).dropna().reset_index(drop=True)
 
@@ -467,9 +469,12 @@ for i in range(len(ax)):
     extra += 3
 ```
 
+-->
 
 ```{python}
-#| echo: false
+#| warning: false
+#| message: false
+#| code-fold: true
 #| eval: true
 # drop duplicates and NAs
 frogs_set = frogs.drop_duplicates(subset=['decimalLatitude','decimalLongitude']).dropna().reset_index(drop=True)
@@ -581,7 +586,16 @@ Although a larger buffer of 25-30km captures more species records, there is a ri
 
 # Download data for EPBC Act threatened species in our buffered area
 
+<!-- 
+This dataviz is honestly great, but I think it's overkill for the end of this post. I think there is enough content here for another Labs post on this.
+
+To finish, I think we need to show people how to do the things they would need for their summary. Bar plot + simple map should do it, as discussed
+-->
+
+
 Now that we have considered how adding buffers to an area might affect sensitive or threatened species, we can download data for this region and compare how many threatened species we detect with and without a buffer.  First, we are going to draw a 15km buffer around the Midwestern LGA, and then draw a bounding box around this buffer.  We will then query by this bounding box, as it is more efficient to query in `galah-python` using a bounding box.
+
+<!-- I think you should at least add the ALA data profile onto your query to make sure the points aren't obviously erroneous -->
 
 ```{python}
 #| echo: true
@@ -730,7 +744,7 @@ ax[1].set_aspect(aspect='equal', anchor='C')
 ```{python}
 #| column: page
 #| fig-align: center
-#| out-width: 9in
+#| out-width: 11in
 #| echo: false
 #| eval: true
 #| warning: false
