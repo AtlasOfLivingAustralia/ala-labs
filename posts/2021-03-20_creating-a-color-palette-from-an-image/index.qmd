@@ -137,8 +137,9 @@ We used this image from a tweet by Dean Nicolle:
   
 ```{r}
 #| echo: false
-# remotes::install_github("gadenbuie/tweetrmd")
-tweetrmd::tweet_embed("https://mobile.twitter.com/DeanNicolle1/status/1374112431782301698")
+# this tweet no longer exists (deleted)
+#remotes::install_github("gadenbuie/tweetrmd")
+#tweetrmd::tweet_embed("https://mobile.twitter.com/DeanNicolle1/status/1374112431782301698")
 ```
 
 ![Image of Eucalyptus salubris by Dean Nicolle](./data/Dean_Nicolle_Esalubris_image_small.jpeg)
