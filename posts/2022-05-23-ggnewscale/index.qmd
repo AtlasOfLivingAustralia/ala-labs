@@ -259,7 +259,7 @@ ggplot() +
                        type = "seq",
                        palette = "BuPu",
                        direction = 1,
-                       labels = c("0.001", "0.01", "0.1", "1", "10"),
+                       labels = c("0.001", "0.01", "0.1", "1", "10", "100"), 
                        guide = guide_colorsteps(direction = "horizontal",
                                                 label.position = "bottom",
                                                 title.position = "left")) +
@@ -272,7 +272,7 @@ ggplot() +
                        type = "seq",
                        palette = "YlOrBr",
                        direction = 1,
-                       labels = c("0.1", "1", "10", "100"),
+                       labels = c("0.1", "1", "10", "100", "1000"),
                        guide = guide_colorsteps(direction = "horizontal",
                                                 label.position = "bottom",
                                                 title.position = "left")) +
@@ -280,7 +280,7 @@ ggplot() +
   annotate("text", 
            x = 133, 
            y = -45.5, 
-           label = "No. of records per square km",
+           label = expression("No. of records per square km (log" [10] * ")"),
            size = 6) +
   coord_sf(xlim = c(110, 155), ylim = c(-45, -10)) +
   theme_void() +
