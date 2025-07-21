@@ -554,3 +554,13 @@ img.rounded {
   font-family: var(--main-font);
 }
 
+
+.hscroll {
+  max-height: 500px;
+  overflow-x: scroll;
+}
+.vscroll {
+  max-height: 500px;
+  overflow-y: scroll;
+}
+
