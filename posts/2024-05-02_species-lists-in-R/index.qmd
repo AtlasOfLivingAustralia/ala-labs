@@ -1,11 +1,11 @@
 ---
 title: "Download a species list and cross-reference with conservation status lists in R"
 description: |
-  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to make a species list with galah and how to cross-reference this list with threatened and sensitive species lists. We then show how to visualise this information as a waffle chart using {waffle} & {ggplot2}.
+  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to make a species list and how to cross-reference this list with threatened and sensitive species lists. We show how to do this task using 2 methods, with {galah} and using an external shapefile and species list. We then show how to visualise this information as a bar chart and a waffle chart using {waffle} & {ggplot2}.
 author:
   - name: "Dax Kellie"
   - name: "Amanda Buyan"
-date: "2024-05-02"
+date: "2025-07-13"
 title-block-banner: "#B8573E"
 toc: true
 toc-location: left
@@ -52,7 +52,7 @@ library(htmltools)
 
 #### Date
 
-2 May 2024
+20 July 2025
 :::
 
 ::: author-card-image
@@ -72,7 +72,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 Knowing what species inhabit an area is important for conservation and ecosystem management. In particular, it can help us find how many known species are in a given area, and whether any species are vulnerable or endangered.
 
-In this post, we will present two options, one using the [galah](https://galah.ala.org.au/R/) package, the other using an external shapefile and list, which you will be able to choose. Using either workflow, we will show you how to download a list of species within a Local Government Area, cross-reference this list with a state conservation status list, and visualise the number of threatened species in the region with [waffle](https://github.com/hrbrmstr/waffle) and [ggplot2](https://ggplot2.tidyverse.org/).
+In this post, we will present two options, one using the [galah](https://galah.ala.org.au/R/) package, the other using an external shapefile and list. Using either workflow, we will show you how to download a list of species within a Local Government Area (Shoalhaven, NSW), cross-reference this list with a state conservation status list, and visualise the number of threatened species in the region with [waffle](https://github.com/hrbrmstr/waffle) and [ggplot2](https://ggplot2.tidyverse.org/).
 
 ::: aside
 For those unfamiliar with Australian geography, Shoalhaven is located here:
@@ -153,12 +153,14 @@ library(galah)
 galah_config(email = "dax.kellie@csiro.au", verbose = FALSE)
 ```
 
+# Download threatened species in an area
+
 Choose which method you would like to view:
 
 -   galah (using `fields` downloaded from the Atlas of Living Australia)
 -   Downloaded shapefile + species list
 
-The method you choose depends on whether the region or list you wish to return species for is already in galah, or whether you wish to filter for a more specific area defined by a shapefile or list. To avoid additional work matching taxonomic names (which we can see the impact of when using an external list), **we recommend using galah for matching authoritative species lists already on the ALA and galah**.
+The method you choose depends on whether the region or list you wish to return species for is already in galah, or whether you wish to filter for a more specific area defined by a separate shapefile or list. Keep in mind that using an external list may require additional work matching taxonomic names.
 
 ::::: {.panel-tabset .nav-pills}
 # galah
@@ -198,7 +200,31 @@ species_shoal <- galah_call() |>
 species_shoal
 ```
 
-It's also possible to group by `scientificName` (the name of the lowest taxonomic rank an observation is identified) and return the observation counts by ending our query with `atlas_counts()`. This is a more reliable method of returning all species names in a given area because `scientificName` includes species and subspecies.
+`atlas_species()` returns taxonomic information at the species level (for more info, see the tab below). To make sure we return taxonomic information at the lowest level each occurrence was identified, we'll `group_by(taxonConceptID)`, which is a unique ID attached to each occurrence record's taxonomic identification (read the box below for more on what this means).
+
+:::{.callout-important collapse="true"}
+##### atlas_species() returns species-level information
+
+By default `atlas_species()` only returns taxonomic information at the species level. This means that if some species are identified to subspecies on a specific list like the NSW Conservation Status list, `atlas_species()` will return the species-level match, rather than the subspecies-level match. For example, the name `"Potorous tridactylus"` is returned instead of `"Potorous tridactylus tridactylus"`.
+
+Grouping by `taxonConceptID` like we do below specifies that we wish to match to the identified taxon, rather than only to the species level.
+
+:::
+
+```{r}
+species_shoal <- galah_call() |>
+  filter(cl11170 == "Shoalhaven",
+         year == 2024) |>
+  group_by(taxonConceptID) |>
+  atlas_species()
+
+species_shoal
+```
+
+:::{.callout-tip collapse="true"}
+##### Download record counts
+
+It's also possible to return number of observations by ending our query with `atlas_counts()`. In this case, we can group by `scientificName` (the name of the lowest level the observation was identified).
 
 ```{r}
 galah_call() |>
@@ -207,6 +233,8 @@ galah_call() |>
   group_by(scientificName) |>
   atlas_counts()
 ```
+
+:::
 
 ### Cross-reference with threatened species lists
 
@@ -269,16 +297,7 @@ threatened_counts_joined
 ```
 
 
-To return which species on the New South Wales Conservation Status List (`dr650`) were recorded in Shoalhaven in 2024, we can add `species_list_uid == dr650` as a filter to a query ending with `atlas_species()`. To make sure we return taxonomic information at the level occurrences were identified to, we'll `group_by(taxonConceptID)`, which is a unique ID attached to each occurrence record's taxonomic identification (read the box below for more on what this means).
-
-:::{.callout-important}
-#### atlas_species() returns species-level information
-
-By default `atlas_species()` only returns taxonomic information at the species level. This means that if some species are identified to subspecies on a specific list like the NSW Conservation Status list, `atlas_species()` will return the species-level match, rather than the subspecies. For example, `"Potorous tridactylus"` is returned instead of `"Potorous tridactylus tridactylus"`. 
-
-Grouping by `taxonConceptID` like we do below specifies that we wish to match to the identified taxon, rather than only to the species level.
-
-:::
+To return which species on the New South Wales Conservation Status List (`dr650`) were recorded in Shoalhaven in 2024, we can add `species_list_uid == dr650` as a filter to a query ending with `atlas_species()`. To make sure we return taxonomic information at the lowest level each occurrence was identified, we'll `group_by(taxonConceptID)`.
 
 ```{r}
 threatened <- galah_call() |>
@@ -295,7 +314,7 @@ threatened
 
 Note that status information is not included in the query above, but can be joined in the same way we added this status information to `threatened_counts`[^right-join].
 
-[^right-join]: We used `right_join()` this time because we wanted to first select columns from `nsw_threatened`, then when we joined dataframes we wanted to keep all observations in `threatened` (whereas using `left_join()` would keep all 1,000+ observations in `nsw_threatened`)
+[^right-join]: We used `right_join()` this time because we wanted to first select columns from `nsw_threatened`, then join so that we keep all 90+ rows in `threatened` (using `left_join()` would keep all 1,000+ rows in `nsw_threatened` instead).
 
 ```{r}
 # select status columns, join status information
@@ -331,6 +350,7 @@ lga
 #| warning: false
 #| message: false
 #| echo: false
+#| class-output: hscroll
 lga <- sf::st_read(here("posts",
                         "data",
                         "LGA_2023",
@@ -360,10 +380,10 @@ shoalhaven_sf
 
 Now that `shoalhaven_sf` contains our LGA shape, we can build our query. Once again, we'll begin with `galah_call()` and filter to only records from 2024. We can specify that we want records within `shoalhaven_sf` using `geolocate()`. To make sure we return taxonomic information at the level occurrences were identified to, we'll `group_by(taxonConceptID)`, which is a unique ID attached to each occurrence record's taxonomic identification (read the box below for more on what this means). Finally, we can return a species list by ending our query with `atlas_species()`. 
 
-:::{.callout-important}
-#### atlas_species() returns species-level information
+:::{.callout-important collapse="true"}
+##### atlas_species() returns species-level information
 
-By default `atlas_species()` only returns taxonomic information at the species level. This means that if some species are identified to subspecies on a specific list like the NSW Conservation Status list, `atlas_species()` will return the species-level match, rather than the subspecies. For example, `"Potorous tridactylus"` is returned instead of `"Potorous tridactylus tridactylus"`. 
+By default `atlas_species()` only returns taxonomic information at the species level. This means that if some species are identified to subspecies on a specific list like the NSW Conservation Status list, `atlas_species()` will return the species-level match, rather than the subspecies-level match. For example, the name `"Potorous tridactylus"` is returned instead of `"Potorous tridactylus tridactylus"`.
 
 Grouping by `taxonConceptID` like we do below specifies that we wish to match to the identified taxon, rather than only to the species level.
 
@@ -379,26 +399,29 @@ species_shoal <- galah_call() |>
 species_shoal
 ```
 
-It's also possible to group by `scientificName` (the name of the lowest level the observation was identified) and return the observations counts by ending our query with `atlas_counts()`.
+:::{.callout-tip collapse="true"}
+
+##### Download record counts
+It's also possible to return the observations counts by ending our query with `atlas_counts()`. In this case, we can group by `scientificName` (the name of the lowest level the observation was identified).
 
 ```{r}
-counts <- galah_call() |>
+galah_call() |>
   filter(year == 2024) |>
   geolocate(shoalhaven_sf) |>
   group_by(scientificName) |>
   atlas_counts()
-
-counts
 ```
+
+:::
 
 ### Use external list
 
 We can use our own conservation status lists from an external source to compare to our Shoalhaven species list. As an example, we are using the the New South Wales Conservation Status List downloaded from the [NSW Bionet Atlas website](https://atlas.bionet.nsw.gov.au/UI_Modules/ATLAS_/AtlasSearch.aspx)[^4].
 
 ::: {.callout-note collapse="true"}
-#### What options did we choose to make our list?
+##### What options did we choose to download our list?
 
-We downloaded this list on 2025/07/08. To download a the complete NSW threatened species list, we selected the following options:
+We downloaded this list on 2025/07/08. To download a complete NSW threatened species list, we selected the following options:
 
 -   Which species or group? *All entities*
 -   Legal status? *Select records that fall under one or more categories* ➝ *Threatened NSW*
@@ -425,8 +448,8 @@ nsw_threatened_list <- readxl::read_excel(here("posts", "data", "nsw_threatened.
 # sensitive_list <- read_csv(here("posts", "data", "example_SSL.csv"))
 ```
 
-::: {.callout-tip collapse="true"}
-#### libxls error
+::: {.callout-warning collapse="true"}
+##### libxls error
 
 It's possible you might receive the following error.
 
@@ -485,7 +508,7 @@ threatened_joined
 
 ::: {.callout-tip collapse="true"}
 
-#### Species with more than one status
+##### Species with more than one status {#sec-names-matching}
 
 Species lists from BioNet Atlas can sometimes return both species and specific populations of the same species with their own conservation status, respectively. When matching species names, this means there can be multiple matches for the same species. For example, there are seperate conservation statuses assigned to the Yellow bellied glider and a Yellow bellied glider population in the Bago Plateau. 
 
@@ -501,7 +524,7 @@ These multiple statuses explain why there are several more rows when we join dat
 :::
 
 ::: {.callout-warning collapse="true"}
-#### Names matching {#sec-names-matching}
+##### Names matching 
 
 You might notice that fewer species are returned when using an externally downloaded list than using galah. This discrepancy is due to differences in scientific names between those on the BioNet Atlas and those on the ALA. Names mismatches are a risk when using external species lists. Additional work is usually needed to avoid unexpected mismatches. The _Cleaning Biodiversity Data in R_ book details [some methods for finding name synonyms](https://cleaning-data-r.ala.org.au/3_ecological-cleaning/taxonomic-validation.html#checking-for-synonyms), but amending taxonomic names can be difficult. 
 
@@ -545,7 +568,9 @@ threatened_clean |>
 
 [^4]: On a related note, it's possible to download a list specifically for Shoalhaven on the BioNet Atlas website. However, results from BioNet will be matched BioNet records only. As a result, fewer species will be identifed compared to the ALA, which matches NSW BioNet data *as well as* data from other sources.
 
-Whichever method you've followed, you will have ended up with very similar datasets containing threatened species and their status, though the number of matched species might differ (explained earlier in @sec-names-matching).
+Whichever method you've followed, you will end up with very similar datasets containing threatened species and their statuses, though the number of matched species might differ[^different]. (due to taxonomic name mismatches explained earlier in @sec-names-matching).
+
+[^different]: Due to differences in taxonomic names in the externally downloaded list and in ALA data. More info about this can be found under the "Names Matching" tab in the **Shapefile + list** section.
 
 ::::: {.panel-tabset .nav-pills}
 
@@ -619,7 +644,7 @@ bar_status <-
                      grid = "",
                      axes = "l") + 
   theme(text = element_text(family = "Roboto"),
-        plot.title = element_text(size = 29)
+        plot.title = element_text(size = 29),
         axis.title = element_text(size = 18),
         axis.text = element_text(size = 16))
 
@@ -633,6 +658,10 @@ A useful but more exciting way to see a taxonomic breakdown of species is using 
 #| code-fold: true
 #| warning: false
 #| message: false
+#| column: page
+#| fig-align: center
+#| fig-width: 10
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 library(waffle)
 library(glue)
 library(marquee)
@@ -678,18 +707,10 @@ waffle_taxa <-
         plot.title = element_marquee(hjust = 0.5, size = 14, margin = margin(b=5), family = "Roboto"),
         plot.caption = element_marquee(size = 12, hjust = 1),
         plot.margin = margin(0.5, 1, 0.5, 1, unit = "cm"))
-```
 
-```{r}
-#| echo: false
-#| warning: false
-#| message: false
-#| column: page
-#| fig-align: center
-#| fig-width: 10
-#| out-extra: "style=margin-left:auto;margin-right:auto;"
 waffle_taxa
 ```
+
 
 # Final thoughts
 
