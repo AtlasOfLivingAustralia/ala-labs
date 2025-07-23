@@ -1,7 +1,7 @@
 ---
 title: "Download a species list and cross-reference with conservation status lists in R"
 description: |
-  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to make a species list and how to cross-reference this list with threatened and sensitive species lists. We show how to do this task using 2 methods, with {galah} and using an external shapefile and species list. We then show how to visualise this information as a bar chart and a waffle chart using {waffle} & {ggplot2}.
+  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to make a species list and how to cross-reference this list with threatened and sensitive species lists. We show how to do this task using 2 methods, with {galah} and using an external shapefile and species list. We then show how to visualise this information as a bar chart and a waffle chart using {ggplot2}.
 author:
   - name: "Dax Kellie"
   - name: "Amanda Buyan"
@@ -19,9 +19,9 @@ categories:
   - Plantae
   - Summaries
   - R
-image: waffle_yass.png
+image: barplot_threatened.png
 freeze: true
-draft: true
+draft: false
 editor_options: 
   chunk_output_type: console
 ---
@@ -135,7 +135,7 @@ library(showtext)
 library(galah)
 
 
-galah_config(email = "your-email-here")
+galah_config(email = "your-email-here") # ALA-registered email
 ```
 
 ```{r}
@@ -430,7 +430,7 @@ We downloaded this list on 2025/07/08. To download a complete NSW threatened spe
 -   Status? *Valid records only*
 :::
 
-{{< downloadthis ../data/nsw_threatened.csv label="Download Conservation Status List" icon=database-fill-down type=info class=data-button >}}
+{{< downloadthis ../data/nsw_threatened.xlsx label="Download Conservation Status List" icon=database-fill-down type=info class=data-button >}}
 
 Save the downloaded `.xls` file in your working directory. We'll read in our `.xls` file, which we have renamed to `nsw_threatened.xls`.
 
@@ -508,7 +508,7 @@ threatened_joined
 
 ::: {.callout-tip collapse="true"}
 
-##### Species with more than one status {#sec-names-matching}
+##### Species with more than one status
 
 Species lists from BioNet Atlas can sometimes return both species and specific populations of the same species with their own conservation status, respectively. When matching species names, this means there can be multiple matches for the same species. For example, there are seperate conservation statuses assigned to the Yellow bellied glider and a Yellow bellied glider population in the Bago Plateau. 
 
@@ -568,9 +568,9 @@ threatened_clean |>
 
 [^4]: On a related note, it's possible to download a list specifically for Shoalhaven on the BioNet Atlas website. However, results from BioNet will be matched BioNet records only. As a result, fewer species will be identifed compared to the ALA, which matches NSW BioNet data *as well as* data from other sources.
 
-Whichever method you've followed, you will end up with very similar datasets containing threatened species and their statuses, though the number of matched species might differ[^different]. (due to taxonomic name mismatches explained earlier in @sec-names-matching).
+Whichever method you've followed, you will end up with very similar datasets containing threatened species and their statuses, though the number of matched species might differ[^different].
 
-[^different]: Due to differences in taxonomic names in the externally downloaded list and in ALA data. More info about this can be found under the "Names Matching" tab in the **Shapefile + list** section.
+[^different]: This is due to differences in taxonomic names in the externally downloaded list and in ALA data. More info can be found under the "Names Matching" tab in the **Shapefile + list** section.
 
 ::::: {.panel-tabset .nav-pills}
 
@@ -611,8 +611,8 @@ Along with a species list, we can also summarise `threatened_status` visually. F
 #| code-fold: true
 #| column: page
 #| fig-align: center
-#| fig-height: 7
-#| fig-width: 7
+#| fig-height: 5
+#| fig-width: 6.5
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
 # custom font
 font_add_google("Roboto")
