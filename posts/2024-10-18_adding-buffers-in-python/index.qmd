@@ -83,11 +83,23 @@ For this example, our area of interest is Mid-Western, a Local Government Area (
 
 For those unfamiliar with Australian geography, the LGA of Mid-Western is located here:
 
+```{r}
+#| echo: false
+#| eval: true
+library(reticulate)
+py_require(c("matplotlib"))
+py_require(c("geopandas"))
+py_require(c("galah-python"))
+py_require(c("natsort"))
+py_require(c("session_info"))
+```
+
 ```{python}
 #| echo: false
 #| eval: true
-import geopandas as gpd
 import matplotlib
+import geopandas as gpd
+
 import matplotlib.pyplot as plt
 lgas = gpd.read_file("../data/LGA_2024_AUST_GDA2020.zip")
 ax = lgas[lgas['STE_NAME21'] == 'New South Wales'].plot(edgecolor="#292C26", linewidth=0.5, facecolor="white")
@@ -475,9 +487,11 @@ Given the size of our area of interest, we'd likely choose a buffer between 5-15
 
 Although a larger buffer of 25-30km captures more species records, there is a risk that our buffer also captures too many species --- more than are realistically interacting with our area. When we draw our buffer, considering other factors like topography, river systems, and nutrient gradients might help us determine how big our buffer should practically be.
 
-# Threatened Species with/without a buffer
+# Threatened species in area
 
-We've considered our buffer size, so let's go with a 10km buffer and download occurrence records in our area. To understand how much our buffer impacts the number of sensitive or threatened species we return in Midwestern, let's download data for this region and compare how many threatened species we detect with and without a 10km buffer.  First, let's draw a 10km buffer around the Midwestern LGA, and then draw a bounding box around this buffer.  We will then query by this bounding box, as it is more efficient to query in `galah-python` using a bounding box.
+<!-- Dax proposed structure -->
+
+We've considered our buffer size, so let's go with a 10km buffer and download occurrence records in our area. As a final step, let's visualise where threatened species have been observed in our buffered area on a map. To start, let's download occurrence records in our area with `galah-python`.
 
 ```{python}
 #| echo: true
@@ -520,15 +534,34 @@ species = galah.atlas_occurrences(
 species.head(10) # first 10 rows
 ```
 
-There are a lot of observations in the area!  We are only interested in species mentioned in the EPBC Act, so we'll merge our records to the list of species names, which filters out species that don't have a conservation status.  We'll also use `show_values()` to download a full species list and include any original columns in the species list using `all_fields=True`, which in this case adds status information. We will then determine which species are in Midwestern and which are in the buffered region.
+Next we can use `search_all()` to find the EPBC Act Threatened species list. Then, we'll use `show_values()` to download the content of that list. By adding `all_fields=True`, we can all original columns of the list, which in this case includes status information.
 
 ```{python}
 # get all species on epbc list + status info
 epbc_list = galah.show_values(field='dr656',lists=True,all_fields=True)
+epbc_list.head(10)
+```
 
+:::{.callout-tip collapse="true"}
+#### How to find species list IDs
+Search for species lists available in galah using `search_all(lists=True)`. The `species_list_uid` for the EPBC Act Threatened Species list is `dr656`. We can use this information to filter downloads.
+
+```{python}
+galah.search_all(lists="epbc act")
+```
+:::
+
+By merging our species list to our occurrence records `df-name`, our data will filter to only species on the EPBC list.
+
+```{python}
 # merge epbc list with species list to get only threatened species
 threat_species = pd.merge(species,epbc_list[['scientificName','status']],on='scientificName')
+threat_species.head(10)
+```
 
+We then narrow the number of observations to only the buffered area around Midwestern. 
+
+```{python}
 # convert to GeoDataFrame for straightforward spatial filtering
 threat_species_gdf = gpd.GeoDataFrame(
     threat_species, 
@@ -536,17 +569,46 @@ threat_species_gdf = gpd.GeoDataFrame(
     crs="EPSG:4326"
 )
 
+# get all species within a 10km buffer
+threat_species_10km = threat_species[threat_species_gdf.geometry.within(buffer_10km)]
+```
+
+We can now plot our observations on a map, adjusting the opacity of our points (`alpha`) so we can see areas with many overlapping points easier. To understand just how many additional species our 10km buffer captures, we've added an additional bar plot showing comparing species in Midwestern vs in our buffer.
+
+```{python}
+#| echo: true
+#| eval: false
+# code to make map
+fig, ax = plt.subplots()
+ax.scatter(threat_species_10km['decimalLongitude'],threat_species_10km['decimalLatitude'], alpha=0.3, color='#d4af37')
+ax.plot(*midwestern['geometry'][74].exterior.xy,c='#292C26',lw=2)
+ax.plot(*buffer_10km.exterior.xy,c='#358BA5',lw=2)
+plt.axis('off')
+ax.set_aspect(aspect='equal')
+```
+```{python}
+#| echo: false
+#| eval: true
+# code to make map
+fig, ax = plt.subplots()
+a = ax.scatter(threat_species_10km['decimalLongitude'],threat_species_10km['decimalLatitude'], alpha=0.3, color='#d4af37')
+a = ax.plot(*midwestern['geometry'][74].exterior.xy,c='#292C26',lw=2)
+a = ax.plot(*buffer_10km.exterior.xy,c='#358BA5',lw=2)
+a = plt.axis('off')
+a = ax.set_aspect(aspect='equal')
+plt.show();
+```
+
+```{python}
+#| code-fold: true
+#| code-summary: Code to make bar plot
+# import numpy for arange
+import numpy as np
+
 # first, get number of species within midwestern
 midwestern = midwestern.to_crs(4326)
 species_mw = threat_species[threat_species_gdf.geometry.within(midwestern['geometry'][74])]
 
-# get all species within a 15km buffer
-threat_species_10km = threat_species[threat_species_gdf.geometry.within(buffer_10km)]
-```
-
-Now, we can collate and sort the number of unique species in each area by their status.
-
-```{python}
 # set dictionary for get number of species in midwestern, sorted by status
 num_species_mid = {x:0 for x in list(set(species_mw['status']))}
 
@@ -568,19 +630,61 @@ for key in num_species_buff:
 
 # sort buffered species from most to least
 num_species_buff_sorted = dict(sorted(num_species_buff.items(), key=lambda item: item[1]))
+
+# create plot
+fig, ax = plt.subplots()
+h, n = 0.4, np.arange(len(num_species_mid_sorted.keys()))
+ax.barh(n + h/2, num_species_mid_sorted.values(), height=h, color='#292C26', label='Midwestern')
+
+# set ticks
+ax.set_yticks(range(len(num_species_mid_sorted.keys())), labels=num_species_mid_sorted.keys())
+ax.barh(n - h/2, num_species_buff_sorted.values(), height=h, color='#358BA5', label='Buffer')
+ax.legend()
+ax.set_xlabel('Number of Unique Species')
+ax.set_aspect(aspect=12)
 ```
 
-Finally, we can plot them side-by-side.  This will show: i) that the number of threatened species detected markedly increases when adding a buffer, and ii) adding a buffer includes other hotspots of threatened species that would otherwise have been missed had we just considered the Midwestern LGA.
+Finally, we can plot the bar plot and map side-by-side.  This will show: i) that the number of threatened species detected markedly increases when adding a buffer, and ii) adding a buffer includes other hotspots of threatened species that would otherwise have been missed had we just considered the Midwestern LGA.
+
+```{python}
+#| code-fold: true
+#| echo: true
+#| eval: false
+#| code-summary: Code to make side-by-side plot
+# import numpy for arange
+import numpy as np
+
+# create plot
+fig, ax = plt.subplots(1,2,figsize=(14,7))
+
+# bar chart 
+h, n = 0.4, np.arange(len(num_species_mid_sorted.keys()))
+ax[0].set_yticks(range(len(num_species_mid_sorted.keys())), labels=num_species_mid_sorted.keys())
+ax[0].barh(n + h/2, num_species_mid_sorted.values(), height=h, color='#292C26', label='Midwestern')
+ax[0].barh(n - h/2, num_species_buff_sorted.values(), height=h, color='#358BA5', label='Buffer')
+ax[0].legend()
+ax[0].set_xlabel('Number of Unique Species')
+ax[0].set_aspect(aspect=12)
+
+# scatter plot
+ax[1].scatter(threat_species_10km['decimalLongitude'],threat_species_10km['decimalLatitude'], alpha=0.3, color='#d4af37')
+ax[1].plot(*midwestern['geometry'][74].exterior.xy,c='#292C26',lw=2)
+ax[1].plot(*buffer_10km.exterior.xy,c='#358BA5',lw=2)
+plt.axis('off')
+plt.suptitle('Threatened Species in Mid-Western and Surrounds', fontsize=24, y=0.93)
+ax[1].set_aspect(aspect='equal')
+```
 
 ```{python}
 #| column: page
 #| fig-align: center
 #| out-width: 11in
-#| echo: true
-#| eval: true
-#| warning: false
+#| layout-nrow: 1
+#| layout-ncol: 2
 #| message: false
+#| warning: false
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
+#| echo: false
 #| lightbox: 
 #|   group: final-plot
 # import numpy for arange
@@ -605,72 +709,6 @@ a = plt.axis('off')
 a = plt.suptitle('Threatened Species in Mid-Western and Surrounds', fontsize=24, y=0.93)
 a = ax[1].set_aspect(aspect='equal')
 plt.show();
-```
-
-<!-- , anchor=(0,2.3) -->
-<!-- , anchor=(0,0.89) -->
-<!-- , anchor='C' -->
-
-
-# Threatened species in area
-
-<!-- Dax proposed structure -->
-
-We've considered our buffer size, so let's go with a 10km buffer and download occurrence records in our area. As a final step, let's visualise where threatened species have been observed in our buffered area on a map. To start, let's download occurrence records in our area with `galah-python`.
-
-```{python}
-# chunk making buffer and downloading records with `atlas_occurrences()`
-```
-
-Next we can use `search_all()` to find the EPBC Act Threatened species list. Then, we'll use `show_values()` to download the content of that list. By adding `all_fields=True`, we can all original columns of the list, which in this case includes status information.
-
-```{python}
-# download epbc list
-```
-
-:::{callout-tip collapse="true"}
-#### How to find species list IDs
-Search for species lists available in galah using `search_all(lists=True)`. The `species_list_uid` for the EPBC Act Threatened Species list is `dr656`. We can use this information to filter downloads.
-
-```{python}
-galah.search_all(lists="epbc act")
-```
-
-:::
-
-By merging our species list to our occurrence records `df-name`, our data will filter to only species on the EPBC list.
-
-```{python}
-# merge + result
-```
-
-Finally, we can plot our observations on a map, adjusting the opacity of our points (`alpha`) so we can see areas with many overlapping points easier. To understand just how many additional species our 10km buffer captures, we've added an additional bar plot showing comparing species in Midwestern vs in our buffer.
-
-```{python}
-#| code-fold: true
-#| code-summary: Code to make bar plot
-# code to make buffer
-```
-
-```{python}
-# code to make map
-```
-
-```{python}
-#| column: page
-#| fig-align: center
-#| out-width: 11in
-#| layout-nrow: 1
-#| layout-ncol: 2
-#| message: false
-#| warning: false
-#| out-extra: "style=margin-left:auto;margin-right:auto;"
-#| echo: false
-#| lightbox: 
-#|   group: final-plot
-
-# place both final map objects here. You can do your subplot method or quarto can do it for you using the code chunk options I've added
-
 ```
 
 # Final thoughts
