@@ -5,7 +5,7 @@ description: |
 authors:
   - name: "Amanda Buyan"
   - name: "Dax Kellie"
-date: "2025-05-30"
+date: "2025-07-30"
 title-block-banner: "#B8573E"
 toc: true
 toc-location: left
@@ -16,7 +16,7 @@ categories:
   - Amphibia
   - Summaries
   - Python
-# image: waffle-chart.png
+image: obfuscate.png
 freeze: true
 engine: knitr
 jupyter: python3
@@ -49,7 +49,7 @@ library(htmltools)
 [Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)  
 
 #### Date
-12 February 2024
+7 July 2025
 
 :::
 
@@ -85,7 +85,7 @@ For those unfamiliar with Australian geography, the LGA of Mid-Western is locate
 
 ```{r}
 #| echo: false
-#| eval: true
+#| eval: false
 library(reticulate)
 py_require(c("matplotlib"))
 py_require(c("geopandas"))
@@ -103,7 +103,7 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 lgas = gpd.read_file("../data/LGA_2024_AUST_GDA2020.zip")
 ax = lgas[lgas['STE_NAME21'] == 'New South Wales'].plot(edgecolor="#292C26", linewidth=0.5, facecolor="white")
-a = lgas[lgas['LGA_NAME24'] == 'Mid-Western'].plot(ax=ax, facecolor='#358BA5')
+a = lgas[lgas['LGA_NAME24'] == 'Mid-Western'].plot(ax=ax, facecolor='#F26649')
 a = ax.axis('off')
 plt.show()
 ```
@@ -189,7 +189,7 @@ a = ax.axis('off') # remove axis to make plot look prettier
 plt.show();
 ```
 
-Now that we've drawn our buffer around the Mid-Western LGA, let's discuss how data obfuscation affects our ability to detect sensitive species.
+Now that we've drawn our buffer around the Mid-Western LGA, let's discuss how data obfuscation of sensitive species data might impact our decision about buffer size.
 
 # Obfuscation and why it's important for sensitive species
 
@@ -261,7 +261,7 @@ When data is sent to data infrastructures like the [Atlas of Living Australia](a
 Alternatively, iNaturalist pre-obfuscates data at a 30km resolution prior to sharing data with the Atlas of Living Australia.
 :::
 
-How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. The *true* location of the point might be anywhere in its defined radius, and its the new obscured location point will depend which direction the decimal was rounded (and by how many decimal points its resolution has been reduced). It's equally possible that an obfuscated record could be located
+How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. The *true* location of the point might be anywhere in its defined radius, and its the new obscured location point will depend which direction the decimal was rounded (and by how many decimal points its resolution has been reduced). It's equally possible that an obfuscated record could be located:
 
 1.  Inside a specified area when its true location is outside the area (left), 
 2.  Inside a specified area when its true location is inside the area (middle) 
@@ -308,7 +308,7 @@ plt.show()
 
 Thanks to obfuscation, we can't know which of these three scenarios might be true for our individual record!
 
-The main takeaway is that obfuscation makes it harder to know that you are accurately capturing all the species in a defined area. In ecological assessment, it's generally better to capture more rather than less because species interact with their broader ecosystems (outside of our human-defined boundaries). Therefore, the goal *we* are trying to achieve by using a buffer is to realistically estimate how many species are influenced by the health of our defined area, not just what has been observed within a predefined boundary.
+The main takeaway is that obfuscation makes it harder to know that you are accurately capturing all the species in a defined area. In ecological assessment, it's generally better to capture more rather than less because species interact with their broader ecosystems (outside of our human-defined boundaries). Therefore, the goal *we* are trying to achieve by using a buffer is to realistically estimate how many species are influenced by the health of our defined area, not just what has been observed within a pre-defined boundary.
 
 # Example: The stuttering frog
 
@@ -316,7 +316,7 @@ Let's see an example of how buffer size affects our ability to detect sensitive 
 
 The stuttering frog (*Mixophyes balbus*) is a large Australian species of frog that inhabits temperate, sub-tropical rainforest and wet sclerophyll forest.  They have a brown back and a yellow underbelly, with a light blue iris that diffuses into gold above the pupil.  Their call is a "kook kook kook kra-a-ak kruk kruk", which lasts 1-2 seconds[^wikipedia].
 
-[^wikipedia]: https://en.wikipedia.org/wiki/Stuttering_frog
+[^wikipedia]: [https://en.wikipedia.org/wiki/Stuttering_frog](https://en.wikipedia.org/wiki/Stuttering_frog)
 
 ::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
 <img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/3/7/1/1/67afd228-c7ce-4cae-94bf-fcd76baf1173/original" class="rounded"/></img>
@@ -489,9 +489,9 @@ Although a larger buffer of 25-30km captures more species records, there is a ri
 
 # Threatened species in area
 
-<!-- Dax proposed structure -->
+As a final step, let's download and visualise where threatened species have been observed in our buffered area on a map. To start, let's download occurrence records in our area with {galah-python}, with a 10 km buffer around our area (which seems reasonable given our example above). To download records, we'll once again create a buffer around Mid-Western, then use the bounding box around this area to download occurrence records using `atlas_occurrences()`[^bbox].
 
-We've considered our buffer size, so let's go with a 10km buffer and download occurrence records in our area. As a final step, let's visualise where threatened species have been observed in our buffered area on a map. To start, let's download occurrence records in our area with `galah-python`.
+[^bbox]: It's faster to use a bounding box than polygon shape to download records - a box has fewer points than a complicated polygon shape, making for a far simpler query to process!
 
 ```{python}
 #| echo: true
@@ -507,11 +507,11 @@ bbox_midwestern = shapely.box(bds[0],bds[1],bds[2],bds[3])
 
 # get all occurrence records within bounding box from the ALA
 galah.galah_config(email='<your-email@example.com>')
-species = galah.atlas_occurrences(
+occs = galah.atlas_occurrences(
     bbox=bbox_midwestern
 )
 
-species.head(10) # first 10 rows
+occs.head(10) # first 10 rows
 ```
 
 ```{python}
@@ -527,20 +527,14 @@ bbox_midwestern = shapely.box(bds[0],bds[1],bds[2],bds[3])
 
 # get all occurrence records within bounding box from the ALA
 galah.galah_config(email='amanda.buyan@csiro.au')
-species = galah.atlas_occurrences(
+occs = galah.atlas_occurrences(
     bbox=bbox_midwestern
 )
 
-species.head(10) # first 10 rows
+occs.head(10) # first 10 rows
 ```
 
-Next we can use `search_all()` to find the EPBC Act Threatened species list. Then, we'll use `show_values()` to download the content of that list. By adding `all_fields=True`, we can all original columns of the list, which in this case includes status information.
-
-```{python}
-# get all species on epbc list + status info
-epbc_list = galah.show_values(field='dr656',lists=True,all_fields=True)
-epbc_list.head(10)
-```
+Next we'll use `show_values()` to download a list of species on the EPBC Act Threatened species list (see the tab below for more information on how to find species list IDs). By adding `all_fields=True`, we can append all original columns of the list, which for conservation lists like this includes status information.
 
 :::{.callout-tip collapse="true"}
 #### How to find species list IDs
@@ -549,65 +543,63 @@ Search for species lists available in galah using `search_all(lists=True)`. The 
 ```{python}
 galah.search_all(lists="epbc act")
 ```
+
 :::
 
-By merging our species list to our occurrence records `df-name`, our data will filter to only species on the EPBC list.
-
 ```{python}
-# merge epbc list with species list to get only threatened species
-threat_species = pd.merge(species,epbc_list[['scientificName','status']],on='scientificName')
-threat_species.head(10)
+# get all species on epbc list + status info
+epbc_list = galah.show_values(field='dr656',lists=True,all_fields=True)
+epbc_list.head(10)
 ```
 
-We then narrow the number of observations to only the buffered area around Midwestern. 
+By merging our species list to our occurrence records `occs`, our data will filter to only occurrence records of species on the EPBC list.
 
 ```{python}
-# convert to GeoDataFrame for straightforward spatial filtering
-threat_species_gdf = gpd.GeoDataFrame(
-    threat_species, 
-    geometry=gpd.points_from_xy(threat_species.decimalLongitude, threat_species.decimalLatitude), 
+# merge epbc list with occurrences
+threatened_species = pd.merge(occs,epbc_list[['scientificName','status']],on='scientificName')
+threatened_species.head(10)
+```
+
+Finally, we'll filter our observations to only those within the buffered area around Mid-Western. 
+
+```{python}
+# convert to GeoDataFrame
+threatened_species_gdf = gpd.GeoDataFrame(
+    threatened_species, 
+    geometry=gpd.points_from_xy(threatened_species.decimalLongitude, threatened_species.decimalLatitude), 
     crs="EPSG:4326"
 )
 
-# get all species within a 10km buffer
-threat_species_10km = threat_species[threat_species_gdf.geometry.within(buffer_10km)]
+# filter to species within our 10km buffer
+threatened_species_10km = threatened_species[threatened_species_gdf.geometry.within(buffer_10km)]
 ```
 
-We can now plot our observations on a map, adjusting the opacity of our points (`alpha`) so we can see areas with many overlapping points easier. To understand just how many additional species our 10km buffer captures, we've added an additional bar plot showing comparing species in Midwestern vs in our buffer.
+We can now plot our observations on a map using {matplotlib}, adjusting the opacity of our points (`alpha`) so we can see areas with many overlapping points more easily. To understand just how many additional species our 10 km buffer captures, we've added an additional bar plot comparing the number of species in Mid-Western *vs* Mid-Western + our 10 km buffer. Notice that the number of threatened species detected markedly increases with the addition of our buffer because we captured a few noticeable hotspots of threatened species observations near the edge of the Mid-Western border.
 
 ```{python}
 #| echo: true
 #| eval: false
-# code to make map
+# map
 fig, ax = plt.subplots()
-ax.scatter(threat_species_10km['decimalLongitude'],threat_species_10km['decimalLatitude'], alpha=0.3, color='#d4af37')
+ax.scatter(threatened_species_10km['decimalLongitude'],threatened_species_10km['decimalLatitude'], alpha=0.3, color='#5A2A57')
 ax.plot(*midwestern['geometry'][74].exterior.xy,c='#292C26',lw=2)
 ax.plot(*buffer_10km.exterior.xy,c='#358BA5',lw=2)
 plt.axis('off')
 ax.set_aspect(aspect='equal')
-```
-```{python}
-#| echo: false
-#| eval: true
-# code to make map
-fig, ax = plt.subplots()
-a = ax.scatter(threat_species_10km['decimalLongitude'],threat_species_10km['decimalLatitude'], alpha=0.3, color='#d4af37')
-a = ax.plot(*midwestern['geometry'][74].exterior.xy,c='#292C26',lw=2)
-a = ax.plot(*buffer_10km.exterior.xy,c='#358BA5',lw=2)
-a = plt.axis('off')
-a = ax.set_aspect(aspect='equal')
 plt.show();
 ```
 
 ```{python}
+#| echo: true
+#| eval: false
 #| code-fold: true
 #| code-summary: Code to make bar plot
 # import numpy for arange
 import numpy as np
 
-# first, get number of species within midwestern
+# get number of species within midwestern
 midwestern = midwestern.to_crs(4326)
-species_mw = threat_species[threat_species_gdf.geometry.within(midwestern['geometry'][74])]
+species_mw = threatened_species[threatened_species_gdf.geometry.within(midwestern['geometry'][74])]
 
 # set dictionary for get number of species in midwestern, sorted by status
 num_species_mid = {x:0 for x in list(set(species_mw['status']))}
@@ -621,11 +613,11 @@ for key in num_species_mid:
 num_species_mid_sorted = dict(sorted(num_species_mid.items(), key=lambda item: item[1]))
 
 # set dictionary to get number of species in buffer, sorted by status
-num_species_buff = {x:0 for x in list(set(threat_species_10km['status']))}
+num_species_buff = {x:0 for x in list(set(threatened_species_10km['status']))}
 
 # loop over each key, get the number of unique species for each status in buffered region
 for key in num_species_buff:
-    temp = threat_species_10km[threat_species_10km['status'] == key]
+    temp = threatened_species_10km[threatened_species_10km['status'] == key]
     num_species_buff[key] = len(list(set(temp['scientificName'])))
 
 # sort buffered species from most to least
@@ -634,48 +626,19 @@ num_species_buff_sorted = dict(sorted(num_species_buff.items(), key=lambda item:
 # create plot
 fig, ax = plt.subplots()
 h, n = 0.4, np.arange(len(num_species_mid_sorted.keys()))
-ax.barh(n + h/2, num_species_mid_sorted.values(), height=h, color='#292C26', label='Midwestern')
+bar = ax.barh(n + h/2, num_species_mid_sorted.values(), height=h, color='#292C26', label='Mid-Western')
 
 # set ticks
-ax.set_yticks(range(len(num_species_mid_sorted.keys())), labels=num_species_mid_sorted.keys())
-ax.barh(n - h/2, num_species_buff_sorted.values(), height=h, color='#358BA5', label='Buffer')
-ax.legend()
-ax.set_xlabel('Number of Unique Species')
-ax.set_aspect(aspect=12)
+bar = ax.set_yticks(range(len(num_species_mid_sorted.keys())), labels=num_species_mid_sorted.keys())
+bar = ax.barh(n - h/2, num_species_buff_sorted.values(), height=h, color='#358BA5', label='Mid-Western + buffer')
+bar = ax.legend()
+bar = ax.set_xlabel('Number of Unique Species')
+bar = ax.set_aspect(aspect=12)
 ```
 
-Finally, we can plot the bar plot and map side-by-side.  This will show: i) that the number of threatened species detected markedly increases when adding a buffer, and ii) adding a buffer includes other hotspots of threatened species that would otherwise have been missed had we just considered the Midwestern LGA.
 
 ```{python}
-#| code-fold: true
-#| echo: true
-#| eval: false
-#| code-summary: Code to make side-by-side plot
-# import numpy for arange
-import numpy as np
-
-# create plot
-fig, ax = plt.subplots(1,2,figsize=(14,7))
-
-# bar chart 
-h, n = 0.4, np.arange(len(num_species_mid_sorted.keys()))
-ax[0].set_yticks(range(len(num_species_mid_sorted.keys())), labels=num_species_mid_sorted.keys())
-ax[0].barh(n + h/2, num_species_mid_sorted.values(), height=h, color='#292C26', label='Midwestern')
-ax[0].barh(n - h/2, num_species_buff_sorted.values(), height=h, color='#358BA5', label='Buffer')
-ax[0].legend()
-ax[0].set_xlabel('Number of Unique Species')
-ax[0].set_aspect(aspect=12)
-
-# scatter plot
-ax[1].scatter(threat_species_10km['decimalLongitude'],threat_species_10km['decimalLatitude'], alpha=0.3, color='#d4af37')
-ax[1].plot(*midwestern['geometry'][74].exterior.xy,c='#292C26',lw=2)
-ax[1].plot(*buffer_10km.exterior.xy,c='#358BA5',lw=2)
-plt.axis('off')
-plt.suptitle('Threatened Species in Mid-Western and Surrounds', fontsize=24, y=0.93)
-ax[1].set_aspect(aspect='equal')
-```
-
-```{python}
+#| echo: false
 #| column: page
 #| fig-align: center
 #| out-width: 11in
@@ -684,32 +647,63 @@ ax[1].set_aspect(aspect='equal')
 #| message: false
 #| warning: false
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
-#| echo: false
 #| lightbox: 
 #|   group: final-plot
+#| fig-subcap:
+#|   - "Number of threatened species observed in Mid-Western only vs Mid-Western + a buffer of 10 km"
+#|   - "Map of observations of threatened species within the buffered area around Mid-Western"
+
 # import numpy for arange
 import numpy as np
 
-# create plot
-fig, ax = plt.subplots(1,2,figsize=(14,7))
+# get number of species within midwestern
+midwestern = midwestern.to_crs(4326)
+species_mw = threatened_species[threatened_species_gdf.geometry.within(midwestern['geometry'][74])]
 
-# bar chart 
+# set dictionary for get number of species in midwestern, sorted by status
+num_species_mid = {x:0 for x in list(set(species_mw['status']))}
+
+# loop over each key, get the number of unique species for each status in midwestern
+for key in num_species_mid:
+    temp = species_mw[species_mw['status'] == key]
+    num_species_mid[key] = len(list(set(temp['scientificName'])))
+
+# sort species from most to least
+num_species_mid_sorted = dict(sorted(num_species_mid.items(), key=lambda item: item[1]))
+
+# set dictionary to get number of species in buffer, sorted by status
+num_species_buff = {x:0 for x in list(set(threatened_species_10km['status']))}
+
+# loop over each key, get the number of unique species for each status in buffered region
+for key in num_species_buff:
+    temp = threatened_species_10km[threatened_species_10km['status'] == key]
+    num_species_buff[key] = len(list(set(temp['scientificName'])))
+
+# sort buffered species from most to least
+num_species_buff_sorted = dict(sorted(num_species_buff.items(), key=lambda item: item[1]))
+
+# bar plot
+fig, ax = plt.subplots(figsize=(11,8))
 h, n = 0.4, np.arange(len(num_species_mid_sorted.keys()))
-a = ax[0].set_yticks(range(len(num_species_mid_sorted.keys())), labels=num_species_mid_sorted.keys())
-a = ax[0].barh(n + h/2, num_species_mid_sorted.values(), height=h, color='#292C26', label='Midwestern')
-a = ax[0].barh(n - h/2, num_species_buff_sorted.values(), height=h, color='#358BA5', label='Buffer')
-a = ax[0].legend()
-a = ax[0].set_xlabel('Number of Unique Species')
-a = ax[0].set_aspect(aspect=12)
+ax.barh(n + h/2, num_species_mid_sorted.values(), height=h, color='#292C26', label='Mid-Western')
+# set ticks
+ax.set_yticks(range(len(num_species_mid_sorted.keys())), labels=num_species_mid_sorted.keys())
+ax.barh(n - h/2, num_species_buff_sorted.values(), height=h, color='#358BA5', label='Mid-Western + buffer')
+ax.legend()
+ax.set_xlabel('Number of Unique Species')
+ax.set_aspect(aspect=12)
+plt.show();
 
-a = ax[1].scatter(threat_species_10km['decimalLongitude'],threat_species_10km['decimalLatitude'], alpha=0.3, color='#d4af37')
-a = ax[1].plot(*midwestern['geometry'][74].exterior.xy,c='#292C26',lw=2)
-a = ax[1].plot(*buffer_10km.exterior.xy,c='#358BA5',lw=2)
+# map
+fig, ax = plt.subplots()
+a = ax.scatter(threatened_species_10km['decimalLongitude'],threatened_species_10km['decimalLatitude'], alpha=0.3, color='#6A5380')
+a = ax.plot(*midwestern['geometry'][74].exterior.xy,c='#292C26',lw=2)
+a = ax.plot(*buffer_10km.exterior.xy,c='#358BA5',lw=2)
 a = plt.axis('off')
-a = plt.suptitle('Threatened Species in Mid-Western and Surrounds', fontsize=24, y=0.93)
-a = ax[1].set_aspect(aspect='equal')
+a = ax.set_aspect(aspect='equal')
 plt.show();
 ```
+
 
 # Final thoughts
 
