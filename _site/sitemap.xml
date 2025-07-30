@@ -1,28 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://labs.ala.org.au/software/index.html</loc>
-    <lastmod>2025-07-21T06:52:50.609Z</lastmod>
+    <loc>https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.733Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2023-05-16_dingoes/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.720Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2023-03-14_animated-map/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.400Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2022-10-12_alpha-hulls/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.393Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2023-08-28_alternatives-to-box-plots/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.727Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2023-04-03_highlighted-time-series/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.448Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2023-01-12_counting-points-in-shapefiles/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.399Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2022-05-23-ggnewscale/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.391Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2022-05-17_3d-map/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.391Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2022-02-17_sunburst-plots-for-taxonomic-data/post.html</loc>
+    <lastmod>2024-10-18T06:33:17.390Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/about/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.276Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/about/Waite_Callum/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.255Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/about/Seers_Juliet/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.232Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/about/Buyan_Amanda/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.216Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/research/highlights/2024_weevil/index.html</loc>
-    <lastmod>2025-07-21T06:52:50.509Z</lastmod>
+    <lastmod>2024-10-18T06:33:18.194Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/research/highlights/2024_metabarcoding/index.html</loc>
-    <lastmod>2025-07-21T06:52:50.459Z</lastmod>
+    <lastmod>2024-10-18T06:33:18.152Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/research/highlights/2024_habitat-suitability/index.html</loc>
     <lastmod>2024-10-18T06:33:18.113Z</lastmod>
   </url>
   <url>
-    <loc>https://labs.ala.org.au/research/highlights/2024_gecko-tails/index.html</loc>
-    <lastmod>2024-10-18T06:33:18.077Z</lastmod>
-  </url>
-  <url>
     <loc>https://labs.ala.org.au/research/highlights/2024_cuckoos/index.html</loc>
-    <lastmod>2025-07-21T06:52:50.326Z</lastmod>
+    <lastmod>2024-10-18T06:33:18.047Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/research/highlights/2023_snapper-whiting/index.html</loc>
@@ -45,136 +93,28 @@
     <lastmod>2024-10-18T06:33:17.914Z</lastmod>
   </url>
   <url>
+    <loc>https://labs.ala.org.au/software/index.html</loc>
+    <lastmod>2024-10-18T06:33:18.228Z</lastmod>
+  </url>
+  <url>
     <loc>https://labs.ala.org.au/posts/index.html</loc>
     <lastmod>2024-10-18T06:33:17.818Z</lastmod>
   </url>
   <url>
-    <loc>https://labs.ala.org.au/posts/2024-05-10_ridgeline-plots/index.html</loc>
-    <lastmod>2025-07-21T06:52:49.925Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2024-02-12_species-lists/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.755Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.733Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2023-05-16_dingoes/index.html</loc>
-    <lastmod>2025-07-21T06:52:49.892Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2023-04-11_quantifying-species-range/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.449Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2023-03-14_animated-map/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.400Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2022-10-12_alpha-hulls/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.393Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2022-05-23-ggnewscale/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.391Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2022-02-17_sunburst-plots-for-taxonomic-data/post.html</loc>
-    <lastmod>2024-10-18T06:33:17.390Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2021-03-20_creating-a-color-palette-from-an-image/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.388Z</lastmod>
+    <loc>https://labs.ala.org.au/books/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.321Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/gallery/index.html</loc>
-    <lastmod>2025-07-23T04:34:25.197Z</lastmod>
+    <lastmod>2024-10-18T06:33:17.370Z</lastmod>
   </url>
   <url>
-    <loc>https://labs.ala.org.au/about/index.html</loc>
-    <lastmod>2025-07-21T06:52:49.475Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/about/Waite_Callum/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.255Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/about/Seers_Juliet/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.232Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/about/Buyan_Amanda/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.216Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/about/Balasubramaniam_Shandiya/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.211Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/about/Kellie_Dax/index.html</loc>
-    <lastmod>2025-07-21T06:52:49.448Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/about/Torresan_Olivia/index.html</loc>
-    <lastmod>2025-07-21T06:52:49.458Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/about/Westgate_Martin/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.261Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/books/index.html</loc>
-    <lastmod>2025-07-23T04:34:25.131Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/index.html</loc>
-    <lastmod>2025-07-23T04:34:25.296Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2021-04-14_hex-maps-for-species-occurrence-data/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.389Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2022-05-17_3d-map/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.391Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2022-07-22_sample-bias/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.392Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2023-01-12_counting-points-in-shapefiles/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.399Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2023-04-03_highlighted-time-series/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.448Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2023-04-28_plotting-invasive-species/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.451Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2023-08-28_alternatives-to-box-plots/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.727Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2024-01-25_hex_point_maps/index.html</loc>
-    <lastmod>2024-10-18T06:33:17.741Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/index.html</loc>
-    <lastmod>2025-07-21T06:52:49.909Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/posts/2025-04-02_greater-gliders/index.html</loc>
-    <lastmod>2025-07-21T06:52:49.992Z</lastmod>
+    <loc>https://labs.ala.org.au/research/highlights/index.html</loc>
+    <lastmod>2024-10-18T06:33:18.213Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/research/citations/index.html</loc>
-    <lastmod>2025-07-21T06:52:50.059Z</lastmod>
+    <lastmod>2024-10-18T06:33:17.834Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/research/highlights/2023_chytrid-fungus/index.html</loc>
@@ -182,7 +122,7 @@
   </url>
   <url>
     <loc>https://labs.ala.org.au/research/highlights/2023_koala-photography/index.html</loc>
-    <lastmod>2025-07-21T06:52:50.276Z</lastmod>
+    <lastmod>2024-10-18T06:33:17.945Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/research/highlights/2023_microfossils/index.html</loc>
@@ -190,38 +130,86 @@
   </url>
   <url>
     <loc>https://labs.ala.org.au/research/highlights/2023_pinus-radiata/index.html</loc>
-    <lastmod>2025-07-21T06:52:50.292Z</lastmod>
+    <lastmod>2024-10-18T06:33:18.001Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/research/highlights/2023_waterwatch/index.html</loc>
     <lastmod>2024-10-18T06:33:18.030Z</lastmod>
   </url>
   <url>
-    <loc>https://labs.ala.org.au/research/highlights/2024_freshwater-fish-IUCN/index.html</loc>
-    <lastmod>2025-07-21T06:52:50.359Z</lastmod>
-  </url>
-  <url>
-    <loc>https://labs.ala.org.au/research/highlights/2024_habitat-connectivity-tool/index.html</loc>
-    <lastmod>2025-07-21T06:52:50.392Z</lastmod>
+    <loc>https://labs.ala.org.au/research/highlights/2024_gecko-tails/index.html</loc>
+    <lastmod>2024-10-18T06:33:18.077Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/research/highlights/2024_historical-habitat-ranges/index.html</loc>
-    <lastmod>2025-07-21T06:52:50.426Z</lastmod>
+    <lastmod>2024-10-18T06:33:18.133Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/research/highlights/2024_pollen/index.html</loc>
-    <lastmod>2025-07-21T06:52:50.476Z</lastmod>
+    <lastmod>2024-10-18T06:33:18.173Z</lastmod>
   </url>
   <url>
-    <loc>https://labs.ala.org.au/research/highlights/index.html</loc>
-    <lastmod>2025-07-21T06:52:50.575Z</lastmod>
+    <loc>https://labs.ala.org.au/about/Balasubramaniam_Shandiya/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.211Z</lastmod>
   </url>
   <url>
-    <loc>https://labs.ala.org.au/research/highlights/2025_wetland-restoration/index.html</loc>
-    <lastmod>2025-07-21T06:52:50.549Z</lastmod>
+    <loc>https://labs.ala.org.au/about/Kellie_Dax/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.227Z</lastmod>
   </url>
   <url>
-    <loc>https://labs.ala.org.au/posts/2025-07-20_species-lists-in-R/index.html</loc>
-    <lastmod>2025-07-23T04:44:55.333Z</lastmod>
+    <loc>https://labs.ala.org.au/about/Torresan_Olivia/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.237Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/about/Westgate_Martin/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.261Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.386Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2024-05-10_ridgeline-plots/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.796Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2021-03-20_creating-a-color-palette-from-an-image/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.388Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2021-04-14_hex-maps-for-species-occurrence-data/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.389Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2024-02-12_species-lists/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.755Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2022-07-22_sample-bias/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.392Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2024-01-25_hex_point_maps/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.741Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2023-04-28_plotting-invasive-species/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.451Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2023-04-11_quantifying-species-range/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.449Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/index.html</loc>
+    <lastmod>2024-10-18T06:33:17.768Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/research/highlights/2024_habitat-connectivity-tool/index.html</loc>
+    <lastmod>2024-10-18T06:33:18.091Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2024-10-18_adding-buffers-in-python/Adding_Buffers_Points.html</loc>
+    <lastmod>2024-10-28T23:58:11.194Z</lastmod>
   </url>
 </urlset>
