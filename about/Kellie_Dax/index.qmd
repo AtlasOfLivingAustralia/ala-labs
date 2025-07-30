@@ -53,6 +53,12 @@ create_button(
 
 ### {{< fa newspaper >}} Posts 
 
+[Add a buffer to a shapefile and account for obscured species locations](https://labs.ala.org.au/posts/2025-07-30_adding-buffers-in-python/)<br>
+*Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to add a buffer to a shapefile using {shapely} and {geopandas}. We then demonstrate how data that have been obfuscated (obscured by reducing their precision) may affect the buffer size required to confidently capture threatened species in the area using {galah-python} and {matplotlib}.*
+
+[Download a species list and cross-reference with conservation status lists in R](https://labs.ala.org.au/posts/2024-02-12_species-lists/)<br>
+*Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to make a species list and how to cross-reference this list with threatened and sensitive species lists. We show how to do this task using 2 methods, with {galah} and using an external shapefile and species list. We then show how to visualise this information as a bar chart and a waffle chart using {ggplot2}.*
+
 [Modelling the impact of fire on the Southern Greater Glider](https://labs.ala.org.au/posts/2025-04-02_greater-gliders/)<br>
 *Major fire events impact flora and fauna, particularly in areas where fire can dramatically reshape the livable habitat area. Here we investigate how greater gliders, a tree-dwelling marsupial species, were impacted by the 2019-2020 bushfires using {tidymodels} and {tidysdm}.*
 
