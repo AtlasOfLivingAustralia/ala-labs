@@ -44,7 +44,7 @@ create_button(
 ),
 create_button(
   icon = "fab fa-twitter fa-xl",
-  url = "https://twitter.com/daxkellie"
+  url = "https://bsky.app/profile/daxkellie.bsky.social"
 )
 )
 ```
@@ -52,6 +52,12 @@ create_button(
 :::
 
 ### {{< fa newspaper >}} Posts 
+
+[Modelling the impact of fire on the Southern Greater Glider](https://labs.ala.org.au/posts/2025-04-02_greater-gliders/)<br>
+*Major fire events impact flora and fauna, particularly in areas where fire can dramatically reshape the livable habitat area. Here we investigate how greater gliders, a tree-dwelling marsupial species, were impacted by the 2019-2020 bushfires using {tidymodels} and {tidysdm}.*
+
+[Show seasonal species trends using a ridgeline plot](https://labs.ala.org.au/posts/2024-05-10_ridgeline-plots/)<br>
+*Displaying ecological trends of many species or groups at once can sometimes appear messy or crowded. In this post we show how ridgeline plots are a useful way to show trends in seasonality by displaying observations of migratory bird species over the year using {ggridges}.*
 
 [An introduction to species distribution modelling using {tidysdm} & {tidymodels}](https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/)<br>
 *Species distribution modelling is a common task for ecologists in R. Here we show the fundamental steps to build, assess and use models to predict species distributions using {tidymodels} & {tidysdm}, modern packages that use tidy syntax to run and plot geospatial models.*

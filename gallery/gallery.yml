@@ -1,5 +1,29 @@
 
 - tiles:
+    - title: World Rainforest Day
+      author: Dax Kellie
+      subtitle: R dataviz
+      href: https://www.linkedin.com/posts/atlas-of-living-australia_worldrainforestday-rstats-dataviz-activity-7342317946049896448-7Bma?utm_source=share&utm_medium=member_desktop&rcm=ACoAABfq3TIBPvhh30MifPzpn_sEyAbgDux27LM
+      code: https://github.com/AtlasOfLivingAustralia/science/tree/main/comms/2025-05-22_rainforests/scripts
+      thumbnail: images/gondwana_logo.png
+    - title: An Infinity of Lists
+      author: Thomas Mesaglio, Fonti Kar, Hervé Sauquet, Will Cornwell
+      subtitle: Shiny app
+      href: https://unsw.shinyapps.io/infinitylists/
+      code: https://github.com/traitecoevo/infinitylists
+      thumbnail: images/infinitylists.png
+    - title: World Parrot Day
+      author: Shandiya Balasubramaniam
+      subtitle: R dataviz
+      href: https://www.linkedin.com/posts/atlas-of-living-australia_worldparrotday-aladataviz-activity-7334352962217025538-HDMQ?utm_source=share&utm_medium=member_desktop&rcm=ACoAABfq3TIBPvhh30MifPzpn_sEyAbgDux27LM
+      code: https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2025-05-31_world-parrot-day/parrots.R
+      thumbnail: images/parrot.png
+    - title: International Day of Forests
+      author: Dax Kellie
+      subtitle: R dataviz
+      href: https://www.linkedin.com/posts/atlas-of-living-australia_this-international-day-of-forests-weve-activity-7308668725849726976-ppEC?utm_source=share&utm_medium=member_desktop&rcm=ACoAABfq3TIBPvhh30MifPzpn_sEyAbgDux27LM
+      code: https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2025-03-18_forests-day/tree-counts.R
+      thumbnail: images/eucalyptus-trees_logo.png
     - title: Animalia observations 2024
       author: Dax Kellie
       subtitle: R dataviz

@@ -19,7 +19,7 @@ freeze: true
 
 # data is all ALA used or ALA cited papers, exported from Zotero library
 
-df <- here::here("research", "data", "2024-10-09_publications.csv") |>
+df <- here::here("research", "data", "2025-05-20_publications.csv") |>
       readr::read_csv(show_col_types = FALSE) |>
       janitor::clean_names() |>
       dplyr::filter(item_type == "journalArticle") |>

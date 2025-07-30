@@ -73,6 +73,6 @@ Conservation managers and decision makers rely on a variety of expert informatio
 
 Under these concerns, Norman & Mackey (2024) used ALA data to help improve the precision of Australia-wide habitat connectivity maps. Their study mapped both habitat patches and their respective levels of connectivity for several forest-dwellers: Rainforest pigeons, gliding possums, and multiple species of black cockatoos (glossy, Carnaby's, Baudins and red-tailed). Each map was then adjusted to consider levels of movement fatigue between suitable patches for each species (under a cost assumption that shorter connectivity routes are preferred). 
 
-Online resources for mapping habitat connectivity are often specific to state services and jurisdictions, rather than biological boundaries. Their findings---[available as an interactive tool](https://www.stateofconnectivity.com/interactive-map)---provide clear, actionable and quickly accessible prioritisation zones for conservation managers and decision makers to aid habitat connectivity for each species.
+Findings are [available as an interactive tool](https://www.stateofconnectivity.com/interactive-map), intended to provide actionable and quickly accessible prioritisation zones for conservation managers and decision makers to aid habitat connectivity for each species.
 :::
 :::
