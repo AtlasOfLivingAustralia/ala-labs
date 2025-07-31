@@ -1,7 +1,7 @@
 ---
 title: "Add a buffer to a shapefile and account for generalised species locations"
 description: |
-  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to add a buffer to a shapefile using {shapely} and {geopandas}. We then demonstrate how data that have been obfuscated (generalised by reducing their precision) may affect the buffer size required to more confidently capture threatened species in the area using {galah-python} and {matplotlib}.
+  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to add a buffer to a shapefile using {shapely} and {geopandas}. We then demonstrate how data that have been obfuscated (generalised to reduce their precision) may affect the buffer size required to more confidently capture threatened species in the area using {galah-python} and {matplotlib}.
 authors:
   - name: "Amanda Buyan"
   - name: "Dax Kellie"
@@ -193,7 +193,7 @@ Now that we've drawn our buffer around the Mid-Western LGA, let's discuss how da
 
 # Obfuscation and why it's important for sensitive species
 
-When we talk about a record being **obfuscated**, we mean that the coordinate location of this record has been obscured either by *generalising* or *randomising* it.  The Atlas of Living Australia *generalises* coordinate locations by reducing the number of decimals in the record's lat/lon coordinates, lowering the point's precision. This figure below illustrates this; as the decimal points are removed, the data appears more 'grid-like' as the data loses resolution.  
+When we talk about a record being **obfuscated**, we mean that the coordinate location of this record has been obscured either by *generalisation* or *randomisation*.  The [Atlas of Living Australia](ala.org.au) *generalises* coordinate locations by reducing the number of decimals in the record's lat/lon coordinates, lowering the point's precision. This figure below illustrates this; as the decimal points are removed, the data appears more 'grid-like' as the data loses resolution.  
 
 ```{python}
 #| echo: true
@@ -253,7 +253,7 @@ ani.save('obfuscation.gif')
 
 ![](obfuscation.gif)
 
-When data are sent to data infrastructures like the [Atlas of Living Australia](ala.org.au), generalisation of species records is performed in accordance with the state or territory the species is located, typically to distances of 1km, 10km or 50km from a species' original location[^witheld]. 
+Generalisation of species records is performed in accordance with the state or territory the species is located, typically rounded to distances of 1km, 10km or 50km from a species' original location[^witheld]. 
 
 [^witheld]: Some records, if the species is very sensitive, may be witheld altogether.
 
@@ -261,13 +261,15 @@ When data are sent to data infrastructures like the [Atlas of Living Australia](
 Alternatively, iNaturalist *randomises* their coordinate locations at a 30km resolution prior to sharing data with the Atlas of Living Australia.
 :::
 
-How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. The *true* location of the point will snap to a grid, the distance of which depends on its degree of generalisation. Whether the point snaps up or down will depend on which direction the point was rounded[^snapping]. What this means is that it's possible that a given data point falls within any of the following three scenarios:
+How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. The *true* location of the point is nearby, but the process of generalisation has moved the point by snapping it to a new location dependent on the a distance of generalisation. Whether the point snaps up or down will depend on which direction the point was rounded[^snapping]. What this means is that it's possible that a given data point falls within any of the following three scenarios:
 
 1.  A point falls inside a specified area when its true location is outside the area (left), 
 2.  A point falls inside a specified area when its true location is inside the area (middle) 
 3.  A point falls outside a specified area when its true location is inside the area (right) 
 
 [^snapping]: This directional grid snapping can even cause data points to appear in the ocean despite the true location being on land.
+
+<!-- Ok so displaying this using radii got Cam in a tizzy, so instead we need remove the radius and overlay a grid over the top. I think the grid can be a light or faded grey. I guess the important thing here is to choose a large enough grid size to annunciate the point that data points can be moved in or out of an area because of how they are generalised/rounded. Let me know if you have any issues understanding what I mean here. -->
 
 ```{python}
 #| echo: false
@@ -372,11 +374,19 @@ frogs = galah.atlas_occurrences(
 frogs.head(10) # first 10 rows
 ```
 
+A good first step is to view the degree of generalisation applied to our stuttering frog data. Here we can see that all records in our query have been generalised to 10 km.
+
+<!-- We need to mention this as a first step -->
+
+```{python}
+# group records by `generalisationInMetres`. This should show a table with one result: 10000
+```
+
 ### How buffer size affects species detection
 
-Let's consider how different buffer sizes impact our ability to detect sensitive species.  Below, we've created six buffers of increasing size around Mid-Western, with a grid of 10 km blocks drawn over our map. These generalised points are. The stuttering frog observations are *just* outside of our area; without a buffer this frog species would go undetected, but with a 30km buffer we would detect several observations. Which should we choose?
+Let's consider how different buffer sizes impact our ability to detect sensitive species.  Below, we've created six buffers of increasing size around Mid-Western, then overlayed a grid of 10 km blocks over our map. You'll notice the points have snapped to a corner in our grid. Observations of stuttering frog observations are *just* outside of our area; without a buffer this frog species would go undetected, but with a 30km buffer we would detect several observations. Which should we choose?
 
-<!-- The new strategy here is instead of circles around our points, plot the points, then place a 10 km grid over the top. Ideally, the points will align to the grid like-->
+<!-- The new strategy here is instead of circles around our points, plot the points, then place a 10 km grid over the top. Ideally, the points will align to the grid like Cam has suggested they will. The general point to amend here is radius = bad, grid = good-->
 
 ```{python}
 #| warning: false
@@ -487,55 +497,65 @@ for i in range(len(ax)):
 plt.show();
 ```
 
-Given the size of our area of interest, we'd likely choose a buffer between 5-15km. 
+If we are interested in just this species, the best thing to do is to consider the distance of generalisation applied to these data. As we saw in the `generalisationInMetres` column, stuttering frog records are generalised to a distance of 10 km, so a 10 km buffer is probably the best option for our buffer.
 
-Although a larger buffer of 25-30km captures more species records, there is a risk that our buffer also captures too many species --- more than are realistically interacting with our area. When we draw our buffer, considering other factors like topography, river systems, and nutrient gradients might help us determine how big our buffer should practically be.
+If we are interested in more than one species and there are multiple degrees of generalisation (2 km, 5 km, 10 km, 50 km), then we might need to consider the goal of our species search. Using a large buffer risks capturing too many species --- more than are realistically interacting with our area. In this situation, we might need to consider other factors like topography, river systems, and nutrient gradients might help us determine how big our buffer should practically be.
 
 # Threatened species in area
 
-As a final step, let's download and visualise where threatened species have been observed in our buffered area on a map. To start, let's download occurrence records in our area with {galah-python}, with a 10 km buffer around our area (which seems reasonable given our example above). To download records, we'll once again create a buffer around Mid-Western, then use the bounding box around this area to download occurrence records using `atlas_occurrences()`[^bbox].
+As a final step, let's download and visualise where threatened species have been observed in our buffered area on a map. To start, let's download occurrence records in our area with {galah-python}, with a 10 km buffer around our area (which seems reasonable given our example above). To download records, we'll once again create a buffer around Mid-Western, then use the bounding box around this area to download occurrence records using `atlas_occurrences()`[^bbox]. We'll also add the `generalisationInMetres` column to our query again.
 
 [^bbox]: It's faster to use a bounding box than polygon shape to download records - a box has fewer points than a complicated polygon shape, making for a far simpler query to process!
 
 ```{python}
-#| echo: true
-#| eval: false
+# | echo: true
+# | eval: false
 # make a 10km buffer
-buffer = midwestern_metres['geometry'].buffer(10000)
+buffer = midwestern_metres["geometry"].buffer(10000)
 gdf_buffers_degrees = buffer.to_crs(4326)
 buffer_10km = shapely.unary_union(gdf_buffers_degrees)
 
 # get bounding box around buffer for efficient querying
 bds = buffer_10km.bounds
-bbox_midwestern = shapely.box(bds[0],bds[1],bds[2],bds[3])
+bbox_midwestern = shapely.box(bds[0], bds[1], bds[2], bds[3])
 
 # get all occurrence records within bounding box from the ALA
-galah.galah_config(email='<your-email@example.com>')
+galah.galah_config(email="<your-email@example.com>")
 occs = galah.atlas_occurrences(
-    bbox=bbox_midwestern
+    bbox=bbox_midwestern, 
+    fields=["basic", "generalisationInMetres"]
 )
 
-occs.head(10) # first 10 rows
+occs.head(10)  # first 10 rows
 ```
 
 ```{python}
-#| echo: false
-#| eval: true
-buffer = midwestern_metres['geometry'].buffer(10000)
+# | echo: false
+# | eval: true
+buffer = midwestern_metres["geometry"].buffer(10000)
 gdf_buffers_degrees = buffer.to_crs(4326)
 buffer_10km = shapely.unary_union(gdf_buffers_degrees)
 
 # get bounding box around buffer for efficient querying
 bds = buffer_10km.bounds
-bbox_midwestern = shapely.box(bds[0],bds[1],bds[2],bds[3])
+bbox_midwestern = shapely.box(bds[0], bds[1], bds[2], bds[3])
 
 # get all occurrence records within bounding box from the ALA
-galah.galah_config(email='amanda.buyan@csiro.au')
+galah.galah_config(email="amanda.buyan@csiro.au")
 occs = galah.atlas_occurrences(
-    bbox=bbox_midwestern
+    bbox=bbox_midwestern, 
+    fields=["basic", "generalisationInMetres"]
 )
 
-occs.head(10) # first 10 rows
+occs.head(10)  # first 10 rows
+```
+
+Let's check the `generalisationInMetres` of our data as a starting point again. Records in our area have been generalised to 1 km and 10 km distances.
+
+<!-- Same as earlier, we just need to make the point to check the data generalisations of our data first -->
+
+```{python}
+# group records by `generalisationInMetres`. I *think* this should show data are either generalised to 1000 or 10000 metres
 ```
 
 Next we'll use `show_values()` to download a list of species on the EPBC Act Threatened species list (see the tab below for more information on how to find species list IDs). By adding `all_fields=True`, we can append all original columns of the list, which for conservation lists like this includes status information.
@@ -708,6 +728,12 @@ a = ax.set_aspect(aspect='equal')
 plt.show();
 ```
 
+:::{callout-tip collapse="true"}
+##### Is there an unexpected species your area?
+
+In our example, record locations were generalised to 1 km or 10 km distances. However, it's possible to return species locations generalised to greater distances of 20 km or 50 km. In these situations, a species that lives quite far from our specified area might appear in our query! To ensure species lists are accurate, it's always important to use `generalisationInMetres` to identify these data points, determine whether they are realistic or not, and clean them accordingly!
+
+:::
 
 # Final thoughts
 
