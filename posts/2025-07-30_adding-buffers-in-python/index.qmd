@@ -1,7 +1,7 @@
 ---
-title: "Add a buffer to a shapefile and account for obscured species locations"
+title: "Add a buffer to a shapefile and account for generalised species locations"
 description: |
-  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to add a buffer to a shapefile using {shapely} and {geopandas}. We then demonstrate how data that have been obfuscated (obscured by reducing their precision) may affect the buffer size required to confidently capture threatened species in the area using {galah-python} and {matplotlib}.
+  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to add a buffer to a shapefile using {shapely} and {geopandas}. We then demonstrate how data that have been obfuscated (generalised by reducing their precision) may affect the buffer size required to more confidently capture threatened species in the area using {galah-python} and {matplotlib}.
 authors:
   - name: "Amanda Buyan"
   - name: "Dax Kellie"
@@ -193,7 +193,7 @@ Now that we've drawn our buffer around the Mid-Western LGA, let's discuss how da
 
 # Obfuscation and why it's important for sensitive species
 
-When we talk about a record being **obfuscated**, we mean that the coordinate location of this record has been obscured in some way.  There are several methods to obscure a record's location. One of the more straightforward methods is to reduce the number of decimals in the record's lat/lon coordinates, lowering the point's precision. This figure below illustrates this; as the decimal points are removed, the data appears more 'grid-like' as the data loses resolution.  
+When we talk about a record being **obfuscated**, we mean that the coordinate location of this record has been obscured either by *generalising* or *randomising* it.  The Atlas of Living Australia *generalises* coordinate locations by reducing the number of decimals in the record's lat/lon coordinates, lowering the point's precision. This figure below illustrates this; as the decimal points are removed, the data appears more 'grid-like' as the data loses resolution.  
 
 ```{python}
 #| echo: true
@@ -253,24 +253,26 @@ ani.save('obfuscation.gif')
 
 ![](obfuscation.gif)
 
-When data is sent to data infrastructures like the [Atlas of Living Australia](ala.org.au), obfuscation of species records is performed in accordance with the state or territory the species is located, typically to distances of 1km, 10km or 50km from a species' original location[^witheld]. 
+When data are sent to data infrastructures like the [Atlas of Living Australia](ala.org.au), generalisation of species records is performed in accordance with the state or territory the species is located, typically to distances of 1km, 10km or 50km from a species' original location[^witheld]. 
 
 [^witheld]: Some records, if the species is very sensitive, may be witheld altogether.
 
 ::: aside
-Alternatively, iNaturalist pre-obfuscates data at a 30km resolution prior to sharing data with the Atlas of Living Australia.
+Alternatively, iNaturalist *randomises* their coordinate locations at a 30km resolution prior to sharing data with the Atlas of Living Australia.
 :::
 
-How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. The *true* location of the point might be anywhere in its defined radius, and its the new obscured location point will depend which direction the decimal was rounded (and by how many decimal points its resolution has been reduced). It's equally possible that an obfuscated record could be located:
+How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. The *true* location of the point will snap to a grid, the distance of which depends on its degree of generalisation. Whether the point snaps up or down will depend on which direction the point was rounded[^snapping]. What this means is that it's possible that a given data point falls within any of the following three scenarios:
 
-1.  Inside a specified area when its true location is outside the area (left), 
-2.  Inside a specified area when its true location is inside the area (middle) 
-3.  Outside a specified area when its true location is inside the area (right) 
+1.  A point falls inside a specified area when its true location is outside the area (left), 
+2.  A point falls inside a specified area when its true location is inside the area (middle) 
+3.  A point falls outside a specified area when its true location is inside the area (right) 
+
+[^snapping]: This directional grid snapping can even cause data points to appear in the ocean despite the true location being on land.
 
 ```{python}
 #| echo: false
 #| eval: true
-#| fig-caption: "Three theoretical but possible scenarios where obfuscation of the original point (in green) results in the obscured location ending up (1) inside an area, (2) in the buffered area, or (3) outside the area and the buffered area."
+#| fig-caption: "Three theoretical but possible scenarios where generalisation of the original point (in green) results in the obscured location ending up (1) inside an area, (2) in the buffered area, or (3) outside the area and the buffered area."
 fig,ax = plt.subplots(1,3)
 from shapely.geometry import Point
 
@@ -306,7 +308,7 @@ fig.legend(handles, labels, loc=(0.4,0.2))
 plt.show()
 ```
 
-Thanks to obfuscation, we can't know which of these three scenarios might be true for our individual record!
+Thanks to generalisation, points can appear in places that they actually aren't! When dealing with many species' point locations, this can make it difficult to keep track of which of these three scenarios might affect each generalised species record.
 
 The main takeaway is that obfuscation makes it harder to know that you are accurately capturing all the species in a defined area. In ecological assessment, it's generally better to capture more rather than less because species interact with their broader ecosystems (outside of our human-defined boundaries). Therefore, the goal *we* are trying to achieve by using a buffer is to realistically estimate how many species are influenced by the health of our defined area, not just what has been observed within a pre-defined boundary.
 
@@ -372,7 +374,9 @@ frogs.head(10) # first 10 rows
 
 ### How buffer size affects species detection
 
-Let's consider how different buffer sizes impact our ability to detect sensitive species.  Below, we've created six buffers of increasing size around Mid-Western, with a radius of 10km drawn around each unique point representing the stuttering frog. This isn't a perfect representation of obfuscation---the true location could be anywhere inside 10 km, not directly in the middle of each circle---but it gives an idea. The stuttering frog observations are *just* outside of our area; without a buffer this frog species would go undetected, but with a 30km buffer we would detect several observations. Which should we choose?
+Let's consider how different buffer sizes impact our ability to detect sensitive species.  Below, we've created six buffers of increasing size around Mid-Western, with a grid of 10 km blocks drawn over our map. These generalised points are. The stuttering frog observations are *just* outside of our area; without a buffer this frog species would go undetected, but with a 30km buffer we would detect several observations. Which should we choose?
+
+<!-- The new strategy here is instead of circles around our points, plot the points, then place a 10 km grid over the top. Ideally, the points will align to the grid like-->
 
 ```{python}
 #| warning: false
