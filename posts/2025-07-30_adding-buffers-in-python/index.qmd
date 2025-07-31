@@ -20,7 +20,7 @@ image: obfuscate.png
 freeze: true
 engine: knitr
 jupyter: python3
-draft: false
+draft: true
 editor_options: 
   chunk_output_type: console
 ---
