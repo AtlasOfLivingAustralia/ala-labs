@@ -497,9 +497,9 @@ for i in range(len(ax)):
 plt.show();
 ```
 
-If we are interested in just this species, the best thing to do is to consider the distance of generalisation applied to these data. As we saw in the `generalisationInMetres` column, stuttering frog records are generalised to a distance of 10 km, so a 10 km buffer is probably the best option for our buffer.
+If we are interested in just this species, the best thing to do is to consider the distance of generalisation applied to these data. As we saw in the `generalisationInMetres` column, stuttering frog records are generalised to a distance of 10 km, so a 10 km buffer is probably the best option.
 
-If we are interested in more than one species and there are multiple degrees of generalisation (2 km, 5 km, 10 km, 50 km), then we might need to consider the goal of our species search. Using a large buffer risks capturing too many species --- more than are realistically interacting with our area. In this situation, we might need to consider other factors like topography, river systems, and nutrient gradients might help us determine how big our buffer should practically be.
+If we are interested in more than one species and there are multiple degrees of generalisation (2 km, 5 km, 10 km, 50 km), then we might need to consider the goal of our species search. Using a large buffer risks capturing too many species---more than are realistically interacting with our area. In this situation, we might need to consider other factors like topography, river systems, and nutrient gradients to help us determine how big our buffer should practically be.
 
 # Threatened species in area
 
@@ -550,7 +550,7 @@ occs = galah.atlas_occurrences(
 occs.head(10)  # first 10 rows
 ```
 
-Let's check the `generalisationInMetres` of our data as a starting point again. Records in our area have been generalised to 1 km and 10 km distances.
+Let's once again check the `generalisationInMetres` of our data as a starting point. Our results show that records in our area have been generalised to 1 km and 10 km distances.
 
 <!-- Same as earlier, we just need to make the point to check the data generalisations of our data first -->
 
@@ -731,7 +731,7 @@ plt.show();
 :::{callout-tip collapse="true"}
 ##### Is there an unexpected species your area?
 
-In our example, record locations were generalised to 1 km or 10 km distances. However, it's possible to return species locations generalised to greater distances of 20 km or 50 km. In these situations, a species that lives quite far from our specified area might appear in our query! To ensure species lists are accurate, it's always important to use `generalisationInMetres` to identify these data points, determine whether they are realistic or not, and clean them accordingly!
+In our example, record locations were generalised to 1 km or 10 km distances. However, it's possible to return species locations generalised to greater distances of 50 km. In these situations, a species that lives quite far from our specified area might appear in our query! To ensure species lists are accurate, it's always important to use `generalisationInMetres` to identify these data points, determine whether they are realistic or not, and clean them accordingly!
 
 :::
 
