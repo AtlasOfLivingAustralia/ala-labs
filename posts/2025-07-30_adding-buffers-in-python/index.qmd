@@ -261,11 +261,13 @@ Generalisation of species records is performed in accordance with the state or t
 Alternatively, iNaturalist *randomises* their coordinate locations at a 30km resolution prior to sharing data with the Atlas of Living Australia.
 :::
 
-How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. The *true* location of the point is nearby, but the process of generalisation has moved the point by snapping it to a new location dependent on the a distance of generalisation. Whether the point snaps up or down will depend on which direction the point was rounded[^snapping]. What this means is that it's possible that a given data point falls within any of the following three scenarios:
+How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. The *true* location of the point is nearby[^nearby], but the process of generalisation has moved the point by snapping it to a new location dependent on the a distance of generalisation. Whether the point snaps up or down will depend on which direction the point was rounded[^snapping]. What this means is that it's possible that a given data point falls within any of the following three scenarios:
 
 1.  A point falls inside a specified area when its true location is outside the area (left), 
 2.  A point falls inside a specified area when its true location is inside the area (middle) 
 3.  A point falls outside a specified area when its true location is inside the area (right) 
+
+[^nearby]: *How* nearby is relative to the degree of generalisation, so what we mean by "near" is relative
 
 [^snapping]: This directional grid snapping can even cause data points to appear in the ocean despite the true location being on land.
 
@@ -313,6 +315,13 @@ plt.show()
 Thanks to generalisation, points can appear in places that they actually aren't! When dealing with many species' point locations, this can make it difficult to keep track of which of these three scenarios might affect each generalised species record.
 
 The main takeaway is that obfuscation makes it harder to know that you are accurately capturing all the species in a defined area. In ecological assessment, it's generally better to capture more rather than less because species interact with their broader ecosystems (outside of our human-defined boundaries). Therefore, the goal *we* are trying to achieve by using a buffer is to realistically estimate how many species are influenced by the health of our defined area, not just what has been observed within a pre-defined boundary.
+
+:::{callout-note collapse="true"}
+##### Uncertainty
+
+Things get even more complicated when you consider that the location of every observation has a degree of uncertainty around it. This information, held in `coordinateUncertaintyInMetres`, adds yet another layer of complexity to knowing the *true* location of a given species observation. For many species, this uncertainty reflects the opportunistic nature of an observation (e.g., an organism was observed at a distance before moving somewhere else). For others, this is due to inaccurate measurement or documentation. Whatever the reason, considering uncertainty is another important step---and difficult challenge---for accurate species lists.
+
+:::
 
 # Example: The stuttering frog
 
