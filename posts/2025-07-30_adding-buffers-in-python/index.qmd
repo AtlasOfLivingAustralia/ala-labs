@@ -317,8 +317,7 @@ Thanks to generalisation, points can appear in places that they actually aren't!
 
 The main takeaway is that obfuscation makes it harder to know that you are accurately capturing all the species in a defined area. In ecological assessment, it's generally better to capture more rather than less because species interact with their broader ecosystems (outside of our human-defined boundaries). Therefore, the goal *we* are trying to achieve by using a buffer is to realistically estimate how many species are influenced by the health of our defined area, not just what has been observed within a pre-defined boundary.
 
-:::{callout-note collapse="true"}
-##### Uncertainty
+::: {.callout-note collapse="true" title="Uncertainty"} 
 
 Things get even more complicated when you consider that the location of every observation has a degree of uncertainty around it. This information, held in `coordinateUncertaintyInMetres`, adds yet another layer of complexity to knowing the *true* location of a given species observation. For many species, this uncertainty reflects the opportunistic nature of an observation (e.g., an organism was observed at a distance before moving somewhere else). For others, this is due to inaccurate measurement or documentation. Whatever the reason, considering uncertainty is another important step---and difficult challenge---for accurate species lists.
 
@@ -389,7 +388,7 @@ A good first step is to view the degree of generalisation applied to our stutter
 <!-- We need to mention this as a first step -->
 
 ```{python}
-# group records by `generalisationInMetres`. This should show a table with the number of records using generalisation of 10000
+frogs['generalisationInMetres'].value_counts()
 ```
 
 ### How buffer size affects species detection
@@ -520,8 +519,8 @@ As a final step, let's download and visualise where threatened species have been
 [^bbox]: It's faster to use a bounding box than polygon shape to download records - a box has fewer points than a complicated polygon shape, making for a far simpler query to process!
 
 ```{python}
-# | echo: true
-# | eval: false
+#| echo: true
+#| eval: false
 # make a 10km buffer
 buffer = midwestern_metres["geometry"].buffer(10000)
 gdf_buffers_degrees = buffer.to_crs(4326)
@@ -542,8 +541,8 @@ occs.head(10)  # first 10 rows
 ```
 
 ```{python}
-# | echo: false
-# | eval: true
+#| echo: false
+#| eval: true
 buffer = midwestern_metres["geometry"].buffer(10000)
 gdf_buffers_degrees = buffer.to_crs(4326)
 buffer_10km = shapely.unary_union(gdf_buffers_degrees)
@@ -567,13 +566,13 @@ Let's once again check the `generalisationInMetres` of our data as a starting po
 <!-- Same as earlier, we just need to make the point to check the data generalisations of our data first -->
 
 ```{python}
-# group records by `generalisationInMetres`. I *think* this should show data are either generalised to 1000 or 10000 metres
+occs['generalisationInMetres'].value_counts()
 ```
 
 Next we'll use `show_values()` to download a list of species on the EPBC Act Threatened species list (see the tab below for more information on how to find species list IDs). By adding `all_fields=True`, we can append all original columns of the list, which for conservation lists like this includes status information.
 
-:::{.callout-tip collapse="true"}
-#### How to find species list IDs
+::: {.callout-tip collapse="true" title="How to find species list IDs"}
+
 Search for species lists available in galah using `search_all(lists=True)`. The `species_list_uid` for the EPBC Act Threatened Species list is `dr656`. We can use this information to filter downloads.
 
 ```{python}
@@ -740,8 +739,7 @@ a = ax.set_aspect(aspect='equal')
 plt.show();
 ```
 
-:::{callout-tip collapse="true"}
-##### Is there an unexpected species your area?
+::: {.callout-tip collapse="true" title="Is there an unexpected species your area?"}
 
 In our example, record locations were generalised to 1 km or 10 km distances. However, it's possible to return species locations generalised to greater distances of 50 km. In these situations, a species that lives quite far from our specified area might appear in our query! To ensure species lists are accurate, it's always important to use `generalisationInMetres` to identify these data points, determine whether they are realistic or not, and clean them accordingly!
 
