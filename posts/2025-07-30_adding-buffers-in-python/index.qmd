@@ -85,11 +85,12 @@ For those unfamiliar with Australian geography, the LGA of Mid-Western is locate
 
 ```{r}
 #| echo: false
-#| eval: false
+#| eval: true
 library(reticulate)
 py_require(c("matplotlib"))
 py_require(c("geopandas"))
 py_require(c("galah-python"))
+py_require(c("numpy"))
 py_require(c("natsort"))
 py_require(c("session_info"))
 ```
