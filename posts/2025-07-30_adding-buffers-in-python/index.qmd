@@ -271,44 +271,44 @@ How this affects our ability to know the true location of a species in an area i
 
 [^snapping]: This directional grid snapping can even cause data points to appear in the ocean despite the true location being on land.
 
-<!-- Ok so displaying this using radii got Cam in a tizzy, so instead we need remove the radius and overlay a grid over the top. I think the grid can be a light or faded grey. I guess the important thing here is to choose a large enough grid size to annunciate the point that data points can be moved in or out of an area because of how they are generalised/rounded. Let me know if you have any issues understanding what I mean here. -->
-
 ```{python}
 #| echo: false
 #| eval: true
-#| fig-caption: "Three theoretical but possible scenarios where generalisation of the original point (in green) results in the obscured location ending up (1) inside an area, (2) in the buffered area, or (3) outside the area and the buffered area."
-fig,ax = plt.subplots(1,3)
+#| fig-caption: "Three theoretical but possible scenarios where obfuscation of the original point (in green) results in the obscured location ending up (1) inside an area, (2) in the buffered area, or (3) outside the area and the buffered area."
+import numpy as np
 from shapely.geometry import Point
 
-orig_points = {0: [150.2,-33], 1: [149.9,-32.5], 2: [150.1,-32.7]}
-obf_points = {0: [149.8,-32.8], 1: [149.9,-32.7], 2: [150.5,-32.7]}
-titles = {0: '1', 1: '2', 2: '3'}
+fig,ax = plt.subplots(1,3)
 
-# create buffer around point
-point = gpd.GeoDataFrame({'geometry': Point([150.1,-32.7])}, index=[0]).set_crs(4326)
-point_metres = point.to_crs(3577)
-buffered_point = point_metres['geometry'].buffer(50000)
-buffered_point_degrees = buffered_point.to_crs(4326)
+orig_points = {0: [149.7,-32], 1: [149.9,-32.45], 2: [149.9,-32.9]}
+obf_points = {0: [149.6,-32.15], 1: [150.05,-32.6], 2: [150.05,-33.05]}
+titles = {0: '1', 1: '2', 2: '3'}
 
 for i in range(len(ax)):
 
     # plot initial shape and point
     a = midwestern.plot(ax=ax[i], edgecolor="#292C26", linewidth=2.0, facecolor="None", alpha=1, figsize=(12,6))
 
-    buffered_point_degrees.plot(ax=ax[i], edgecolor=None, linewidth=2.0, facecolor='orange', alpha = 0.15)
-    
     # add demonstration points
-    a = ax[i].plot(orig_points[i][0], orig_points[i][1], 'o', c='black', label='original')
-    a = ax[i].plot(obf_points[i][0], obf_points[i][1], 'o', c='#5A2A57', label='obfuscated', alpha = 0.5)
+    a = ax[i].plot(orig_points[i][0], orig_points[i][1], 'o', c='#5A2A57', label='original')
+    a = ax[i].plot(obf_points[i][0], obf_points[i][1], 'o', c='#d4af37', label='generalised')
     
     # set axis limits and remove numbers for better visualisation
     a = ax[i].set_title(titles[i])
-    a = ax[i].set_ylim([-33.8,-32])
+    a = ax[i].set_ylim([-33.5,-31.8]) # was -32
     a = ax[i].set_xlim([148.7,150.8])
-    a = ax[i].axis('off')
+    a = ax[i].set_xticks(list(np.arange(148.7,150.8,0.45)))
+    a = ax[i].set_yticks(list(np.arange(-33.5,-31.8,0.45)))
+    a = ax[i].set_xticklabels([])  # Remove x-axis ticks
+    a = ax[i].set_yticklabels([])  # Remove y-axis ticks
+    a = ax[i].tick_params(which='major', bottom=False, left=False)
+    a = ax[i].set_axisbelow(True)
+
+    # add grid to show obfuscation
+    a = ax[i].grid(True)
 
 handles, labels = ax[0].get_legend_handles_labels()
-fig.legend(handles, labels, loc=(0.4,0.2))
+a = fig.legend(handles, labels, loc=(0.4,0.15))
 plt.show()
 ```
 
@@ -368,7 +368,7 @@ frogs = galah.atlas_occurrences(
 frogs.head(10) # first 10 rows
 ```
 
-```{python}
+```{python frogs-download}
 #| echo: false
 #| eval: true
 import galah
@@ -388,16 +388,14 @@ A good first step is to view the degree of generalisation applied to our stutter
 <!-- We need to mention this as a first step -->
 
 ```{python}
-# group records by `generalisationInMetres`. This should show a table with one result: 10000
+# group records by `generalisationInMetres`. This should show a table with the number of records using generalisation of 10000
 ```
 
 ### How buffer size affects species detection
 
-Let's consider how different buffer sizes impact our ability to detect sensitive species.  Below, we've created six buffers of increasing size around Mid-Western, then overlayed a grid of 10 km blocks over our map. You'll notice the points have snapped to a corner in our grid. Observations of stuttering frog observations are *just* outside of our area; without a buffer this frog species would go undetected, but with a 30km buffer we would detect several observations. Which should we choose?
+Let's consider how different buffer sizes impact our ability to detect sensitive species.  Below, we've created six buffers of increasing size around Mid-Western, then overlayed a grid of 10 km blocks over our map. You'll notice the points have snapped to a corner in our grid. Observations of stuttering frog observations are *just* outside of Mid-Western; without a buffer this frog species would go undetected, but with a 30km buffer we would detect multiple observations. Which should we choose?
 
-<!-- The new strategy here is instead of circles around our points, plot the points, then place a 10 km grid over the top. Ideally, the points will align to the grid like Cam has suggested they will. The general point to amend here is radius = bad, grid = good-->
-
-```{python}
+```{python main-example}
 #| warning: false
 #| message: false
 #| code-fold: true
@@ -411,22 +409,6 @@ frogs_set_gdf = gpd.GeoDataFrame(
     geometry=gpd.points_from_xy(frogs_set.decimalLongitude,frogs_set.decimalLatitude), 
     crs="EPSG:4326"
 )
-
-# Reproject to CRS that uses metres to add buffer
-frogs_set_gdf_metres = frogs_set_gdf.to_crs(3577)
-
-# add a buffer column to the same dataframe
-frogs_set_gdf_metres['buffer'] = None
-for i,row in frogs_set_gdf_metres.iterrows():
-    frogs_set_gdf_metres.loc[i,'buffer'] = row["geometry"].buffer(frogs_set_gdf_metres.loc[i,'generalisationInMetres'])
-
-# replace `geometry` column with buffered points
-del(frogs_set_gdf_metres['geometry'])
-frogs_set_gdf_metres = frogs_set_gdf_metres.rename(columns={'buffer': 'geometry'})
-
-# define that buffered points are in CRS 3577, then convert back to CRS 4326
-frogs_set_gdf_metres = frogs_set_gdf_metres.set_crs(3577)
-frogs_set_gdf_degrees = frogs_set_gdf_metres.to_crs(4326)
 
 # start plots
 fig,ax = plt.subplots(2,3,figsize=(15,10))
@@ -452,11 +434,6 @@ for length in buffer_lengths:
 for i in range(len(ax)):
     for j in range(len(ax[i])):
 
-        # plot frogs as circles on map for reference
-        a = frogs_set_gdf_degrees.plot(
-            ax=ax[i][j],facecolor='#d4af37',alpha=0.5,linewidth=2.0, edgecolor='#d4af37',label='label'
-        ) 
-
         # if this is the first subplot, there is no buffer, so you only draw the original shape and species counts
         if i == 0 and j == 0:
 
@@ -464,11 +441,26 @@ for i in range(len(ax)):
             a = ax[i][j].set_title("No Buffer",fontsize=14)
             midwestern.plot(ax=ax[i][j],edgecolor = "#292C26", linewidth = 2.0, facecolor = "None")
 
+            # plot frogs as circles on map for reference
+            a = frogs_set_gdf.plot(
+                ax=ax[i][j],facecolor='#d4af37',edgecolor='#d4af37',label='label'
+            ) 
+    
             # get count of frogs in midwestern
-            points = [(x,y) for x,y in zip(frogs_set_gdf_degrees["decimalLongitude"],frogs_set_gdf_degrees["decimalLatitude"]) if shapely.contains_xy(midwestern['geometry'][74],x,y)]
+            points = [(x,y) for x,y in zip(frogs_set_gdf["decimalLongitude"],frogs_set_gdf["decimalLatitude"]) if shapely.contains_xy(midwestern['geometry'][74],x,y)]
             count = len(points)
             
+            # add number of counts to graph for reference
             a = ax[i][j].text(150.2,-31.85,'Count={}'.format(count),fontsize=12,color='#6E260E')
+
+            # draw grid on plot
+            ax[i][j].set_xticks(list(np.arange(148.7,150.8,0.1)))
+            ax[i][j].set_yticks(list(np.arange(-33.7,-31.7,0.1)))
+            ax[i][j].set_xticklabels([])  # Remove x-axis ticks
+            ax[i][j].set_yticklabels([])  # Remove y-axis ticks
+            ax[i][j].tick_params(which='major', bottom=False, left=False)
+            ax[i][j].set_axisbelow(True)
+            ax[i][j].grid()
 
         # else, draw the buffer around the original shape and include species counts
         else:
@@ -476,27 +468,37 @@ for i in range(len(ax)):
             # get buffer 
             buffer = buffer_distances[i+j+extra-1]
             
+            # draw buffer on plot
+            a = ax[i][j].plot(*buffer_shapes[buffer].exterior.xy,c='#358BA5',lw=2.0,label=buffer)
+            
             # set title and plot original shape
             a = ax[i][j].set_title("{} Buffer".format(buffer),fontsize=14)
             midwestern.plot(ax=ax[i][j],edgecolor = "#292C26", linewidth = 2.0, facecolor = "None", alpha = 1)
 
+            # plot frogs as circles on map for reference
+            a = frogs_set_gdf.plot(
+                ax=ax[i][j],facecolor='#d4af37',edgecolor='#d4af37',label='label'
+            ) 
+    
             # get raw number of sensitive species, drop duplicates and records without lat/long
-            points = [(x,y) for x,y in zip(frogs_set_gdf_degrees["decimalLongitude"],frogs_set_gdf_degrees["decimalLatitude"]) if shapely.contains_xy(buffer_shapes[buffer],x,y)]
+            points = [(x,y) for x,y in zip(frogs_set_gdf["decimalLongitude"],frogs_set_gdf["decimalLatitude"]) if shapely.contains_xy(buffer_shapes[buffer],x,y)]
             count = len(points)
             
             # add number of counts to graph for reference
             a = ax[i][j].text(150.2,-31.85,'Count={}'.format(count),fontsize=12,color='#6E260E')
             
-            # draw buffer on plot
-            a = ax[i][j].plot(*buffer_shapes[buffer].exterior.xy,c='#358BA5',lw=2.0,label=buffer)
-                
+            # draw grid on plot
+            ax[i][j].set_xticks(list(np.arange(148.7,150.8,0.1)))
+            ax[i][j].set_yticks(list(np.arange(-33.7,-31.7,0.1))) # -33.75
+            ax[i][j].set_xticklabels([])  # Remove x-axis ticks
+            ax[i][j].set_yticklabels([])  # Remove y-axis ticks
+            ax[i][j].tick_params(which='major', bottom=False, left=False)
+            ax[i][j].set_axisbelow(True)
+            ax[i][j].grid()
+
         # change limits of graph and set whitespace for better looking plot
         a = ax[i][j].set_ylim([-33.75,-31.7])
         a = ax[i][j].set_xlim([148.7,150.8])
-        a = plt.setp(ax[i][j].get_xticklabels(), visible=False)
-        a = plt.setp(ax[i][j].get_xticklines(), visible=False)
-        a = plt.setp(ax[i][j].get_yticklabels(), visible=False)
-        a = plt.setp(ax[i][j].get_yticklines(), visible=False)
         a = ax[i][j].set_aspect('equal')
         a = plt.subplots_adjust(wspace=0, hspace=0.15)
 
@@ -532,7 +534,7 @@ bbox_midwestern = shapely.box(bds[0], bds[1], bds[2], bds[3])
 galah.galah_config(email="<your-email@example.com>")
 occs = galah.atlas_occurrences(
     bbox=bbox_midwestern, 
-    fields=["basic", "generalisationInMetres"]
+    fields=["basic","generalisationInMetres"]
 )
 
 occs.head(10)  # first 10 rows
@@ -552,8 +554,8 @@ bbox_midwestern = shapely.box(bds[0], bds[1], bds[2], bds[3])
 # get all occurrence records within bounding box from the ALA
 galah.galah_config(email="amanda.buyan@csiro.au")
 occs = galah.atlas_occurrences(
-    bbox=bbox_midwestern, 
-    fields=["basic", "generalisationInMetres"]
+    bbox=bbox_midwestern,
+    fields=["basic","generalisationInMetres"]
 )
 
 occs.head(10)  # first 10 rows
