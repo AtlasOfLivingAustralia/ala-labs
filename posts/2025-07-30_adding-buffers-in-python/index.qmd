@@ -1,11 +1,11 @@
 ---
-title: "Add a buffer to a shapefile and account for generalised species locations"
+title: "Add a buffer to a shapefile and account for obfuscated species locations"
 description: |
   Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to add a buffer to a shapefile using {shapely} and {geopandas}. We then demonstrate how data that have been obfuscated (generalised to reduce their precision) may affect the buffer size required to more confidently capture threatened species in the area using {galah-python} and {matplotlib}.
 authors:
   - name: "Amanda Buyan"
   - name: "Dax Kellie"
-date: "2025-07-30"
+date: "2025-08-05"
 title-block-banner: "#B8573E"
 toc: true
 toc-location: left
@@ -49,7 +49,7 @@ library(htmltools)
 [Dax Kellie](https://labs.ala.org.au/people/Kellie_Dax/index.html)  
 
 #### Date
-7 July 2025
+5 August 2025
 
 :::
 
@@ -71,9 +71,9 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 
 Ecological data is often used to understand what species are found in a given location, especially for conservation monitoring and environmental impact assessment prior to land development. A common method for this task is to use a **buffer**, an outward boundary around a given area location. Adding a buffer helps to capture all the species in an area, including those that have been observed just outside the area and probably live there, too.
 
-Choosing a buffer size, however, can be tougher than it seems. Individual organisms move, either over the course of a day or an entire season (e.g. migration, perennial growth), so species' lifecycles and behaviours may determine the size of our final buffer. A more difficult challenge occurs when species are considered sensitive or endangered. These species' exact point locations are often obfuscated (aka their location is made less precise) to keep these species safe. This added imprecision will again affect our final decision on buffer size.
+Choosing a buffer size, however, can be tougher than it seems. Individual organisms move, either over the course of a day or an entire season (e.g. migration, perennial growth), so species' lifecycles and behaviours may determine the size of our final buffer. A more difficult challenge occurs when species are considered sensitive, vulnerable or endangered. These species' exact point locations are often obfuscated (aka their location is made less precise) to keep these species safe. This added imprecision will again affect our final decision on buffer size.
 
-In this post, we'll show how to add a buffer around a shapefile with [{geopandas}](https://geopandas.org/en/stable/), [{shapely}](https://shapely.readthedocs.io/en/stable/) and [{matplotlib}](https://matplotlib.org/). Then we will use [{galah-python}](galah.ala.org.au/Python) to download data of Stuttering frogs (*Mixophyes balbus*) to demonstrate how the size of a buffer can affect the detection of sensitive species in an area.  Lastly, we will use [{scipy}](https://docs.scipy.org/doc/scipy/#) and [{matplotlib}](https://matplotlib.org/) to show the effect of buffers on detecting threatened species in an area.
+In this post, we'll show how to add a buffer around a shapefile with [{geopandas}](https://geopandas.org/en/stable/), [{shapely}](https://shapely.readthedocs.io/en/stable/) and [{matplotlib}](https://matplotlib.org/). Then we will use [{galah-python}](galah.ala.org.au/Python) to download data of Stuttering frogs (*Mixophyes balbus*) to demonstrate how the size of a buffer can affect the detection of threatened species in an area.  Lastly, we will use [{scipy}](https://docs.scipy.org/doc/scipy/#) and [{matplotlib}](https://matplotlib.org/) to show the effect of buffers on detecting threatened species in an area.
 
 # Draw a buffer
 
@@ -85,7 +85,8 @@ For those unfamiliar with Australian geography, the LGA of Mid-Western is locate
 
 ```{r}
 #| echo: false
-#| eval: true
+#| eval: false
+# If you are not using positron, this chunk needs to be `eval: true`
 library(reticulate)
 py_require(c("matplotlib"))
 py_require(c("geopandas"))
@@ -194,7 +195,9 @@ Now that we've drawn our buffer around the Mid-Western LGA, let's discuss how da
 
 # Obfuscation and why it's important for sensitive species
 
-When we talk about a record being **obfuscated**, we mean that the coordinate location of this record has been obscured either by *generalisation* or *randomisation*.  The [Atlas of Living Australia](ala.org.au) *generalises* coordinate locations by reducing the number of decimals in the record's lat/lon coordinates, lowering the point's precision. This figure below illustrates this; as the decimal points are removed, the data appears more 'grid-like' as the data loses resolution.  
+When we talk about a record being **obfuscated**, we mean that the coordinate location of this record has been made less precise either by *generalisation* or *randomisation*.  The [Atlas of Living Australia](ala.org.au) *generalises* coordinate locations by reducing the number of decimals in the record's lat/lon coordinates, lowering the point's precision[^random]. This figure below illustrates this; as the decimal points are removed, the data appears more 'grid-like' as the data loses resolution.  
+
+[^random]: Alternatively, iNaturalist *randomises* their coordinate locations at a 30 km resolution prior to sharing data with the Atlas of Living Australia.
 
 ```{python}
 #| echo: true
@@ -258,24 +261,20 @@ Generalisation of species records is performed in accordance with the state or t
 
 [^witheld]: Some records, if the species is very sensitive, may be witheld altogether.
 
-::: aside
-Alternatively, iNaturalist *randomises* their coordinate locations at a 30km resolution prior to sharing data with the Atlas of Living Australia.
-:::
-
-How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. The *true* location of the point is nearby[^nearby], but the process of generalisation has moved the point by snapping it to a new location dependent on the a distance of generalisation. Whether the point snaps up or down will depend on which direction the point was rounded[^snapping]. What this means is that it's possible that a given data point falls within any of the following three scenarios:
+How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. The *true* location of the point is nearby[^nearby], but the process of generalisation has removed decimal points which seems to "snap" the point to the corner of a grid cell, the size of which depends on the the distance of generalisation. Whether the point snaps up or down will depend on which direction the point was rounded[^snapping]. What this means is that it's possible that a given data point falls within any of the following three scenarios:
 
 1.  A point falls inside a specified area when its true location is outside the area (left), 
 2.  A point falls inside a specified area when its true location is inside the area (middle) 
 3.  A point falls outside a specified area when its true location is inside the area (right) 
 
-[^nearby]: *How* nearby is relative to the degree of generalisation, so what we mean by "near" is relative
+[^nearby]: *How* nearby is relative to the degree of generalisation, so what we mean by "near" varies
 
 [^snapping]: This directional grid snapping can even cause data points to appear in the ocean despite the true location being on land.
 
 ```{python}
 #| echo: false
 #| eval: true
-#| fig-caption: "Three theoretical but possible scenarios where obfuscation of the original point (in green) results in the obscured location ending up (1) inside an area, (2) in the buffered area, or (3) outside the area and the buffered area."
+#| fig-caption: "Three theoretical but possible scenarios where generalisation of the original point (in green) results in the point location ending up (1) inside an area, (2) in the buffered area, or (3) outside the area and the buffered area."
 import numpy as np
 from shapely.geometry import Point
 
@@ -319,7 +318,7 @@ The main takeaway is that obfuscation makes it harder to know that you are accur
 
 ::: {.callout-note collapse="true" title="Uncertainty"} 
 
-Things get even more complicated when you consider that the location of every observation has a degree of uncertainty around it. This information, held in `coordinateUncertaintyInMetres`, adds yet another layer of complexity to knowing the *true* location of a given species observation. For many species, this uncertainty reflects the opportunistic nature of an observation (e.g., an organism was observed at a distance before moving somewhere else). For others, this is due to inaccurate measurement or documentation. Whatever the reason, considering uncertainty is another important step---and difficult challenge---for accurate species lists.
+Things get even more complicated when you consider that the location of every observation has a degree of uncertainty around it. This information, held in `coordinateUncertaintyInMetres`, adds yet another layer of complexity to knowing the *true* location of a given species observation. For many species, this uncertainty reflects the opportunistic nature of an observation (e.g., an organism was observed at a distance before moving somewhere else). For others, this is due to inaccurate measurement or documentation. Whatever the reason, uncertainty is another important aspect---and difficult challenge---to consider when determining which species inhabit an area.
 
 :::
 
@@ -383,9 +382,7 @@ frogs = galah.atlas_occurrences(
 frogs.head(10) # first 10 rows
 ```
 
-A good first step is to view the degree of generalisation applied to our stuttering frog data. Here we can see that all records in our query have been generalised to 10 km.
-
-<!-- We need to mention this as a first step -->
+A good first step is to view the distance of generalisation applied to our stuttering frog data. The result shows us that 25 records have been generalised to 10,000 metres (10 km).
 
 ```{python}
 frogs['generalisationInMetres'].value_counts()
@@ -508,9 +505,9 @@ for i in range(len(ax)):
 plt.show();
 ```
 
-If we are interested in just this species, the best thing to do is to consider the distance of generalisation applied to these data. As we saw in the `generalisationInMetres` column, stuttering frog records are generalised to a distance of 10 km, so a 10 km buffer is probably the best option.
+If we are interested in just this species, the best thing to do is to consider the distance of generalisation applied to these data. As we saw above in the `generalisationInMetres` column, stuttering frog records are generalised to a distance of 10 km, so a 10 km buffer is probably the best option.
 
-If we are interested in more than one species and there are multiple degrees of generalisation (2 km, 5 km, 10 km, 50 km), then we might need to consider the goal of our species search. Using a large buffer risks capturing too many species---more than are realistically interacting with our area. In this situation, we might need to consider other factors like topography, river systems, and nutrient gradients to help us determine how big our buffer should practically be.
+If we are interested in more than one species and there are multiple degrees of generalisation (1 km, 10 km, 50 km), then we might need to think about the goal of our species search. Using a large buffer risks capturing too many species---more than are realistically interacting with our area. Considering other factors like topography, river systems, and nutrient gradients can help us determine how big our buffer should practically be.
 
 # Threatened species in area
 
@@ -739,7 +736,7 @@ a = ax.set_aspect(aspect='equal')
 plt.show();
 ```
 
-::: {.callout-tip collapse="true" title="Is there an unexpected species your area?"}
+::: {.callout-tip collapse="true" title="Is there an unexpected species in your area?"}
 
 In our example, record locations were generalised to 1 km or 10 km distances. However, it's possible to return species locations generalised to greater distances of 50 km. In these situations, a species that lives quite far from our specified area might appear in our query! To ensure species lists are accurate, it's always important to use `generalisationInMetres` to identify these data points, determine whether they are realistic or not, and clean them accordingly!
 
@@ -747,7 +744,7 @@ In our example, record locations were generalised to 1 km or 10 km distances. Ho
 
 # Final thoughts
 
-We hope this post has helped you understand how to draw buffers around a shape, as well as the importance of considering buffer size when determining sensitive/threatened species in an area. Ultimately, buffer size will depend on the question we are trying to answer, whether that's for research, monitoring, conservation or environmental impact assessment prior to development.
+We hope this post has helped you understand how to draw buffers around a shape, as well as the importance of considering buffer size when determining threatened species in an area. Ultimately, buffer size will depend on the question we are trying to answer, whether that's for research, monitoring, conservation or environmental impact assessment prior to development.
 
 For other Python posts, check out [our beginner’s guide to map species observations](https://labs.ala.org.au/posts/2023-12-18_beginners-guide-make-a-map/) or see [how to cross reference a species list with a conservation list](https://labs.ala.org.au/posts/2024-02-12_species-lists/).
 
