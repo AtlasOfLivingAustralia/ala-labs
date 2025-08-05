@@ -1,7 +1,7 @@
 ---
 title: "Add a buffer to a shapefile and account for obfuscated species locations"
 description: |
-  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to add a buffer to a shapefile using {shapely} and {geopandas}. We then demonstrate how data that have been obfuscated (generalised to reduce their precision) may affect the buffer size required to more confidently capture threatened species in the area using {galah-python} and {matplotlib}.
+  Knowing what species have been observed in a local area is a regular task for ecosystem management. Here we show how to add a buffer to a shapefile using {shapely} and {geopandas}. We then demonstrate how data that have been obfuscated (i.e. their location has been made less precise) may affect the buffer size required to more confidently capture threatened species in the area using {galah-python} and {matplotlib}.
 authors:
   - name: "Amanda Buyan"
   - name: "Dax Kellie"

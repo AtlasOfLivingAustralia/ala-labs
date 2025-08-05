@@ -16,6 +16,7 @@ website:
     card-style: summary_large_image
   site-url: https://labs.ala.org.au/
   favicon: images/favicon.ico
+  draft-mode: unlinked
   navbar:
     background: "#222322"
     foreground: "#FFFFFF"
