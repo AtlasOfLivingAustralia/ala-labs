@@ -191,7 +191,7 @@ a = ax.axis('off') # remove axis to make plot look prettier
 plt.show();
 ```
 
-Now that we've drawn our buffer around the Mid-Western LGA, let's discuss how data obfuscation of sensitive species data might impact our decision about buffer size.
+Now that we've drawn our buffer around the Mid-Western LGA, let's discuss how data obfuscation of sensitive/threatened species data might impact our decision about buffer size.
 
 # Obfuscation and why it's important for sensitive species
 
@@ -261,7 +261,7 @@ Generalisation of species records is performed in accordance with the state or t
 
 [^witheld]: Some records, if the species is very sensitive, may be witheld altogether.
 
-How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. The *true* location of the point is nearby[^nearby], but the process of generalisation has removed decimal points which seems to "snap" the point to the corner of a grid cell, the size of which depends on the the distance of generalisation. Whether the point snaps up or down will depend on which direction the point was rounded[^snapping]. What this means is that it's possible that a given data point falls within any of the following three scenarios:
+How this affects our ability to know the true location of a species in an area is illustrated in the diagram below. The *true* location of the point is nearby[^nearby], but the process of generalisation has removed coordinate decimal points. The effect appears as points that seem to "snap" to the corner of a grid cell, the size of which depends on the the distance of generalisation [^snapping]. When these points move to their new generalised locations, any of the following three scenarios are possible:
 
 1.  A point falls inside a specified area when its true location is outside the area (left), 
 2.  A point falls inside a specified area when its true location is inside the area (middle) 
@@ -269,7 +269,7 @@ How this affects our ability to know the true location of a species in an area i
 
 [^nearby]: *How* nearby is relative to the degree of generalisation, so what we mean by "near" varies
 
-[^snapping]: This directional grid snapping can even cause data points to appear in the ocean despite the true location being on land.
+[^snapping]: All points within the same grid cell will snap to the same corner regardless of where they sit within the grid cell. In Australia, this is the north west corner. In Brazil it's north east corner, in China it's south west corner and in Europe it's south east corner. For more info on the methods of obfuscation and generalisation, see [this online book on current best practices by Arthur Chapman](https://docs.gbif.org/sensitive-species-best-practices/master/en/#s-generalization).
 
 ```{python}
 #| echo: false
@@ -312,7 +312,9 @@ a = fig.legend(handles, labels, loc=(0.4,0.15))
 plt.show()
 ```
 
-Thanks to generalisation, points can appear in places that they actually aren't! When dealing with many species' point locations, this can make it difficult to keep track of which of these three scenarios might affect each generalised species record.
+Thanks to generalisation, points can appear in places that they actually aren't[^ocean]! When dealing with many species' point locations, this can make it difficult to keep track of which of these three scenarios might affect each generalised species record.
+
+[^ocean]: Generalising data points is good because it makes it very difficult know the specific location of an observation when access to this information should be restricted for some reason (i.e., endangered, subject to poaching or misuse). However, it can also make data more difficult to work with because data points are shifted to new locations. In some cases, it can even cause data points to appear in the ocean despite the true location being on land!
 
 The main takeaway is that obfuscation makes it harder to know that you are accurately capturing all the species in a defined area. In ecological assessment, it's generally better to capture more rather than less because species interact with their broader ecosystems (outside of our human-defined boundaries). Therefore, the goal *we* are trying to achieve by using a buffer is to realistically estimate how many species are influenced by the health of our defined area, not just what has been observed within a pre-defined boundary.
 
@@ -324,7 +326,7 @@ Things get even more complicated when you consider that the location of every ob
 
 # Example: The stuttering frog
 
-Let's see an example of how buffer size affects our ability to detect sensitive species in our area of interest.
+Let's see an example of how buffer size affects our ability to detect a threatened species in our area of interest.
 
 The stuttering frog (*Mixophyes balbus*) is a large Australian species of frog that inhabits temperate, sub-tropical rainforest and wet sclerophyll forest.  They have a brown back and a yellow underbelly, with a light blue iris that diffuses into gold above the pupil.  Their call is a "kook kook kook kra-a-ak kruk kruk", which lasts 1-2 seconds[^wikipedia].
 
@@ -390,7 +392,7 @@ frogs['generalisationInMetres'].value_counts()
 
 ### How buffer size affects species detection
 
-Let's consider how different buffer sizes impact our ability to detect sensitive species.  Below, we've created six buffers of increasing size around Mid-Western, then overlayed a grid of 10 km blocks over our map. You'll notice the points have snapped to a corner in our grid. Observations of stuttering frog observations are *just* outside of Mid-Western; without a buffer this frog species would go undetected, but with a 30km buffer we would detect multiple observations. Which should we choose?
+Let's consider how different buffer sizes impact our ability to detect threatened species.  Below, we've created six buffers of increasing size around Mid-Western, then overlayed a grid of 10 km blocks over our map. You'll notice the points have snapped to a corner in our grid. Observations of stuttering frog observations are *just* outside of Mid-Western; without a buffer this frog species would go undetected, but with a 30km buffer we would detect multiple observations. Which should we choose?
 
 ```{python main-example}
 #| warning: false
@@ -477,7 +479,7 @@ for i in range(len(ax)):
                 ax=ax[i][j],facecolor='#d4af37',edgecolor='#d4af37',label='label'
             ) 
     
-            # get raw number of sensitive species, drop duplicates and records without lat/long
+            # get raw number of threatened species, drop duplicates and records without lat/long
             points = [(x,y) for x,y in zip(frogs_set_gdf["decimalLongitude"],frogs_set_gdf["decimalLatitude"]) if shapely.contains_xy(buffer_shapes[buffer],x,y)]
             count = len(points)
             
@@ -511,7 +513,7 @@ If we are interested in more than one species and there are multiple degrees of 
 
 # Threatened species in area
 
-As a final step, let's download and visualise where threatened species have been observed in our buffered area on a map. To start, let's download occurrence records in our area with {galah-python}, with a 10 km buffer around our area (which seems reasonable given our example above). To download records, we'll once again create a buffer around Mid-Western, then use the bounding box around this area to download occurrence records using `atlas_occurrences()`[^bbox]. We'll also add the `generalisationInMetres` column to our query again.
+As a final step, let's download and visualise where threatened species that have been observed in our buffered area on a map. To start, let's download occurrence records in our area with {galah-python}, with a 10 km buffer around our area (which seems reasonable given our example above). To download records, we'll once again create a buffer around Mid-Western, then use the bounding box around this area to download occurrence records using `atlas_occurrences()`[^bbox]. We'll also add the `generalisationInMetres` column to our query again.
 
 [^bbox]: It's faster to use a bounding box than polygon shape to download records - a box has fewer points than a complicated polygon shape, making for a far simpler query to process!
 
