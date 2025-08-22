@@ -68,7 +68,7 @@ Prepared by [Olivia Torresan](https://labs.ala.org.au/about/Torresan_Olivia/)
 ::: paper-main-column
 Wetlands are some of the most ecologically diverse and productive ecosystems on the planet. They help provide food, filter water, protect from floods, sequester carbon, and even provide timber for construction. However, many wetlands in Australia have degraded or have been drained for development.
 
-As our appreciation grows of the importance of wetlands, the challenge also grows to identify suitable areas and key species to plant for successful restoration. This challenge is especially pressing in regions like the [Greater Barrier Reef catchment area](https://www.reefplan.qld.gov.au/reef-regions) which supports the health of its neighbouring, World Heritage listed coral reef.
+As our appreciation grows of the importance of wetlands, the challenge also grows to identify suitable areas and key species to plant for successful restoration. This challenge is especially pressing in regions like the [Greater Barrier Reef catchment area](https://www.reefplan.qld.gov.au/reef-regions) which supports the health of its neighbouring, World Heritage-listed coral reef.
 
 This study aimed to address this problem by identifying suitable tree species able to be planted in existing or potential wetland regions across Australia, considering their differences in climate, soil and water availability. Areas with high development rates or agricultural versatility were removed, as these were considered generally undesirable to restore. Suitable tree species were identified using water-tolerance trait and occurrence data, retrieved from the ALA.
 
