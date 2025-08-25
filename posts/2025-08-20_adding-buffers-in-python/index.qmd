@@ -518,7 +518,7 @@ If we are interested in more than one species and there are multiple degrees of 
 
 # Threatened species in area
 
-As a final step, let's download and visualise where threatened species that have been observed in our buffered area on a map. To start, let's download occurrence records in our area with {galah-python}, with a 10 km buffer around our area (which seems reasonable given our example above). To download records, we'll once again create a buffer around Mid-Western, then use the bounding box around this area to download occurrence records using `atlas_occurrences()`[^bbox]. We'll also add the `generalisationInMetres` column to our query again.
+As a final step, let's download and visualise where threatened species have been observed in our buffered area on a map. To start, let's download occurrence records in our area with {galah-python}, with a 10 km buffer around our area (which seems reasonable given our example above). To download records, we'll once again create a buffer around Mid-Western, then use the bounding box around this area to download occurrence records using `atlas_occurrences()`[^bbox]. We'll also add the `generalisationInMetres` column to our query again.
 
 [^bbox]: It's faster to use a bounding box than polygon shape to download records - a box has fewer points than a complicated polygon shape, making for a far simpler query to process!
 
@@ -745,7 +745,7 @@ plt.show();
 
 ::: {.callout-tip collapse="true" title="Is there an unexpected species in your area?"}
 
-In our example, record locations were generalised to 1 km or 10 km distances. However, it's possible to return species locations generalised to greater distances of 50 km. In these situations, a species that lives quite far from our specified area might appear in our query! To ensure species lists are accurate, it's always important to use `generalisationInMetres` to identify these data points, determine whether they are realistic or not, and clean them accordingly!
+In our example, record locations were generalised to 1 km or 10 km distances. However, it's possible to return species locations generalised to greater distances of 50 km. In these situations, a species that lives quite far from our specified area might appear in our query! To ensure species lists are accurate, it's always important to use `generalisationInMetres` to identify these data points, determine whether they are realistic to include or not, and clean them accordingly!
 
 :::
 
