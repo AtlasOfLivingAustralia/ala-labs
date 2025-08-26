@@ -353,9 +353,9 @@ Right: [*Mixophyes balbus* (lachlan_harriman CC-BY-NC 4.0 (Int))](https://biocac
 
 ### Download data
 
-Let's download occurrence records of stuttering frogs in a bounding box that encompasses an area slightly larger than the Mid-Western LGA[^bbox]. We will also include a column with the distance each record's location has been obfuscated, `generalisationInMetres`.
+Let's download occurrence records of stuttering frogs in a bounding box that encompasses an area slightly larger than the Mid-Western LGA[^bbox-filter]. We will also include a column with the distance each record's location has been obfuscated, `generalisationInMetres`.
 
-[^bbox]: Downloading all occurrence records using a bounding box *then* filtering the records to fit a shapefile can be a quicker way to subset records (rather than waiting for the API to process a more complex shapefile polygon shape). You can find a more in-depth article on this [here](https://galah.ala.org.au/Python/galah_user_guide/Spatial_Filtering.html#spatial-filtering).
+[^bbox-filter]: Downloading all occurrence records using a bounding box *then* filtering the records to fit a shapefile can be a quicker way to subset records (rather than waiting for the API to process a more complex shapefile polygon shape). You can find a more in-depth article on this [here](https://galah.ala.org.au/Python/galah_user_guide/Spatial_Filtering.html#spatial-filtering).
 
 
 ```{python}
