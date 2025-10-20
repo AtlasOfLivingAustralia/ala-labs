@@ -1,0 +1,50 @@
+---
+title: "Olivia Torresan"
+include-after-body: _footer.html
+---
+
+```{r, include=FALSE}
+library(htmltools)
+library(here)
+source(here("R", "functions.R"))
+```
+
+### {{< fa circle-user >}} Bio 
+
+:::{.bio-row}
+:::{.bio-column-right}
+
+```{r out.width='275px', out.extra='style="display:block; margin-left:auto; margin-right:auto; clip-path: circle();"'}
+#| echo: false
+knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/olivia.jpg")
+```
+:::
+
+:::{.bio-column-left}
+Olivia is a graduate from the Australian National University (ANU), acquiring an interdisciplinary double degree in philosophy and natural resource management. At the ALA, she works as a support officer with a primary focus on monitoring the research impact of the Atlas. She is passionate about accessibility, environmental justice and diversity in STEMM.
+:::
+:::
+
+:::{.column-body style="margin-top:-20px;"}
+```{r}
+#| echo: false
+
+tags$div(class = "row", style = "display: flex;",
+         
+create_button(
+  icon = "fab fa-linkedin-in fa-2x",
+  url = "https://www.linkedin.com/in/olivia-torresan-0618931a3/"
+)
+)
+```
+:::
+
+
+### {{< fa newspaper >}} Posts 
+
+[Show seasonal species trends using a ridgeline plot](https://labs.ala.org.au/posts/2024-05-10_ridgeline-plots/)<br>
+*Displaying ecological trends of many species or groups at once can sometimes appear messy or crowded. In this post we show how ridgeline plots are a useful way to show trends in seasonality by displaying observations of migratory bird species over the year using {ggridges}.*
+
+[Counting points in multipolygon shapefiles for choropleth mapping](https://labs.ala.org.au/posts/2023-01-12_counting-points-in-shapefiles/)<br>
+*Choropleth maps are an excellent way to visualise numbers of observations in each region. When using point data, calculating the number of points in each polygon can be difficult when using shapefiles. Here we demonstrate how to extract and summarise the number of points in each polygon within a shapefile to create a choropleth map.*
+

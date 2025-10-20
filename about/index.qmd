@@ -63,12 +63,6 @@ create_team_card(
   text = "Data Analyst"
 ),
 create_team_card(
-  person_page = "Torresan_Olivia/index.html",
-  img_src = "../images/people/olivia.jpg",
-  name = "Olivia Torresan",
-  text = "Support Officer"
-),
-create_team_card(
   person_page = "Seers_Juliet/index.html",
   img_src = "../images/people/juliet.jpg",
   name = "Juliet Seers",

@@ -40,3 +40,5 @@ posts/2023-01-12_counting-points-in-shapefiles/data
 /venv
 /.venv
 /.vscode
+
+**/*.quarto_ipynb
