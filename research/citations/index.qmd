@@ -9,6 +9,8 @@ format:
     include-after-body: _footer.html
     self-contained: true
 freeze: true
+editor_options: 
+  chunk_output_type: console
 ---
 :::{.column-page style="font-size:.9rem;"}
 ```{r}
@@ -19,7 +21,7 @@ freeze: true
 
 # data is all ALA used or ALA cited papers, exported from Zotero library
 
-df <- here::here("research", "data", "2025-05-20_publications.csv") |>
+df <- here::here("research", "data", "2025-12-03_ala-publications.csv") |>
       readr::read_csv(show_col_types = FALSE) |>
       janitor::clean_names() |>
       dplyr::filter(item_type == "journalArticle") |>
