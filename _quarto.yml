@@ -33,8 +33,6 @@ website:
         text: "Posts"
       - text: "Research"
         menu:
-        - href: research/highlights/index.qmd
-          text: "Highlights"
         - href: research/citations/index.qmd
           text: "All citations"
       - href: software/index.qmd
