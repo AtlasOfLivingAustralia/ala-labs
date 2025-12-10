@@ -1,5 +1,11 @@
 
 - tiles:
+    - title: Tree rings
+      author: Shandiya Balasubramaniam
+      subtitle: R dataviz
+      href: https://www.linkedin.com/posts/atlas-of-living-australia_hope-you-had-an-unbe-leafable-national-tree-activity-7355748946884907009-4osv?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAABfq3TIBPvhh30MifPzpn_sEyAbgDux27LM
+      code: https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2025-07-31_national_tree_day/tree_rings.R
+      thumbnail: images/tree_rings.png
     - title: World Rainforest Day
       author: Dax Kellie
       subtitle: R dataviz
@@ -30,6 +36,12 @@
       href: https://www.linkedin.com/posts/atlas-of-living-australia_rstats-dataviz-activity-7242034661760139264-O60K?utm_source=share&utm_medium=member_desktop
       code: https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2024-09-10_animalia/bubble-chart.R
       thumbnail: images/bubbles_animalia_logo.png
+    - title: National Honey Bee Day
+      author: Dax Kellie
+      subtitle: R dataviz
+      href: https://www.linkedin.com/posts/atlas-of-living-australia_nationalhoneybeeday-nationalscienceweek-rstats-activity-7230332550156574720-uPpp?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAABfq3TIBPvhh30MifPzpn_sEyAbgDux27LM
+      code: https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2024-08-06_bee-circlepack/blue-banded-bee.R
+      thumbnail: images/blue-banded-bee.png
     - title: Invasive species
       author: Johann Wagner, Rob Lanfear
       subtitle: Interactive Shiny app
