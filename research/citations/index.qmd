@@ -16,17 +16,25 @@ editor_options:
 ```{r}
 #| echo: false
 #| warning: false
+#| message: false
 #| error: false
 #| column: page
 
 # data is all ALA used or ALA cited papers, exported from Zotero library
 
+library(dplyr)
+library(lubridate)
+
 df <- here::here("research", "data", "2025-12-03_ala-publications.csv") |>
-      readr::read_csv(show_col_types = FALSE) |>
-      janitor::clean_names() |>
-      dplyr::filter(item_type == "journalArticle") |>
-      dplyr::select(author, publication_year, title, publication_title, doi, date_added) |>
-      dplyr::arrange(desc(date_added))
+  readr::read_csv(show_col_types = FALSE) |>
+  janitor::clean_names() |>
+  filter(item_type == "journalArticle") |>
+  mutate(
+    date_formatted = parse_date_time(date, orders = c("ymd", "ym", "y")) |> as_date()
+  ) |> 
+  arrange(desc(date_formatted)) |>
+  select(author, publication_year, title, publication_title, doi, date_added, date_formatted)
+
 
 clean_author_names <- function(x){
   lapply(
