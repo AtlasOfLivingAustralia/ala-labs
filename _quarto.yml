@@ -63,7 +63,8 @@ format:
     linkcolor: "#B8573E"
     include-before-body: _fathom.html
 
-freeze: true
+execute:
+  freeze: auto
 
 
 

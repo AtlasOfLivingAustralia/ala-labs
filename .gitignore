@@ -36,6 +36,9 @@ posts/2023-01-12_counting-points-in-shapefiles/data
 /.quarto/
 /.luarc.json
 
+# output files
+/_site/
+
 # python virtual env files
 /venv
 /.venv
