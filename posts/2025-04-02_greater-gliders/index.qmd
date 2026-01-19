@@ -90,6 +90,7 @@ library(galah)
 library(tidyverse)
 library(tidymodels) 
 library(tidysdm) # devtools::install_github("EvolEcolGroup/tidysdm")
+library(ranger)
 library(terra)
 library(tidyterra)
 library(here)
@@ -347,21 +348,22 @@ Next we'll download tree cover data. This tree cover raster layer contains satel
 
 Spatial data are held on the [Global Land Analysis and Discovery website](https://glad.umd.edu/). Tree cover data files are divided in tiles of 10 x 10 latitude/longitude. Because our study area crosses over two tiles (`30S_150` and `30S_140`), we will need to download and stitch together two rasters. We can then crop them down to our specified area.
 
-To download the files, go to the [global 2010 treecover dataset](https://glad.umd.edu/dataset/global-2010-tree-cover-30-m) --\> click on the url link under the **Data Links** subheading near the bottom of the page --\> click on the relevant data links to download. The two file names we are interested in are: `treecover2010_30S_140E.tif` and `treecover2010_30S_150E.tif`. Save these files in your local working directory.
+**2026 UPDATE: See the box below** ~~To download the files, go to the [global 2010 treecover dataset](https://glad.umd.edu/dataset/global-2010-tree-cover-30-m) --\> click on the url link under the **Data Links** subheading near the bottom of the page --\> click on the relevant data links to download. The two file names we are interested in are: `treecover2010_30S_140E.tif` and `treecover2010_30S_150E.tif`. Save these files in your local working directory.~~
 
-<details>
+:::{.callout-warning}
 
-<summary>Use code to download</summary>
+##### Treecover dataset webpage "Forbidden"
 
-Alternatively, we can use the following code chunk to download files:
+Navigating to the link above to download data returns a "Forbidden" page as of 12 Jan, 2026. I have contacted GLAD to ask if they might amend access to this page. In the meantime, for the sake of reproducibility, I have made my local version of these two layers available for download.
 
-```{r}
-#| eval: false
-download.file("https://glad.umd.edu/Potapov/TCC_2010/treecover2010_30S_140E.tif", destfile="treecover2010_30S_140E.tif")
-download.file("https://glad.umd.edu/Potapov/TCC_2010/treecover2010_30S_150E.tif", destfile="treecover2010_30S_150E.tif")
-```
+{{< downloadthis ../data/tree-cover/treecover2010_30S_150E.tif label="Download tree_cover_150" icon=database-fill-down type=info class=data-button >}}
 
-</details>
+{{< downloadthis ../data/tree-cover/treecover2010_30S_140E.tif label="Download tree_cover_140" icon=database-fill-down type=info class=data-button >}}
+
+[Data citation: Hansen, M.C., Potapov, P.V., Moore, R., Hancher, M., Turubanova, S.A., Tyukavina, A., Thau, D., Stehman, S.V., Goetz, S.J., Loveland, T.R., Kommareddy, A., Egorov, A., Chini, L., Justice, C.O., and Townshend, J.R.G., 2013, High-Resolution Global Maps of 21st-Century Forest Cover Change: Science, v. 342, no. 6160, p. 850-853, at
+http://www.sciencemag.org/content/342/6160/850.abstract.]{style="font-size:.7rem;"}
+
+:::
 
 Let's load our files into R as rasters.
 
@@ -649,13 +651,16 @@ fire_extent_cropped <- fire_extent_cropped |>
   terra::crop(bbox_ext)
 ```
 
-We'll now mask out the ocean like we did for other layers.
+We'll now mask out the ocean and rename the layer like we did for other layers.
 
 ```{r}
 #| warning: false
 # Remove ocean
 fire_extent_cropped <- fire_extent_cropped |>
     terra::mask(aus)
+
+# Rename for simplicity
+names(fire_extent_cropped) <- "fire_extent"
 
 fire_extent_cropped
 ```
@@ -1275,7 +1280,7 @@ model_profile(test,
 
 Overall, our results seem to show that fire does have an effect, but it's a relatively small effect on greater glider occurrences.
 
-Here we can see a few things:
+We can also more clearly see a few additional things:
 
 -   Tree cover and elevation are excellent predictors of greater gliders, which makes sense given they live in trees in alpine regions.
 -   The negative estimate of `fire_period` suggests that there are more records of greater gliders after the fires than before[^afterfires]. This is probably due to the growing number of records each year in the ALA (though the effect is relatively small).
