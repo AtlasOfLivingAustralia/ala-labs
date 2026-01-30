@@ -1,0 +1,42 @@
+/* This must remain at the top of this file.                 */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.15rem
+  background-color: #232323;
+}
+
+.img-fluid {
+  border-radius: 18px;
+}
+
+/* Media query for mobile devices */
+@media only screen and (max-width: 600px) {
+  p {
+    font-size: 0.7rem;
+  }
+  /* unordered lists */
+  ul {
+    font-size: 0.6rem;
+    padding-left: 1em;
+  }
+
+  /* ordered lists */
+  ol {
+    font-size: 0.7rem;
+    padding-left: 1em;
+  }
+
+  /* list items */
+  li {
+    font-size: 0.6rem;
+    line-height: 1.2;
+  }
+}
+
+.img-fluid {
+  border-radius: 24px;
+}

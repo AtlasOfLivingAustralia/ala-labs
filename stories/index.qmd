@@ -1,0 +1,57 @@
+---
+# pagetitle: Story
+title: "Mareeba yo"
+subtitle: Scroll through the story of this artwork and the data that is interwoven through it.
+image: "images/pobblebonk.svg"
+execute:
+  echo: false
+format: 
+  closeread-html:
+    mainfont: Roboto
+    css: [style.css, ../theme.css, ../custom_theme.scss]
+    fontsize: 1.2rem
+    backgroundcolor: "#232323"
+    fontcolor: "#e2e2e2"
+    # remove-header-space: true
+    cr-style:
+      narrative-background-color-overlay: "rgb(35, 35, 35)"
+      narrative-font-size: 1.15rem
+      narrative-text-color-overlay: "#e2e2e2"
+      narrative-background-color-sidebar: "#232323"
+      narrative-text-color-sidebar: "#e2e2e2"
+      section-background-color: "#232323"
+      narrative-overlay-max-width: "600px"
+    # this include-in-header is not inherited from the project _quarto.yml,
+    # likely because the format is different
+    include-in-header:
+      - ../_fathom.html
+title-block-banner: "#B8573E"
+---
+
+:::{.column-page}
+Aboriginal and Torres Straight Islander People use art and stories to communicate knowledge, passed over tens of thousands of years, about Country and organisms' connection through it. Often art and stories use to communicate this knowledge capture aspects that aren't documented or recorded in any other place, yet they carry glimpses of the past, a view of our present, and even predictions for the future.
+
+How do these stories overlap with data (primarily collected and stored using Western means)? Do the records stored in infrastructures like the Atlas of Living Australia reflect or contrast traditional knowledge of a given ecosystem? In this artwork, produced by Mama Gullara McInnes and Gullara McInnes, they 
+
+<br>
+:::
+
+::::{.cr-section}
+
+Skiers and riders, you’ve all seen these trail maps —
+they're essential for navigating the mountain, finding the fastest lift, or planning your next run.
+@cr-southface
+
+This map,
+painted by the legendary [James Niehues](https://en.wikipedia.org/wiki/James_Niehues),
+shows the [**South Face**]{style="color: #FFC857;"} of Big Sky, Montana, 🇺🇸.
+
+But have you ever wondered how common south-facing slopes are?
+In other words, do most ski trails in this hemisphere favor [**southern**]{style="color: #FFC857;"} aspects,
+or are they more often found on the [**north**]{style="color: #36B37E;"} side of the mountain?
+@cr-southface
+
+:::{#cr-southface}
+![](https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/refs/heads/main/images/dataviz/choropleth_ggnewscale.png)
+:::
+::::
