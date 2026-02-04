@@ -91,6 +91,8 @@ library(tidyverse)
 library(tidymodels) 
 library(tidysdm) # devtools::install_github("EvolEcolGroup/tidysdm")
 library(ranger)
+library(dtplyr)
+library(data.table)
 library(terra)
 library(tidyterra)
 library(here)
@@ -560,7 +562,7 @@ fire_extent_cropped <- rast(here("posts",
                          "fire_extent",
                          "cvmsre_NSW_20192020_ag1l0.tif"))
 
-# fire_extent <- rast(here("posts", "2025-02-07_greater-gliders", "cvmsre_NSW_20192020_ag1l0.tif"))
+# fire_extent <- rast(here("posts", "2025-04-02_greater-gliders", "fesmimgtif", "cvmsre_NSW_20192020_ag1l0.tif"))
 ```
 
 ```{r}
@@ -701,20 +703,21 @@ If you are interested, the `fire_extent` dataset categorises fire severity using
 
 For simplicity, let's recode `fire_extent` to whether an area is burnt or unburnt and save this info in a new column `burnt`. We'll use a dummy variable to make our results easier to interpret where burnt is `1` and unburnt is `-1`. Then we'll rename the layer.
 
+Even after cropping, `fire_extent_cropped` is still massive; big enough that even simple operations like adding/editing a column can max out R's available memory and cause an error. To avoid this, we'll first run `gc()` to reduce R's used memory.
+
 ```{r}
+gc() # clear memory before running
+
 burnt_cropped <- fire_extent_cropped |>
   mutate(
     # make `burnt` column
     burnt = case_when(
-      fire_extent >= 1 ~ 1, # burnt
-      fire_extent == 0 ~ -1, # unburnt
-      .default = NA_integer_
+      fire_extent >= 1 ~ 1,   # burnt
+      fire_extent == 0 ~ -1,  # unburnt
+      .default = as.numeric(NA_integer_) # add NAs with correct class
     )
   ) |>
-  select(-fire_extent) # remove fire_extent column
-
-# Rename for simplicity
-names(burnt_cropped) <- "burnt"
+  select(-fire_extent)        # remove fire_extent column
 
 burnt_cropped
 ```
@@ -734,6 +737,7 @@ Let's resample each layer to match the resolution of `elevation_aligned` using `
 tree_cover <- terra::resample(tree_cover, elevation_aligned)
 temp <- terra::resample(temp, elevation_aligned)
 precip <- terra::resample(precip, elevation_aligned)
+gc() # clear memory before running
 burnt <- terra::resample(burnt_cropped, elevation_aligned)
 ```
 
