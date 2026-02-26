@@ -552,6 +552,7 @@ Whichever method you've followed, you will end up with very similar datasets con
 ##### galah
 
 ```{python}
+#| code-fold: true
 import itables
 from IPython.display import HTML, display
 html = itables.to_html_datatable(threatened_status)
@@ -561,6 +562,7 @@ HTML(html)
 ##### Shapefile + list
 
 ```{python}
+#| code-fold: true
 import itables
 from IPython.display import HTML, display
 html = itables.to_html_datatable(threatened_clean)
