@@ -148,6 +148,7 @@ p = (
         size=20 # 10
     )
     + theme_void()
+    + coord_fixed()
 )
 
 # show plot
@@ -614,11 +615,12 @@ bar_status = (
          y = "Number of species") 
   + scale_fill_manual(values = ['#ab423f', '#cd826d', '#ebc09e'],
                       labels = ["Vulnerable", "Endangered", "Critically Endangered"]) 
+  + theme_classic() # theme_minimal
   + theme(
         plot_title = element_text(fontproperties=prop, size = 140),
-        axis_title_x = element_text(fontproperties=prop, size = 10, vjust = -0.1),
+        axis_title_x = element_text(fontproperties=prop, size = 10, vjust = -0.1), #-0.1
         axis_title_y = element_text(angle = 90, fontproperties=prop, size = 10, hjust = -.1),
-        axis_text_x = element_text(fontproperties=prop, size = 8, vjust = -.1),
+        axis_text_x = element_text(fontproperties=prop, size = 8, vjust = -0.1), #-0.1
         axis_text_y = element_text(fontproperties=prop, size = 8),
   )
 )
