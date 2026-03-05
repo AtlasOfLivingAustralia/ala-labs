@@ -130,15 +130,15 @@ library(ozmaps)
 Our model will use occurrence data of laughing kookaburras (*Dacelo novaeguineae*) in a small area in New South Wales. The laughing kookaburra is the largest Kingfisher in the world.
 
 ::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/5/e/4/8987a472-fcbf-4ae5-be44-e5dc50eb4e57/original" class="rounded"/></img>
+<img src="https://images-assets.ala.org.au/store/2/9/6/f/52566ee9-caa7-4682-ba64-ffa75c8cf692/original" class="rounded"/></img>
 
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/3/c/6/0/27780a83-c4b3-4f44-ade3-2f401ac006c3/original" class="rounded"/></img>
+<img src="https://images-assets.ala.org.au/store/3/c/6/0/27780a83-c4b3-4f44-ade3-2f401ac006c3/original" class="rounded"/></img>
 
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/2/5/0/0/5c796423-708e-4e1c-adf6-72131ac40052/original" class="rounded"/></img>
+<img src="https://images-assets.ala.org.au/store/a/3/3/0/0076cf72-eea2-4a44-9718-2f46cb32033a/original" class="rounded"/></img>
 :::
 
 ::: figure-caption
-Left: [*Dacelo (Dacelo) novaeguineae* (craigc_86 CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/0dccaf64-9aed-4b5e-bbc9-06a7ee3ae11e), Middle: [*Dacelo (Dacelo) novaeguineae* (Wildash \| questagame.com CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/3e26b79d-803c-4b0a-95b7-05a39dad4caf), Right: [*Dacelo (Dacelo) novaeguineae* (c_a_critter CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/6028fd90-df9b-4d12-86f8-08f47f005e61)
+Left: [*Dacelo (Dacelo) novaeguineae* (John Cull CC0)](https://biocache.ala.org.au/occurrences/334130a6-eaf7-40ae-9ce9-88caf0bf21af), Middle: [*Dacelo (Dacelo) novaeguineae* (Wildash \| questagame.com CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/3e26b79d-803c-4b0a-95b7-05a39dad4caf), Right: [*Dacelo (Dacelo) novaeguineae* (c_a_critter CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/6028fd90-df9b-4d12-86f8-08f47f005e61)
 :::
 
 ::: aside

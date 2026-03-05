@@ -202,7 +202,7 @@
   </url>
   <url>
     <loc>https://labs.ala.org.au/posts/2024-04-30_sdm-tidymodels/index.html</loc>
-    <lastmod>2025-12-11T00:00:17.391Z</lastmod>
+    <lastmod>2026-03-05T01:18:40.107Z</lastmod>
   </url>
   <url>
     <loc>https://labs.ala.org.au/research/highlights/2024_habitat-connectivity-tool/index.html</loc>
@@ -231,5 +231,9 @@
   <url>
     <loc>https://labs.ala.org.au/posts/2025-08-26_adding-buffers-in-python/index.html</loc>
     <lastmod>2025-12-11T00:00:52.412Z</lastmod>
+  </url>
+  <url>
+    <loc>https://labs.ala.org.au/posts/2024-02-12_species-lists-in-python/index.html</loc>
+    <lastmod>2026-03-05T02:45:59.096Z</lastmod>
   </url>
 </urlset>
