@@ -6,7 +6,7 @@ author:
   - name: "Dax Kellie"
   - name: "Amanda Buyan"
 date: "2024-02-12"
-date-modified: "2026-02-26"
+date-modified: "2026-03-05"
 title-block-banner: "#B8573E"
 toc: true
 toc-location: left
@@ -20,7 +20,7 @@ categories:
   - Plantae
   - Summaries
   - Python
-image: barplot_threatened.png
+image: bar_threatened.png
 freeze: true
 draft: true
 editor_options: 
@@ -70,6 +70,10 @@ knitr::include_graphics("https://raw.githubusercontent.com/AtlasOfLivingAustrali
 ::::::
 
 <!------------------------ Post starts here ------------------------>
+
+:::{.callout-tip}
+Updated 5 March, 2026
+:::
 
 Knowing what species inhabit an area is important for conservation and ecosystem management. In particular, it can help us find how many known species are in a given area, and whether any species are vulnerable or endangered.
 
@@ -142,7 +146,7 @@ p = (
     )
     + annotate(
         "text",
-        x=150, # 153
+        x=149.5, # 153
         y=-41,
         label="Shoalhaven",
         size=20 # 10
@@ -618,10 +622,11 @@ bar_status = (
   + theme_classic() # theme_minimal
   + theme(
         plot_title = element_text(fontproperties=prop, size = 140),
-        axis_title_x = element_text(fontproperties=prop, size = 10, vjust = -0.1), #-0.1
+        axis_title_x = element_text(fontproperties=prop, size = 10, vjust = -0.1), 
         axis_title_y = element_text(angle = 90, fontproperties=prop, size = 10, hjust = -.1),
-        axis_text_x = element_text(fontproperties=prop, size = 8, vjust = -0.1), #-0.1
+        axis_text_x = element_text(fontproperties=prop, size = 8, vjust = -0.1),
         axis_text_y = element_text(fontproperties=prop, size = 8),
+        plot_background = element_rect(fill = "#ffffff")
   )
 )
 
