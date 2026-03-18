@@ -561,7 +561,7 @@ fire_extent_cropped <- rast(here("posts",
                          "fire_extent",
                          "2026-03-18_fire-extent.tif"))
 
-# fire_extent <- rast(here("posts", "2025-04-02_greater-gliders", "fesmimgtif", "cvmsre_NSW_20192020_ag1l0.tif"))
+# fire_extent <- rast(here("posts", "data", "fire_extent", "fesmimgtif", "cvmsre_NSW_20192020_ag1l0.tif"))
 ```
 
 ```{r}
@@ -717,14 +717,14 @@ The `fire_extent` layer contains information of the fire's severity on a scale f
 If you are interested, the `fire_extent` dataset categorises fire severity using the following values:
 
 -   0 - Unburnt (0% canopy and understory burnt)
--   1 - Reserved Experimental burn category (the use of this value varies state-wide and at present captures 'Non-[Fire Extent and Severity Mapping] burnt area' as a precautionary approach)
+-   1 - Reserved Experimental burn category (use of this value varies state-wide and at present captures 'Non-[Fire Extent and Severity Mapping] burnt area' as a precautionary approach)
 -   2 - Low (\> 10% burnt upderstory, \>90% green canopy)
 -   3 - Moderate (20-90% canopy scorch)
 -   4 - High (\> 90% canopy scorched, \<50% canopy consumed)
 -   5 - Extreme (\>50% canopy biomass consumed)
 :::
 
-For simplicity, let's recode `fire_extent` to whether an area is burnt or unburnt and save this info in a new column `burnt`. We'll use a dummy variable to make our results easier to interpret where burnt is `1` and unburnt is `-1`. To do this we'll use `terra::ifel()`, a version of `ifelse()` optimised for terra's SpatRaster objects. Then we'll rename the layer for simplicity.
+For simplicity, let's recode `fire_extent_cropped` to whether an area is burnt or unburnt and save this info in a new column `burnt`. We'll use a dummy variable to make our results easier to interpret where burnt is `1` and unburnt is `-1`. To do this we'll use `terra::ifel()`, a version of `ifelse()` optimised for terra's SpatRaster objects. Then we'll rename the layer for simplicity.
 
 Even after cropping, `fire_extent_cropped` is still massive; big enough that even simple operations like adding/editing a column can max out R's available memory and cause an error. To avoid this, we'll first run `gc()` to reduce R's used memory.
 
@@ -732,8 +732,8 @@ Even after cropping, `fire_extent_cropped` is still massive; big enough that eve
 gc() # clear memory before running
 
 # Recode variable
-burnt_cropped <- terra::ifel(fire_extent_cropped["fire_extent"] > 0, 1, 
-                             terra::ifel(fire_extent_cropped["fire_extent"] == 0, -1, -1)
+burnt_cropped <- terra::ifel(fire_extent_cropped["Layer_1"] > 0, 1, 
+                             terra::ifel(fire_extent_cropped["Layer_1"] == 0, -1, -1)
                              )
 
 # Rename for simplicity
@@ -757,7 +757,6 @@ Let's resample each layer to match the resolution of `elevation_aligned` using `
 tree_cover <- terra::resample(tree_cover, elevation_aligned)
 temp <- terra::resample(temp, elevation_aligned)
 precip <- terra::resample(precip, elevation_aligned)
-gc() # clear memory before running
 burnt <- terra::resample(burnt_cropped, elevation_aligned)
 ```
 
@@ -779,7 +778,7 @@ combined_rasters <- c(elevation_aligned, tree_cover, temp, precip, burnt)
 combined_rasters
 ```
 
-As final important check, we need to make sure there aren't rows that don't have a complete set of variable values. If one column has an `NA` value while every other column is filled, our models will inevitably fail (harsh, I know). A straightforward way to do this is to convert `combined_rasters` back to a tibble (for easy filtering) and check each column's `NA` values one-at-a-time like below. Eventually, we will get to the `burnt` column and notice that there are 2 rows that are complete except for the `burnt` column.
+As a final but important check, we need to make sure there aren't any rows that should have a complete set values for each of our raster layer variables but are missing one or more. If one column has an `NA` value while every other column is filled, our models will inevitably fail (harsh, I know). A straightforward way to do this is to check each column's `NA` values one-at-a-time to visually search for obvious errors. Doing so eventually shows that 2 rows in `combined_rasters` are complete except for the `burnt` column value.
 
 ```{r}
 combined_rasters |>
@@ -787,15 +786,15 @@ combined_rasters |>
   filter(is.na(burnt))
 ```
 
-To fix this, when a variable column like `elevation` *isn't* `NA` and `burnt` *is* `NA`, then we'll make the `burnt` value `-1` (unburnt)[^notburnt], otherwise the value in `burnt` should remain the same. 
+To fix this, we'll use `case_when()` to conditionally add data to `burnt`, such that when the value in `elevation` isn't `NA` *and* the value in `burnt` is `NA`, then we'll make the `burnt` value `-1` (unburnt)[^notburnt]. Otherwise the `burnt` value should remain the same. 
 
-[^notburnt]: We are making the assumption that an unmeasured value is unburnt, which is ultimately not true but unknowable. It's best to fill those empty values with whatever the most conservative option is, or, even better, to impute those values based on the surrounding data.
+[^notburnt]: We are making the assumption that an unmeasured value in `burnt` is an area unburnt by fire, which is ultimately not true but also unknowable. It's best to either fill empty values with whatever the most conservative option is, or, even better, to impute those values based on the surrounding data. In this case, given we're not interested in the specific locations, our patch-up job should be enough.
 
 ```{r}
 combined_rasters <- combined_rasters |>
   mutate(
     burnt = case_when(
-      !is.na(elevation) & is.na(burnt) ~ -1,   # burnt
+      !is.na(elevation) & is.na(burnt) ~ -1, # unburnt
       .default = burnt
     )
   )
