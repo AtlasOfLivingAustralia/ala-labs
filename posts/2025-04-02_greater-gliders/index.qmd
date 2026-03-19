@@ -122,9 +122,9 @@ The Southern Greater Glider (*Petauroides volans*) is Australia’s largest glid
 [^1]: Southern greater gliders grow up to 1m long from head to tail and can glide up to 100 metres through the canopy!
 
 ::: {layout-ncol="2" style="margin-left: auto; margin-right: auto;"}
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/2/1/0/8/e0bec186-b95a-4a50-8ce3-824143268012/original" class="rounded"/></img>
+<img src="https://images-assets.ala.org.au/store/2/1/0/8/e0bec186-b95a-4a50-8ce3-824143268012/thumbnail_large" class="rounded"/></img>
 
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/c/4/c/e/a0428bcf-f667-4f43-80b5-5ba1dc40ec4c/original" class="rounded"/></img>
+<img src="https://images-assets.ala.org.au/store/c/4/c/e/a0428bcf-f667-4f43-80b5-5ba1dc40ec4c/thumbnail_large" class="rounded"/></img>
 :::
 
 ::: figure-caption
@@ -317,7 +317,8 @@ First we'll download elevation data for our defined region using the `{elevatr}`
 # Download elevation raster
 elevation_data <- get_elev_raster(locations = bbox_sf, 
                                   z = 9, 
-                                  prj = "EPSG:4326")
+                                  prj = "EPSG:4326",
+                                  neg_to_na = TRUE)
 
 # Remove raster information outside of the aus land boundary
 elevation_aligned <- elevation_data |>
@@ -532,7 +533,7 @@ precip_map
 <!-- 
 Note to authors: 
 
-The data in this section is too large to save on the normal Teams directory. The cropped raster is saved in /data/fire_extent/cvmsre_NSW_20192020_ag1l0.tif to enable this Labs Post to render. However, to test the method used to crop the larger file will require you to download the entire raster to your local computer (following the intstructions written in the Post below).
+The data in this section is too large to save on the normal Teams directory. The cropped raster is saved in /data/fire_extent/cvmsre_NSW_20192020_ag1l0.tif to enable this Labs Post to render. However, to test the method used to crop the larger file will require you to download the entire raster to your local computer (following the instructions written in the Post below).
 
 
 The process to crop the larger file was failing but now it works. Keep an eye on it. To allow people to see the outputs but avoid having to run this process when rendering, I've manually pasted the output in a few sections. This *might* need updating in the future. The point was to allow users to see what the output even looks like if it runs correctly.
@@ -558,9 +559,9 @@ Let's load the fire extent layer into R as a raster.
 fire_extent_cropped <- rast(here("posts",
                          "data", 
                          "fire_extent",
-                         "cvmsre_NSW_20192020_ag1l0.tif"))
+                         "2026-03-18_fire-extent.tif"))
 
-# fire_extent <- rast(here("posts", "2025-04-02_greater-gliders", "fesmimgtif", "cvmsre_NSW_20192020_ag1l0.tif"))
+# fire_extent <- rast(here("posts", "data", "fire_extent", "fesmimgtif", "cvmsre_NSW_20192020_ag1l0.tif"))
 ```
 
 ```{r}
@@ -651,19 +652,43 @@ fire_extent_cropped <- fire_extent_cropped |>
   terra::crop(bbox_ext)
 ```
 
-We'll now mask out the ocean and rename the layer like we did for other layers.
+We'll now mask out the ocean.
 
 ```{r}
-#| warning: false
+#| eval: false
 # Remove ocean
 fire_extent_cropped <- fire_extent_cropped |>
     terra::mask(aus)
 
 # Rename for simplicity
-names(fire_extent_cropped) <- "fire_extent"
+# names(fire_extent_cropped) <- "fire_extent"
 
 fire_extent_cropped
 ```
+
+```
+class       : SpatRaster 
+size        : 25094, 25094, 1  (nrow, ncol, nlyr)
+resolution  : 9.962733e-05, 9.962733e-05  (x, y)
+extent      : 148.5, 151, -37.50005, -35  (xmin, xmax, ymin, ymax)
+coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+source      : spat_9234679a1911_37428_QYXbw8PZyYIJh7f.tif 
+name        : Layer_1 
+min value   :       0 
+max value   :       5 
+```
+
+```{r}
+#| include: false
+#| eval: false
+# Documenting where lightweight raster used in this post is saved
+terra::writeRaster(fire_extent_cropped,
+                   here::here("posts", 
+                              "data", 
+                              "fire_extent", 
+                              "2026-03-18_fire-extent.tif"))
+```
+
 
 :::{.callout-tip collapse="true"}
 ##### Save your cropped layer
@@ -678,7 +703,7 @@ Now would be a good time to save your new cropped raster layer locally. This cro
 #| fig-cap: 
 #|   - "Fire Severity"
 ggplot() +
-  geom_spatraster(data = fire_extent_cropped, aes(fill = fire_extent)) +
+  geom_spatraster(data = fire_extent_cropped, aes(fill = Layer_1)) +
   scale_fill_princess_c(palette = "america")  +
   guides(fill = guide_colorbar(title = "Fire Severity")) +
   theme_minimal()
@@ -692,30 +717,27 @@ The `fire_extent` layer contains information of the fire's severity on a scale f
 If you are interested, the `fire_extent` dataset categorises fire severity using the following values:
 
 -   0 - Unburnt (0% canopy and understory burnt)
--   1 - Reserved (Experimental category, is not used in raster right now)
+-   1 - Reserved Experimental burn category (use of this value varies state-wide and at present captures 'Non-[Fire Extent and Severity Mapping] burnt area' as a precautionary approach)
 -   2 - Low (\> 10% burnt upderstory, \>90% green canopy)
 -   3 - Moderate (20-90% canopy scorch)
 -   4 - High (\> 90% canopy scorched, \<50% canopy consumed)
 -   5 - Extreme (\>50% canopy biomass consumed)
 :::
 
-For simplicity, let's recode `fire_extent` to whether an area is burnt or unburnt and save this info in a new column `burnt`. We'll use a dummy variable to make our results easier to interpret where burnt is `1` and unburnt is `-1`. Then we'll rename the layer.
+For simplicity, let's recode `fire_extent_cropped` to whether an area is burnt or unburnt and save this info in a new column `burnt`. We'll use a dummy variable to make our results easier to interpret where burnt is `1` and unburnt is `-1`. To do this we'll use `terra::ifel()`, a version of `ifelse()` optimised for terra's SpatRaster objects. Then we'll rename the layer for simplicity.
 
 Even after cropping, `fire_extent_cropped` is still massive; big enough that even simple operations like adding/editing a column can max out R's available memory and cause an error. To avoid this, we'll first run `gc()` to reduce R's used memory.
 
 ```{r}
 gc() # clear memory before running
 
-burnt_cropped <- fire_extent_cropped |>
-  mutate(
-    # make `burnt` column
-    burnt = case_when(
-      fire_extent >= 1 ~ 1,   # burnt
-      fire_extent == 0 ~ -1,  # unburnt
-      .default = as.numeric(NA_integer_) # add NAs with correct class
-    )
-  ) |>
-  select(-fire_extent)        # remove fire_extent column
+# Recode variable
+burnt_cropped <- terra::ifel(fire_extent_cropped["Layer_1"] > 0, 1, 
+                             terra::ifel(fire_extent_cropped["Layer_1"] == 0, -1, -1)
+                             )
+
+# Rename for simplicity
+names(burnt_cropped) <- "burnt"
 
 burnt_cropped
 ```
@@ -735,7 +757,6 @@ Let's resample each layer to match the resolution of `elevation_aligned` using `
 tree_cover <- terra::resample(tree_cover, elevation_aligned)
 temp <- terra::resample(temp, elevation_aligned)
 precip <- terra::resample(precip, elevation_aligned)
-gc() # clear memory before running
 burnt <- terra::resample(burnt_cropped, elevation_aligned)
 ```
 
@@ -755,6 +776,34 @@ We can now combine all of our raster layers into one object containing:
 combined_rasters <- c(elevation_aligned, tree_cover, temp, precip, burnt)
 
 combined_rasters
+```
+
+As a final but important check, we need to make sure there aren't any rows that should have a complete set values for each of our raster layer variables but are missing one or more. If one column has an `NA` value while every other column is filled, our models will inevitably fail (harsh, I know). A straightforward way to do this is to check each column's `NA` values one-at-a-time to visually search for obvious errors. Doing so eventually shows that 2 rows in `combined_rasters` are complete except for the `burnt` column value.
+
+```{r}
+combined_rasters |>
+  as_tibble(xy=TRUE) |>
+  filter(is.na(burnt))
+```
+
+To fix this, we'll use `case_when()` to conditionally add data to `burnt`, such that when the value in `elevation` isn't `NA` *and* the value in `burnt` is `NA`, then we'll make the `burnt` value `-1` (unburnt)[^notburnt]. Otherwise the `burnt` value should remain the same. 
+
+[^notburnt]: We are making the assumption that an unmeasured value in `burnt` is an area unburnt by fire, which is ultimately not true but also unknowable. It's best to either fill empty values with whatever the most conservative option is, or, even better, to impute those values based on the surrounding data. In this case, given we're not interested in the specific locations, our patch-up job should be enough.
+
+```{r}
+combined_rasters <- combined_rasters |>
+  mutate(
+    burnt = case_when(
+      !is.na(elevation) & is.na(burnt) ~ -1, # unburnt
+      .default = burnt
+    )
+  )
+
+# check again
+combined_rasters |>
+  as_tibble(xy=TRUE) |>
+  filter(is.na(burnt))
+
 ```
 
 Phew! That was a lot of data preparation. But with our spatial data sorted, we are now ready to begin preparing our model!
