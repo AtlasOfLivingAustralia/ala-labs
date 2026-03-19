@@ -729,6 +729,9 @@ For simplicity, let's recode `fire_extent_cropped` to whether an area is burnt o
 Even after cropping, `fire_extent_cropped` is still massive; big enough that even simple operations like adding/editing a column can max out R's available memory and cause an error. To avoid this, we'll first run `gc()` to reduce R's used memory.
 
 ```{r}
+#| warning: false
+#| message: false
+#| results: hide
 gc() # clear memory before running
 
 # Recode variable
@@ -741,6 +744,13 @@ names(burnt_cropped) <- "burnt"
 
 burnt_cropped
 ```
+
+```{r}
+#| echo: false
+#| eval: true
+burnt_cropped
+```
+
 
 ### Match resolution
 
@@ -778,7 +788,9 @@ combined_rasters <- c(elevation_aligned, tree_cover, temp, precip, burnt)
 combined_rasters
 ```
 
-As a final but important check, we need to make sure there aren't any rows that should have a complete set values for each of our raster layer variables but are missing one or more. If one column has an `NA` value while every other column is filled, our models will inevitably fail (harsh, I know). A straightforward way to do this is to check each column's `NA` values one-at-a-time to visually search for obvious errors. Doing so eventually shows that 2 rows in `combined_rasters` are complete except for the `burnt` column value.
+As a final but important check, we need to make sure there aren't any rows that *should* have a complete set of values for each of our raster layer variables, but are missing one or more values. If one column has an `NA` value while every other column is filled, our models will inevitably fail (harsh, I know). A straightforward way to do this check is to view each column's `NA` values one-at-a-time to visually search for obvious errors. Doing so will eventually show that 2 rows in `combined_rasters` are complete except for the `burnt` column value[^the-other-columns].
+
+[^the-other-columns]: Other rows shown below are majority or all `NA` values except for their coordinates. These should be ignored by our model. However, it's worth being aware that these rows exist in our data in case the model does fail. In that case, they might need further data filling or removing.
 
 ```{r}
 combined_rasters |>
@@ -798,13 +810,20 @@ combined_rasters <- combined_rasters |>
       .default = burnt
     )
   )
+```
 
-# check again
+:::{.callout-note collapse="true"}
+##### Check again
+
+Running our check again shows that those rows are no longer returned when we filter for `NA` values in the `burnt` column.
+
+```{r}
 combined_rasters |>
   as_tibble(xy=TRUE) |>
   filter(is.na(burnt))
-
 ```
+
+:::
 
 Phew! That was a lot of data preparation. But with our spatial data sorted, we are now ready to begin preparing our model!
 
@@ -1268,7 +1287,7 @@ fitted |>
 
 When running a model on this many data points, it's generally expected that most variables will be significant. It's easier to look at the size of the effect (i.e. `statistic`) and the estimate & standard error to figure out the direction and certainty of that estimate. The estimates are a little confusing here due to the model using `presence` as the reference level---higher numbers are a stronger prediction of *absence*.
 
-A quick first impression tells us that `fire_period` and `burnt` variables are significant but relatively weak predictors. You might also notice that some variables like `elevation` are very significant in the model but have tiny estimate coefficients. Let's use DALEX to help us understand how this is possible.
+A quick first impression tells us that `fire_period` and `burnt` variables are significant but quite weak predictors. You might also notice that some variables like `elevation` are very significant in the model but have tiny estimate coefficients. Let's use DALEX to help us understand how this is possible.
 
 ### Use DALEX
 
@@ -1334,8 +1353,9 @@ Overall, our results seem to show that fire does have an effect, but it's a rela
 We can also more clearly see a few additional things:
 
 -   Tree cover and elevation are excellent predictors of greater gliders, which makes sense given they live in trees in alpine regions.
--   The negative estimate of `fire_period` suggests that there are more records of greater gliders after the fires than before[^afterfires]. This is probably due to the growing number of records each year in the ALA (though the effect is relatively small).
--   The slight positive estimate of `burnt` suggests fewer records in burnt areas[^burntareas]. However, the effect is pretty small.
+-   The negative estimate of `fire_period` is very weak, but it suggests that there are more records of greater gliders after the fires than before[^afterfires]. This is probably due to the growing number of records each year in the ALA.
+-   The slight positive estimate of `burnt` is also very weak, but it suggests fewer records in burnt areas[^burntareas].
+-   The estimated effects of `fire_period` and `burnt` on our model aren't sufficient enough evidence for us to confirm our hypotheses that areas burnt by fire have fewer possum occurrences, given the data. 
 
 [^afterfires]: Based on how our variable is coded, a negative coefficient means that *before* fires, there is a higher likelihood of *absence*.
 
