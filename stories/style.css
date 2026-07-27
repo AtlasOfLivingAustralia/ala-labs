@@ -54,3 +54,7 @@ img.padded {
   margin-top: auto;
   margin-bottom: auto;
 }
+
+.blockquote {
+  font-style: italic;
+}

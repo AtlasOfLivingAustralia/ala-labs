@@ -1,9 +1,9 @@
 ---
 # pagetitle: Story
 title: "The story of Mareeba"
-subtitle: "Scroll through the story of this artwork and the data that is interwoven through it."
+subtitle: "In this artwork, produced by Ann-Marie Keating and Gullara McInnes, proud Koko-Muluridji women of the Wallara Clan, traditional art meets Western data for a unique look at Australian biodiversity"
 # image: "images/pobblebonk.svg"
-title-block-banner: "#FFC557"
+title-block-banner: "#FFEDCF"
 title-block-banner-color: "#232323"
 execute:
   echo: false
@@ -13,25 +13,26 @@ format:
     css: [style.css, ../theme.css, ../custom_theme.scss]
     fontsize: 1.2rem
     backgroundcolor: "#232323"
-    fontcolor: "#e2e2e2"
+    fontcolor: "#fff"
     # remove-header-space: true
     cr-style:
       narrative-background-color-overlay: "rgb(35, 35, 35)"
       narrative-font-size: 1.15rem
-      narrative-text-color-overlay: "#e2e2e2"
+      narrative-text-color-overlay: "#fff"
       narrative-background-color-sidebar: "#232323"
-      narrative-text-color-sidebar: "#e2e2e2"
+      narrative-text-color-sidebar: "#fff"
       section-background-color: "#232323"
       narrative-overlay-max-width: "600px"
     # this include-in-header is not inherited from the project _quarto.yml,
     # likely because the format is different
     include-in-header:
       - ../_fathom.html
+    embed-resources: true
 ---
 
-Aboriginal and Torres Straight Islander People preserve knowledge in art and story that captures aspects of the world undocumented or recorded in any other place. They carry glimpses of the past, a view of our present, and even predictions for the future.
+Through art and story, Aboriginal and Torres Straight Islander People capture deep connections and rich knowledge in nature that may not be documented or recorded. This traditional knowledge carries glimpses of the past, a view of our present, and even predictions for the future.
 
-How do these stories overlap with data? Do the records stored in Western infrastructures like the Atlas of Living Australia reflect or contrast traditional knowledge of a given ecosystem? In this artwork, produced by Ann-Marie Keating and Gullara McInnes, proud Koko-Muluridji women of the Wallara Clan, traditional art meets Western data for a unique look at Australian biodiversity. 
+How does traditional knowledge overlap with Western-collected data? Do the records stored in infrastructures like the Atlas of Living Australia (ALA) reflect or contrast traditional knowledge of a given ecosystem? Continue scrolling to explore the story of this artwork and the data interwoven through it.
 
 <center>![](images/painting.jpg)</center>
 
@@ -43,7 +44,7 @@ In the far north corner of Australia, one hour west of the city of Cairns, is Ma
 
 :::{#cr-map}
 
-![](plots/aus_map.png){height=800}
+![](plots/aus_map.png){width=auto style="max-height:800px;"}
 
 :::
 ::::
@@ -64,19 +65,18 @@ Here in Mareeba, lush tropical rainforest meets the beginning of the outback to 
 :::: {.cr-section}
 
 :::{#cr-dots}
-![](images/painting_cropped.jpg){.rounded style="height:600px;width:auto;"}
+![](images/painting_cropped.jpg){.rounded style="height:auto;width:auto;max-height:600px"}
 :::
 
 
+In a collaborative painting, Keating and McInnes have portrayed the biodiversity and cultural connection of Mareeba using a mix of traditional and modern art techniques. <br><br> But what makes this painting unique?
 @cr-dots
 
-In a unique painting, together Ann-Marie Keeting and Gullara McInnes have portrayed the biodiversity and cultural connection of Mareeba using a mix of traditional and modern art techniques. <br><br> But what makes this painting especially unique?
-
-Actual data from the Atlas of Living Australia has been captured using traditional dot painting. In doing so, the artists have joined traditional knowledge with Western data in one singular piece.
+For the first time, data from the Atlas of Living Australia has been incorporated using traditional dot painting techniques. In doing so, the artists have joined traditional knowledge with Western data on one canvas.
 
 ::::
 
-Let's explore the painting and some overarching themes as a guide to some of the cultural knowledge and inspirations in this work, with quotes from Ann-Marie Keeting.
+Let's explore the painting and some overarching themes as a guide to some of the cultural knowledge and inspirations in this work, with quotes from Ann-Marie Keating.
 
 
 :::: {.cr-section layout="overlay-center"}
@@ -90,10 +90,10 @@ Let's explore the painting and some overarching themes as a guide to some of the
 Animals and plants are an important part of the artists' cultural identity.
 @cr-fullpainting
 
->One of the ways we live our culture is through our animals...All of these animals in our daily life, they come and they give us messages, and so that's one way we live our culture is through our...connection to country and our connection to these animals.
+>One of the ways we live our culture is through our animals...All of these animals in our daily life, they come and they give us messages, and so that's one way we live our culture is through our...connection to Country and our connection to these animals.
 @cr-fullpainting
 
-The painting portrays day and night across the painting and both diurnal and nocturnal animals throughout the canvas. 
+The painting portrays day and night and both diurnal and nocturnal animals throughout the canvas. 
 
 There is a **sun** in the top right... 
 [@cr-fullpainting]{scale-by="3" pan-to="-97%, 57%"}
@@ -105,21 +105,21 @@ A **river** runs through the centre of the painting and the seasons are reflecte
 [@cr-fullpainting]{scale-by="2" pan-to="0%, 0%"}
 
 >The colours in the background are the colours of our season as well. [In the middle of the painting] the [**Barron river**]{style="color:#445bc8;"} runs through here...in flood it turns [**brown**]{style="color:#bf4e1d;"}, and [across the river you have] the movement of the animals through the floods...Then [as you move towards the edge of the painting] you have the [**green flush**]{style="color:#2e9e46;"} come in and then we go back into [**drought**]{style="color:#e1c45f;"}...where the colour spreads out from the wet season back into the dry...the background [and where] the animals sit [reflects] how we connect the seasons culturally.  
-
+[@cr-fullpainting]{scale-by="1" pan-to="0%, 0%"}
 
 ::::
 
 
 <br>
 
-On each animal, the number, colour and size of dots summarises its real observational data on the Atlas of Living Australia (within Mareeba).
+The number, colour and size of painted dots on each animal represents the observational data for each species in the Atlas of Living Australia (within Mareeba).
 
 
 ::::{.column-page-outset layout-ncol="2"}
 
 :::{.group1}
 
-**Dot size** corresponds to numbers of observations
+**Dot size** corresponds to numbers of observations, so bigger dots represent more observations.
 
 <center>![](plots/legend-dots.png){height=400}</center>
 
@@ -141,20 +141,20 @@ You'll notice that some animals have many dots while some have very few.
 
 :::: {.cr-section}
 :::{#cr-dove}
-![](plots/bar_counts_dove.png){height=800}
+![](plots/bar_counts_dove.png){width=auto style="max-height:800px;"}
 :::
 :::{#cr-birds}
-![](plots/bar_counts_birds.png){height=800}
+![](plots/bar_counts_birds.png){width=auto style="max-height:800px;"}
 :::
 :::{#cr-dragonfly}
-![](plots/bar_counts_dragonfly.png){height=800}
+![](plots/bar_counts_dragonfly.png){width=auto style="max-height:800px;"}
 :::
 :::{#cr-fish}
-![](plots/bar_counts_fish.png){height=800}
+![](plots/bar_counts_fish.png){width=auto style="max-height:800px;"}
 :::
 
 :::{#cr-other-taxa}
-![](plots/bar_counts_other-taxa.png){height=800}
+![](plots/bar_counts_other-taxa.png){width=auto style="max-height:800px;"}
 :::
 
 @cr-dove
@@ -185,7 +185,7 @@ In general, [**birds**]{style="color:#FFC557;"} have more recorded observations 
 By comparison, the most recorded species that isn't a bird is the [**Scarlet percher**]{style="color:#C4CA50;"} (*Diplacodes haematodes*), with 274 records.
 
 <br>
-For every 20 records of a Peaceful Dove, there is only 1 observation of a Scarlet percher. 
+In Mareeba, for every 20 records of a Peaceful Dove there is only 1 record of a Scarlet percher on the ALA. 
 :::
 :::
 ::::
@@ -198,7 +198,7 @@ For every 20 records of a Peaceful Dove, there is only 1 observation of a Scarle
 :::{.group-2 style="margin-left: auto; margin-right:auto;"}
 Based on Keating's knowledge of the area, this difference in observations doesn't match the true abundance of dragonflies in Mareeba.
 
-> Before and after rain, we get a lot of insect movement, but the tell-tales are our dragonflies. We'll see different dragonflies depending on what the rain is doing. So [after] big rain, when rain has just come in, or rain is ending [is when we usually see dragonflies].
+> Before and after rain, we get a lot of insect movement, but the tell-tales are our dragonflies. We'll see different dragonflies depending on what the rain is doing. So [after] big rain, when rain has just come in, or rain is ending [we usually see dragonflies].
 
 :::
 :::
@@ -218,7 +218,7 @@ Similarly, as flood waters recede, Keating says that many [**fish species**]{sty
 
 >The sleepy cod [is] in the middle [of the painting]...you can always find a sleepy cod.
 
-However their data in the area is very limited.
+However fish data in the area is very limited on the ALA.
 
 :::
 :::
@@ -227,13 +227,13 @@ However their data in the area is very limited.
 @cr-other-taxa
 
 :::{focus-on="cr-other-taxa"}
-Record numbers don't necessarily reflect *actual* abundance, but they can show us biases in the data we collect.
+It's important to remember that record numbers don't necessarily reflect *actual* abundance, but they can show us biases in the data we collect.
 
 <br>
-To accentuate this point, if we combined all of the records of every [**Insect**]{style="color:#C4CA50;"}, [**Amphibian**]{style="color:#458F75;"}, [**Mammal**]{style="color:#E9AB57;"}, [**Monotreme**]{style="color:#E47653;"}, [**Reptile**]{style="color:#82935B;"} and [**Fish**]{style="color:#4aacde;"} species in this painting, we have 1,874 records in total; that's only 33% of the records of the Peaceful Dove!
+To accentuate this point, when we combine all of the records of every [**Insect**]{style="color:#C4CA50;"}, [**Amphibian**]{style="color:#458F75;"}, [**Mammal**]{style="color:#E9AB57;"}, [**Monotreme**]{style="color:#E47653;"}, [**Reptile**]{style="color:#82935B;"} and [**Fish**]{style="color:#4aacde;"} species in this painting, we have 1,874 records in total; that's only 33% of the records of the Peaceful Dove!
 
 <br>
-For a complex ecosystem like Mareeba's this huge difference in abundance is impossible, but what we do know is that observers seem to really like birds.
+For a complex ecosystem like Mareeba's, the impression given by the data doesn't reflect reality---it would be impossible that there are actually that many more birds than other species. A healthy ecosystem couldn't exist without all those other species breaking down and cycling nutrients! These record numbers highlight how little data we still have of some taxonomic groups in Australia. They also show just how much observers seem to really like birds (and that's a good thing for birds)!
 :::
 
 ::::
@@ -246,7 +246,7 @@ In Mareeba, the three most recorded birds in this painting are the Peaceful Dove
 :::{.column-screen}
 :::{layout-ncol="3"}
 
-:::{.group1}
+:::{.group1 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
 <center>
 <img src="https://images-assets.ala.org.au/store/2/2/9/e/07416012-4e30-41a6-b27b-2ceff93fe922/thumbnail_large" class="padded" style="height:362px;"/></img>
 </center><br>
@@ -259,7 +259,7 @@ Dany Sloan CC-BY-NC 4.0 (Int)
 :::
 :::
 
-:::{.group2}
+:::{.group2 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
 <center>
 <img src="https://images-assets.ala.org.au/store/c/d/5/1/c4e08b9c-7c9c-477c-a7e9-6a383e7a15dc/thumbnail_large" class="padded" style="height:362px;"/></img>
 </center><br>
@@ -272,7 +272,7 @@ Russell Cumming CC-BY-NC 4.0 (Int)
 :::
 :::
 
-:::{.group3}
+:::{.group3 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
 <center>
 <img src="https://images-assets.ala.org.au/store/c/2/3/a/c0bd64ba-b92b-438d-8c8f-2eda13b8a32c/thumbnail_large" class="padded" style="height:362px;"/></img>
 </center><br>
@@ -291,22 +291,23 @@ Anaëlle FRANCIA CC-BY-NC 4.0 (Int)
 ::::{.cr-section}
 
 :::{#cr-radial-dove}
-![](plots/radial_dove.png){height=800}
+![](plots/radial_dove.png){width=auto style="max-height:800px;"}
 :::
 
 :::{#cr-radial-cockatoo}
-![](plots/radial_cockatoo.png){height=800}
+![](plots/radial_cockatoo.png){width=auto style="max-height:800px;"}
 :::
 
 :::{#cr-radial-frog}
-![](plots/radial_frog.png){height=800}
+![](plots/radial_frog.png){width=auto style="max-height:800px;"}
 :::
 
 :::{#cr-bandicoot}
-![](plots/donut_bandicoot.png){height=800}
+![](plots/donut_bandicoot.png){width=auto style="max-height:800px;"}
 :::
 
-@cr-radial-dove
+:::{focus-on="cr-radial-dove"}
+:::
 
 :::{focus-on="cr-radial-dove"}
 :::{layout-ncol="2"}
@@ -314,7 +315,10 @@ Anaëlle FRANCIA CC-BY-NC 4.0 (Int)
 <center><img src="images/painting_dove_barshouldered.jpg" class="custom-rounded" style="height:20vh;"/></img></center>
 :::
 :::{.group-2 style="margin-left: auto; margin-right:auto;"}
-Two of these three birds, the Peaceful Dove and the Eastern Bar-shouldered dove, can be seen year-round. Their continuous presence in Mareeba makes it much more likely that people will incidentally observe them, which might help explain their high record numbers. Take, for example, the observations of the Eastern Bar-shouldered Dove grouped by month.
+Two of these three birds, the Peaceful Dove and the Eastern Bar-shouldered dove, can be seen year-round. Take, for example, observations of the Eastern Bar-shouldered Dove grouped by month. 
+
+<br>
+Their continuous presence in Mareeba makes it much more likely that people will incidentally observe them, which might help explain their high record numbers. 
 :::
 :::
 ::::
@@ -361,7 +365,7 @@ Here, observations of the Dainty Green Tree Frog (*Litoria gracilenta*) peak in 
 <center><img src="images/painting_bandicoot.jpg" class="custom-rounded" style="height:20vh;"/></img></center>
 :::
 :::{.group-2 style="margin-left: auto; margin-right:auto;"}
-Some species in this painting like the Northern brown bandicoot (*Isoodon macrourus*) are also nocturnal, primarily active at [**night**]{style="color:#5F84AF;"} instead of [**day**]{style="color:#FFC557;"}. This makes it less likely that people see and record these species, reducing record numbers.
+Some species in this painting like the Northern brown bandicoot (*Isoodon macrourus*) are also nocturnal, primarily active at [**night**]{style="color:#5F84AF;"} instead of [**day**]{style="color:#FFC557;"}. This makes it less likely that people see and record these species, reducing record numbers. In this case, there are only 33 records of Northern brown bandicoots in Mareeba.
 :::
 :::
 ::::
@@ -370,43 +374,34 @@ Some species in this painting like the Northern brown bandicoot (*Isoodon macrou
 
 ::::
 
-Birds hold great significance to Keating and her family.
+Hear more about the inspirations and cultural this painting and the Muluridji people's cultural connection to these animals from artist Ann-Marie Keating in the following video:  
+*Note: I don't think the video will render correctly until the article is published*
 
-> There's a lot of birds in here because I belong to birds...If I can't paint a bird nicely I'm disgracing myself!
-
-Birds like the Magpie Goose hold particular significance to Keating's child Kimkahgulli. 
-
->My youngest child, her name is Kimkahgulli [which] means the single call of a magpie goose. So you can see the magpie goose sits in an area of prominence.
-
-:::{.column-page}
-:::{layout-ncol="2" layout="[1,2]]"}
-:::{.group-1 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
-<center><img src="images/painting_magpie-goose.jpg" class="custom-rounded" style="height:20vh;"/></img></center>
-:::
-:::{.group-2 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
-<center><img src="https://images-assets.ala.org.au/store/9/f/a/e/fa5a4d08-2430-4535-88ac-b4384091eaf9/original" style="height:30vh;"/></img></center>
-
-:::{.caption style="font-size:.7rem;"}
-<center>
-Magpie Goose (*Anseranas semipalmata*) <br>
-Ben CC-BY-NC-ND 4.0 (Int)
-</center>
-:::
-:::
-:::
-:::
-
-
-Many animals depicted in the painting also hold great cultural significance to the Muluridji people, like the Carpet Python, the Tawny Frogmouth and the Bush Stone Curlew.
-
-[more photos?]
-
-Hear more about this painting and the Muluridji people's cultural connection to these animals from Ann-Marie Keating:
+:::{.column-page-outset}
 
 {{< video http://youtube.com/watch?v=TWiym0v2EAQ >}}
 
-By combining Western data with Indigenous culture, Keating and McInnes have provided a unique look at the diversity of Muluridji Country. They have also highlighted the disparity that exists between local knowledge and observational data. Despite its usefulness, Western data alone cannot always paint a complete picture of an area. The long history that Indigenous people live on Country is essential for conservation. The hope is that the Muluridji people continue to preserve and share their cultural knowledge, providing a more complete picture of Mareeba's ecosystem.
+:::
 
+<br><br>
+
+View the full painting below:
+
+:::{.column-screen}
+
+![](images/painting-high-def.jpg)
+
+:::
+
+By combining Western data with Indigenous knowledge, Keating and McInnes have provided a unique look at the diversity of Muluridji Country. They have also highlighted the disparity that exists between local knowledge and observational data. Despite its usefulness, Western data alone cannot always paint a complete picture of an area, as it doesn't always depict biodiversity equally. 
+
+The long history that Indigenous people carry through their traditions and connection to Country offers essential knowledge for conservation. As the painting suggests, combining traditional knowledge and Western knowledge may provide unique insights necessary for preserving ecosystems into the future. 
+
+Our thanks to Ann-Marie Keating and Gullara McInnes for sharing their cultural connection, and that of the Muluridji people, with us.
+
+<center>
+![](images/keating-mcinnes_cropped.jpg){width=70%}
+</center>
 
 <!-- :::::{style="--cr-narrative-sidebar-width: 3fr;"} -->
 <!-- ::::{.cr-section} -->
@@ -474,6 +469,38 @@ Our koalas, they're known to be on the Athaden table lands.
 Our eel is one of the fish species that we give to the Elders because it is oily. The eel and the catfish are two we used to save for the elders. 
 The sleepy cod in the middle, you can always find a sleepy cod
 
+
+
+
+
+One thing we have learned is that there are comparitively many bird observations on the Atlas of Living Australia. Birds hold great significance to Keating and her family.
+
+> There's a lot of birds in here because I belong to birds...If I can't paint a bird nicely I'm disgracing myself!
+
+Birds like the Magpie Goose hold particular significance to Keating's child Kimkahgulli. 
+
+>My youngest child, her name is Kimkahgulli [which] means the single call of a magpie goose. So you can see the magpie goose sits in an area of prominence.
+
+:::{.column-page}
+:::{layout-ncol="2" layout="[1,2]]"}
+:::{.group-1 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
+<center><img src="images/painting_magpie-goose.jpg" class="custom-rounded" style="height:20vh;"/></img></center>
+:::
+:::{.group-2 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
+<center><img src="https://images-assets.ala.org.au/store/9/f/a/e/fa5a4d08-2430-4535-88ac-b4384091eaf9/original" style="height:30vh;"/></img></center>
+
+:::{.caption style="font-size:.7rem;"}
+<center>
+Magpie Goose (*Anseranas semipalmata*) <br>
+Ben CC-BY-NC-ND 4.0 (Int)
+</center>
+:::
+:::
+:::
+:::
+
+
+Of course, there are many other animals that are not birds depicted in this painting that hold great cultural significance to the Muluridji people. 
 
 
 -->
