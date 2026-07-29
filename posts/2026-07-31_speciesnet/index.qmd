@@ -1,0 +1,609 @@
+---
+title: "Automated wildlife identification from ALA camera-trap images using SpeciesNet"
+description: |
+  The process of detecting and identifying organisms in camera trap images is a common task in wildlife monitoring. Here, we show how to use a species identification model, SpeciesNet, to detect and classify images downloaded from the Atlas of Living Australia with `{galah-python}` and `{speciesnet}`.
+author:
+  - name: "Dr Renuka Sharma"
+  - name: "Xiang Zhao"
+date: "2026-07-31"
+title-block-banner: "#B8573E"
+toc: true
+toc-location: left
+toc-depth: 2
+lightbox: auto
+categories:
+  - Eukaryota
+  - Animalia
+  - Plantae
+  - Summaries
+  - Python
+image: images/boar-example.png
+freeze: true
+draft: true
+jupyter: python3
+editor_options: 
+  chunk_output_type: console
+---
+
+
+<!-- remove metadata section -->
+
+```{=html}
+<style>
+  #title-block-header.quarto-title-block.default .quarto-title-meta {
+      display: none;
+  }
+</style>
+```
+
+<!-- Author card -->
+
+:::::: author-card
+::: author-card-text
+#### Author
+
+Dr Renuka Sharma\
+Xiang Zhao
+
+#### Date
+
+31 July 2026
+:::
+
+::: author-card-image
+::: {layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
+<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/blank.jpg" style="width:120px; clip-path:circle();"/></img>
+:::
+:::
+::: author-card-image
+::: {layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
+<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/blank.jpg" style="width:120px; clip-path:circle();"/></img>
+:::
+:::
+::::::
+
+<!------------------------ Post starts here ------------------------>
+
+Wildlife monitoring at scale is one of ecology's most data-intensive challenges. Camera traps deployed across remote landscapes can accumulate thousands of images in a single survey season — far more than any team can manually review in a reasonable time. Automatically identifying the species in each photograph would free researchers to focus on analysis rather than image sorting, but doing this accurately requires a model trained on a large and diverse set of wildlife images.
+
+This post shows how to combine two open tools to tackle this problem: the [Atlas of Living Australia (ALA)](https://www.ala.org.au/), Australia's national biodiversity data platform, and [SpeciesNet](https://github.com/google/cameratrapai), a deep learning model developed by Google specifically for wildlife image classification. We query ALA for camera-trap images of target species, download a sample, run SpeciesNet to automatically identify animals in each image, and then visualise the results.
+
+## Setup
+
+Install the following Python packages. **Run this cell once at the start of every session** — packages are not persistant between sessions.
+
+:::{.callout-note collapse="true"}
+##### What is each package for?
+
+| Package | Purpose |
+|---|---|
+| `pandas` | Organising, cleaning, and analysing tabular data |
+| `galah-python` | Querying and downloading biodiversity records from ALA |
+| `requests` | Retrieving image data from URLs |
+| `speciesnet` | Running the wildlife detection and classification model |
+| `Pillow` | Opening, resizing, and annotating images |
+
+:::
+
+:::{.callout-tip collapse="true"}
+##### Installation error
+If you see an error after installing (e.g. a version conflict), re-run from this cell.
+:::
+
+```{python}
+#| eval: false
+#| echo: true
+! pip install pandas galah-python requests speciesnet Pillow --quiet
+```
+
+```{python install-packages}
+#| eval: true
+#| echo: false
+! pip install pandas galah-python requests speciesnet Pillow natsort session_info matplotlib os time math pickle shutil pathlib --quiet
+```
+
+
+## Import packages
+Now we'll import some standard package libraries and define a utility function used later to manage the image download folder. SpeciesNet-specific imports are deferred to the **Run SpeciesNet** section so that this cell runs quickly even before the model weights are downloaded.
+
+```{python}
+import os
+import time
+import math
+import pickle
+import shutil
+from pathlib import Path
+
+import pandas as pd
+import requests
+import matplotlib.pyplot as plt
+%matplotlib inline
+from PIL import Image
+
+
+def empty_directory(directory: Path):
+    """Delete all files and sub-directories inside *directory* without
+    removing the directory itself.  Creates it if it does not yet exist."""
+    if not directory.exists():
+        directory.mkdir(parents=True)
+        return
+    for item in directory.iterdir():
+        if item.is_file() or item.is_symlink():
+            item.unlink()
+        elif item.is_dir():
+            shutil.rmtree(item)
+```
+
+
+## Download data from ALA
+
+The [Atlas of Living Australia (ALA)](https://www.ala.org.au/) is Australia's national biodiversity data infrastructure, aggregating over 130 million occurrence records from museums, herbaria, citizen science platforms (e.g. iNaturalist), and government surveys. Many of these records include photographs taken in the field — including images from camera-trap deployments — which is exactly what we need to test SpeciesNet.
+
+In this example, we'll download images of wild cats (*Felis catus*) and feral pigs (*Sus Scrofa*), two widespread invasive species in Australia.
+
+::: {layout-ncol="2" style="margin-left: auto; margin-right: auto;"}
+<center><img src="https://images-assets.ala.org.au/store/5/f/c/f/e6f8c7bd-9dc2-4603-b9ea-125ba815fcf5/thumbnail_large" class="rounded"/></img></center>
+
+<center><img src="https://images-assets.ala.org.au/store/2/1/8/4/0d4bf5ea-93fb-4911-b741-2e3c60ca4812/thumbnail_large" class="rounded"/></img></center>
+:::
+
+::: figure-caption
+Left: [*Felis catus* (Grant Linley CC-BY 4.0 (Int))](https://biocache.ala.org.au/occurrences/56a88a5b-fe7d-4e45-a937-ef052b0b3b24), Right: [*Sus scrofa* (Vidheesha CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/a1f3a7b5-6246-470a-aa77-5fbc2ece05bb)
+:::
+
+
+We can use the `galah-python` package to download ALA data in Python and retrieve image metadata for our target species. `galah` requires a registered ALA email address in order to download data. Registration is free at [ala.org.au](https://www.ala.org.au/). 
+
+```{python}
+#| eval: true
+#| echo: false
+import galah
+
+galah.galah_config(
+    atlas="Australia",
+    email="renuka.sharma@qcif.edu.au"
+)
+```
+
+
+```{python}
+#| eval: false
+#| echo: true
+import galah
+
+galah.galah_config(
+    atlas="Australia",                # Australia is the default atlas
+    email="your-email@example.com"    # ← replace with ALA-registered email
+)
+```
+
+Let's first save the scientific names of wild pigs (*Sus scrofa*) and cats (*Felis catus*) in an object called `taxa`.
+
+```{python}
+taxa = ['Felis catus', 'Sus scrofa']
+```
+
+Before fetching full metadata, it is worth checking how many image records exist for our taxa and geographic filters. This is a fast call that does not trigger a download — it gives us a sense of dataset size so we can decide whether to narrow our query further. The cell below returns a count broken down by media type.
+
+```{python}
+galah.atlas_counts(
+    taxa=taxa,
+    filters=['stateProvince=Queensland'],
+    group_by="multimedia"
+)
+```
+
+## Fetch image metadata
+
+Now we can retrieve a dataframe listing all images available on the ALA for our select species using galah.atlas_media(). This function returns a table of records that includes the image URL, species name, data-resource name, and observation coordinates for every matching record. Crucially, setting `collect=False` means that we *only* download the metadata, not the image files themselves, which we will do in a later step.
+
+To keep this example dataset smaller, let's filter our query to only data from January, 2023. Downloading more data will inevitably increase the time it takes to download any available images.
+
+```{python}
+media_df = galah.atlas_media(
+    taxa=taxa,
+    filters=["stateProvince=Queensland", "year=2023", "month=1"],  # narrow filters = faster
+    multimedia="images",
+    collect=False,   # metadata only — image files are NOT downloaded here
+)
+
+media_df.head()
+```
+
+
+The ALA aggregates records from many different providers, and the quality and type of images varies considerably between them. Knowing which datasets are present lets us make an informed decision about which ones to keep. We can use `unique()` to see that there are only 2 different data sources in our data.
+
+```{python}
+for dr in media_df['dataResourceName'].unique():
+    print(" •", dr)
+```
+
+## Filter to camera-trap datasets
+
+Not all ALA image records are equally suitable for SpeciesNet. The model was trained on camera-trap images and performs best on that type of photograph. Field photos, museum specimens, or heavily cropped images can produce unreliable predictions. Here we restrict the data to records from the Wildlife Observatories of Australia (WildObs) dataset, which contains high-quality, labelled camera-trap images, and keep only the target species of interest.
+
+We can update values_to_keep with the dataset names we saw in the previous cell, and adjust target_species to match our taxa of interest. Filtering removes 3 records. <!-- Amanda, can you check what was removed? It feels like there would be an easier way to remove 3 records. Are they all from a 4th data resource? -->
+
+```{python}
+values_to_keep = [
+    "Camera trap surveys in Queensland's Wet Tropics 2022-2023",
+    "Monitoring many landscapes in VIC-NSW border to assess impacts of 2019-20 gigafires on wildlife diel activity",
+    "Wombat burrows are hotspots for small vertebrates in a landscape subject to gigafire",
+]
+
+filtered_df = media_df[
+    media_df["dataResourceName"].isin(values_to_keep)
+]
+
+filtered_df.head()
+```
+
+```{python}
+len(filtered_df)
+```
+
+## Select a sample
+
+Running SpeciesNet on hundreds of images can take a long time, especially without a Graphics Processing Unit (GPU). For now, let's randomly select a small subset to keep things manageable. Once we are comfortable with the workflow, we can increase `N_IMAGES` or remove the sampling step entirely to process the full filtered dataset. Setting `random_state=42` ensures the same images are chosen every time we run the cell, which is useful for reproducibility.
+
+```{python}
+N_IMAGES = 6  # number of images to download
+
+subset_df = filtered_df.sample(min(N_IMAGES, len(filtered_df)), random_state=42)
+subset_df[["scientificName", "dataResourceName", "imageUrl"]].reset_index(drop=True)
+```
+
+## Download images
+
+Now we can download the actual image files from the ALA and save them to the `EC_images` folder. The folder is cleared at the start of each run so that images from a previous run do not accumulate. To make this process more transparent and to ensure image files are named in a straightforward way so that we can trace a prediction back to the original metadata record, we have added some additional messages and naming conventions to the loop below. Each file will attempt to download and, if successful, will be named after its DataFrame row index (e.g. 144.jpg).
+
+```{python}
+image_folder = Path("EC_images")
+empty_directory(image_folder)   # clears the folder (or creates it if new)
+
+for i, row in subset_df.iterrows():
+    url = row["imageUrl"]
+    filename = image_folder / f"{i}.jpg"
+    try:
+        r = requests.get(url, timeout=30)
+        r.raise_for_status()
+        filename.write_bytes(r.content)
+        print(f"Downloaded: {filename.name}")
+    except Exception as e:
+        print(f"Failed to download {url}: {e}")
+
+print(f"\nDone. {len(list(image_folder.glob('*.jpg')))} images saved to '{image_folder}'.")
+```
+
+## Preview images
+
+Before running the model, let's display the downloaded images as a grid to confirm they look as expected. This is a good moment to spot any blank frames, setup photos, or corrupted files that might produce unreliable predictions and should be excluded before analysis.
+
+```{python}
+#| column: screen-inset
+#| fig-align: center
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
+image_paths = sorted(image_folder.glob("*.jpg"))
+print(f"Found {len(image_paths)} images.")
+
+n_show = min(6, len(image_paths))
+fig, axes = plt.subplots(2, 3, figsize=(13, 8))
+
+for ax, img_path in zip(axes.flatten(), image_paths[:n_show]):
+    img = Image.open(img_path)
+    ax.imshow(img)
+    ax.set_title(img_path.name, fontsize=8)
+    ax.axis("off")
+
+# Hide unused subplot panels
+for ax in axes.flatten()[n_show:]:
+    ax.set_visible(False)
+
+plt.suptitle("Downloaded images from ALA", fontsize=12, y=1.01)
+plt.tight_layout()
+plt.show()
+```
+
+# Run SpeciesNet
+
+SpeciesNet is a deep learning model developed by Google for automated wildlife identification in camera-trap images. It was trained on over 65 million camera-trap images from the Wildlife Insights platform, making it one of the most extensively trained wildlife classifiers available.
+
+The model works in two stages. First, a detector scans the image and draws a bounding box around any animal it finds, along with a confidence score (0–1) indicating how certain it is that an animal is present. Second, a classifier examines the content inside the bounding box — or the full image if no box was found — and assigns the most likely species label from a vocabulary of over 2,000 labels. These labels span individual species (e.g. Sus scrofa, feral pig), broader taxonomic groups (e.g. "felidae", cat family), and non-animal classes ("blank", "vehicle", "human").
+
+### Load libraries
+
+Import the SpeciesNet library and define a small helper function that prints predictions in a readable format. We also print the available models — DEFAULT_MODEL is the recommended choice for most use cases.
+
+```{python}
+import warnings
+warnings.filterwarnings('ignore')
+
+from IPython.display import display, JSON
+
+from speciesnet import DEFAULT_MODEL, SUPPORTED_MODELS
+from speciesnet import draw_bboxes, load_rgb_image, SpeciesNet
+
+
+def print_predictions(predictions_dict: dict) -> None:
+    """Print a human-readable summary of SpeciesNet predictions."""
+    print("Predictions:")
+    for pred in predictions_dict["predictions"]:
+        print(f"  {Path(pred['filepath']).name}  =>  {pred['prediction']}")
+
+
+print("Default model :", DEFAULT_MODEL)
+print("Supported models:", SUPPORTED_MODELS)
+```
+
+### Load the model
+
+The cell below loads SpeciesNet. The first time it runs, it will download the model weights (approximately 1–2 GB), which can take a few minutes. Subsequent runs in the same session use the cached weights instantly.
+
+::: {.callout-note collapse="true"}
+##### Geofencing
+SpeciesNet includes a *geofencing* step that filters out predictions for species known not to occur in a given country. For example, if we supply `country="AUS"`, the model will not predict “lion” or “elephant” for an Australian image, even if the raw classifier score for those labels is high. Geofencing is enabled by default and is strongly recommended whenever you are working within a defined geographic region — it meaningfully reduces false positives.
+:::
+
+```{python}
+model = SpeciesNet(DEFAULT_MODEL) # geofencing ON  (default)
+```
+
+### Run predictions
+
+Pass the image folder to `model.predict()`. SpeciesNet will find every `.jpg`, `.jpeg`, and `.png` file in the folder, run the detector and classifier on each one, and return a dictionary of results—one entry per image.
+
+::: {.callout-tip collapse="true"}
+##### How to read a prediction string:
+
+Each prediction is a semicolon-separated string with 7 fields:
+
+```
+1b30ddf8-22fb-40ff-9df6-6a8a0b6ccaa1 ; mammalia ; monotremata ; tachyglossidae ; tachyglossus ; aculeatus ; short-beaked echidna
+
+UUID; Class; Order; Family; Genus; Species; Common name
+```
+
+- **UUID** — unique label identifier in the SpeciesNet taxonomy
+- **Class → Species** — full taxonomic hierarchy from class down to species epithet
+- **Common name** — plain-language species name (last field, easiest to read)
+
+If the model is not confident about a species, it may predict at a higher taxonomic level (e.g. `"felidae;;; cat family"` with blank genus/species fields).
+
+:::
+
+```{python}
+predictions_dict = model.predict(folders=[image_folder])
+print_predictions(predictions_dict)
+# display(JSON(predictions_dict))  # uncomment for full verbose output
+```
+
+Instead of running predictions on a whole folder, we can also pass a list of specific file paths. This is useful if we want to quickly test the model on a single image or a hand-picked selection without re-processing the entire folder. Here we've extracted all image paths in our folder that end with `.jpg`, `.jpeg` or `.png`, then we selected the first 2 paths to run our model on.
+
+```{python}
+image_paths = sorted(
+    p for p in image_folder.iterdir()
+    if p.suffix.lower() in [".jpg", ".jpeg", ".png"]
+)
+
+predictions_dict = model.predict(filepaths=[image_paths[0], image_paths[1]])
+print_predictions(predictions_dict)
+```
+
+# Visualise results
+
+The cell below displays each image with its predictions overlaid. Where the detector found an animal, a red bounding box is drawn around it. The detector’s confidence score appears in the top-left corner of the box (e.g. animal: 0.88), and the classifier’s species label with its confidence score is shown in the bottom-right corner (e.g. domestic cat: 0.93). The exact labels and scores we see will depend on the images and taxa.
+
+Where the detector found nothing — which can happen with blurry, fast-moving, or partially visible animals — the classifier’s prediction is shown as a banner at the bottom of the image. The classifier still runs on the full image in these cases, so a species label is always produced.
+
+```{python}
+from PIL import ImageDraw, ImageFont
+
+# Run SpeciesNet on all images in the folder
+predictions_dict = model.predict(folders=[image_folder])
+
+# Load a font 
+font = ImageFont.load_default(size=14)  
+
+n_show = min(3, len(predictions_dict["predictions"]))
+for pred_item in predictions_dict["predictions"][:n_show]:
+    fname      = Path(pred_item["filepath"]).name
+    pred_text  = pred_item.get("prediction", "")
+    detections = pred_item.get("detections", [])
+
+    # The prediction string is semicolon-separated:
+    # UUID ; class ; order ; family ; genus ; species ; common-name
+    species_name = pred_text.split(";")[-1] if pred_text else "unknown"
+
+    # Classifier confidence: classifications = {"classes": [...], "scores": [...]}
+    # scores[0] is the top prediction's confidence (0–1)
+    scores = pred_item.get("classifications", {}).get("scores", [])
+    conf   = scores[0] if scores else None
+    species_label = f"{species_name}: {conf:.2f}" if conf is not None else species_name
+
+    print(f"File      : {fname}")
+    print(f"Prediction: {pred_text}")
+
+    img = load_rgb_image(pred_item["filepath"])
+    img.thumbnail(size=(800, 800))
+
+    if detections:
+        # draw_bboxes draws a red box + "animal: conf" label for each detection.
+        # It returns a NEW annotated image — the return value must be captured.
+        img = draw_bboxes(img, detections)
+
+        # Overlay the classifier's species label at the bottom-right of each box
+        draw = ImageDraw.Draw(img)
+        for det in detections:
+            xmin, ymin, bw, bh = det["bbox"]
+            x_right  = int((xmin + bw) * img.width)
+            y_bottom = int((ymin + bh) * img.height)
+
+            x1, y1, x2, y2 = draw.textbbox((0, 0), species_label, font=font)
+            x_px = x_right  - (x2 - x1)   # right-align to box edge
+            y_px = y_bottom - (y2 - y1)    # bottom-align to box edge
+
+            draw.rectangle([x_px - 3, y_px - 3, x_right + 3, y_bottom + 3], fill=(0, 0, 0))
+            draw.text((x_px, y_px), species_label, fill=(255, 255, 0), font=font)
+
+        print(f"  {len(detections)} bounding box(es) drawn.")
+    else:
+        # No detection: the animal was not located above the detector's confidence
+        # threshold (common with motion blur or partially visible subjects).
+        # Draw the classifier result as a banner at the bottom of the image.
+        draw = ImageDraw.Draw(img)
+        w, h = img.size
+        banner = f"Classifier: {species_label}  (no detection bbox)"
+        draw.rectangle([0, h - 30, w, h], fill=(0, 0, 0))
+        draw.text((6, h - 24), banner, fill=(255, 255, 255), font=font)
+        print("  No bounding boxes — classifier label shown as banner.")
+
+    print()
+    display(img)
+```
+
+### Interpreting the results
+
+**Confidence scores** represent how certain the model is about a prediction, on a scale of 0 to 1. A score of 0.93 means the model assigns 93% of its probability mass to that label. As a rough guide:
+- **> 0.9** — high confidence; likely a reliable prediction
+- **0.6–0.9** — moderate confidence; worth a visual check
+- **< 0.6** — low confidence; treat with caution
+
+When the model is uncertain at the species level, it often predicts at a higher taxonomic rank instead — for example, predicting the order `"cetartiodactyla"` rather than *Sus scrofa*. This is a deliberate and sensible fallback: a broad but correct label is more useful than a confident but wrong species name.
+
+#### What our results show
+
+All images in this run were labelled *Sus scrofa* (feral pig) in ALA, but SpeciesNet returned five different predictions: **wild boar**, **domestic cattle**, **bearded pig**, **Cetartiodactyla** (order), and **mammal** (class). This is instructive.
+
+The three species-level predictions — wild boar, domestic cattle (*Bos taurus*), and bearded pig (*Sus barbatus*) — all belong to the same mammalian order, Cetartiodactyla (even-toed ungulates). From a camera-trap image, a feral pig photographed side-on in low light can be visually similar to a large pig or a small cow, particularly when the image is partially obstructed or blurred. SpeciesNet's confusion between these species reflects a genuine visual ambiguity rather than a random error.
+
+The two higher-rank predictions — Cetartiodactyla and mammal — represent cases where the model could not confidently distinguish between species in that group and appropriately abstained from a species-level call. The fact that it still correctly identified the correct order and class demonstrates the model's graceful degradation under uncertainty.
+
+This spread of predictions illustrates an important point: **SpeciesNet's output should be treated as a probabilistic first-pass label, not a definitive identification.** For research applications, predictions — especially those below ~0.9 confidence or at a higher taxonomic level — benefit from expert validation or a second-pass review.
+
+#### Limitations of our results
+
+- **Image quality matters.** SpeciesNet was trained on camera-trap images and performs best on those. Images taken at night, in heavy rain, or with severe motion blur will produce lower-confidence and less reliable predictions.
+- **The detector and classifier are independent.** The detector can miss an animal and still have the classifier produce a correct species label and vice versa. Always look at both the bounding box and the prediction string together.
+- **Closely related species are harder to distinguish.** As seen above, species within the same family or order (e.g. Sus scrofa vs Sus barbatus) are more likely to be confused with each other than with distantly related animals.
+- **"Blank" predictions are useful.** If SpeciesNet predicts `blank`, neither the detector nor the classifier found strong evidence of an animal — valuable for automatically filtering empty frames from large datasets.
+- **Geofencing can suppress correct predictions.** If a species is present but outside its expected geographic range (e.g. an escaped or introduced animal), geofencing may filter it out. Disable geofencing with `geofence=False` in those cases.
+
+::: {.callout-tip collapse="true"}
+
+# Run classifier or detector separately
+
+SpeciesNet's classifier and detector can be called independently, which can be a faster alternative when we don't need both processes. Running the classifier without the detector produces a species label, but gives no information about where the animal is located in the frame. This is useful for large-scale screening where location is not needed. Alternatively, running the detector without the classifier returns bounding boxes and confidence scores for any animal found, but does not identify the species — each detection is simply labelled `"animal"`. This is useful for quickly checking occupancy (is an animal present?) or filtering blank frames, without the computational overhead of species classification.
+
+**Classifier only** with `model.classify()`:
+
+```{python}
+# Classifier only — no bounding boxes, just species labels for the full image
+predictions_dict = model.classify(filepaths=[image_paths[0], image_paths[1]])
+
+print("Classifier-only results (top prediction per image):")
+for pred in predictions_dict["predictions"]:
+    fname  = Path(pred["filepath"]).name
+    label  = pred.get("prediction", "").split(";")[-1]
+    scores = pred.get("classifications", {}).get("scores", [])
+    conf   = f"{scores[0]:.2f}" if scores else "n/a"
+    print(f"  {fname}  =>  {label}  (confidence: {conf})")
+
+# Uncomment to see the full raw output including all candidate classifications:
+# display(JSON(predictions_dict))
+```
+
+**Detector only** with `model.detect()`:
+
+```{python}
+# Detector only — returns bounding boxes with confidence scores, no species labels
+predictions_dict = model.detect(filepaths=[image_paths[0], image_paths[1]])
+
+print("Detector-only results (bounding boxes per image):")
+for pred in predictions_dict["predictions"]:
+    fname      = Path(pred["filepath"]).name
+    detections = pred.get("detections", [])
+    if detections:
+        for d in detections:
+            print(f"  {fname}  =>  {d['label']}  conf: {d['conf']:.2f}  bbox: {d['bbox']}")
+    else:
+        print(f"  {fname}  =>  no detections above threshold")
+
+# Uncomment to see the full raw output:
+# display(JSON(predictions_dict))
+```
+
+:::
+
+::: {.callout-note collapse="true"}
+##### Disabling geofencing
+
+We suggest using geofencing, but it can be useful to disable geofencing if you are working with images from multiple countries in a single batch, or you we want to inspect the model's raw confidence scores before geographic filtering. To disable geofencing entirely, reload the model with `geofence=False`:
+
+```python
+model_no_geo = SpeciesNet(DEFAULT_MODEL, geofence=False)
+predictions_dict = model_no_geo.predict(folders=[image_folder])
+```
+
+:::
+
+<!-- Amanda, is there a way to remove the EC_images folder at this point of the article? It's only necessary for this article so no need to keep it around either on GH or locally -->
+
+## Final thoughts
+
+This notebook has shown how to use Google's SpeciesNet model with data from the Atlas of Living Australia to automatically identify animal species in camera-trap images. Starting from a simple species query, we retrieved image records from ALA, downloaded a sample, and ran SpeciesNet to produce species labels and bounding boxes for each photograph.
+
+Automated image classification won't replace expert review for all use cases, but it can dramatically reduce the manual effort involved in processing large camera-trap datasets — particularly for filtering blank frames, flagging images likely to contain a species of interest, or generating a first-pass label for subsequent expert validation.
+
+To take this further, try:
+- Replacing the taxa or geographic filter to work with a different study system
+- Increasing `N_IMAGES` to run the model on your full filtered dataset
+- Exporting predictions to a CSV with `pd.DataFrame(predictions_dict["predictions"]).to_csv("results.csv")`
+- Joining predictions back to `subset_df` on the image filename to add location, date, and data-resource context
+
+**Resources:**
+- [galah-python documentation](https://galah.ala.org.au/Python/)
+- [SpeciesNet GitHub repository](https://github.com/google/cameratrapai)
+- [Atlas of Living Australia](https://www.ala.org.au/)
+- [EcoCommons notebooks](https://www.ecocommons.org.au/notebooks/)
+
+<br>
+
+---
+
+#### Copyright information from SpeciesNet
+
+Copyright 2024 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+<https://www.apache.org/licenses/LICENSE-2.0>
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
+<details>
+
+<summary style="color: #E06E53;">
+
+Expand for session info
+
+</summary>
+
+```{python}
+#| eval: true
+#| echo: false
+import math
+import natsort
+import pandas
+import session_info
+
+session_info.show()
+```
+
+</details>
