@@ -14,7 +14,7 @@ lightbox: auto
 categories:
   - Eukaryota
   - Animalia
-  - Plantae
+  - Mammalia
   - Summaries
   - Python
 image: images/boar-example.png
