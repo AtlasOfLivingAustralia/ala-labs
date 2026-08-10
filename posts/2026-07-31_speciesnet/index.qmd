@@ -33,6 +33,11 @@ editor_options:
   #title-block-header.quarto-title-block.default .quarto-title-meta {
       display: none;
   }
+
+  .cell-output-display {
+  display: flex;
+  justify-content: center;
+  }
 </style>
 ```
 
@@ -71,12 +76,12 @@ This post shows how to combine two open tools to tackle this problem: the [Atlas
 ```{python install-packages}
 #| eval: true
 #| echo: false
+#| warning: false
+#| message: false
 ! pip install galah-python speciesnet Pillow natsort session_info matplotlib pathlib --quiet
 ```
 
-# Download images from ALA
-
-## Create a query filtered for camera trap images
+# Download images
 
 The [Atlas of Living Australia (ALA)](https://www.ala.org.au/) is Australia's national biodiversity data infrastructure, aggregating over 180 million occurrence records from museums, herbaria, citizen science platforms (e.g. iNaturalist), and government surveys. Many of these records include photographs taken in the field — including images from camera-trap deployments.
 
@@ -92,6 +97,7 @@ In this example, we will be downloading images of wild cats (*Felis catus*) and 
 Left: [*Sus scrofa* (Vidheesha CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/a1f3a7b5-6246-470a-aa77-5fbc2ece05bb), Right: [*Felis catus* (Grant Linley CC-BY 4.0 (Int))](https://biocache.ala.org.au/occurrences/56a88a5b-fe7d-4e45-a937-ef052b0b3b24)
 :::
 
+## Create a query filtered for camera trap images
 
 We can use the `galah-python` package to download ALA data in Python and retrieve image metadata for our target species. `galah` requires a registered ALA email address in order to download data. Registration is free at [ala.org.au](https://www.ala.org.au/). 
 
@@ -102,6 +108,8 @@ We can use the `galah-python` package to download ALA data in Python and retriev
 If you want to run this code multiple times with different parameters, and want a straightforward way to remove images from your download folder, this function will remove them from your image folder.
 
 ```{python}
+#| warning: false
+#| message: false
 from pathlib import Path
 
 def empty_directory(directory: Path):
@@ -167,7 +175,7 @@ galah.atlas_counts(
 )
 ```
 
-We now have a few thousand images; however, not all ALA image records are equally suitable for SpeciesNet. The model was trained on camera-trap images and performs best on that type of photograph. Field photos, museum specimens, or heavily cropped images can produce unreliable predictions. Here, we can add a field to the `group_by` argument called `dataResourceName`, which will tell us the name of the datasets containing these images.  We can determine which ones are camera trap datasets from here.
+Our result tells us there are more than 3,000 available images. However, not all images stored on the ALA are equally suitable for SpeciesNet, as SpeciesNet is suited to camera-trap images and not field photos, museum specimens, or heavily cropped images. Here, we can add a field to the `group_by` argument called `dataResourceName` to return the name of the source of each image.  With this information, we can determine which datasets contain suitable camera trap images.
 
 ```{python}
 galah.atlas_counts(
@@ -177,16 +185,16 @@ galah.atlas_counts(
 )
 ```
 
-Now we can see that only one dataset contains camera trap data: `Camera trap surveys in Queensland's Wet Tropics 2022-2023`.  As we are wanting a very small sample size for this example, we will restrict our query to see how many wild pig and feral cat images were captured by Camera trap surveys in Queensland's Wet Tropics 2022-2023 on December 17, 2022.
+Our result tells us that one dataset - `Camera trap surveys in Queensland's Wet Tropics 2022-2023` - contains camera trap images.  Let's specify this dataset in a filter. For example, purposes, we'll also restrict our query to see how images captured on December 17, 2022.
 
 ```{python}
 galah.atlas_counts(
     taxa=taxa,
     filters=["stateProvince=Queensland", 
-             "year=2022",
              "multimedia=Image",
-             "month=12",
              "dataResourceName=Camera trap surveys in Queensland's Wet Tropics 2022-2023",
+             "year=2022",
+             "month=12",
              "day=17"]
 )
 ```
@@ -194,39 +202,56 @@ galah.atlas_counts(
 
 ## Download images
 
-Now that we have a very small subset of images, we can retrieve image metadata as well as download the images using `galah.atlas_media()`. This function returns a table of records that includes the image URL (`imageURL`), species name (`scientificName`), data resource name (`dataResourceName`), and observation coordinates for every matching record (`decimalLatitude`, `decimalLongitude`). Crucially, setting `collect=True` means that we download the metadata *and* images.  To only get image metadata, set `collect=False`.  We will also specify that `path="EC_images"`
+Now that we have a small subset of images, we can retrieve image metadata as well as download the images using `galah.atlas_media()`. This function returns a table of records that includes the image URL, scientific name, data resource name, and observation coordinates for every matching record.
 
 ```{python}
 media_df = galah.atlas_media(
     taxa=taxa,
     filters=["stateProvince=Queensland", 
-             "year=2022",
              "multimedia=Image",
-             "month=12",
              "dataResourceName=Camera trap surveys in Queensland's Wet Tropics 2022-2023",
-             "day=17"],
-    collect=True,
-    path="EC_images",
-    progress_bar=False # set this to True if you want to see the progress of your downloads
+             "year=2022",
+             "month=12",
+             "day=19"],
+    collect=False
 )
 
-print(media_df)
+len(media_df)
 ```
 
-## Preview images before running {speciesnet}
+The results show that there are several available images on the ALA, with some records containing multiple images each. If we are happy with this result, we can now set `collect=True` to download these images and specify that downloads are saved in the `EC_images` folder.
+
+```{python}
+media_df = galah.atlas_media(
+    taxa=taxa,
+    filters=["stateProvince=Queensland", 
+             "multimedia=Image",
+             "dataResourceName=Camera trap surveys in Queensland's Wet Tropics 2022-2023",
+             "year=2022",
+             "month=12",
+             "day=19"],
+    collect=True,
+    path="EC_images",
+    progress_bar=False # set to True to see progress bar
+)
+```
+
+## Preview images
 
 Before running the model, let's display the downloaded images as a grid to confirm they look as expected. This is a good moment to spot any blank frames, setup photos, or corrupted files that might produce unreliable predictions and should be excluded before analysis.
 
 ```{python}
-#| column: screen-inset
+#| column: page
 #| fig-align: center
+#| fig-cap: " "
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 import matplotlib.pyplot as plt
 %matplotlib inline
 from PIL import Image
 from pathlib import Path
 
-# set up a path to find your images
+# set a path to images
 image_folder = Path("EC_images")
 image_paths = sorted(image_folder.glob("*.jpg"))
 print(f"Found {len(image_paths)} images.")
@@ -258,13 +283,12 @@ plt.show()
 
 The model works in two stages. First, a detector scans the image and draws a bounding box around any animal it finds, along with a confidence score indicating how certain it is that an animal is present (0 for no confidence, 1 for complete confidence). Second, a classifier examines the content inside the bounding box — or the full image if no box was found — and assigns the most likely species label from a vocabulary of over 2,000 labels. These labels span individual species (e.g. *Sus scrofa*, feral pig), broader taxonomic groups (e.g. *Felidae*, or the cat family), and non-animal classes (blank, vehicle, human).
 
-## Load libraries
 
-Import the SpeciesNet library and define a small helper function that prints predictions in a readable format. We also print the available models — DEFAULT_MODEL is the recommended choice for most use cases.
 
 ## Load the model
 
-The cell below loads SpeciesNet. The first time it runs, it will download the model parameters <!-- Dax, is this the correct word? --> (approximately 1–2 GB), which can take a few minutes. Subsequent runs in the same session use the cached parameteres instantly.
+The cell below loads the SpeciesNet library and SpeciesNet. DEFAULT_MODEL is the recommended choice for most use cases.The first time it runs, it will download the model weights (approximately 1–2 GB), which can take a few minutes. Subsequent runs in the same session use the cached parameteres instantly.
+
 
 ::: {.callout-note collapse="true"}
 ##### Geofencing
@@ -301,6 +325,8 @@ If the model is not confident about a species, it may predict at a higher taxono
 
 :::
 
+First we'll define a small helper function that prints predictions in a readable format.
+
 ```{python}
 def print_predictions(predictions_dict: dict) -> None:
     """Print a human-readable summary of SpeciesNet predictions."""
@@ -320,6 +346,8 @@ def print_predictions(predictions_dict: dict) -> None:
     df = pd.DataFrame(dict_for_table)
     print(df)
 ```
+
+Then we can run `model.predict()` and interpret the results using our helper function.
 
 ```{python}
 predictions_dict = model.predict(folders=[image_folder])
@@ -347,6 +375,8 @@ Where the detector found nothing — which can happen with blurry, fast-moving, 
 ```{python}
 #| column: screen-inset
 #| fig-align: center
+#| fig-cap: " "
+#| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 %matplotlib inline
 from PIL import ImageDraw, ImageFont
@@ -440,14 +470,11 @@ When the model is uncertain at the species level, it often predicts at a higher 
 
 ## What our results show
 
-All images in this run were either labelled *Sus scrofa* (feral pig) or *Felis catus* (domestic cat) in ALA, but SpeciesNet returned three different predictions: 
+All images in this run are identified as *Sus scrofa* (feral pig) or *Felis catus* (domestic cat) in the ALA, but SpeciesNet returned three different predictions: 
 **domestic cat**, **wild biar**, and **coyote**. This is instructive.
 
 These three species-level predictions — domestic cat, wild boar and coyote (*Canis latrans*) all belong to the same class, *Mammalia* (mammals). 
 
-<!-- Dax, is this correct? -->
-From a camera-trap image, a feral pig photographed side-on in low light can be visually similar to a large pig or a small cow, particularly when the image is partially 
-obstructed or blurred. SpeciesNet's confusion between these species reflects a genuine visual ambiguity rather than a random error.
 
 ::: {.callout-tip collapse="true"}
 # Classification of higher ranks
@@ -520,6 +547,13 @@ predictions_dict = model_no_geo.predict(folders=[image_folder])
 #| echo: false
 #| eval: true
 import shutil
+import stat
+import os
+
+def remove_readonly(func, path, excinfo):
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
+
 shutil.rmtree("EC_images")
 ```
 
