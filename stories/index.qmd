@@ -34,7 +34,7 @@ Through art and story, Aboriginal and Torres Straight Islander People capture de
 
 How does traditional knowledge overlap with Western-collected data? Do the records stored in infrastructures like the Atlas of Living Australia (ALA) reflect or contrast traditional knowledge of a given ecosystem? Continue scrolling to explore the story of this artwork and the data interwoven through it.
 
-<center>![](images/painting.jpg)</center>
+<center>![](images/painting-cropped_smaller.jpg)</center>
 
 
 ::::{.cr-section}
@@ -82,7 +82,7 @@ Let's explore the painting and some overarching themes as a guide to some of the
 :::: {.cr-section layout="overlay-center"}
 
 :::{#cr-fullpainting}
-![](images/painting.jpg){style="border-radius: 0%;"}
+![](images/painting-cropped_smaller.jpg){style="border-radius: 0%;"}
 :::
 
 
@@ -162,10 +162,10 @@ You'll notice that some animals have many dots while some have very few.
 :::{focus-on="cr-dove"}
 :::{layout-ncol="2"}
 :::{.group-1 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
-<center><img src="images/painting_peaceful-dove.jpg" class="custom-rounded" style="height:20vh;"/></img></center>
+<center><img src="images/painting_peaceful-dove2.jpg" class="custom-rounded" style="height:20vh;"/></img></center>
 :::
 :::{.group-2 style="margin-left: auto; margin-right:auto;"}
-In this painting, the species with the most recorded observations in Mareeba is the [**Peaceful Dove**]{style="color:#FFC557;"} (*Geopelia placida*). As of April 2026, it has 5,551 records.
+In this painting, the species with the most recorded observations in Mareeba is the [**Peaceful Dove**]{style="color:#FFC557;"} (*Geopelia placida*). As of August 2026, it has 5,431 records.
 :::
 :::
 ::::
@@ -182,10 +182,10 @@ In general, [**birds**]{style="color:#FFC557;"} have more recorded observations 
 <center><img src="images/percher.jpg" class="custom-rounded" style="height:20vh;"/></img></center>
 :::
 :::{.group-2 style="margin-left: auto; margin-right:auto;"}
-By comparison, the most recorded species that isn't a bird is the [**Scarlet percher**]{style="color:#C4CA50;"} (*Diplacodes haematodes*), with 274 records.
+By comparison, the most recorded species that isn't a bird is the [**Scarlet percher**]{style="color:#C4CA50;"} (*Diplacodes haematodes*), with 289 records.
 
 <br>
-In Mareeba, for every 20 records of a Peaceful Dove there is only 1 record of a Scarlet percher on the ALA. 
+In Mareeba, for every ~20 records of a Peaceful Dove there is only 1 record of a Scarlet percher on the ALA. 
 :::
 :::
 ::::
@@ -230,7 +230,7 @@ However fish data in the area is very limited on the ALA.
 It's important to remember that record numbers don't necessarily reflect *actual* abundance, but they can show us biases in the data we collect.
 
 <br>
-To accentuate this point, when we combine all of the records of every [**Insect**]{style="color:#C4CA50;"}, [**Amphibian**]{style="color:#458F75;"}, [**Mammal**]{style="color:#E9AB57;"}, [**Monotreme**]{style="color:#E47653;"}, [**Reptile**]{style="color:#82935B;"} and [**Fish**]{style="color:#4aacde;"} species in this painting, we have 1,874 records in total; that's only 33% of the records of the Peaceful Dove!
+To accentuate this point, when we combine all of the records of every [**Insect**]{style="color:#C4CA50;"}, [**Amphibian**]{style="color:#458F75;"}, [**Mammal**]{style="color:#E9AB57;"}, [**Monotreme**]{style="color:#E47653;"}, [**Reptile**]{style="color:#82935B;"} and [**Fish**]{style="color:#4aacde;"} species in this painting, we have 1,952 records in total; that's only 36% of the records of the Peaceful Dove!
 
 <br>
 For a complex ecosystem like Mareeba's, the impression given by the data doesn't reflect reality---it would be impossible that there are actually that many more birds than other species. A healthy ecosystem couldn't exist without all those other species breaking down and cycling nutrients! These record numbers highlight how little data we still have of some taxonomic groups in Australia. They also show just how much observers seem to really like birds (and that's a good thing for birds)!
@@ -362,10 +362,10 @@ Here, observations of the Dainty Green Tree Frog (*Litoria gracilenta*) peak in 
 :::{focus-on="cr-bandicoot"}
 :::{layout-ncol="2"}
 :::{.group-1 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
-<center><img src="images/painting_bandicoot.jpg" class="custom-rounded" style="height:20vh;"/></img></center>
+<center><img src="images/painting_bandicoot2.jpg" class="custom-rounded" style="height:20vh;"/></img></center>
 :::
 :::{.group-2 style="margin-left: auto; margin-right:auto;"}
-Some species in this painting like the Northern brown bandicoot (*Isoodon macrourus*) are also nocturnal, primarily active at [**night**]{style="color:#5F84AF;"} instead of [**day**]{style="color:#FFC557;"}. This makes it less likely that people see and record these species, reducing record numbers. In this case, there are only 33 records of Northern brown bandicoots in Mareeba.
+Some species in this painting like the Northern brown bandicoot (*Isoodon macrourus*) are also nocturnal, primarily active at [**night**]{style="color:#5F84AF;"} instead of [**day**]{style="color:#FFC557;"}. This makes it less likely that people see and record these species, reducing record numbers. In this case, there are only 39 records of Northern brown bandicoots in Mareeba.
 :::
 :::
 ::::
@@ -375,11 +375,10 @@ Some species in this painting like the Northern brown bandicoot (*Isoodon macrou
 ::::
 
 Hear more about the inspirations and cultural this painting and the Muluridji people's cultural connection to these animals from artist Ann-Marie Keating in the following video:  
-*Note: I don't think the video will render correctly until the article is published*
 
 :::{.column-page-outset}
 
-{{< video http://youtube.com/watch?v=TWiym0v2EAQ >}}
+{{< video https://youtu.be/1XT5HG4v5Tw >}}
 
 :::
 
@@ -389,7 +388,7 @@ View the full painting below:
 
 :::{.column-screen}
 
-![](images/painting-high-def.jpg)
+![](images/painting-cropped_smaller.jpg){.lightbox}
 
 :::
 
@@ -403,104 +402,4 @@ Our thanks to Ann-Marie Keating and Gullara McInnes for sharing their cultural c
 ![](images/keating-mcinnes_cropped.jpg){width=70%}
 </center>
 
-<!-- :::::{style="--cr-narrative-sidebar-width: 3fr;"} -->
-<!-- ::::{.cr-section} -->
-<!-- :::: -->
-<!-- ::::: -->
 
-
-<!--
-
-
-
-
-Some birds hold great cultural significance to the Muluridji people and Keating's family. Forest kingfishers are a good omen.
-
-Magpie larks are 'the defenders'. When there is an intruder with bad intentions, they will sing out.
-
-The Bush Stone Curlew warns that an argument or, for Keating, when her children might cause trouble. Long, sad calls close to the house can mean that a family member has passed away.
-
-The Tawny Frogmouth is a bad omen, warning of death or bad injury.
-
-Despite their importance to the ecosystem, the painting highlights that fish, reptiles, amphibians and insects have far fewer records than birds in the Atlas of Living Australia. This data bias can be for many reasons. Some species are easier to see due to their colour, size, life cycle or personality. Some species might be more popular to look for and record. Some species can live in places that are hard to access or out of view. Let's look at a few interesting species and compare their record numbers to that of our most recorded bird, xxx.
-
-The carpet python pays homage to the Muluridji people's two dreaming serpents that travel along the Barron River and Granite Creek. This huge species of snake is only recorded xxxx times compared to xxx bird.
-
-As flood waters recede, Keating says that many fish species fill up the billabongs. However, species like the xxxx have only xxx percent as many records as [the most recorded bird].
-
-Larger frogs the Australian Green tree frog are some of the most recorded species in the area.
-
-According to Keating, various dragonfly species appear around the rains. The Scarlet Percher appears before the rains arrive...
-
-...and the Blue skimmer dragon fly appears when the rains are leaving.
-
-
-<br>
-
-
-There are a total of 62 animals on this painting, including xxxx birds.  \\
-> There's a lot of birds in here because I belong to birds...If I can't paint a bird nicely I'm disgracing myself!
-
-
-My youngest child, her name is Kimfgully [which] means the single call of a magpie goose. So you can see the magpie goose sits in an area of prominence.
-
-We also have the wedgetail eagle, it has greater significance to my son. We live on a farm outside of town and when he was probably about 6, he was---in his words---nearly eaten by a wedgetail eagle. It was circling above him and we could hear the screams from the house. It was very close to him, I must admit, but yes the sheer look at fear that he was going to get eaten by a wedgetail eagle was unforgettable.
-
-Cluster fig and bottle brush in the background
-
-
-
-The original art style I used was a single line and a patterning, and the evolution of it is that I've added colour and patterning...I've changed the way the animals sit...between there being a side or aerial view, I've tried to make them move, so their positions might be how you see them naturally rather than in a flat state.
-
-The curlew does not have the [lined patterns] as the others because we were too afraid to touch it [and] because its portrait was absolutely beautiful...we didn't want to disgrace it by adding colour. 
-For my family specifically, the tawny frogmouth is held in high regard. Even as an image I will not point at it and bring myself bad luck...photos of things can bring bad luck, but also painting them in a bad way can bring bad luck...when I paint I am mindful and respectful to the animal I am painting so that I'm not jinxed in any way. Some of [the animals] might be bigger or smaller or even more beautiful because [they have] cultural significance.
-
-[This painting and the menagerie style of painting] is one way of preserving our culture.
-
-The animals have many layers of significance. Not just messages, they also represent our families. They will tell us what's going on in Country in different areas. If there's something bad that's happening in [an area] that I need to look at, the crow will...fly in that direction and tell me what I should be doing. Between how we live our culture with our animals, our animals will tell us what is happening on our Country.
-
-The quoll is very rare to see which is why it's in the middle, kind of by itself.
-
-Plants and animals tell us the seasons. 
-You'll find the black cockatoo will always follow the rain. He will always come behind the rain.
-Kingfisher, he's our little good luck messenger. Everytime I see him, good things will happen to the family. You'll normally see him [where] the prominence of insects are.
-Before and after rain, we get a lot of insect movement, but the tell tales are our dragonflies. We'll see different dragonflies depending on what the rain is doing. So big rain, when rain has just come in or rain is ending [is when we see dragonflies]
-Our koalas, they're known to be on the Athaden table lands. 
-Our eel is one of the fish species that we give to the Elders because it is oily. The eel and the catfish are two we used to save for the elders. 
-The sleepy cod in the middle, you can always find a sleepy cod
-
-
-
-
-
-One thing we have learned is that there are comparitively many bird observations on the Atlas of Living Australia. Birds hold great significance to Keating and her family.
-
-> There's a lot of birds in here because I belong to birds...If I can't paint a bird nicely I'm disgracing myself!
-
-Birds like the Magpie Goose hold particular significance to Keating's child Kimkahgulli. 
-
->My youngest child, her name is Kimkahgulli [which] means the single call of a magpie goose. So you can see the magpie goose sits in an area of prominence.
-
-:::{.column-page}
-:::{layout-ncol="2" layout="[1,2]]"}
-:::{.group-1 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
-<center><img src="images/painting_magpie-goose.jpg" class="custom-rounded" style="height:20vh;"/></img></center>
-:::
-:::{.group-2 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
-<center><img src="https://images-assets.ala.org.au/store/9/f/a/e/fa5a4d08-2430-4535-88ac-b4384091eaf9/original" style="height:30vh;"/></img></center>
-
-:::{.caption style="font-size:.7rem;"}
-<center>
-Magpie Goose (*Anseranas semipalmata*) <br>
-Ben CC-BY-NC-ND 4.0 (Int)
-</center>
-:::
-:::
-:::
-:::
-
-
-Of course, there are many other animals that are not birds depicted in this painting that hold great cultural significance to the Muluridji people. 
-
-
--->

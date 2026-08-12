@@ -174,5 +174,5 @@ counts_joined |>
   group_by(is_bird) |>
   summarise(n_records = sum(count))
 
-1874/60411
-1874/5551
+1952/60367 # not bird / bird
+1952/5551 #  not bird / peaceful dove obs
