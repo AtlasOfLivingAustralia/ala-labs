@@ -10,7 +10,7 @@ execute:
 format: 
   closeread-html:
     mainfont: Roboto
-    css: [style.css, ../theme.css, ../custom_theme.scss]
+    css: [style.css, ../../theme.css, ../../custom_theme.scss]
     fontsize: 1.2rem
     backgroundcolor: "#232323"
     fontcolor: "#fff"
@@ -26,7 +26,7 @@ format:
     # this include-in-header is not inherited from the project _quarto.yml,
     # likely because the format is different
     include-in-header:
-      - ../_fathom.html
+      - ../../_fathom.html
     embed-resources: true
 ---
 
