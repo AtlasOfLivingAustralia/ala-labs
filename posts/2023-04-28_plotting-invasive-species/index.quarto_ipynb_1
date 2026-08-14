@@ -100,7 +100,7 @@
         "\n",
         "First load the required Python packages."
       ],
-      "id": "7bc581d2"
+      "id": "ab123fcb"
     },
     {
       "cell_type": "code",
@@ -119,7 +119,7 @@
         "import alphashape\n",
         "from flexitext import flexitext"
       ],
-      "id": "afa2f340",
+      "id": "93695061",
       "execution_count": null,
       "outputs": []
     },
@@ -129,7 +129,7 @@
       "source": [
         "Next, we will use the [{galah} package](https://galah.ala.org.au/Python/index.html) to download occurrence records of cane toads in Australia from the Atlas of Living Australia (ALA). You will need to first provide a registered email with the ALA using `galah.galah_config()` before retrieving records."
       ],
-      "id": "30e7d77a"
+      "id": "2e197d7e"
     },
     {
       "cell_type": "code",
@@ -140,7 +140,7 @@
         "galah.galah_config(email=\"amanda.buyan@csiro.au\")\n",
         "galah.galah_config(data_profile=\"ALA\")"
       ],
-      "id": "c613e4cf",
+      "id": "9df70fd1",
       "execution_count": null,
       "outputs": []
     },
@@ -153,7 +153,7 @@
         "galah.galah_config(email = \"your-email@email.com\")\n",
         "galah.galah_config(data_profile=\"ALA\")"
       ],
-      "id": "959fd07e",
+      "id": "5def6fd8",
       "execution_count": null,
       "outputs": []
     },
@@ -166,7 +166,7 @@
         "cane_toads = galah.atlas_occurrences(taxa = \"Rhinella marina\", use_data_profile = True)\n",
         "cane_toads.head(5)"
       ],
-      "id": "d694a9b7",
+      "id": "ee16ce1f",
       "execution_count": null,
       "outputs": []
     },
@@ -178,7 +178,7 @@
         "\n",
         "We'll clean our data to ensure that there are no null or missing values in our coordinates and date fields. Because `galah.atlas_occurrences()` returns a Pandas dataframe, we have plenty of functions we can use to clean our data."
       ],
-      "id": "d0ef0272"
+      "id": "d0ccf20f"
     },
     {
       "cell_type": "code",
@@ -186,7 +186,7 @@
       "source": [
         "cane_toads = cane_toads.dropna(subset=[\"eventDate\", \"decimalLatitude\", \"decimalLongitude\"])"
       ],
-      "id": "8340cbaa",
+      "id": "c01e0c2d",
       "execution_count": null,
       "outputs": []
     },
@@ -196,7 +196,7 @@
       "source": [
         "We want to map cane toad's distribution each decade in our final visualisation. However, the `eventDate` value for each record is formaatted as a string value `yyyy-mm-dd Thh:mm:ssZ`. Let's write our own function `convert_date_to_decade()` that extract the year from a date `string` and return its corresponding decade by rounding down to the nearest decade."
       ],
-      "id": "6db9392f"
+      "id": "2b2607ab"
     },
     {
       "cell_type": "code",
@@ -206,7 +206,7 @@
         "    date = parse(value)\n",
         "    return date.year - (date.year%10)"
       ],
-      "id": "2175526b",
+      "id": "cf4c1cfb",
       "execution_count": null,
       "outputs": []
     },
@@ -216,7 +216,7 @@
       "source": [
         "We'll create our new `decade` column by mapping each record's date value in `eventDate` to its corresponding decade value."
       ],
-      "id": "a12d1931"
+      "id": "8d1d64ae"
     },
     {
       "cell_type": "code",
@@ -225,7 +225,7 @@
         "#| warning: false\n",
         "cane_toads[\"decade\"] = cane_toads[\"eventDate\"].map(convert_date_to_decade)"
       ],
-      "id": "6c71c380",
+      "id": "564b8d58",
       "execution_count": null,
       "outputs": []
     },
@@ -239,7 +239,7 @@
         "\n",
         "{`GeoPandas`} is a package that handles geospatial data in Python and can be used to load in shapefiles as `GeoPandas` dataframes. Let's test this out by plotting our Australian state boundary shapefile."
       ],
-      "id": "c2a75e8a"
+      "id": "32b23371"
     },
     {
       "cell_type": "code",
@@ -250,7 +250,7 @@
         "states = geopandas.read_file(\"Australia_state_boundaries/STE_2021_AUST_GDA2020.shp\")\n",
         "states.plot(edgecolor = \"#5A5A5A\", linewidth = 0.5, facecolor = \"white\")"
       ],
-      "id": "5396c00a",
+      "id": "f8a5d295",
       "execution_count": null,
       "outputs": []
     },
@@ -266,7 +266,7 @@
         "states = geopandas.read_file(\"../data/Australia_state_boundaries/STE_2021_AUST_GDA2020.shp\")\n",
         "states.plot(edgecolor = \"#5A5A5A\", linewidth = 0.5, facecolor = \"white\")"
       ],
-      "id": "c1f9469e",
+      "id": "4e4662ca",
       "execution_count": null,
       "outputs": []
     },
@@ -280,7 +280,7 @@
         "\n",
         "First, we need to obtain a list of all decades with cane toad observations. We'll use the `decade` column from our `cane_toads` dataframe to group our observations."
       ],
-      "id": "87defbb8"
+      "id": "f16a7867"
     },
     {
       "cell_type": "code",
@@ -288,7 +288,7 @@
       "source": [
         "decades = list(set(cane_toads[\"decade\"]))"
       ],
-      "id": "de1941ba",
+      "id": "183f38ea",
       "execution_count": null,
       "outputs": []
     },
@@ -307,7 +307,7 @@
         "We used `alpha = 1`, but it's good practice to change this parameter depending on how widely distributed the coordinates of your data are. Also note that `alphashape.alphashape()` requires at least 3 data points to calculate an alpha shape.\n",
         ":::"
       ],
-      "id": "82a16056"
+      "id": "42aadfeb"
     },
     {
       "cell_type": "code",
@@ -323,7 +323,7 @@
         "    tmp_gdf = geopandas.GeoDataFrame(d, crs=\"EPSG:7844\")\n",
         "    alpha_shape_gdf = pd.concat([alpha_shape_gdf, tmp_gdf])"
       ],
-      "id": "56a914d9",
+      "id": "f4313d7e",
       "execution_count": null,
       "outputs": []
     },
@@ -333,7 +333,7 @@
       "source": [
         "Next, let's clean up our `GeoPandas` dataframe so that it is ready for plotting! Sometimes the `alphashape.alphashape()` algorithm will produce an empty shape that needs to be removed from the dataframe (this generally happens when the chosen alpha parameter is not appropriate for the supplied set of points). Let's remove these shapes from our data."
       ],
-      "id": "4be8a666"
+      "id": "1f06f7ea"
     },
     {
       "cell_type": "code",
@@ -341,7 +341,7 @@
       "source": [
         "alpha_shape_gdf = alpha_shape_gdf[~alpha_shape_gdf[\"geometry\"].is_empty]"
       ],
-      "id": "3fd7279d",
+      "id": "00fb68c4",
       "execution_count": null,
       "outputs": []
     },
@@ -351,7 +351,7 @@
       "source": [
         "Now let's format our decade string to display correctly on the figure legend by making sure it's in `YYYYs` format."
       ],
-      "id": "2e50d42c"
+      "id": "2bdcbd0f"
     },
     {
       "cell_type": "code",
@@ -359,7 +359,7 @@
       "source": [
         "alpha_shape_gdf[\"decade_string\"] = alpha_shape_gdf[\"decade\"].map(lambda d: str(d) + \"s\")"
       ],
-      "id": "9e18d506",
+      "id": "1e16e22b",
       "execution_count": null,
       "outputs": []
     },
@@ -369,7 +369,7 @@
       "source": [
         "Finally, because we expect cane toad distributions in earlier decades to be smaller than in recent decades, we'll need to plot earlier distributions *on top* of later distributions to avoid covering the earlier ones up. To achieve this, let's order the alpha shapes in descending order by decade."
       ],
-      "id": "fc07548c"
+      "id": "03350665"
     },
     {
       "cell_type": "code",
@@ -377,7 +377,7 @@
       "source": [
         "alpha_shape_gdf.sort_values(by='decade', ascending=False, inplace=True)"
       ],
-      "id": "c150cfc0",
+      "id": "f2cc9e5d",
       "execution_count": null,
       "outputs": []
     },
@@ -391,7 +391,7 @@
         "\n",
         "This figure showcases the incredible pace of the cane toad's spread across northern Australia. Our map shows that cane toads have spread across most of Queensland, the top end of the Northern Territory (from the 1980s to 2010s) and more recently, into the Kimberley region of Western Australia."
       ],
-      "id": "57004eb8"
+      "id": "d6fe159c"
     },
     {
       "cell_type": "code",
@@ -424,7 +424,7 @@
         "\n",
         "plt.show()"
       ],
-      "id": "a6223ea0",
+      "id": "0d22cb7c",
       "execution_count": null,
       "outputs": []
     },
@@ -440,7 +440,7 @@
         "\n",
         "#### Camels"
       ],
-      "id": "169bb28f"
+      "id": "1d4ce877"
     },
     {
       "cell_type": "code",
@@ -494,7 +494,7 @@
         "\n",
         "plt.show()"
       ],
-      "id": "2f319ce6",
+      "id": "52c153ae",
       "execution_count": null,
       "outputs": []
     },
@@ -504,7 +504,7 @@
       "source": [
         "#### Patterson's curse"
       ],
-      "id": "be53e3dd"
+      "id": "a7ecf828"
     },
     {
       "cell_type": "code",
@@ -558,7 +558,7 @@
         "\n",
         "plt.show()"
       ],
-      "id": "35fc3197",
+      "id": "3c0d2b74",
       "execution_count": null,
       "outputs": []
     },
@@ -588,7 +588,7 @@
         "\n",
         "First, let's download a shapefile of Australia's bioregions. The [IBRA7 bioregions](https://data.gov.au/dataset/ds-dga-d44dd392-ebea-4f1a-b30e-4a2da154aae4/details?q=ibra) classify areas within Australia that are geographically and ecologically distinct. Download the zip folder, save it in your project directory and unzip it. We can again use the {GeoPandas} package to read in and handle these data."
       ],
-      "id": "015b803c"
+      "id": "0733b25d"
     },
     {
       "cell_type": "code",
@@ -598,7 +598,7 @@
         "bioregions = geopandas.read_file(\"IBRA7_regions/ibra7_regions.shp\")\n",
         "bioregions.plot(edgecolor = \"#5A5A5A\", linewidth = 0.25, facecolor = \"white\")"
       ],
-      "id": "1e775b32",
+      "id": "9c5a002e",
       "execution_count": null,
       "outputs": []
     },
@@ -613,7 +613,7 @@
         "bioregions = geopandas.read_file(\"../data/IBRA7_regions/ibra7_regions.shp\")\n",
         "bioregions.plot(edgecolor = \"#5A5A5A\", linewidth = 0.25, facecolor = \"white\")"
       ],
-      "id": "add712aa",
+      "id": "e00b5da0",
       "execution_count": null,
       "outputs": []
     },
@@ -623,7 +623,7 @@
       "source": [
         "Within our `bioregions` dataframe, the column `REG_NAME_7` contains IBRA bioregion names."
       ],
-      "id": "60444d06"
+      "id": "1a47dd9a"
     },
     {
       "cell_type": "code",
@@ -632,7 +632,7 @@
         "#| column: page\n",
         "bioregions.head(5)"
       ],
-      "id": "43c69070",
+      "id": "659d577a",
       "execution_count": null,
       "outputs": []
     },
@@ -644,7 +644,7 @@
         "\n",
         "We'll once again use {galah} to find numbers of *Pittosporum undulatum* in each bioregion. First, let's find which field ID corresponds to bioregions in {galah}"
       ],
-      "id": "2967d8fc"
+      "id": "2eb52538"
     },
     {
       "cell_type": "code",
@@ -652,7 +652,7 @@
       "source": [
         "galah.search_all(fields = \"IBRA\") "
       ],
-      "id": "b452e02a",
+      "id": "c485b76d",
       "execution_count": null,
       "outputs": []
     },
@@ -662,7 +662,7 @@
       "source": [
         "It looks like field `cl1048` contains IBRA 7 regions. Let's check what values this field contains by using `galah.show_values()`."
       ],
-      "id": "8f93e0fd"
+      "id": "08796670"
     },
     {
       "cell_type": "code",
@@ -670,7 +670,7 @@
       "source": [
         "galah.show_values(field = \"cl1048\")"
       ],
-      "id": "9da5933a",
+      "id": "22519ce5",
       "execution_count": null,
       "outputs": []
     },
@@ -680,7 +680,7 @@
       "source": [
         "Now we can use the `group_by` argument in `galah.atlas_counts()` to group observations of *Pittosporum undulatum* by bioregion, returning all bioregions where *Pittosporum undulatum* has been observed at least once. We'll extract extract and save the bioregion names in a dataframe."
       ],
-      "id": "c5693712"
+      "id": "299ef5ff"
     },
     {
       "cell_type": "code",
@@ -695,7 +695,7 @@
         "\n",
         "print(found_bioregion_counts[0:10])"
       ],
-      "id": "e7552467",
+      "id": "22ad9e6c",
       "execution_count": null,
       "outputs": []
     },
@@ -707,7 +707,7 @@
         "\n",
         "Next, let's separate bioregions where *Pittosporum undulatum* is native from bioregions where it has been introduced. The Australia Native Plants Society estimates *Pittosporum undulatum*'s native range overlapping with South Eastern Queensland, NSW North Coast, Sydney Basin, South East Corner and South East Coastal Plain (see [here](https://anpsa.org.au/plant_profiles/pittosporum-undulatum/)). Let's save these bioregion names in a separate dataframe and compare them to the overall list `found_bioregions`."
       ],
-      "id": "1383a977"
+      "id": "183bf5b6"
     },
     {
       "cell_type": "code",
@@ -718,7 +718,7 @@
         "\n",
         "print(introduced_bioregions[1:5]) # first 5 introduced regions"
       ],
-      "id": "7a9dbf5b",
+      "id": "00d72b25",
       "execution_count": null,
       "outputs": []
     },
@@ -728,7 +728,7 @@
       "source": [
         "Next we can add a new column `native` to our GeoPandas bioregion dataframe to identify native and introduced regions. We'll use the `.loc` method to assign a \"Native\", \"Introduced\" or \"No observations\" label to each row depending on whether the region is in `native_bioregions` or `introduced_bioregions`."
       ],
-      "id": "f0d7ecc4"
+      "id": "3ef66ceb"
     },
     {
       "cell_type": "code",
@@ -738,7 +738,7 @@
         "bioregions.loc[bioregions[\"REG_NAME_7\"].isin(introduced_bioregions), \"native\"] = \"Introduced\"\n",
         "bioregions[\"native\"] = bioregions[\"native\"].replace(\"nan\", \"No observations\")"
       ],
-      "id": "98e2efac",
+      "id": "148179ea",
       "execution_count": null,
       "outputs": []
     },
@@ -752,7 +752,7 @@
         "\n",
         "To identify our three categories of regions on our map, we'll create a new column `colour` containing colour hex codes for plotting our regions."
       ],
-      "id": "a97f251d"
+      "id": "7088b3b5"
     },
     {
       "cell_type": "code",
@@ -762,7 +762,7 @@
         "bioregions.loc[bioregions[\"native\"] == \"Introduced\", \"colour\"] = \"#F7872E\" # Introduced\n",
         "bioregions.loc[bioregions[\"native\"] == \"No observations\", \"colour\"] = \"#E4DFCF\" # No observations"
       ],
-      "id": "a1df608d",
+      "id": "da726d21",
       "execution_count": null,
       "outputs": []
     },
@@ -774,7 +774,7 @@
         "\n",
         "Our map shows that *Pittosporum undulatum* has been observed in Western Australia, Northern Territory, South Australia, and even Tasmania despite having a fairly narrow native range along the east coast of Australia."
       ],
-      "id": "fc7f69a0"
+      "id": "7fab0018"
     },
     {
       "cell_type": "code",
@@ -795,7 +795,7 @@
         "plt.axis(\"off\")\n",
         "plt.show()"
       ],
-      "id": "efabfde7",
+      "id": "fa509b6e",
       "execution_count": null,
       "outputs": []
     },
@@ -813,7 +813,7 @@
         "\n",
         "<details><summary style = \"color: #E06E53;\">Expand for session info</summary>"
       ],
-      "id": "b7b479cf"
+      "id": "3f73ebb3"
     },
     {
       "cell_type": "code",
@@ -826,7 +826,7 @@
         "\n",
         "session_info.show()"
       ],
-      "id": "d3f8ccc4",
+      "id": "bdedcd56",
       "execution_count": null,
       "outputs": []
     },
@@ -836,7 +836,7 @@
       "source": [
         "</details>"
       ],
-      "id": "fef66581"
+      "id": "43efb84d"
     }
   ],
   "metadata": {

@@ -42,3 +42,7 @@ posts/2023-01-12_counting-points-in-shapefiles/data
 /.vscode
 
 **/*.quarto_ipynb
+
+# data files of sensitive art
+stories/images/painting-high-def.jpg
+stories/images/painting.jpg
