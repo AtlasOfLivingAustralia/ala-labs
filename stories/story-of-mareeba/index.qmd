@@ -2,7 +2,6 @@
 # pagetitle: Story
 title: "The story of Mareeba"
 subtitle: "In this artwork, produced by Ann-Marie Keating and Gullara McInnes, proud Koko-Muluridji women of the Wallara Clan, traditional art meets Western data for a unique look at Australian biodiversity"
-# image: "images/pobblebonk.svg"
 title-block-banner: "#FFEDCF"
 title-block-banner-color: "#232323"
 execute:
@@ -27,6 +26,7 @@ format:
     # likely because the format is different
     include-in-header:
       - ../../_fathom.html
+    include-after-body: ../../_footer-dark.html
     embed-resources: true
 ---
 
@@ -403,3 +403,24 @@ Our thanks to Ann-Marie Keating and Gullara McInnes for sharing their cultural c
 </center>
 
 
+***
+
+<!-- Author card -->
+
+:::::: author-card-dark
+::: author-card-text
+#### Author
+
+Dax Kellie
+
+#### Date
+
+14 August 2026
+:::
+
+::: author-card-image
+::: {layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
+<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/dax.jpg" style="width:120px; clip-path:circle();"/></img>
+:::
+:::
+::::::

@@ -380,6 +380,21 @@ a:hover {
     padding-bottom:8px;
 }
 
+.author-card-dark {
+    color: white;
+    background-color: #232323;
+    border-color: #FFEDCF;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 30px;
+    transition: 0.3s;
+    text-decoration: none;
+    display: flex;
+    margin-bottom: 40px;
+    padding-left: 30px;
+    padding-top: 20px;
+    padding-bottom:8px;
+}
+
 .author-card-text {
   font-size: 0.9rem;
   width: 50%;
@@ -404,6 +419,19 @@ a:hover {
     text-decoration: none;
     display: flex;
   }
+
+  .author-card-dark {
+    color: white;
+    background-color: #232323;
+    border-style: solid;
+    border-radius: 30px;
+    border-color: #FFEDCF;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    text-decoration: none;
+    display: flex;
+  }
+
   .author-card-text {
     font-size: 0.9rem;
     width: 100%;
