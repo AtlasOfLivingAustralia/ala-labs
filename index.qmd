@@ -145,16 +145,16 @@ tags$div(class = "category-row",
 :::{.column-screen-inset}
 :::{.home-column-image .col-right}
 <a href="https://labs.ala.org.au/research/highlights/">
-![](images/homepage/home_ala-research.png){.home-img}
+![](images/homepage/home_ala-stories_smaller.png){.home-img}
 </a>
 
 :::
 
 :::{.home-column-text .col-left}
 
-<center> <h1 class="heading-home">Research</h1>
+<center> <h1 class="heading-home">Stories</h1>
 
-<span style = "font-style: italic">Highlighting research supported by ALA data</span>
+<span style = "font-style: italic">Data-focused stories that deep-dive into ALA data</span>
 
 
 </center>
@@ -164,28 +164,15 @@ tags$div(class = "category-row",
          
   tags$div( 
     class = "category-column",
-    style = "width: 50%",
-    tags$a(href = "research/highlights/index.html",
+    style = "width: 100%",
+    tags$a(href = "stories/story-of-mareeba/index.html",
       tags$img(
-        href = "research/highlights/index.html",
-        src = "images/vectors/seedling-solid.svg",
+        href = "stories/story-of-mareeba/index.html",
+        src = "images/vectors/palette-fill.svg",
         class = "category-image honey"
   )),
   tags$h4(style = "text-align:center;",
-      tags$a(href = "research/highlights/index.html", "Selected\nhighlights"))),
-  
-  tags$div( 
-    class = "category-column",
-    style = "width: 50%",
-    tags$a(href = "research/citations/index.html",
-      tags$img(
-        href = "research/citations/index.html",
-        src = "images/vectors/table-list-solid.svg",
-        class = "category-image honey"
-  )),
-  tags$h4(style = "text-align:center;",
-      tags$a(href = "research/citations/index.html", "Complete list"))
-  
+      tags$a(href = "research/highlights/index.html", "Story of\nMareeba"))
   ))
 ```
 

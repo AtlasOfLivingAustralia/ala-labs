@@ -15,7 +15,7 @@ format:
     fontcolor: "#fff"
     # remove-header-space: true
     cr-style:
-      narrative-background-color-overlay: "rgb(35, 35, 35)"
+      narrative-background-color-overlay: "#232323CC"
       narrative-font-size: 1.15rem
       narrative-text-color-overlay: "#fff"
       narrative-background-color-sidebar: "#232323"
@@ -32,9 +32,11 @@ format:
 
 Through art and story, Aboriginal and Torres Straight Islander People capture deep connections and rich knowledge in nature that may not be documented or recorded. This traditional knowledge carries glimpses of the past, a view of our present, and even predictions for the future.
 
-How does traditional knowledge overlap with Western-collected data? Do the records stored in infrastructures like the Atlas of Living Australia (ALA) reflect or contrast traditional knowledge of a given ecosystem? Continue scrolling to explore the story of this artwork and the data interwoven through it.
+How does traditional knowledge overlap with Western-collected data? Do the records stored in infrastructures like the Atlas of Living Australia (ALA) reflect or contrast traditional knowledge of a given ecosystem? 
 
 <center>![](images/painting-cropped_smaller.jpg)</center>
+
+Continue scrolling to explore the story of this artwork and the data interwoven through it.
 
 
 ::::{.cr-section}
@@ -121,7 +123,7 @@ The number, colour and size of painted dots on each animal represents the observ
 
 **Dot size** corresponds to numbers of observations, so bigger dots represent more observations.
 
-<center>![](plots/legend-dots.png){height=400}</center>
+<center>![](plots/legend-dots.png){style="max-height:400px; height:auto; width:auto;"}</center>
 
 :::
 
@@ -129,7 +131,7 @@ The number, colour and size of painted dots on each animal represents the observ
 
 **Dot colour** corresponds to the time of year observations were recorded.
 
-<center>![](plots/legend-colours.png){height=400}</center>
+<center>![](plots/legend-colours.png){style="max-height:400px; height:auto; width:auto;"}</center>
 
 :::
 ::::
@@ -248,7 +250,7 @@ In Mareeba, the three most recorded birds in this painting are the Peaceful Dove
 
 :::{.group1 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
 <center>
-<img src="https://images-assets.ala.org.au/store/2/2/9/e/07416012-4e30-41a6-b27b-2ceff93fe922/thumbnail_large" class="padded" style="height:362px;"/></img>
+<img src="https://images-assets.ala.org.au/store/2/2/9/e/07416012-4e30-41a6-b27b-2ceff93fe922/thumbnail_large" class="padded" style="max-height:362px;height:auto;width:auto;"/></img>
 </center><br>
 
 :::{.caption style="font-size:.7rem;"}
@@ -261,7 +263,7 @@ Dany Sloan CC-BY-NC 4.0 (Int)
 
 :::{.group2 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
 <center>
-<img src="https://images-assets.ala.org.au/store/c/d/5/1/c4e08b9c-7c9c-477c-a7e9-6a383e7a15dc/thumbnail_large" class="padded" style="height:362px;"/></img>
+<img src="https://images-assets.ala.org.au/store/c/d/5/1/c4e08b9c-7c9c-477c-a7e9-6a383e7a15dc/thumbnail_large" class="padded" style="max-height:362px;height:auto;width:auto;"/></img>
 </center><br>
 
 :::{.caption style="font-size:.7rem;"}
@@ -274,7 +276,7 @@ Russell Cumming CC-BY-NC 4.0 (Int)
 
 :::{.group3 style="margin-left: auto; margin-right:auto;margin-top:auto;margin-bottom:auto;"}
 <center>
-<img src="https://images-assets.ala.org.au/store/c/2/3/a/c0bd64ba-b92b-438d-8c8f-2eda13b8a32c/thumbnail_large" class="padded" style="height:362px;"/></img>
+<img src="https://images-assets.ala.org.au/store/c/2/3/a/c0bd64ba-b92b-438d-8c8f-2eda13b8a32c/thumbnail_large" class="padded" style="max-height:362px;height:auto;width:auto;"/></img>
 </center><br>
 
 :::{.caption style="font-size:.7rem;"}
@@ -374,7 +376,7 @@ Some species in this painting like the Northern brown bandicoot (*Isoodon macrou
 
 ::::
 
-Hear more about the inspirations and cultural this painting and the Muluridji people's cultural connection to these animals from artist Ann-Marie Keating in the following video:  
+Hear more about the inspirations and cultural knowledge in this painting from artist Ann-Marie Keating in the following video:  
 
 :::{.column-page-outset}
 

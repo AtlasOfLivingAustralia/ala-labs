@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Software – ALA Labs</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -33,15 +39,14 @@ ul.task-list li input[type="checkbox"] {
 <link href="../images/favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-c9eec43abb150a7bed04642834dfb3bc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9c984d3e3a18b583a69a44cf90039894.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -126,13 +131,13 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Posts</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-research" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Research</span>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-stories" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Stories</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-research">    
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-stories">    
         <li>
-    <a class="dropdown-item" href="../research/citations/index.html">
- <span class="dropdown-text">All citations</span></a>
+    <a class="dropdown-item" href="../stories/story-of-mareeba/index.html">
+ <span class="dropdown-text">Story of Mareeba</span></a>
   </li>  
     </ul>
   </li>
@@ -164,8 +169,8 @@ ul.task-list li input[type="checkbox"] {
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="c48823b1d2d163af8fc7077bea444426" class="alert alert-light hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p>Check out the new <em>Cleaning Biodiversity Data in R</em> book! <a href="https://labs.ala.org.au/books/">Click here to find out more</a>.</p>
+  <div id="quarto-announcement" data-announcement-id="d4d834d6286b961678eb34a83feea82d" class="alert alert-light hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p>Check out the <em>Cleaning Biodiversity Data in R</em> book! <a href="https://labs.ala.org.au/books/">Click here to find out more</a>.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -204,7 +209,7 @@ ul.task-list li input[type="checkbox"] {
     display: none;
   }
 </style>
-<div class="column-page quarto-layout-panel" data-layout="[1,1]" style="float:left;">
+<div class="column-page quarto-layout-panel" style="float:left;" data-layout="[1,1]">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <p><a href="https://galah.ala.org.au/"> <img src="images/hex/galah_logo.png" class="img-fluid" style="width:73%;"> </a></p>
@@ -216,7 +221,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <hr>
-<div class="column-page quarto-layout-panel" data-layout="[1,1]" style="float:left;">
+<div class="column-page quarto-layout-panel" style="float:left;" data-layout="[1,1]">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <p><a href="https://galaxias.ala.org.au/"> <img src="images/hex/galaxias-logo.png" class="img-fluid" style="width:73%;"> </a></p>
@@ -228,7 +233,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <hr>
-<div class="column-page quarto-layout-panel" data-layout="[1,1]" style="float:left;">
+<div class="column-page quarto-layout-panel" style="float:left;" data-layout="[1,1]">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <p><a href="https://corella.ala.org.au/"> <img src="images/hex/corella-logo.png" class="img-fluid" style="width:73%;"> </a></p>
@@ -240,7 +245,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <hr>
-<div class="column-page quarto-layout-panel" data-layout="[1,1]" style="float:left;">
+<div class="column-page quarto-layout-panel" style="float:left;" data-layout="[1,1]">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <p><a href="https://delma.ala.org.au/"> <img src="images/hex/delma-logo.png" class="img-fluid" style="width:73%;"> </a></p>
@@ -252,7 +257,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <hr>
-<div class="column-page quarto-layout-panel" data-layout="[1,1]" style="float:left;">
+<div class="column-page quarto-layout-panel" style="float:left;" data-layout="[1,1]">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
 <p><a href="https://potions.ala.org.au/"> <img src="images/hex/potions-logo.png" class="img-fluid" style="width:73%;"> </a></p>

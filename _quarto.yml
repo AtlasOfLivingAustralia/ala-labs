@@ -31,10 +31,10 @@ website:
         text: "About"
       - href: posts/index.qmd
         text: "Posts"
-      - text: "Research"
+      - text: "Stories"
         menu:
-        - href: research/citations/index.qmd
-          text: "All citations"
+        - href: stories/story-of-mareeba/index.qmd
+          text: "Story of Mareeba"
       - href: software/index.qmd
         text: "Software"
       - href: books/index.qmd
@@ -48,7 +48,7 @@ website:
   announcement:
     icon: info-circle
     dismissable: true
-    content: "Check out the new *Cleaning Biodiversity Data in R* book! [Click here to find out more](https://labs.ala.org.au/books/)."
+    content: "Check out the *Cleaning Biodiversity Data in R* book! [Click here to find out more](https://labs.ala.org.au/books/)."
     type: light
     position: below-navbar
 
