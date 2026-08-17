@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>ALA Labs</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -33,14 +39,13 @@ ul.task-list li input[type="checkbox"] {
 <link href="./images/favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c9eec43abb150a7bed04642834dfb3bc.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-9c984d3e3a18b583a69a44cf90039894.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -161,13 +166,13 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Posts</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-research" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Research</span>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-stories" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Stories</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-research">    
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-stories">    
         <li>
-    <a class="dropdown-item" href="./research/citations/index.html">
- <span class="dropdown-text">All citations</span></a>
+    <a class="dropdown-item" href="./stories/story-of-mareeba/index.html">
+ <span class="dropdown-text">Story of Mareeba</span></a>
   </li>  
     </ul>
   </li>
@@ -199,8 +204,8 @@ ul.task-list li input[type="checkbox"] {
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="c48823b1d2d163af8fc7077bea444426" class="alert alert-light hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p>Check out the new <em>Cleaning Biodiversity Data in R</em> book! <a href="https://labs.ala.org.au/books/">Click here to find out more</a>.</p>
+  <div id="quarto-announcement" data-announcement-id="d4d834d6286b961678eb34a83feea82d" class="alert alert-light hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p>Check out the <em>Cleaning Biodiversity Data in R</em> book! <a href="https://labs.ala.org.au/books/">Click here to find out more</a>.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -293,33 +298,25 @@ Posts
 <div class="column-screen page-columns page-full">
 <div class="column-screen-inset">
 <div class="home-column-image col-right">
-<p><a href="https://labs.ala.org.au/research/highlights/"> <img src="images/homepage/home_ala-research.png" class="home-img img-fluid"> </a></p>
+<p><a href="https://labs.ala.org.au/research/highlights/"> <img src="images/homepage/home_ala-stories_smaller.png" class="home-img img-fluid"> </a></p>
 </div>
 <div class="home-column-text col-left">
 <center>
 <h1 class="heading-home">
-Research
+Stories
 </h1>
-<p><span style="font-style: italic">Highlighting research supported by ALA data</span></p>
+<p><span style="font-style: italic">Data-focused stories that deep-dive into ALA data</span></p>
 </center>
 <div class="cell">
 <div class="cell-output-display">
 <div class="category-row">
-<div class="category-column" style="width: 50%">
-<a href="research/highlights/index.html">
-<img href="research/highlights/index.html" src="images/vectors/seedling-solid.svg" class="category-image honey">
+<div class="category-column" style="width: 100%">
+<a href="stories/story-of-mareeba/index.html">
+<img href="stories/story-of-mareeba/index.html" src="images/vectors/palette-fill.svg" class="category-image honey">
 </a>
 <h4 style="text-align:center;">
-<a href="research/highlights/index.html">Selected
-highlights</a>
-</h4>
-</div>
-<div class="category-column" style="width: 50%">
-<a href="research/citations/index.html">
-<img href="research/citations/index.html" src="images/vectors/table-list-solid.svg" class="category-image honey">
-</a>
-<h4 style="text-align:center;">
-<a href="research/citations/index.html">Complete list</a>
+<a href="research/highlights/index.html">Story of
+Mareeba</a>
 </h4>
 </div>
 </div>
