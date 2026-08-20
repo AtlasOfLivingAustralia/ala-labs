@@ -74,11 +74,11 @@ To begin, we will look at some of Dr Brennan's favourite reptiles: legless lizar
 
 :::{layout-ncol=3 style="width=120px;"}
 
-<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/8/8/e/146a0211-325f-4b4b-938f-d9582ccbe887/original"></img>
+<img class = "clipped" src="https://images-assets.ala.org.au/store/7/8/8/e/146a0211-325f-4b4b-938f-d9582ccbe887/thumbnail_large"></img>
 
-<img class = "clipped"src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/4/b/a/c295146a-acd0-4f57-a819-d4c1f7f6ab47/original"></img>
+<img class = "clipped"src="https://images-assets.ala.org.au/store/7/4/b/a/c295146a-acd0-4f57-a819-d4c1f7f6ab47/thumbnail_large"></img>
 
-<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/b/1/9/3a00210e-c043-4d4d-b884-04ce3e3f91be/original"></img>
+<img class = "clipped" src="https://images-assets.ala.org.au/store/e/b/1/9/3a00210e-c043-4d4d-b884-04ce3e3f91be/thumbnail_large"></img>
 
 :::
 ::: {.figure-caption}
@@ -117,7 +117,7 @@ galah_config(email = "dax.kellie@csiro.au", verbose = FALSE)
 ```{r}
 # Download Delma occurrence records in NT
 delma_records <- galah_call() |>
-  galah_identify("Delma") |>
+  galah_identify("Dasyurus") |>
   galah_filter(stateProvince == "Northern Territory") |>
   atlas_occurrences()
 
@@ -180,13 +180,13 @@ model_bias_delma <- sampbias::calculate_bias(
   x = delma_records_filtered,
   res = 0.05,   # scale of spatial resolution
   buffer = 0.5, # account for neighbouring features
-  restrict_sample = sf:::as_Spatial(nt_wgs84)
-)
+  restrict_sample = nt_wgs84
+); beepr::beep(2)
 ```
 
 ```{r}
 #| echo: false
-model_bias_delma <- readRDS(file = here::here("posts", "data", "nt_out.rds"))
+model_bias_delma <- readr::read_rds(file = here::here("posts", "data", "nt_out-updated.rds"))
 ```
 
 
@@ -232,21 +232,23 @@ Before viewing the mapped output from {`sampbias`}, it would be useful to see wh
 #| code-fold: true
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
 
-# Load in data for landscape features
-data(airports)
-data(waterbodies)
-data(cities)
-data(roads)
+library(rnaturalearth)
+library(purrr)
 
+# Load in data for landscape features as sf objects
+airports <- ne_download(scale = "large", type = "airports", category = "cultural", returnclass = "sf")
+cities <- ne_download(scale = "large", type = "urban_areas", category = "cultural", returnclass = "sf")
+waterbodies <- ne_download(scale = "large", type = "rivers_lake_centerlines", category = "physical", returnclass = "sf")
+roads <- ne_download(scale = "large", type = "roads", category = "cultural", returnclass = "sf")
 
-# Combine data
-features <- c(airports, cities, waterbodies, roads)
+# Combine into a named list
+features <- list(airports, cities, waterbodies, roads)
 
-# Convert to spatial features, set coordinate system, filter to within NT
+# Set coordinate system, filter to within NT
 # Add feature ID to each for plotting
 features_sf <- features |>
   set_names(c("Airport", "City", "River", "Road")) |>
-  map_dfr(~ st_as_sf(.) |> 
+  map_dfr(~ .x |>
             st_set_crs(st_crs("WGS84")) |>
             st_intersection(nt_wgs84),
           .id = "feature")
@@ -350,9 +352,9 @@ xaringanExtra::use_panelset()
 
 :::{layout-ncol=2 style="width=120px;"}
 
-<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/d/3/7/a69e5f4d-6bd2-474c-8f35-1159172c73de/original"></img>
+<img class = "clipped" src="https://images-assets.ala.org.au/store/e/d/3/7/a69e5f4d-6bd2-474c-8f35-1159172c73de/thumbnail_large"></img>
 
-<img class = "clipped"src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/9/c/d/3/45ce8ffe-e4cf-4458-bfa0-3089c88e3dc9/original"></img>
+<img class = "clipped"src="https://images-assets.ala.org.au/store/9/c/d/3/45ce8ffe-e4cf-4458-bfa0-3089c88e3dc9/thumbnail_large"></img>
 
 :::
 ::: {.figure-caption}
@@ -386,9 +388,9 @@ sampbias::map_bias(map_quoll, type="log_sampling_rate")
 
 :::{layout-ncol=2 style="width=120px;"}
 
-<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/e/8/b/f6827b1e-b4fb-4247-a89a-1865c775b8e7/original"></img>
+<img class = "clipped" src="https://images-assets.ala.org.au/store/7/e/8/b/f6827b1e-b4fb-4247-a89a-1865c775b8e7/thumbnail_large"></img>
 
-<img class = "clipped"src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/4/8/6/1/8e2ba023-a6a0-4efc-8704-d9aee2291684/original"></img>
+<img class = "clipped"src="https://images-assets.ala.org.au/store/4/8/6/1/8e2ba023-a6a0-4efc-8704-d9aee2291684/thumbnail_large"></img>
 
 :::
 ::: {.figure-caption}
@@ -422,9 +424,9 @@ sampbias::map_bias(map_kingfisher, type="log_sampling_rate")
 
 :::{layout-ncol=2 style="width=120px;"}
 
-<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/a/b/c/0/c8a03411-a0b3-4728-8c26-b188f42c0cba/original"></img>
+<img class = "clipped" src="https://images-assets.ala.org.au/store/a/b/c/0/c8a03411-a0b3-4728-8c26-b188f42c0cba/thumbnail_large"></img>
 
-<img class = "clipped"src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/f/6/6/2/1abd3107-42ae-476a-b2c9-ef5ff949266f/original"></img>
+<img class = "clipped"src="https://images-assets.ala.org.au/store/f/6/6/2/1abd3107-42ae-476a-b2c9-ef5ff949266f/thumbnail_large"></img>
 
 :::
 ::: {.figure-caption}
@@ -458,9 +460,9 @@ sampbias::map_bias(map_mantid, type="log_sampling_rate")
 
 :::{layout-ncol=2 style="width=120px;"}
 
-<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/4/1/e/1/d17e3e6f-45f5-4841-99fd-4df85a671e14/original"></img>
+<img class = "clipped" src="https://images-assets.ala.org.au/store/4/1/e/1/d17e3e6f-45f5-4841-99fd-4df85a671e14/thumbnail_large"></img>
 
-<img class = "clipped"src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/b/1/9/2/d2ff7a79-3a40-4d26-830e-090222b0291b/original"></img>
+<img class = "clipped"src="https://images-assets.ala.org.au/store/b/1/9/2/d2ff7a79-3a40-4d26-830e-090222b0291b/thumbnail_large"></img>
 
 :::
 ::: {.figure-caption}
