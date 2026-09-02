@@ -241,10 +241,8 @@ media_df = galah.atlas_media(
 Before running the model, let's display the downloaded images as a grid to confirm they look as expected. This is a good moment to spot any blank frames, setup photos, or corrupted files that might produce unreliable predictions and should be excluded before analysis.
 
 ```{python}
-#| column: page
 #| fig-align: center
 #| fig-cap: " "
-#| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 import matplotlib.pyplot as plt
 %matplotlib inline
@@ -257,8 +255,8 @@ image_paths = sorted(image_folder.glob("*.jpg"))
 print(f"Found {len(image_paths)} images.")
 
 # choose how many images to show and the dimensions of the figure
-n_show = min(10, len(image_paths))
-fig, axes = plt.subplots(5, 2, figsize=(8, 12))
+n_show = min(len(image_paths), 15) # max 15 images
+fig, axes = plt.subplots(7, 2, figsize=(8, 12))
 
 # loop over all images to show them
 for ax, img_path in zip(axes.flatten(), image_paths[:n_show]):
@@ -325,22 +323,35 @@ If the model is not confident about a species, it may predict at a higher taxono
 
 :::
 
-First we'll define a small helper function that prints predictions in a readable format.
+First we'll define a small helper function that prints predictions in a readable format. Our defined output will return:
+  
+  *  The complete taxonomic results of the model's best guess to the species level, and its prediction score for that best guess
+  *  The final prediction of the model, which can be a higher taxonomic level
+  *  The method the model chose to make this final prediction
 
 ```{python}
 def print_predictions(predictions_dict: dict) -> None:
     """Print a human-readable summary of SpeciesNet predictions."""
 
     # declare column names and initialise a dictionary for data - this will be used to create a pandas dataframe
-    column_names = ["Image ID","Class","Order","Family","Genus","Species","Species Epithet","Prediction Score"]
+    column_names = ["Image ID","Class","Order","Family","Genus","Species","Species Epithet","Prediction Score", "Final Prediction", "Final Prediction Method"]
     dict_for_table = {y: [None for x in range(len(predictions_dict["predictions"]))] for y in column_names}
 
     # loop over all predictions to save them into dictionary
     for i,prediction in enumerate(predictions_dict["predictions"]):
-        dict_for_table["Prediction Score"][i] = prediction["classifications"]["scores"][0]
-        id_and_classification = prediction["classifications"]["classes"][0].split(";")
-        for j,entry in enumerate(id_and_classification):
-            dict_for_table[column_names[j]][i] = entry
+        classifications = prediction.get("classifications")
+        if classifications and classifications.get("scores"):
+            dict_for_table["Prediction Score"][i] = classifications["scores"][0]
+
+        if prediction.get("prediction"):
+            dict_for_table["Final Prediction"][i] = prediction["prediction"].rsplit(';', 1)[-1]
+
+        dict_for_table["Final Prediction Method"][i] = prediction.get("prediction_source")
+
+        if classifications and classifications.get("classes"):
+            id_and_classification = classifications["classes"][0].split(";")
+            for j,entry in enumerate(id_and_classification):
+                dict_for_table[column_names[j]][i] = entry
 
     # convert dictionary into dataframe and print resulting dataframe
     df = pd.DataFrame(dict_for_table)
@@ -385,11 +396,11 @@ from PIL import ImageDraw, ImageFont
 predictions_dict = model.predict(folders=[image_folder])
 
 # Load a font 
-font = ImageFont.load_default(size=16) # was 14  
+font = ImageFont.load_default(size=16)   
 
 # set plot parameters
-n_show = min(10, len(image_paths))
-fig, axes = plt.subplots(5, 2, figsize=(16, 24)) # 8, 12
+n_show = min(len(image_paths), 15) # max of 15 images
+fig, axes = plt.subplots(5, 3, figsize=(19, 24)) 
 
 # loop over all images to display
 for ax,pred_item in zip(axes.flatten(),predictions_dict["predictions"][:n_show]):
@@ -466,26 +477,20 @@ plt.show()
 - **0.6–0.9** — moderate confidence; worth a visual check
 - **< 0.6** — low confidence; treat with caution
 
-When the model is uncertain at the species level, it often predicts at a higher taxonomic rank instead — for example, predicting the order `"Cetartiodactyla"` rather than *Sus scrofa*. This is a deliberate and sensible fallback: a broad but correct label is more useful than a confident but wrong species name.
+When the model is uncertain at the species level, it often predicts at a higher taxonomic rank instead—for example, predicting the order `"Artiodactyla"` rather than *Sus scrofa*. This is a deliberate and sensible fallback: a broad but correct label is more useful than a confident but wrong species name. 
 
 ## What our results show
 
-All images in this run are identified as *Sus scrofa* (feral pig) or *Felis catus* (domestic cat) in the ALA, but SpeciesNet returned three different predictions: 
-**domestic cat**, **wild biar**, and **coyote**. This is instructive.
+Most of the images in this run are identified as *Sus scrofa* (feral pig) in the ALA, but SpeciesNet returned several other species-level predictions: 
+**large-antlered muntjac** and **domestic dog**. This is instructive.
 
-These three species-level predictions — domestic cat, wild boar and coyote (*Canis latrans*) all belong to the same class, *Mammalia* (mammals). 
+Two of our three species-level predictions—wild boar and large-antlered munjac—belong to the same order, *Artiodactyla*. The third prediction of domestic dog belongs to the same class, *Mammalia*. Despite varied species-level guesses, the model identified when it could not confidently distinguish between species in that group and appropriately abstained from a species-level call as the final prediction, demonstrating the model's graceful degradation under uncertainty.
 
-
-::: {.callout-tip collapse="true"}
-# Classification of higher ranks
-Any higher-rank predictions represent cases where the model could not confidently distinguish between species in that group and appropriately abstained from a species-level call. The fact that it still correctly identified the correct order and class demonstrates the model's graceful degradation under uncertainty.
-:::
-
-These predictions illustrates an important point: **SpeciesNet's output should be treated as a probabilistic first-pass label, not a definitive identification.** For research applications, predictions — especially those below ~0.9 confidence or at a higher taxonomic level — benefit from expert validation or a second-pass review.
+These predictions illustrate an important point: **SpeciesNet's output should be treated as a probabilistic first-pass label, not a definitive identification.** For research applications, predictions—especially those below ~0.9 confidence or at a higher taxonomic level—benefit from expert validation or a second-pass review.
 
 ## Limitations of our results
 
-- **Image quality matters.** SpeciesNet was trained on camera-trap images and performs best on those. Images taken at night, in heavy rain, or with severe motion blur will produce lower-confidence and less reliable predictions.
+- **Image quality matters.** SpeciesNet was trained on camera-trap images and performs best on those. Images taken at night, in heavy rain, or with severe motion blur will produce lower-confidence and less reliable predictions. We can see this in some of our image prediction results.
 - **The detector and classifier are independent.** The detector can miss an animal and still have the classifier produce a correct species label and vice versa. Always look at both the bounding box and the prediction string together.
 - **Closely related species are harder to distinguish.** As seen above, species within the same family or order (e.g. Sus scrofa vs Sus barbatus) are more likely to be confused with each other than with distantly related animals.
 - **"Blank" predictions are useful.** If SpeciesNet predicts `blank`, neither the detector nor the classifier found strong evidence of an animal — valuable for automatically filtering empty frames from large datasets.
@@ -495,7 +500,7 @@ These predictions illustrates an important point: **SpeciesNet's output should b
 
 # Run classifier or detector separately
 
-SpeciesNet's classifier and detector can be called independently, which can be a faster alternative when we don't need both processes. Running the classifier without the detector produces a species label, but gives no information about where the animal is located in the frame. This is useful for large-scale screening where location is not needed. Alternatively, running the detector without the classifier returns bounding boxes and confidence scores for any animal found, but does not identify the species — each detection is simply labelled `"animal"`. This is useful for quickly checking occupancy (is an animal present?) or filtering blank frames, without the computational overhead of species classification.
+SpeciesNet's classifier and detector can be called independently, which can be a faster alternative when we don't need both processes. Running the classifier without the detector produces a species label, but gives no information about where the animal is located in the frame. This is useful for large-scale screening where location is not needed. Alternatively, running the detector without the classifier returns bounding boxes and confidence scores for any animal found, but does not identify the species—each detection is simply labelled `"animal"`. This is useful for quickly checking occupancy (is an animal present?) or filtering blank frames, without the computational overhead of species classification.
 
 **Classifier only** with `model.classify()`:
 
@@ -554,14 +559,14 @@ def remove_readonly(func, path, excinfo):
     os.chmod(path, stat.S_IWRITE)
     func(path)
 
-shutil.rmtree("EC_images")
+shutil.rmtree("EC_images", onexc=remove_readonly)
 ```
 
 ## Final thoughts
 
 This notebook has shown how to use Google's SpeciesNet model with data from the Atlas of Living Australia to automatically identify animal species in camera-trap images. Starting from a simple species query, we retrieved image records from ALA, downloaded a sample, and ran SpeciesNet to produce species labels and bounding boxes for each photograph.
 
-Automated image classification won't replace expert review for all use cases, but it can dramatically reduce the manual effort involved in processing large camera-trap datasets — particularly for filtering blank frames, flagging images likely to contain a species of interest, or generating a first-pass label for subsequent expert validation.
+Automated image classification won't replace expert review for all use cases, but it can dramatically reduce the manual effort involved in processing large camera-trap datasets—particularly for filtering blank frames, flagging images likely to contain a species of interest, or generating a first-pass label for subsequent expert validation.
 
 To take this further, try:
 
