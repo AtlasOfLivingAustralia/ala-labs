@@ -55,9 +55,10 @@ website:
 format:
   html:
     fontsize: 1.15rem
-    monofont: Fira Code
     highlight-style: arrow
-    css: [theme.css, custom_theme.scss]
+    theme: 
+      - custom_theme.scss
+    css: theme.css
     toc: true
     code-overflow: scroll
     linkcolor: "#B8573E"

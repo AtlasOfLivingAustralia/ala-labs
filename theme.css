@@ -13,7 +13,7 @@
   --secondary-orange: #B8573E;
   --main-font: 'Roboto', sans-serif;
   --subheader-font: 'Roboto', sans-serif;
-  --mono-font: 'Fira Mono', monospace;
+  --mono-font: 'Fira Code', monospace;
   --header-font: 'Lato' sans-serif;
   --bs-navbar-hover-color: #E06E53;
 }
@@ -582,3 +582,9 @@ img.rounded {
   font-family: var(--main-font);
 }
 
+/* centering figure */
+.center-page-fig img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

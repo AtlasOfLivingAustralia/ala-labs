@@ -56,12 +56,12 @@ Xiang Zhao
 
 ::: author-card-image
 ::: {layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
-<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/blank.jpg" style="width:120px; clip-path:circle();"/></img>
+<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/renuka.jpg" style="width:120px; clip-path:circle();"/></img>
 :::
 :::
 ::: author-card-image
 ::: {layout-ncol="1" style="margin-left: auto; margin-right: auto;"}
-<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/blank.jpg" style="width:120px; clip-path:circle();"/></img>
+<img src="https://raw.githubusercontent.com/AtlasOfLivingAustralia/ala-labs/main/images/people/zhao.jpg" style="width:120px; clip-path:circle();"/></img>
 :::
 :::
 ::::::
@@ -383,10 +383,10 @@ The cell below displays each image with its predictions overlaid. Where the dete
 Where the detector found nothing — which can happen with blurry, fast-moving, or partially visible animals — the classifier’s prediction is shown as a banner at the bottom of the image. The classifier still runs on the full image in these cases, so a species label is always produced.
 
 ```{python}
-#| column: screen-inset
+#| column: page
 #| fig-align: center
 #| fig-cap: " "
-#| out-extra: "style=margin-left:auto;margin-right:auto;"
+#| out-extra: 'style="display:block; margin-left:auto; margin-right:auto;"'
 
 %matplotlib inline
 from PIL import ImageDraw, ImageFont
@@ -399,7 +399,7 @@ font = ImageFont.load_default(size=16)
 
 # set plot parameters
 n_show = min(len(image_paths), 15) # max of 15 images
-fig, axes = plt.subplots(5, 3, figsize=(19, 24)) 
+fig, axes = plt.subplots(5, 3, figsize=(16, 20)) 
 
 # loop over all images to display
 for ax,pred_item in zip(axes.flatten(),predictions_dict["predictions"][:n_show]):
@@ -467,6 +467,7 @@ plt.suptitle("Image Classification and Prediction", fontsize=20, y=1.01)
 plt.tight_layout()
 plt.show()
 ```
+
 
 # Interpreting the results
 
