@@ -24,11 +24,10 @@ format:
       narrative-overlay-max-width: "600px"
     # this include-in-header is not inherited from the project _quarto.yml,
     # likely because the format is different
-    include-before-body:
-      - ../../_fathom.html
+    include-before-body: ../../_fathom.html
     include-after-body: 
       - ../../_footer-dark.html
-    embed-resources: true
+    embed-resources: false
 ---
 
 Through art and story, Aboriginal and Torres Strait Islander People capture deep connections and rich knowledge in nature that may not be documented or recorded. This traditional knowledge carries glimpses of the past, a view of our present, and even predictions for the future.
