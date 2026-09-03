@@ -74,7 +74,7 @@ This post shows how to combine two open tools to tackle this problem: the [Atlas
 
 :::{.callout-note collapse="true"}
 ##### Install packages
-Running this script for the first time may require you to download these packages.
+Running this script for the first time may require you to download these packages if they aren't already in your package library.
 ```{python install-packages}
 #| eval: false
 #| echo: true
@@ -199,7 +199,7 @@ galah.atlas_counts(
              "dataResourceName=Camera trap surveys in Queensland's Wet Tropics 2022-2023",
              "year=2022",
              "month=12",
-             "day=17"]
+             "day=19"],
 )
 ```
 
