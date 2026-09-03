@@ -72,13 +72,18 @@ Wildlife monitoring at scale is one of ecology's most data-intensive challenges.
 
 This post shows how to combine two open tools to tackle this problem: the [Atlas of Living Australia (ALA)](https://www.ala.org.au/), Australia's national biodiversity data platform, and [SpeciesNet](https://github.com/google/cameratrapai), a deep learning model developed by Google specifically for wildlife image classification. We query ALA for camera-trap images of wild cats (*Felis catus*) and feral pigs (*Sus Scrofa*) in Queensland using `{galah-python}` and download a subset of images.  Once the images are downloaded, we will run the SpeciesNet package (`{speciesnet}`) to automatically identify animals in each image, and then visualise the results with the `{Pillow}` package.
 
+:::{.callout-note collapse="true"}
+##### Install packages
+Running this script for the first time may require you to download these packages.
 ```{python install-packages}
-#| eval: true
-#| echo: false
+#| eval: false
+#| echo: true
 #| warning: false
 #| message: false
-! pip install galah-python speciesnet Pillow natsort session_info matplotlib pathlib --quiet
+! pip install galah-python speciesnet Pillow natsort matplotlib pathlib session_info --quiet
 ```
+
+:::
 
 # Download images
 
@@ -274,7 +279,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-# Run SpeciesNet to Identify Select Species
+# Run SpeciesNet to identify species
 
 [SpeciesNet](https://github.com/google/cameratrapai) is a deep learning model developed by Google for automated wildlife identification in camera-trap images. It was trained on over 65 million camera-trap images from the [Wildlife Insights](https://www.wildlifeinsights.org/) platform, making it one of the most extensively trained wildlife classifiers available.
 
@@ -293,6 +298,8 @@ SpeciesNet includes a *geofencing* step that filters out predictions for species
 :::
 
 ```{python}
+#| warning: false
+#| message: false
 from speciesnet import DEFAULT_MODEL, SUPPORTED_MODELS
 from speciesnet import draw_bboxes, load_rgb_image, SpeciesNet
 
@@ -492,8 +499,8 @@ These predictions illustrate an important point: **SpeciesNet's output should be
 
 - **Image quality matters.** SpeciesNet was trained on camera-trap images and performs best on those. Images taken at night, in heavy rain, or with severe motion blur will produce lower-confidence and less reliable predictions. We can see this in some of our image prediction results.
 - **The detector and classifier are independent.** The detector can miss an animal and still have the classifier produce a correct species label and vice versa. Always look at both the bounding box and the prediction string together.
-- **Closely related species are harder to distinguish.** As seen above, species within the same family or order (e.g. Sus scrofa vs Sus barbatus) are more likely to be confused with each other than with distantly related animals.
-- **"Blank" predictions are useful.** If SpeciesNet predicts `blank`, neither the detector nor the classifier found strong evidence of an animal — valuable for automatically filtering empty frames from large datasets.
+- **Closely related species are harder to distinguish.** Species within the same family or order (e.g. Sus scrofa vs Sus barbatus) are more likely to be confused with each other than with distantly related animals.
+- **"Blank" predictions are useful.** If SpeciesNet predicts `blank`, neither the detector nor the classifier found strong evidence of an animal—valuable for automatically filtering empty frames from large datasets. However, as we saw in our results, the model can still get this wrong!
 - **Geofencing can suppress correct predictions.** If a species is present but outside its expected geographic range (e.g. an escaped or introduced animal), geofencing may filter it out. Disable geofencing with `geofence=False` in those cases.
 
 ::: {.callout-tip collapse="true"}
