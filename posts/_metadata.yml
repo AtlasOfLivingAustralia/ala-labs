@@ -3,4 +3,5 @@ freeze: true
 format:
   html:
     include-after-body: _footer.html
+    include-before-body: _fathom.html
     embed-resources: true

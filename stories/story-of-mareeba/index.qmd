@@ -24,9 +24,10 @@ format:
       narrative-overlay-max-width: "600px"
     # this include-in-header is not inherited from the project _quarto.yml,
     # likely because the format is different
-    include-in-header:
+    include-before-body:
       - ../../_fathom.html
-    include-after-body: ../../_footer-dark.html
+    include-after-body: 
+      - ../../_footer-dark.html
     embed-resources: true
 ---
 
