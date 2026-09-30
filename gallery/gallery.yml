@@ -1,5 +1,17 @@
 
 - tiles:
+    - title: National Eucalpyt Day
+      author: Shandiya Balasubramaniam
+      subtitle: R dataviz
+      href: https://www.linkedin.com/posts/atlas-of-living-australia_happy-national-eucalypt-day-were-activity-7441680173411753984-Sv98?utm_source=share&utm_medium=member_desktop&rcm=ACoAABfq3TIBPvhh30MifPzpn_sEyAbgDux27LM
+      code: https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2026-03-26_national-eucalpyt-day/eucalpyt.R
+      thumbnail: images/eucalypt.png
+    - title: Tawny Frogmouth
+      author: Dax Kellie
+      subtitle: R dataviz
+      href: https://bsky.app/profile/daxkellie.bsky.social/post/3m3en4qu2sk2g
+      code: https://github.com/AtlasOfLivingAustralia/science/blob/main/comms/2025-10-16_tawny-frogmouth/scripts/tawny-map.R
+      thumbnail: images/tawny-frogmouth2.svg
     - title: Tree rings
       author: Shandiya Balasubramaniam
       subtitle: R dataviz
