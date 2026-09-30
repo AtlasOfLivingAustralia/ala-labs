@@ -5,6 +5,7 @@ description: |
 author:
   - name: "Dax Kellie"
 date: "2022-08-08"
+date-modified: "2026-09-30"
 title-block-banner: "#B8573E"
 toc: true
 toc-location: left
@@ -19,7 +20,7 @@ image: samplebias_heatmap.png
 freeze: true
 format:
   html:
-    embed-resources: true
+    embed-resources: false
 ---
 
 ```{r}
@@ -117,7 +118,7 @@ galah_config(email = "dax.kellie@csiro.au", verbose = FALSE)
 ```{r}
 # Download Delma occurrence records in NT
 delma_records <- galah_call() |>
-  galah_identify("Dasyurus") |>
+  galah_identify("delma") |>
   galah_filter(stateProvince == "Northern Territory") |>
   atlas_occurrences()
 
@@ -184,9 +185,36 @@ model_bias_delma <- sampbias::calculate_bias(
 ); beepr::beep(2)
 ```
 
+
 ```{r}
 #| echo: false
-model_bias_delma <- readr::read_rds(file = here::here("posts", "data", "nt_out-updated.rds"))
+#| warning: false
+#| message: false
+
+# NOTE: To update sampbias plots, use ./scripts/save-sampbias-output.R
+
+# This large unsavoury function is required to preserve sampbias output when
+# loaded from an RDS file.
+unwrap_sampbias <- function(x) {
+  if (inherits(x, "PackedSpatRaster") || inherits(x, "PackedSpatVector")) {
+    terra::unwrap(x)
+  } else if (inherits(x, "wrapped_extent")) {
+    terra::ext(x$vec[["xmin"]], x$vec[["xmax"]], x$vec[["ymin"]], x$vec[["ymax"]])
+  } else if (is.data.frame(x)) {
+    x
+  } else if (is.list(x)) {
+    out <- lapply(x, unwrap_sampbias)
+    attributes(out) <- attributes(x)
+    out
+  } else {
+    x
+  }
+}
+
+model_bias_delma <- here::here("posts", "data", "nt_out-updated.rds") |>
+  readr::read_rds() |>
+  unwrap_sampbias()
+class(model_bias_delma) <- "sampbias"
 ```
 
 
@@ -368,7 +396,10 @@ Left: [*Dasyurus hallucatus* (David White CC BY-NC 4.0)](https://images.ala.org.
 #| message: false
 #| warning: false
 
-model_bias_quoll <- readRDS(file = here::here("posts", "data", "nt_out_quoll.rds"))
+model_bias_quoll <- here::here("posts", "data", "nt_out_quoll.rds") |>
+  readr::read_rds() |>
+  unwrap_sampbias()
+class(model_bias_quoll) <- "sampbias"
 
 # Results
 plot(model_bias_quoll)
@@ -404,7 +435,10 @@ Left: [*Ceyx pusillus* (Greg Holland CC BY-NC 4.0)](https://images.ala.org.au/im
 #| message: false
 #| warning: false
 
-model_bias_kingfisher <- readRDS(file = here::here("posts", "data", "nt_out_kingfisher.rds"))
+model_bias_kingfisher <- here::here("posts", "data", "nt_out_kingfisher.rds") |>
+  readr::read_rds() |>
+  unwrap_sampbias()
+class(model_bias_kingfisher) <- "sampbias"
 
 # Results
 plot(model_bias_kingfisher)
@@ -440,7 +474,10 @@ Left: [*Hierodula majuscula* (Michael Mcmaster CC BY-NC 4.0)](https://images.ala
 #| message: false
 #| warning: false
 
-model_bias_mantid <- readRDS(file = here::here("posts", "data", "nt_out_mantid.rds"))
+model_bias_mantid <- here::here("posts", "data", "nt_out_mantid.rds") |>
+  readr::read_rds() |>
+  unwrap_sampbias()
+class(model_bias_mantid) <- "sampbias"
 
 # Results
 plot(model_bias_mantid)
@@ -476,7 +513,10 @@ Left: [*Crotalaria cunninghamii* (Gerald Krygsman CC BY-NC 4.0)](https://images.
 #| message: false
 #| warning: false
 
-model_bias_birdflower <- readRDS(file = here::here("posts", "data", "nt_out_birdflower.rds"))
+model_bias_birdflower <- here::here("posts", "data", "nt_out_birdflower.rds") |>
+  readr::read_rds() |>
+  unwrap_sampbias()
+class(model_bias_birdflower) <- "sampbias"
 
 # Results
 plot(model_bias_birdflower)
