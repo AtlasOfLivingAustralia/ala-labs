@@ -17,6 +17,7 @@ categories:
   - Mammalia
   - Summaries
   - Python
+  - Guest-post
 image: images/boar-example.png
 freeze: true
 jupyter: python3
@@ -67,6 +68,10 @@ Xiang Zhao
 ::::::
 
 <!------------------------ Post starts here ------------------------>
+
+::: {.callout-tip}
+##### Guest post
+:::
 
 Wildlife monitoring at scale is one of ecology's most data-intensive challenges. Camera traps deployed across remote landscapes can accumulate thousands of images in a single survey season — far more than any team can manually review in a reasonable time. Automatically identifying the species in each photograph would free researchers to focus on analysis rather than image sorting, but doing this accurately requires a model trained on a large and diverse set of wildlife images.
 
