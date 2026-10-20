@@ -91,11 +91,11 @@ We'll start by downloading *Anatidae* records.
 
 :::{layout-ncol=3 style="width=120px;"}
 
-<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/5/9/2/0/cd4a660e-358c-4863-81b8-08cfd7280295/original"></img>
+<img class = "clipped" src="https://images.ala.org.au/store/5/9/2/0/cd4a660e-358c-4863-81b8-08cfd7280295/thumbnail_large"></img>
 
-<img class = "clipped"src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/c/4/2/b133aa0c-ba9f-4f19-8f2f-938f34b724c7/original"></img>
+<img class = "clipped"src="https://images.ala.org.au/store/7/c/4/2/b133aa0c-ba9f-4f19-8f2f-938f34b724c7/thumbnail_large"></img>
 
-<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/1/c/9/e/f35fbe9d-1116-4eb2-82d4-03d8e032e9c1/original"></img>
+<img class = "clipped" src="https://images.ala.org.au/store/1/c/9/e/f35fbe9d-1116-4eb2-82d4-03d8e032e9c1/thumbnail_large"></img>
 
 :::
 ::: {.figure-caption}
@@ -388,6 +388,8 @@ The plot above is enough to see everything we need to see from our data. You *co
 #| fig-width: 10
 #| fig-height: 6
 #| code-fold: true
+#| warning: false
+#| message: false
 #| out-extra: "style=margin-left:auto;margin-right:auto;"
 
 # add fonts
