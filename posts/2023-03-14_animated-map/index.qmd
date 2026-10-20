@@ -7,6 +7,7 @@ author:
   - name: "Olivia Torresan"
   - name: "Dax Kellie"
 date: "2023-03-14"
+date-modified: "2026-10-20"
 title-block-banner: "#B8573E"
 toc: true
 toc-location: left
@@ -95,11 +96,11 @@ Let's first download observations of *Nudibranchia* across Australia.
 
 :::{layout-ncol=3 style="width=120px;"}
 
-<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/f/0/2/4dc32b90-06fe-473b-ba59-1d05779c20fe/original"></img>
+<img class = "clipped" src="https://images.ala.org.au/store/e/f/0/2/4dc32b90-06fe-473b-ba59-1d05779c20fe/thumbnail_large"></img>
 
-<img class = "clipped"src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/0/c/4/4/25048175-ab79-48c8-bea3-8f09242544c0/original"></img>
+<img class = "clipped"src="https://images.ala.org.au/store/0/c/4/4/25048175-ab79-48c8-bea3-8f09242544c0/thumbnail_large"></img>
 
-<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/a/d/0/bf20b383-5812-4121-b5b7-44c0493f0dae/original"></img>
+<img class = "clipped" src="https://images.ala.org.au/store/e/a/d/0/bf20b383-5812-4121-b5b7-44c0493f0dae/thumbnail_large"></img>
 
 :::
 ::: {.figure-caption}
@@ -124,6 +125,7 @@ library(maps)          # Cities for map
 library(tmaptools)     # Create plot ratio
 library(gifski)        # Create GIF
 library(knitr)         # View GIF
+library(feathers)      # remotes::install_github(repo = "shandiya/feathers", ref = "main")
 ```
   
 Now we will use the {`galah`} package to download observations of *Nudibranchia*.
@@ -573,7 +575,7 @@ We now have our animated GIF! Our animation shows that nudibranchs can be observ
 
 However, when data are broken down into smaller and smaller groups (which often happens over the course of an entire analysis), we increase the chance of *uncertainty* in our results.
 
-Uncertainty can grow when we use fewer observations to predict our distributions because with less information, our predictions are more strongly swayed by outliers. In our case, there are more observations of nudibranchs from October-January and fewer from May-August. Although it's very possible uncertainty had an effect on the patterns we see in our final animation, you can't tell from seeing our animation on its own!
+Uncertainty can grow when we use fewer observations to predict our distributions because with less information, our predictions are more strongly swayed by outliers. In our case, there are more observations of nudibranchs from October-January and fewer from May-August. It's very likely that uncertainty had an effect on the patterns we see in our final animation, but it's difficult to tell which month estimates have more uncertainty when viewing our animation alone without context!
 
 :::{.column-margin}
 ```{r}
