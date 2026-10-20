@@ -79,7 +79,7 @@ In this post, we'll explain the difference between convex hulls and alpha hulls 
 To illustrate the various spatial polygons you can make, let's look at an invertebrate species from Dr. Marsh's study: an endemic damselfly, *Austroargiolestes calcaris*, commonly known as the [Powdered Flatwing](https://bie.ala.org.au/species/https://biodiversity.org.au/afd/taxa/2d944503-2f03-48ec-8a8a-b78bc2b674af)
 
 :::{layout="[-1, 1, -1]"}
-<img class = "clipped" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/5/a/9/2/f6f52563-3bb4-45f3-a5cd-26a3773329a5/original"></img>
+<img class = "clipped" src="https://images.ala.org.au/store/5/a/9/2/f6f52563-3bb4-45f3-a5cd-26a3773329a5/thumbnail_large"></img>
 :::
 ::: {.figure-caption}
 [A Powdered Flatwing perched on a plant by Reiner Richter CC-BY 4.0](https://images.ala.org.au/image/f6f52563-3bb4-45f3-a5cd-26a3773329a5)
@@ -92,7 +92,7 @@ First we will load the R packages we'll need:
 library(pacman)
 # remotes::install_github("babichmorrowc/hull2spatial")
 # install.packages('BiocManager')
-pacman::p_load(remotes, galah, tidyverse, alphahull, sp, sf, ozmaps, hull2spatial, patchwork, xaringanExtra)
+pacman::p_load(remotes, galah, tidyverse, sp, sf, ozmaps, alphahull, hull2spatial, patchwork, xaringanExtra)
 
 ```
 
@@ -123,9 +123,8 @@ galah_config(email = "your-email@email.com")
 
 # Download Powdered flatwing records 
 galah_call() |> 
-  galah_identify("Austroargiolestes calcaris") |> 
-  galah_filter(profile="ALA") |> 
-  galah_select(group = "basic") |> 
+  identify("Austroargiolestes calcaris") |> 
+  apply_profile(ALA) |>
   atlas_occurrences() -> dfly
 
 # See first 10 rows
@@ -134,11 +133,35 @@ dfly |> head(10L)
 
 Before we can plot anything, we will also need to remove all duplicated values and any NA values!
 
+:::{.callout-important}
+##### {hull2spatial} error (2026 update)
+
+Since this article was originally published, the {alphahull} package now hits the following error when using `ahull()`:
+
 ```{r}
-# Remove duplicates & NAs
-dfly |> 
-  filter(!duplicated(decimalLongitude) & !duplicated(decimalLatitude)) |> 
-  filter(!is.na(decimalLongitude) & !is.na(decimalLatitude) ) -> dfly_clean
+#| error: true
+#| echo: false
+stop("shull: duplicate points found", call. = FALSE)
+```
+
+This error is caused by an internal issue with how this function handles supplied values. <!-- More specifically, it's an issue with `interp::tri.mesh()` -->
+
+To prevent this error, we must round our points before using `ahull()`, and rounding to 3 decimal places (equivalent to thinning points to a ~100m precision grid) creates enough distance between points to pass the internal duplication check. 
+
+This error does not appear to affect `chull()` (though we've rounded coordinate values below for convenience before calculating either convex or alpha hulls). Analyses requiring greater point precision may need to use convex hulls rather than alpha hulls, or find an alternative solution to the methods in this post.
+
+:::
+
+```{r}
+# Remove duplicates, round coordinates, remove NAs
+dfly |>
+  filter(!is.na(decimalLongitude), !is.na(decimalLatitude)) |> 
+  mutate(
+    lon = round(decimalLongitude, 3),   # ~100 m
+    lat = round(decimalLatitude, 3)
+  ) |> 
+  distinct(lon, lat, .keep_all = TRUE) -> dfly_clean
+    
 ```
 
 ## Map a convex hull
@@ -213,12 +236,11 @@ To illustrate, here are three alpha hulls with _increasing_ values for alpha. No
 # Compute alpha shapes and store in list column within a tibble
 tibble(
   alpha_value = c(1, 2, 5),
-  ahull_ls = map(.x = c(1, 2, 5),
+  ahull_ls = map(.x = alpha_value,
                  .f = ~ dfly_clean |> 
-                   select(decimalLongitude, decimalLatitude) |> 
+                   select(lon, lat) |> 
                    ahull(alpha = .x)) 
 ) -> dfly_ahulls
-
 
 # Transform alpha hull to an `sp` object and set map projection to 4326
 set_map_proj <- function(sp_obj){
@@ -357,11 +379,10 @@ institution_only <- c("PRESERVED_SPECIMEN", "LIVING_SPECIMEN",
                    "MACHINE_OBSERVATION", "MATERIAL_SAMPLE")
 
 galah_call() |> 
-  galah_identify("Austroargiolestes calcaris") |> 
-  galah_filter(basisOfRecord == institution_only,
-               profile = "ALA") |> 
-  galah_select(group = "basic") |> 
-   atlas_occurrences() -> dfly_specionly
+  identify("Austroargiolestes calcaris") |> 
+  filter(basisOfRecord == institution_only) |>
+  apply_profile(ALA) |>
+  atlas_occurrences() -> dfly_specionly
 ```
 
 Below is our alpha hull of our specimen-only damselfly data. You'll notice that there are **two separate hulls** in this map! This is another benefit of using an alpha hull over a convex hull. The mathematical constraints of a convex hull mean all points must be contained within a single polygon - this can lead to an over-estimation of a species' range.
@@ -369,10 +390,14 @@ Below is our alpha hull of our specimen-only damselfly data. You'll notice that 
 ```{r}
 #| include: false
 
-# Remove duplicates & exclude NAs
+# Remove duplicates, round & exclude NAs
 dfly_specionly |> 
-  filter(!duplicated(decimalLongitude) & !duplicated(decimalLatitude)) |>
-  filter(!is.na(decimalLongitude) & !is.na(decimalLatitude) ) -> dflysp_clean
+  filter(!is.na(decimalLongitude), !is.na(decimalLatitude)) |> 
+  mutate(
+    lon = round(decimalLongitude, 3),   # ~100 m
+    lat = round(decimalLatitude, 3)
+  ) |> 
+  distinct(lon, lat, .keep_all = TRUE) -> dflysp_clean
 
 # Compute alpha hull
 dflysp_clean |> 
@@ -430,28 +455,33 @@ The published paper didn't provide a visual of this species' distribution, so we
 
 ```{r}
 #| code-fold: true
+#| message: false
 
 # Download records
 galah_call() |> 
-  galah_identify("Mesembriomys gouldii") |> 
-  galah_filter(profile = "ALA") |> 
-  galah_select(group = "basic") |> 
+  identify("Mesembriomys gouldii") |> 
+  apply_profile(ALA) |> 
+  filter(countryCode == "AU") |> # remove outliers outside of australia
   atlas_occurrences() -> tree_rat
 
-# Remove duplicates and NAs
+# Remove duplicates, round & exclude NAs
 tree_rat |> 
-  filter(! duplicated(decimalLongitude) & ! duplicated(decimalLatitude)) |> 
-  filter(! is.na(decimalLongitude) & ! is.na(decimalLatitude) ) -> tree_ratclean
+  filter(!is.na(decimalLongitude), !is.na(decimalLatitude)) |> 
+  mutate(
+    lon = round(decimalLongitude, 3),   # ~100 m
+    lat = round(decimalLatitude, 3)
+  ) |> 
+  distinct(lon, lat, .keep_all = TRUE) -> tree_ratclean
 
 # Convert occurrence points to sf for plotting
 tree_ratclean |> 
-  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
+  st_as_sf(coords = c("lon", "lat"), 
            crs = 4326) -> tree_rat_sf
 
 # Compute alpha hull
 tree_ratclean |> 
-  select(decimalLongitude, decimalLatitude) |> 
-  ahull(alpha = 2) -> tree_rat_ahull
+  select(lon, lat) |> 
+  ahull(alpha = 4) -> tree_rat_ahull
 
 # Transform `ahull` to `sf`, set projection
 hull2spatial::ahull2poly(tree_rat_ahull) |> 
@@ -460,7 +490,7 @@ hull2spatial::ahull2poly(tree_rat_ahull) |>
 
 # Convert occurrence points to sf for plotting
 tree_ratclean |> 
-  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
+  st_as_sf(coords = c("lon", "lat"), 
            crs = 4326) -> tree_rat_sf
 
 # Get map of Australia & set projection
@@ -470,21 +500,25 @@ aus <- st_transform(ozmaps::ozmap_country, 4326)
 
 # Download tree rat records after 2000
 galah_call() |>
-  galah_identify("Mesembriomys gouldii") |>
-  galah_filter(profile = "ALA",
-               year >= 2000,) |>
-  galah_select(group = "basic") |>
+  identify("Mesembriomys gouldii") |>
+  filter(year >= 2000) |>
+  apply_profile(ALA) |>
+  filter(countryCode == "AU") |> # remove outliers outside of australia
   atlas_occurrences() -> Rtree_rat
 
-# Remove duplicates & exclude NAs
+# Remove duplicates, round & exclude NAs
 Rtree_rat |> 
-  filter(!duplicated(decimalLongitude) & !duplicated(decimalLatitude)) |> 
-  filter(!is.na(decimalLongitude) & !is.na(decimalLatitude) ) -> Rtree_ratclean
+  filter(!is.na(decimalLongitude), !is.na(decimalLatitude)) |> 
+  mutate(
+    lon = round(decimalLongitude, 3),   # ~100 m
+    lat = round(decimalLatitude, 3)
+  ) |> 
+  distinct(lon, lat, .keep_all = TRUE) -> Rtree_ratclean
 
 # Compute an alpha hull for our specimen only occurrences
 Rtree_ratclean |> 
-  select(decimalLongitude, decimalLatitude) |> 
-  ahull(alpha = 2) -> Rtree_rat_ahull
+  select(lon, lat) |> 
+  ahull(alpha = 4) -> Rtree_rat_ahull
 
 # Transform `ahull` to sf, set coordinates
 hull2spatial::ahull2poly(Rtree_rat_ahull) |> 
@@ -503,9 +537,9 @@ rat_title <- expression(italic("Mesembriomys gouldii "), "alpha hulls")
 
 # Plot!
 ggplot() + 
-  geom_sf(data = aus, colour = "black", fill = "white")  +
+  geom_sf(data = aus, colour = "grey30", fill = "grey95")  +
   geom_sf(data = tree_rat_sf_ahull, aes(fill = "chartreuse3") ,alpha = 0.5, colour = "black", position = "identity") +
-    geom_sf(data = Rtree_rat_sf_ahull, aes(fill = "blueviolet"), alpha = 0.5, colour = "black", position = "identity") +
+  geom_sf(data = Rtree_rat_sf_ahull, aes(fill = "blueviolet"), alpha = 0.5, colour = "black", position = "identity") +
   scale_fill_identity(guide = "legend",
                       name = "Record date ranges",
                       labels = c('2000 Onwards', 'All Records')) +
@@ -514,7 +548,11 @@ ggplot() +
   ggtitle(rat_title) +
   labs(x = "Longtitude (DD)", y = "Latitude (DD)") + 
   theme_bw() +
-  theme(legend.position = "bottom") -> combinedtree_rat_ahull_p
+  theme(
+    legend.position = "bottom",
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    ) -> combinedtree_rat_ahull_p
 ```
 
 </details>
