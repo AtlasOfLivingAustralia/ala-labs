@@ -513,7 +513,7 @@ main_map <- base_map +
           aes(geometry = concave, 
               colour = scientific_name, 
               fill = scientific_name), 
-          linewidth = 1.1, alpha = 0.1) + 
+          alpha = 0.1) + 
   geom_sf(data = bee_map_data, 
           aes(geometry = overlap), 
           colour = "#FF925C", fill = "#FF925C") + # To highlight area of overlap 
@@ -683,7 +683,7 @@ daviesia_main_map <- base_map +
           aes(geometry = concave, 
               colour = species, 
               fill = species), 
-          linewidth = 1.1, alpha = 0.005) +   
+          alpha = 0.005) +   
   geom_sf(data = daviesia_map_data, 
           aes(geometry = overlap), 
           colour = "#FF925C", fill = "#FF925C") + 
