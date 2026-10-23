@@ -6,6 +6,7 @@ author:
   - name: "Fonti Kar"
   - name: "Margot Schneider"
 date: "2023-04-11"
+date-modified: "2026-10-23"
 title-block-banner: "#B8573E"
 toc: true
 toc-location: left
@@ -455,11 +456,11 @@ top3
 ```
 
 ::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/a/6/8/0/30410bf3-d717-45c4-bdb7-8cde5c6b086a/original" class="rounded"/></img>
+<img src="https://images.ala.org.au/store/a/6/8/0/30410bf3-d717-45c4-bdb7-8cde5c6b086a/thumbnail_large" class="rounded"/></img>
 
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/6/3/7/a0e69e32-1d1a-4598-b113-8c42ee76736e/original" class="rounded"/></img>
+<img src="https://images.ala.org.au/store/e/6/3/7/a0e69e32-1d1a-4598-b113-8c42ee76736e/thumbnail_large" class="rounded"/></img>
 
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/5/e/9/5/24035fb7-0548-44b6-b933-3bcd58c959e5/original" class="rounded"/></img>
+<img src="https://images.ala.org.au/store/5/e/9/5/24035fb7-0548-44b6-b933-3bcd58c959e5/thumbnail_large" class="rounded"/></img>
 :::
 
 ::: figure-caption
@@ -512,7 +513,7 @@ main_map <- base_map +
           aes(geometry = concave, 
               colour = scientific_name, 
               fill = scientific_name), 
-          size = 1.5, alpha = 0.1) + 
+          linewidth = 1.1, alpha = 0.1) + 
   geom_sf(data = bee_map_data, 
           aes(geometry = overlap), 
           colour = "#FF925C", fill = "#FF925C") + # To highlight area of overlap 
@@ -629,11 +630,11 @@ We repeated the same workflow with the vascular plant dataset and created a map 
 Commonly known as bitterpeas, *Daviesia* comprises plants pollinated by [reed bees (*Exoneura*)](https://fennerschool.anu.edu.au/files/Rubus%20berry%20pollinator%20infosheet.pdf), which are featured in the bee map above.
 
 ::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/7/7/0/b/0a95413d-25aa-4889-9c7d-39dd898eb077/original" class="rounded"/></img>
+<img src="https://images.ala.org.au/store/7/7/0/b/0a95413d-25aa-4889-9c7d-39dd898eb077/thumbnail_large" class="rounded"/></img>
 
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/d/c/7/a/d8c159a6-1aa6-45f7-9f3d-b60da4eaa7cd/original" class="rounded"/></img>
+<img src="https://images.ala.org.au/store/d/c/7/a/d8c159a6-1aa6-45f7-9f3d-b60da4eaa7cd/thumbnail_large" class="rounded"/></img>
 
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/d/e/f/f/a5ad9e21-5ce5-450b-baf7-d52ea3a6ffed/original" class="rounded"/></img>
+<img src="https://images.ala.org.au/store/d/e/f/f/a5ad9e21-5ce5-450b-baf7-d52ea3a6ffed/thumbnail_large" class="rounded"/></img>
 :::
 
 ::: figure-caption
@@ -678,11 +679,11 @@ daviesia_map_data <- daviesia_overlap |>
 
 ## Create main map reusing base_map from above
 daviesia_main_map <- base_map + 
-    geom_sf(data = daviesia_map_data, 
+  geom_sf(data = daviesia_map_data, 
           aes(geometry = concave, 
               colour = species, 
               fill = species), 
-          size = 1.5, alpha = 0.005) + 
+          linewidth = 1.1, alpha = 0.005) +   
   geom_sf(data = daviesia_map_data, 
           aes(geometry = overlap), 
           colour = "#FF925C", fill = "#FF925C") + 
