@@ -6,6 +6,7 @@ author:
   - name: "Amos Smith"
   - name: "Dax Kellie"
 date: "2023-05-16"
+date-modified: "2026-10-23"
 title-block-banner: "#B8573E"
 toc: true
 toc-location: left
@@ -98,11 +99,11 @@ To understand the debate about the dingo's role in Australia's ecosystems, it's 
 Let's start by finding how many observations of dingoes are in the ALA and where they are.
 
 ::: {layout-ncol="3" style="margin-left: auto; margin-right: auto;"}
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/5/5/b/b/19578b8d-f8a3-4ae8-a139-60f9d4d6bb55/original" class="rounded"/></img>
+<img src="https://images.ala.org.au/store/5/5/b/b/19578b8d-f8a3-4ae8-a139-60f9d4d6bb55/thumbnail_large" class="rounded"/></img>
 
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/c/8/a/5/2716b0eb-0d0f-41cd-9c33-d517f45e5a8c/original" class="rounded"/></img>
+<img src="https://images.ala.org.au/store/c/8/a/5/2716b0eb-0d0f-41cd-9c33-d517f45e5a8c/thumbnail_large" class="rounded"/></img>
 
-<img src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/3/2/4/a/5f426a63-4b4f-4def-b6ed-14316b40a423/original" class="rounded"/></img>
+<img src="https://images.ala.org.au/store/3/2/4/a/5f426a63-4b4f-4def-b6ed-14316b40a423/thumbnail_large" class="rounded"/></img>
 :::
 
 ::: figure-caption
@@ -298,9 +299,9 @@ custom_colours <- c(
 # Bar plot
 bar_plot <- counts_filtered |>
   ggplot(aes(
-    x = reorder(str_wrap(dataResourceName, 28), count),
+    x = reorder(str_wrap(dataResourceName, 35), count),
     y = count, fill = dataResourceName)) +
-  geom_bar(stat = "identity", width = .8) +
+  geom_bar(stat = "identity") +
   scale_fill_manual(values = custom_colours) +
   scale_x_discrete(expand = c(0, 0)) +
   scale_y_continuous(labels = scales::label_comma()) +
@@ -401,7 +402,7 @@ barplot_nt <- ggplot(data = month_NT,
        x = "Month", 
        y = "No. of observations") +
   scale_x_discrete(expand = c(0,0)) +
-  scale_y_continuous(limits = c(0, 1000),
+  scale_y_continuous(limits = c(0, 1500),
                      expand = c(0,0)) +
   pilot::theme_pilot(grid = "h")
 ```
@@ -432,7 +433,7 @@ barplot_sa <- ggplot(data = dingo_SA,
        x = "Month", 
        y = "No. of observations") +
   scale_x_discrete(expand = c(0,0)) +
-  scale_y_continuous(limits = c(0, 1000),
+  scale_y_continuous(limits = c(0, 1500),
                      expand = c(0,0)) +
   pilot::theme_pilot(grid = "h")
 ```
