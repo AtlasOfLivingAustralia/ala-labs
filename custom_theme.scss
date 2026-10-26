@@ -21,3 +21,20 @@ $navbar-hl: #E06E53;
 h4 {
   font-size: 1.11rem !important;
 }
+
+.quarto-figure-center .column-page-inset,
+.quarto-figure-center .column-page,
+.quarto-figure-center .column-screen-inset,
+.quarto-figure-center .column-screen {
+    justify-self: center;
+}
+
+.column-page .quarto-figure > figure,
+.column-page figure.quarto-float {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.column-page .cell-output-display {
+  text-align: center;
+}

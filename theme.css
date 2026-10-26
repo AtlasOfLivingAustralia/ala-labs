@@ -588,3 +588,22 @@ img.rounded {
   margin-left: auto;
   margin-right: auto;
 }
+
+
+
+.quarto-figure-center .column-page-inset,
+.quarto-figure-center .column-page,
+.quarto-figure-center .column-screen-inset,
+.quarto-figure-center .column-screen {
+    justify-self: center;
+}
+
+.column-page .quarto-figure > figure,
+.column-page figure.quarto-float {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.column-page .cell-output-display {
+  text-align: center;
+}

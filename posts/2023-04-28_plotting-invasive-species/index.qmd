@@ -7,10 +7,12 @@ author:
   - name: "Amanda Buyan"
   - name: "Dax Kellie"
 date: "2023-04-28"
+date-modified: "2026-10-23"
 title-block-banner: "#B8573E"
 toc: true
 toc-location: left
 toc-depth: 2
+lightbox: auto
 categories:
   - Eukaryota
   - Animalia
@@ -86,7 +88,7 @@ In this post, we will use Python and the [{galah} package](https://galah.ala.org
 To start, we will use the infamous example of the cane toad to illustrate how far an invasive species' distribution can spread each decade.
 
 :::{layout="[-1, 1, -1]"}
-<img class="rounded" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/e/f/b/2/0dd84abb-041e-4868-93fb-7b120ab92bfe/original"></img>
+<img class="rounded" src="https://images.ala.org.au/store/e/f/b/2/0dd84abb-041e-4868-93fb-7b120ab92bfe/thumbnail_large"></img>
 :::
 ::: {.figure-caption}
 [Rhinella marina (Isaac Clarey CC-BY-NC 4.0 (Int))](https://biocache.ala.org.au/occurrences/722881a9-aff8-40f9-af5d-fe6bea58743d)
@@ -162,7 +164,6 @@ Next, let's download a shapefile of Australia with state boundaries. The Austral
 
 ```{python}
 #| eval: false
-mpl.rcParams['figure.dpi'] = 1200 # generate a high resolution image
 states = geopandas.read_file("Australia_state_boundaries/STE_2021_AUST_GDA2020.shp")
 states.plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white")
 ```
@@ -171,7 +172,6 @@ states.plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white")
 #| warning: false
 #| message: false
 #| echo: false
-mpl.rcParams['figure.dpi'] = 1200 # generate a high resolution image
 states = geopandas.read_file("../data/Australia_state_boundaries/STE_2021_AUST_GDA2020.shp")
 states.plot(edgecolor = "#5A5A5A", linewidth = 0.5, facecolor = "white")
 ```
@@ -236,31 +236,30 @@ Finally, we can plot our alpha shape distributions for each decade onto our map 
 This figure showcases the incredible pace of the cane toad's spread across northern Australia. Our map shows that cane toads have spread across most of Queensland, the top end of the Northern Territory (from the 1980s to 2010s) and more recently, into the Kimberley region of Western Australia.
 
 ```{python}
-#| warning: false
-#| message: false
-#| column: page
+#| label: fig-map-alpha
+#| fig-cap: "Map"
+#| column: page-inset
 #| fig-align: center
-#| fig-height: 9
-#| out-extra: "style=margin-left:auto;margin-right:auto;"
-ax = states.boundary.plot(edgecolor="#5A5A5A", linewidth=0.5, facecolor="white", zorder=-1)
-
-alpha_shape_gdf.plot(ax = ax, cmap="plasma", column = "decade_string", legend=True, categorical=True)
-lgd = ax.get_legend()
-lgd.draw_frame(False)
-lgd.set_bbox_to_anchor((1.2, 0.8))
-
-title_text = "<style: italic>Rhinella marina</> (cane toad) distributions per decade"
-flexitext(0.5, 1, title_text, va="bottom", ha="center");
-
-caption_text = "<color:#5A5A5A, style:italic, size:7>Distributions calculated with alpha hulls of each decade's cane toad observations</>"
-flexitext(0.05, 0, caption_text, va="top");
-
-plt.xlim([110, 161])
-plt.ylim([-45, -8])
-plt.axis("off")
-plt.subplots_adjust(left=-0.15, right=1)
-
-plt.show()
+with plt.rc_context({"figure.figsize": (16, 11.5)}):
+    ax = states.boundary.plot(edgecolor="#5A5A5A", linewidth=0.5, facecolor="white", zorder=-1)
+    
+    alpha_shape_gdf.plot(ax = ax, cmap="plasma", column = "decade_string", legend=True, categorical=True)
+    lgd = ax.get_legend()
+    lgd.draw_frame(False)
+    lgd.set_bbox_to_anchor((1.2, 0.8))
+    
+    title_text = "<style: italic>Rhinella marina</> (cane toad) distributions per decade"
+    flexitext(0.5, 1, title_text, va="bottom", ha="center");
+    
+    caption_text = "<color:#5A5A5A, style:italic, size:7>Distributions calculated with alpha hulls of each decade's cane toad observations</>"
+    flexitext(0.05, 0, caption_text, va="top");
+    
+    plt.xlim([110, 161])
+    plt.ylim([-45, -8])
+    plt.axis("off")
+    plt.subplots_adjust(left=-0.15, right=1)
+    
+    plt.show()
 ```
 
 ### Other invasive species
@@ -380,7 +379,7 @@ When people think of invasive species, they generally think of species that have
 One good example of native pests are the trees *Pittosporum undulatum* (sometimes called Sweet Pittosporum). These trees have been introduced as ornamental plants in gardens across Australia because of their sweet-scented flowers and bright berries. Although *Pittosporum undulatum*'s native range extends from southern Queensland to eastern Victoria, it is now considered an environmental weed in many regions where it has been introduced.
 
 :::{layout="[-1, 1, -1]"}
-<img class="rounded" src="https://ala-images.s3.ap-southeast-2.amazonaws.com/store/9/9/e/b/3765267a-f11a-474f-9bc9-215a5394be99/original"></img>
+<img class="rounded" src="https://images.ala.org.au/store/9/9/e/b/3765267a-f11a-474f-9bc9-215a5394be99/thumbnail_large"></img>
 :::
 ::: {.figure-caption}
 [Pittosporum undulatum (Chris Clarke CC-BY)](https://biocache.ala.org.au/occurrences/30b0b6dc-1d77-4a1f-ae15-18ef5ef67e28)
@@ -433,8 +432,7 @@ Now we can use the `group_by` argument in `galah.atlas_counts()` to group observ
 
 ```{python}
 found_bioregion_counts = galah.atlas_counts("Pittosporum undulatum",
-                                           group_by="cl1048",
-                                           expand = False)
+                                           group_by="cl1048")
 
 # extract bioregion names from Pandas dataframe into list
 found_bioregions = list(found_bioregion_counts["cl1048"])
@@ -458,7 +456,7 @@ Next we can add a new column `native` to our GeoPandas bioregion dataframe to id
 ```{python}
 bioregions.loc[bioregions["REG_NAME_7"].isin(native_bioregions), "native"] = "Native"
 bioregions.loc[bioregions["REG_NAME_7"].isin(introduced_bioregions), "native"] = "Introduced"
-bioregions["native"] = bioregions["native"].replace("nan", "No observations")
+bioregions["native"] = bioregions["native"].fillna("No observations")
 ```
 
 ### Make choropleth map
@@ -478,20 +476,23 @@ We can use this `colour` column as the input to our `.plot()` function.
 Our map shows that *Pittosporum undulatum* has been observed in Western Australia, Northern Territory, South Australia, and even Tasmania despite having a fairly narrow native range along the east coast of Australia.
 
 ```{python}
-#| column: page
+#| label: fig-map
+#| fig-cap: "Map"
+#| column: page-inset
 #| fig-align: center
-#| fig-height: 9
-#| out-extra: "style=margin-left:auto;margin-right:auto;"
-bioregions.plot(edgecolor="white", linewidth = 0.25, color = bioregions["colour"])
-
-title_text = "<style:italic>Pittosporum undulatum</> <color:#8FBD4C, weight:bold>native</> and <color:#F7872E, weight:bold>introduced</> Australian bioregions"
-flexitext(0.5, 1, title_text, va="bottom", ha="center");
-
-plt.xlim([110, 161])
-plt.ylim([-45, -8])
-plt.axis("off")
-plt.show()
+with plt.rc_context({"figure.figsize": (16, 11.5)}):
+    bioregions.plot(edgecolor="white", linewidth = 0.25, color = bioregions["colour"])
+    
+    title_text = "<style:italic>Pittosporum undulatum</> <color:#8FBD4C, weight:bold>native</> and <color:#F7872E, weight:bold>introduced</> Australian bioregions"
+    flexitext(0.5, 1, title_text, va="bottom", ha="center");
+    
+    plt.xlim([110, 161])
+    plt.ylim([-45, -8])
+    plt.axis("off")
+    plt.show()
 ```
+
+
 
 # Final thoughts
 
