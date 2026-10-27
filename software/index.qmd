@@ -110,3 +110,24 @@ If you have any questions, comments, or spot any bugs, [email us](mailto:support
 
 :::
 
+***
+
+:::{.column-page layout="[1,1]" style="float:left;"}
+
+
+
+<a href="https://quail.ala.org.au/">
+![](images/hex/quail_logo_smaller.png){style="width:73%;"}
+</a>
+
+
+
+# Quail
+
+[Quail](https://quail.ala.org.au/) is a downloadable plugin for QGIS that gives registered users access to biodiversity data hosted by the ‘living atlases’ and the Global Biodiversity Information Facility (GBIF). These organisations collate and store observations of individual life forms, using the ‘Darwin Core’ data standard. <br> <br>
+Visit the **[Quail website](https://quail.ala.org.au/)** to learn more about how to use Quail<br><br>
+If you have any comments, questions, or suggestions, please [contact us](mailto:support@ala.org.au)
+:::
+
+
+
